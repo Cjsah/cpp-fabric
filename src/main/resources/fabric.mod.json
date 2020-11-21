@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "craftingpp",
+  "version": "${version}",
+
+  "name": "Craftingpp",
+  "description": "Nothing there",
+  "authors": [
+    "Cjsah",
+    "ruhuasiyu"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "GPL-3.0",
+  "icon": "assets/cpp/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.cjsah.cpp.Main"
+    ]
+  },
+  "mixins": [
+    "cpp.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
