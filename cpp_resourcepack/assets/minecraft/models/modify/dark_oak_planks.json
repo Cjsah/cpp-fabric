@@ -1,0 +1,6 @@
+{
+    "parent": "modify/cube_all",
+    "textures": {
+        "all": "block/dark_oak_planks"
+    }
+}

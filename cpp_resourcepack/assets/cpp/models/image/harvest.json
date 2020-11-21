@@ -1,0 +1,13 @@
+{
+    "parent": "item/generated",
+    "display": {
+        "fixed": {
+            "rotation": [ 0, 180, 0 ],
+            "translation": [ 0, 0, -1 ],
+            "scale": [ 2, 2, 2 ]
+        }
+    },
+    "textures": {
+        "layer0": "cpp:image/harvest"
+    }
+}

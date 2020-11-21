@@ -1,0 +1,18 @@
+{
+	"providers": [
+        {
+            "type": "bitmap",
+            "file": "cpp:font/space.png",
+            "ascent": -32768,
+            "height": 297,
+            "chars": ["1"]
+        },
+		{
+			"type": "bitmap",
+			"file": "cpp:font/chain.png",
+			"height": 182,
+			"ascent": 182,
+			"chars": ["2"]
+		}
+	]
+}

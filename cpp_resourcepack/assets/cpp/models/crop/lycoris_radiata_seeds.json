@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "cpp:crop/lycoris_radiata_seeds"
+    }
+}

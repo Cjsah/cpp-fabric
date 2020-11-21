@@ -1,0 +1,24 @@
+﻿{
+	"pack": {
+		"pack_format": 6,
+		"description": [
+			{
+				"text": "Crafting++ v1.12 ",
+				"color": "gold"
+			},
+			{
+				"translate": "options.resourcepack"
+			},
+			{
+				"text": "\nruhuasiyu RubberTree",
+				"color": "green"
+			}
+		]
+	},
+	"language": {
+		"zh_meme": {
+			"name": "梗体中文",
+			"region": "民间"
+		}
+	}
+}
