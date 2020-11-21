@@ -10,8 +10,8 @@
     "ruhuasiyu"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "http://www.cjsah.net/",
+    "sources": "https://github.com/cjsah/cpp-fabric"
   },
 
   "license": "GPL-3.0",
