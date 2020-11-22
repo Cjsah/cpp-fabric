@@ -23,7 +23,7 @@
       "net.cjsah.cpp.CraftingppMod"
     ],
     "client": [
-      "net.cjsah.cpp.client.CraftingppClient"
+      "net.cjsah.cpp.CraftingppClient"
     ]
   },
   "mixins": [],

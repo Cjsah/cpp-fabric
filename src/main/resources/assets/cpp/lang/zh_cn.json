@@ -2,5 +2,7 @@
   "itemGroup.cpp.title": "更多的合成",
   "item.cpp.icon": "cpp图标",
 
-  "block.cpp.crafting_machine": "合成器"
+  "block.cpp.crafting_machine": "合成器",
+
+  "container.cpp.crafting_machine": "合成器"
 }
