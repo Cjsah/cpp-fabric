@@ -20,12 +20,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.cjsah.cpp.Main"
+      "net.cjsah.cpp.CraftingppMod"
+    ],
+    "client": [
+      "net.cjsah.cpp.client.CraftingppClient"
     ]
   },
-  "mixins": [
-    "cpp.mixins.json"
-  ],
+  "mixins": [],
 
   "depends": {
     "fabricloader": ">=0.7.4",

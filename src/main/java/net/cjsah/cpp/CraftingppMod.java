@@ -2,31 +2,21 @@ package net.cjsah.cpp;
 
 import net.cjsah.cpp.block.CraftingMachineBlock;
 import net.cjsah.cpp.blockentity.CraftingMachineBlockEntity;
-import net.cjsah.cpp.gui.handler.CraftingMachineScreenHandler;
+import net.cjsah.cpp.inventory.CraftingMachineScreenHandler;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
-import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
-import net.fabricmc.fabric.impl.client.container.ScreenProviderRegistryImpl;
-import net.fabricmc.fabric.impl.container.ContainerProviderImpl;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
-import net.minecraft.block.MaterialColor;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.HopperScreenHandler;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.stat.StatType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
-import java.awt.*;
 
 public class CraftingppMod implements ModInitializer {
 
@@ -44,7 +34,6 @@ public class CraftingppMod implements ModInitializer {
 
 
 	// 新物品
-//	public static final Block CRAFTING_MACHINE = new Block(FabricBlockSettings.of(Material.METAL).build());
 //	public static final Block CRAFTING_MACHINE = new Block(FabricBlockSettings.of(Material.METAL).build());
 
 	public static final Block CRAFTING_MACHINE_BLOCK = new CraftingMachineBlock(AbstractBlock.Settings.of(Material.WOOD).strength(3.0F, 4.8F).sounds(BlockSoundGroup.WOOD));

@@ -1,7 +1,7 @@
 package net.cjsah.cpp.blockentity;
 
 import net.cjsah.cpp.CraftingppMod;
-import net.cjsah.cpp.gui.handler.CraftingMachineScreenHandler;
+import net.cjsah.cpp.inventory.CraftingMachineScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
