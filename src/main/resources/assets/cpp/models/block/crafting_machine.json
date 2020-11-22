@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "cpp:machine/crafting_machine_front",
+    "north": "cpp:machine/crafting_machine_front",
+    "south": "cpp:machine/crafting_machine_back",
+    "east": "cpp:machine/crafting_machine_right",
+    "west": "cpp:machine/crafting_machine_left",
+    "up": "cpp:machine/crafting_machine_top",
+    "down": "cpp:machine/crafting_machine_bottom"
+  }
+}
