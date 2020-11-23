@@ -15,7 +15,7 @@ public class CraftingMachineScreen extends HandledScreen<CraftingMachineScreenHa
     public CraftingMachineScreen(CraftingMachineScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
         this.passEvents = false;
-        this.backgroundHeight = 133;
+        this.backgroundHeight = 166;
         this.playerInventoryTitleY = this.backgroundHeight - 94;
     }
 

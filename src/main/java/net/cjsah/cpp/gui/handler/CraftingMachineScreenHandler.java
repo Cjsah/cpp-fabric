@@ -3,9 +3,9 @@ package net.cjsah.cpp.gui.handler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Identifier;
 
@@ -14,8 +14,13 @@ public class CraftingMachineScreenHandler extends ScreenHandler {
     public static final Identifier TITLE = new Identifier("cpp", "crafting_machine");
     private Inventory inventory;
 
+    public CraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory) {
+        this(syncId, playerInventory, new SimpleInventory(10));
+    }
+
+
     public CraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-        super(ScreenHandlerType.HOPPER, syncId);
+        super(null, syncId);
         this.inventory = inventory;
 
         checkSize(inventory, 10);
@@ -33,12 +38,12 @@ public class CraftingMachineScreenHandler extends ScreenHandler {
 
         for(m = 0; m < 3; ++m) {
             for(l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 10, 8 + l * 18, 84 + m * 18));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 84 + m * 18));
             }
         }
 
         for(m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 8 + m * 19, 142));
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 142));
         }
     }
 

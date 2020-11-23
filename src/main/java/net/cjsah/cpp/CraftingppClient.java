@@ -18,6 +18,7 @@ public class CraftingppClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ScreenProviderRegistryImpl.INSTANCE.<CraftingMachineScreenHandler>registerFactory(new Identifier("cpp", "crafting_machine"), container -> {
+            assert MinecraftClient.getInstance().player != null;
             return new CraftingMachineScreen(container, MinecraftClient.getInstance().player.inventory, new TranslatableText("container.cpp.crafting_machine"));
         });
     }

@@ -1,20 +1,13 @@
 package net.cjsah.cpp.block;
 
 import net.cjsah.cpp.blockentity.CraftingMachineBlockEntity;
-import net.cjsah.cpp.init.CppBlockEntities;
-import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.fabricmc.fabric.impl.container.ContainerProviderImpl;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.stat.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -47,12 +40,6 @@ public class CraftingMachineBlock extends Block implements BlockEntityProvider {
         if (!world.isClient) {
 
             ContainerProviderImpl.INSTANCE.openContainer(new Identifier("cpp", "crafting_machine"),player,buf -> buf.writeBlockPos(pos));
-
-//            BlockEntity blockEntity = world.getBlockEntity(pos);
-//            if (blockEntity instanceof CraftingMachineBlockEntity) {
-//                player.openHandledScreen((CraftingMachineBlockEntity) blockEntity);
-//                player.incrementStat(Stats.INSPECT_HOPPER);
-//            }
 
         }
         return ActionResult.SUCCESS;
