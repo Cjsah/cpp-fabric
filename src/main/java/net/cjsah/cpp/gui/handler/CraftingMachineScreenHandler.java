@@ -1,63 +1,46 @@
 package net.cjsah.cpp.gui.handler;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.*;
-import net.minecraft.recipe.book.RecipeBookCategory;
-import net.minecraft.screen.ArrayPropertyDelegate;
-import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.slot.FurnaceFuelSlot;
-import net.minecraft.screen.slot.FurnaceOutputSlot;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.world.World;
+import net.minecraft.util.Identifier;
 
 public class CraftingMachineScreenHandler extends ScreenHandler {
 
-    private final Inventory inventory;
-    private final PropertyDelegate propertyDelegate;
-    protected final World world;
-    private final RecipeType<? extends AbstractCookingRecipe> recipeType;
-    private final RecipeBookCategory category;
+    public static final Identifier TITLE = new Identifier("cpp", "crafting_machine");
+    private Inventory inventory;
 
-    protected CraftingMachineScreenHandler(ScreenHandlerType<?> type, RecipeType<? extends AbstractCookingRecipe> recipeType, RecipeBookCategory recipeBookCategory, int i, PlayerInventory playerInventory) {
-        this(type, recipeType, recipeBookCategory, i, playerInventory, new SimpleInventory(3), new ArrayPropertyDelegate(4));
-    }
-
-    protected CraftingMachineScreenHandler(ScreenHandlerType<?> type, RecipeType<? extends AbstractCookingRecipe> recipeType, RecipeBookCategory recipeBookCategory, int i, PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
-        super(type, i);
-        this.recipeType = recipeType;
-        this.category = recipeBookCategory;
-        checkSize(inventory, 3);
-        checkDataCount(propertyDelegate, 4);
+    public CraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
+        super(ScreenHandlerType.HOPPER, syncId);
         this.inventory = inventory;
-        this.propertyDelegate = propertyDelegate;
-        this.world = playerInventory.player.world;
-        this.addSlot(new Slot(inventory, 0, 56, 17));
-        this.addSlot(new FurnaceOutputSlot(playerInventory.player, inventory, 2, 116, 35));
 
+        checkSize(inventory, 10);
+        inventory.onOpen(playerInventory.player);
+
+        int m;
         int l;
-        for(l = 0; l < 3; ++l) {
-            for(int k = 0; k < 9; ++k) {
-                this.addSlot(new Slot(playerInventory, k + l * 9 + 9, 8 + k * 18, 84 + l * 18));
+        for(m = 0; m < 3; ++m) {
+            for(l = 0; l < 3; ++l) {
+                this.addSlot(new Slot(this.inventory, l + m * 3, 30 + l * 18, 17 + m * 18));
             }
         }
 
-        for(l = 0; l < 9; ++l) {
-            this.addSlot(new Slot(playerInventory, l, 8 + l * 18, 142));
+        this.addSlot(new Slot(this.inventory, 9, 124, 35));
+
+        for(m = 0; m < 3; ++m) {
+            for(l = 0; l < 9; ++l) {
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 10, 8 + l * 18, 84 + m * 18));
+            }
         }
 
-        this.addProperties(propertyDelegate);
+        for(m = 0; m < 9; ++m) {
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 19, 142));
+        }
     }
-
 
     public boolean canUse(PlayerEntity player) {
         return this.inventory.canPlayerUse(player);
@@ -69,29 +52,11 @@ public class CraftingMachineScreenHandler extends ScreenHandler {
         if (slot != null && slot.hasStack()) {
             ItemStack itemStack2 = slot.getStack();
             itemStack = itemStack2.copy();
-            if (index == 2) {
-                if (!this.insertItem(itemStack2, 3, 39, true)) {
+            if (index < this.inventory.size()) {
+                if (!this.insertItem(itemStack2, this.inventory.size(), this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-
-                slot.onStackChanged(itemStack2, itemStack);
-            } else if (index != 1 && index != 0) {
-                if (this.isSmeltable(itemStack2)) {
-                    if (!this.insertItem(itemStack2, 0, 1, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (this.isFuel(itemStack2)) {
-                    if (!this.insertItem(itemStack2, 1, 2, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (index >= 3 && index < 30) {
-                    if (!this.insertItem(itemStack2, 30, 39, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (index >= 30 && index < 39 && !this.insertItem(itemStack2, 3, 30, false)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (!this.insertItem(itemStack2, 3, 39, false)) {
+            } else if (!this.insertItem(itemStack2, 0, this.inventory.size(), false)) {
                 return ItemStack.EMPTY;
             }
 
@@ -100,22 +65,8 @@ public class CraftingMachineScreenHandler extends ScreenHandler {
             } else {
                 slot.markDirty();
             }
-
-            if (itemStack2.getCount() == itemStack.getCount()) {
-                return ItemStack.EMPTY;
-            }
-
-            slot.onTakeItem(player, itemStack2);
         }
 
         return itemStack;
-    }
-
-    protected boolean isSmeltable(ItemStack itemStack) {
-        return this.world.getRecipeManager().getFirstMatch(this.recipeType, new SimpleInventory(new ItemStack[]{itemStack}), this.world).isPresent();
-    }
-
-    protected boolean isFuel(ItemStack itemStack) {
-        return AbstractFurnaceBlockEntity.canUseAsFuel(itemStack);
     }
 }

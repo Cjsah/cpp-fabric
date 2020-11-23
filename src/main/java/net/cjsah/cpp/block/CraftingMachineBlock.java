@@ -1,26 +1,40 @@
 package net.cjsah.cpp.block;
 
-import net.cjsah.cpp.CraftingppMod;
 import net.cjsah.cpp.blockentity.CraftingMachineBlockEntity;
+import net.cjsah.cpp.init.CppBlockEntities;
+import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
+import net.fabricmc.fabric.impl.container.ContainerProviderImpl;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.HopperBlockEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.stat.Stats;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 public class CraftingMachineBlock extends Block implements BlockEntityProvider {
 
-    public CraftingMachineBlock(Settings settings) {
-        super(settings);
+    public CraftingMachineBlock() {
+        super(Settings.of(Material.WOOD).strength(3.0F, 4.8F).sounds(BlockSoundGroup.WOOD));
+    }
+
+    @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
+        if (itemStack.hasCustomName()) {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof CraftingMachineBlockEntity) {
+                ((CraftingMachineBlockEntity)blockEntity).setCustomName(itemStack.getName());
+            }
+        }
     }
 
     @Override
@@ -30,16 +44,17 @@ public class CraftingMachineBlock extends Block implements BlockEntityProvider {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (world.isClient) {
-            return ActionResult.SUCCESS;
-        } else {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof CraftingMachineBlockEntity) {
-                player.openHandledScreen((CraftingMachineBlockEntity)blockEntity);
-//                player.incrementStat(CraftingppMod.INSPECT_CRAFTING_MACHINE);
-            }
+        if (!world.isClient) {
 
-            return ActionResult.CONSUME;
+            ContainerProviderImpl.INSTANCE.openContainer(new Identifier("cpp", "crafting_machine"),player,buf -> buf.writeBlockPos(pos));
+
+//            BlockEntity blockEntity = world.getBlockEntity(pos);
+//            if (blockEntity instanceof CraftingMachineBlockEntity) {
+//                player.openHandledScreen((CraftingMachineBlockEntity) blockEntity);
+//                player.incrementStat(Stats.INSPECT_HOPPER);
+//            }
+
         }
+        return ActionResult.SUCCESS;
     }
 }

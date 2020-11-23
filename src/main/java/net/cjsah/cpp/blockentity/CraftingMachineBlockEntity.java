@@ -1,13 +1,13 @@
 package net.cjsah.cpp.blockentity;
 
-import net.cjsah.cpp.CraftingppMod;
+import net.cjsah.cpp.gui.handler.CraftingMachineScreenHandler;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.screen.HopperScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -18,11 +18,10 @@ public class CraftingMachineBlockEntity extends LootableContainerBlockEntity {
     private DefaultedList<ItemStack> inventory;
 
     public CraftingMachineBlockEntity() {
-        super(CraftingppMod.CRAFTING_MACHINE_BLOCK_ENTITY);
+        super(BlockEntityType.HOPPER);
         this.inventory = DefaultedList.ofSize(10, ItemStack.EMPTY);
     }
 
-    @Override
     public void fromTag(BlockState state, CompoundTag tag) {
         super.fromTag(state, tag);
         this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
@@ -31,7 +30,6 @@ public class CraftingMachineBlockEntity extends LootableContainerBlockEntity {
         }
     }
 
-    @Override
     public CompoundTag toTag(CompoundTag tag) {
         super.toTag(tag);
         if (!this.serializeLootTable(tag)) {
@@ -39,6 +37,7 @@ public class CraftingMachineBlockEntity extends LootableContainerBlockEntity {
         }
         return tag;
     }
+
 
     @Override
     protected DefaultedList<ItemStack> getInvStackList() {
@@ -57,11 +56,12 @@ public class CraftingMachineBlockEntity extends LootableContainerBlockEntity {
 
     @Override
     protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
-        return new HopperScreenHandler(syncId, playerInventory, this);
+        return new CraftingMachineScreenHandler(syncId, playerInventory, this);
     }
 
     @Override
     public int size() {
         return 10;
     }
+
 }
