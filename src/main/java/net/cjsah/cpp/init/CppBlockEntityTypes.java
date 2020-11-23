@@ -7,7 +7,10 @@ import net.minecraft.util.registry.Registry;
 
 public class CppBlockEntityTypes {
 
-    public static final BlockEntityType<CraftingMachineBlockEntity> CRAFTING_MACHINE = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier("cpp", "crafting_machine"), BlockEntityType.Builder.create(CraftingMachineBlockEntity::new).build(null));;
+    public static final BlockEntityType<CraftingMachineBlockEntity> CRAFTING_MACHINE_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE,
+            new Identifier("cpp", "crafting_machine"), BlockEntityType.Builder.create(CraftingMachineBlockEntity::new,
+                    CppBlocks.CRAFTING_MACHINE_BLOCK).build(null));
 
+    public static void register() {}
 
 }

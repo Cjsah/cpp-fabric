@@ -10,16 +10,11 @@ import net.minecraft.util.registry.Registry;
 import static net.cjsah.cpp.Craftingpp.CPP_GROUP;
 
 public class CppBlocks {
-    public static final CraftingMachineBlock CRAFTING_MACHINE = new CraftingMachineBlock();
+    public static CraftingMachineBlock CRAFTING_MACHINE_BLOCK = Registry.register(Registry.BLOCK, new Identifier("cpp", "crafting_machine"), new CraftingMachineBlock());;
 
-    private static void register(String id, Block block) {
-        Registry.register(Registry.BLOCK, new Identifier("cpp", id), block);
-        Registry.register(Registry.ITEM, new Identifier("cpp", id), new BlockItem(block, new Item.Settings().group(CPP_GROUP)));
-
-    }
 
     public static void register() {
-        register("crafting_machine", new CraftingMachineBlock());
+        Registry.register(Registry.ITEM, new Identifier("cpp", "crafting_machine"), new BlockItem(CRAFTING_MACHINE_BLOCK, new Item.Settings().group(CPP_GROUP)));
     }
 
 }
