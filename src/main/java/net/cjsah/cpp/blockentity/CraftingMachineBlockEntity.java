@@ -1,9 +1,8 @@
 package net.cjsah.cpp.blockentity;
 
 import net.cjsah.cpp.gui.handler.CraftingMachineScreenHandler;
-import net.cjsah.cpp.init.CppBlockEntityTypes;
+import net.cjsah.cpp.init.CppBlockEntities;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -19,7 +18,7 @@ public class CraftingMachineBlockEntity extends LootableContainerBlockEntity {
     private DefaultedList<ItemStack> inventory;
 
     public CraftingMachineBlockEntity() {
-        super(CppBlockEntityTypes.CRAFTING_MACHINE_BLOCK_ENTITY);
+        super(CppBlockEntities.CRAFTING_MACHINE);
         this.inventory = DefaultedList.ofSize(10, ItemStack.EMPTY);
     }
 

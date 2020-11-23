@@ -1,7 +1,6 @@
 package net.cjsah.cpp;
 
 import net.cjsah.cpp.init.CppBlockEntities;
-import net.cjsah.cpp.init.CppBlockEntityTypes;
 import net.cjsah.cpp.init.CppBlocks;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
@@ -15,10 +14,12 @@ public class Craftingpp implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+
+
 		CppBlocks.register();
 		CppBlockEntities.register();
 		CppBlockEntities.registerServerGUI();
-		CppBlockEntityTypes.register();
+//		CppBlockEntityTypes.register();
 
 //		Registry.register(Registry.BLOCK, new Identifier("cpp", "crafting_machine"), CRAFTING_MACHINE_BLOCK);
 //		Registry.register(Registry.ITEM, new Identifier("cpp", "crafting_machine"), new BlockItem(CRAFTING_MACHINE_BLOCK, new Item.Settings().group(CPP_GROUP)));
