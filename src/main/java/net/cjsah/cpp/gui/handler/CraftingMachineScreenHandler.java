@@ -12,19 +12,16 @@ import net.minecraft.screen.slot.Slot;
 public class CraftingMachineScreenHandler extends ScreenHandler {
 
     private final Inventory inventory;
-    public CraftingMachineBlockEntity block;
 
-    public CraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory, CraftingMachineBlockEntity block) {
-        this(syncId, playerInventory, new SimpleInventory(10), block);
+    public CraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory) {
+        this(syncId, playerInventory, new SimpleInventory(10));
     }
 
-    public CraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, CraftingMachineBlockEntity block) {
+    public CraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
         super(null, syncId);
         this.inventory = inventory;
-        this.block = block;
         checkSize(inventory, 10);
         inventory.onOpen(playerInventory.player);
-
         int m;
         int l;
         for(m = 0; m < 3; ++m) {

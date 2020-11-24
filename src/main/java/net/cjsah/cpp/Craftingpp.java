@@ -19,7 +19,6 @@ public class Craftingpp implements ModInitializer {
 		CppBlocks.register();
 		CppBlockEntities.register();
 		CppBlockEntities.registerServerGUI();
-//		CppBlockEntityTypes.register();
 
 //		Registry.register(Registry.BLOCK, new Identifier("cpp", "crafting_machine"), CRAFTING_MACHINE_BLOCK);
 //		Registry.register(Registry.ITEM, new Identifier("cpp", "crafting_machine"), new BlockItem(CRAFTING_MACHINE_BLOCK, new Item.Settings().group(CPP_GROUP)));
