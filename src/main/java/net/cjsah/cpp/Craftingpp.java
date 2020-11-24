@@ -38,12 +38,4 @@ public class Craftingpp implements ModInitializer {
 //
 //	public static ScreenHandlerType<CraftingMachineScreenHandler> CRAFTING_MACHINE_HANDLER;
 
-
-
-//	// 创造模式物品栏
-//	public static final ItemGroup CPP_GROUP = FabricItemGroupBuilder.create(
-//			new Identifier("cpp", "title"))
-//			.icon(() -> new ItemStack(CRAFTING_MACHINE_BLOCK)).appendItems(stacks -> {
-//				stacks.add(new ItemStack(CRAFTING_MACHINE_BLOCK));
-//			}).build();
 }

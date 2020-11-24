@@ -1,26 +1,36 @@
 package net.cjsah.cpp.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.cjsah.cpp.blockentity.CraftingMachineBlockEntity;
 import net.cjsah.cpp.gui.handler.CraftingMachineScreenHandler;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.EnchantmentScreenHandler;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.WorldView;
 
 public class CraftingMachineScreen extends HandledScreen<CraftingMachineScreenHandler> {
 
     public static final Identifier TEXTURE = new Identifier("cpp","textures/gui/crafting_machine.png");
-    public int OUT = 1;
+    public byte out;
+//    public CraftingMachineBlockEntity tag;
+//    public byte out;
+    public CraftingMachineScreenHandler handler;
 
     public CraftingMachineScreen(CraftingMachineScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
         this.passEvents = false;
         this.backgroundHeight = 166;
         this.playerInventoryTitleY = this.backgroundHeight - 94;
+        this.handler = handler;
+        this.out = this.handler.block.getFacing();
     }
+
+
+
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
@@ -29,38 +39,33 @@ public class CraftingMachineScreen extends HandledScreen<CraftingMachineScreenHa
         int j = (this.height - this.backgroundHeight) / 2;
 
         if (mouseX >= i+94 && mouseX <= i+109 && mouseY > j+57 && mouseY <= j+72) {
-            switch (OUT) {
+            switch (handler.block.changeFacing()) {
                 case 1: {
-                    System.out.println("south");
-                    OUT = 2;
+                    out = 1;
                     break;
                 }
                 case 2: {
-                    System.out.println("west");
-                    OUT = 3;
+                    out = 2;
                     break;
                 }
                 case 3: {
-                    System.out.println("north");
-                    OUT = 4;
+                    out = 3;
                     break;
                 }
                 case 4: {
-                    System.out.println("down");
-                    OUT = 5;
+                    out = 4;
                     break;
                 }
                 case 5: {
-                    System.out.println("up");
-                    OUT = 6;
+                    out = 5;
                     break;
                 }
                 case 6: {
-                    System.out.println("east");
-                    OUT = 1;
+                    out = 6;
                     break;
                 }
             }
+//            tag.putByte("out", out);
         }
 
         return super.mouseClicked(mouseX, mouseY, button);
@@ -80,7 +85,7 @@ public class CraftingMachineScreen extends HandledScreen<CraftingMachineScreenHa
         int i = (this.width - this.backgroundWidth) / 2;
         int j = (this.height - this.backgroundHeight) / 2;
         this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
-        switch (OUT) {
+        switch (out) {
             case 1: {
                 this.drawTexture(matrices, i+94, j+57, 0, 166, 16, 16);
                 break;

@@ -1,5 +1,6 @@
 package net.cjsah.cpp.gui.handler;
 
+import net.cjsah.cpp.blockentity.CraftingMachineBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -7,22 +8,20 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.util.Identifier;
 
 public class CraftingMachineScreenHandler extends ScreenHandler {
 
-    public static final Identifier TITLE = new Identifier("cpp", "crafting_machine");
-    private Inventory inventory;
+    private final Inventory inventory;
+    public CraftingMachineBlockEntity block;
 
-    public CraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleInventory(10));
+    public CraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory, CraftingMachineBlockEntity block) {
+        this(syncId, playerInventory, new SimpleInventory(10), block);
     }
 
-
-    public CraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
+    public CraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, CraftingMachineBlockEntity block) {
         super(null, syncId);
         this.inventory = inventory;
-
+        this.block = block;
         checkSize(inventory, 10);
         inventory.onOpen(playerInventory.player);
 
