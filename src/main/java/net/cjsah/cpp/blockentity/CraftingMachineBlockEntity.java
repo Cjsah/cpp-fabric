@@ -11,11 +11,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
 
-public class CraftingMachineBlockEntity extends LootableContainerBlockEntity {
+public class CraftingMachineBlockEntity extends LootableContainerBlockEntity implements Tickable {
 
     private DefaultedList<ItemStack> inventory;
+    private Text customName;
 
     public CraftingMachineBlockEntity() {
         super(CppBlockEntities.CRAFTING_MACHINE);
@@ -28,6 +30,10 @@ public class CraftingMachineBlockEntity extends LootableContainerBlockEntity {
         if (!this.deserializeLootTable(tag)) {
             Inventories.fromTag(tag, this.inventory);
         }
+        if (tag.contains("CustomName", 8)) {
+            this.customName = Text.Serializer.fromJson(tag.getString("CustomName"));
+        }
+
     }
 
     public CompoundTag toTag(CompoundTag tag) {
@@ -35,6 +41,10 @@ public class CraftingMachineBlockEntity extends LootableContainerBlockEntity {
         if (!this.serializeLootTable(tag)) {
             Inventories.toTag(tag, this.inventory);
         }
+        if (this.customName != null) {
+            tag.putString("CustomName", Text.Serializer.toJson(this.customName));
+        }
+
         return tag;
     }
 
@@ -64,4 +74,8 @@ public class CraftingMachineBlockEntity extends LootableContainerBlockEntity {
         return 10;
     }
 
+    @Override
+    public void tick() {
+
+    }
 }

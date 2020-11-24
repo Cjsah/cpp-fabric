@@ -34,7 +34,12 @@ public class CraftingMachineScreenHandler extends ScreenHandler {
             }
         }
 
-        this.addSlot(new Slot(this.inventory, 9, 124, 35));
+        this.addSlot(new Slot(this.inventory, 9, 124, 35) {
+            @Override
+            public boolean canInsert(ItemStack stack) {
+                return false;
+            }
+        });
 
         for(m = 0; m < 3; ++m) {
             for(l = 0; l < 9; ++l) {
