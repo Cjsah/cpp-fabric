@@ -2,6 +2,7 @@ package net.cjsah.cpp;
 
 import net.cjsah.cpp.init.CppBlockEntities;
 import net.cjsah.cpp.init.CppBlocks;
+import net.cjsah.cpp.init.CppItems;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
@@ -15,8 +16,8 @@ public class Craftingpp implements ModInitializer {
 	@Override
 	public void onInitialize() {
 
-
 		CppBlocks.register();
+		CppItems.register();
 		CppBlockEntities.register();
 		CppBlockEntities.registerServerGUI();
 
