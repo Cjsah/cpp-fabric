@@ -1,7 +1,7 @@
-package net.cjsah.cpp;
+package net.cpp;
 
-import net.cjsah.cpp.gui.handler.CraftingMachineScreenHandler;
-import net.cjsah.cpp.gui.screen.CraftingMachineScreen;
+import net.cpp.gui.handler.CraftingMachineScreenHandler;
+import net.cpp.gui.screen.CraftingMachineScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

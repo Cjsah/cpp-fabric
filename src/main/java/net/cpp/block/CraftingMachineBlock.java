@@ -1,6 +1,6 @@
-package net.cjsah.cpp.block;
+package net.cpp.block;
 
-import net.cjsah.cpp.blockentity.CraftingMachineBlockEntity;
+import net.cpp.blockentity.CraftingMachineBlockEntity;
 import net.fabricmc.fabric.impl.container.ContainerProviderImpl;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;

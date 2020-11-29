@@ -1,7 +1,7 @@
-package net.cjsah.cpp.gui.screen;
+package net.cpp.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.cjsah.cpp.gui.handler.CraftingMachineScreenHandler;
+import net.cpp.gui.handler.CraftingMachineScreenHandler;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;

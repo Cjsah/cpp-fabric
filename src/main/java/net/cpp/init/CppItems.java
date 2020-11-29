@@ -1,10 +1,10 @@
-package net.cjsah.cpp.init;
+package net.cpp.init;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import static net.cjsah.cpp.Craftingpp.CPP_GROUP;
+import static net.cpp.Craftingpp.CPP_GROUP;
 
 public class CppItems {
 
@@ -132,16 +132,19 @@ public class CppItems {
     public static Item LAMB_KEBAB = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item CHICKEN_KEBAB = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item RAW_COLORFUL_VEGETABLE = new Item(new Item.Settings().group(CPP_GROUP));
-    public static Item RAW_BRAISED = new Item(new Item.Settings().group(CPP_GROUP));
-    public static Item RAW_ = new Item(new Item.Settings().group(CPP_GROUP));
-    public static Item  = new Item(new Item.Settings().group(CPP_GROUP));
-    public static Item  = new Item(new Item.Settings().group(CPP_GROUP));
-    public static Item  = new Item(new Item.Settings().group(CPP_GROUP));
-    public static Item  = new Item(new Item.Settings().group(CPP_GROUP));
-    public static Item  = new Item(new Item.Settings().group(CPP_GROUP));
-    public static Item  = new Item(new Item.Settings().group(CPP_GROUP));
-    public static Item  = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item RAW_BRAISED_PORK_WITH_POTATOES = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item RAW_BRAISED_BEEF_WITH_POTATOES = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item RAW_RABBIT_STEW = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item COLORFUL_VEGETABLE = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item BRAISED_PORK_WITH_POTATOES = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item BRAISED_BEEF_WITH_POTATOES = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item RABBIT_STEW = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item DUMPLING = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item  = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item  = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item  = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item  = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item  = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item  = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item  = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item  = new Item(new Item.Settings().group(CPP_GROUP));

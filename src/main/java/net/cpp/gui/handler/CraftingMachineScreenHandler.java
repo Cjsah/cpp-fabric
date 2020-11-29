@@ -1,6 +1,5 @@
-package net.cjsah.cpp.gui.handler;
+package net.cpp.gui.handler;
 
-import net.cjsah.cpp.blockentity.CraftingMachineBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;

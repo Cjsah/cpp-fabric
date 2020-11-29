@@ -1,7 +1,7 @@
-package net.cjsah.cpp.blockentity;
+package net.cpp.blockentity;
 
-import net.cjsah.cpp.gui.handler.CraftingMachineScreenHandler;
-import net.cjsah.cpp.init.CppBlockEntities;
+import net.cpp.gui.handler.CraftingMachineScreenHandler;
+import net.cpp.init.CppBlockEntities;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerInventory;

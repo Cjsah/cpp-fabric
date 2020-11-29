@@ -1,7 +1,7 @@
-package net.cjsah.cpp.init;
+package net.cpp.init;
 
-import net.cjsah.cpp.blockentity.CraftingMachineBlockEntity;
-import net.cjsah.cpp.gui.handler.CraftingMachineScreenHandler;
+import net.cpp.blockentity.CraftingMachineBlockEntity;
+import net.cpp.gui.handler.CraftingMachineScreenHandler;
 import net.fabricmc.fabric.impl.container.ContainerProviderImpl;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.Identifier;

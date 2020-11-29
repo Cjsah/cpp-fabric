@@ -1,8 +1,8 @@
-package net.cjsah.cpp;
+package net.cpp;
 
-import net.cjsah.cpp.init.CppBlockEntities;
-import net.cjsah.cpp.init.CppBlocks;
-import net.cjsah.cpp.init.CppItems;
+import net.cpp.init.CppBlockEntities;
+import net.cpp.init.CppBlocks;
+import net.cpp.init.CppItems;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
