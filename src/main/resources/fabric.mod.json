@@ -21,10 +21,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.cjsah.cpp.Craftingpp"
+      "net.cpp.Craftingpp"
     ],
     "client": [
-      "net.cjsah.cpp.CraftingppClient"
+      "net.cpp.CraftingppClient"
     ]
   },
   "mixins": [],
