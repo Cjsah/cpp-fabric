@@ -4,10 +4,12 @@
 build/
 out/
 classes/
+run/
 
 # eclipse
 
 *.launch
+.github/
 
 # idea
 
@@ -24,15 +26,17 @@ bin/
 .classpath
 .project
 
-# fabric
+# fabric-mc
 
-run/
-/build/
-/run/
-.github/
 logs/
 mylib/
-eula.txt
-ps.bat
-run.bat
-server.properties
+/eula.txt
+/server.properties
+
+# ph
+/run.bat
+/ps.bat
+
+# cpp
+
+cpp_resourcepack/
