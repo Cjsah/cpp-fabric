@@ -93,7 +93,6 @@ public final class CppItems {
     public static Item ANGRY_HAND = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item TOUGHEN_HAND = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item GOLEM = new Item(new Item.Settings().group(CPP_GROUP));
-    public static Item INDUSTRIOUS_GOLEM = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item BREAK_GOLEM = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item SMART_GOLEM = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item ANGRY_GOLEM = new Item(new Item.Settings().group(CPP_GROUP));
@@ -158,7 +157,7 @@ public final class CppItems {
     public static Item SANDWICH = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item STARGAZY_PIE = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item BAKED_SHROOMLIGHT = new Item(new Item.Settings().group(CPP_GROUP));
-    public static Item SOUL_FIRED_CHICKEN = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item SOUL_FRIED_CHICKEN = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item LUXURIOUS_NETHERITE_BARBECUE = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item ASSORTED_ROOT_CANDY = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item NETHERITE_MUSHROOM_STEW = new Item(new Item.Settings().group(CPP_GROUP));
@@ -413,7 +412,6 @@ public final class CppItems {
         ANGRY_HAND = registerItem("angry_hand", ANGRY_HAND);
         TOUGHEN_HAND = registerItem("toughen_hand", TOUGHEN_HAND);
         GOLEM = registerItem("golem", GOLEM);
-        INDUSTRIOUS_GOLEM = registerItem("industrious_golem", INDUSTRIOUS_GOLEM);
         BREAK_GOLEM = registerItem("break_golem", BREAK_GOLEM);
         SMART_GOLEM = registerItem("smart_golem", SMART_GOLEM);
         ANGRY_GOLEM = registerItem("angry_golem", ANGRY_GOLEM);
@@ -477,7 +475,7 @@ public final class CppItems {
         SANDWICH = registerItem("sandwich", SANDWICH);
         STARGAZY_PIE = registerItem("stargazy_pie", STARGAZY_PIE);
         BAKED_SHROOMLIGHT = registerItem("baked_shroomlight", BAKED_SHROOMLIGHT);
-        SOUL_FIRED_CHICKEN = registerItem("soul_fired_chicken", SOUL_FIRED_CHICKEN);
+        SOUL_FRIED_CHICKEN = registerItem("soul_fried_chicken", SOUL_FRIED_CHICKEN);
         LUXURIOUS_NETHERITE_BARBECUE = registerItem("luxurious_netherite_barbecue", LUXURIOUS_NETHERITE_BARBECUE);
         ASSORTED_ROOT_CANDY = registerItem("assorted_root_candy", ASSORTED_ROOT_CANDY);
         NETHERITE_MUSHROOM_STEW = registerItem("netherite_mushroom_stew", NETHERITE_MUSHROOM_STEW);
