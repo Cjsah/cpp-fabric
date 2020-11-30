@@ -1,7 +1,0 @@
-{
-	"parent": "cpp:head/villager_template",
-	"textures": {
-		"particle": "entity/illager/illusioner",
-		"layer": "entity/illager/illusioner"
-	}
-}

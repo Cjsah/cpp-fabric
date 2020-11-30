@@ -1,6 +1,0 @@
-{
-	"parent": "cpp:shield/normal",
-	"textures": {
-		"pattern": "cpp:shield/russia_flag"
-	}
-}

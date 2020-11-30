@@ -1,6 +1,0 @@
-{
-    "parent": "cpp:image/scroll",
-    "textures": {
-        "layer0": "cpp:image/scroll10"
-    }
-}

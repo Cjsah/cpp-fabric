@@ -1,7 +1,0 @@
-{
-	"parent": "cpp:head/head_big_template",
-	"textures": {
-		"particle": "cpp:head/donkey",
-		"layer": "cpp:head/donkey"
-	}
-}

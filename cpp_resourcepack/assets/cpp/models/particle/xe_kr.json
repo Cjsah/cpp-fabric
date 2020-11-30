@@ -1,7 +1,0 @@
-{
-	"parent": "item/generated",
-	"textures": {
-		"particle": "entity/cow/red_mooshroom",
-		"layer0": "entity/cow/red_mooshroom"
-	}
-}

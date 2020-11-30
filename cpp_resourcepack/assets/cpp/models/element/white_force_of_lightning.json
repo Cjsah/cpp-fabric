@@ -1,6 +1,0 @@
-{
-    "parent": "item/handheld",
-    "textures": {
-        "layer0": "cpp:element/white_force_of_lightning"
-    }
-}

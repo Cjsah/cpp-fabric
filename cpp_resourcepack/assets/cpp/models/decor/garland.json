@@ -1,7 +1,0 @@
-{
-	"parent": "cpp:decor/hat",
-	"textures": {
-		"hat": "cpp:decor/garland",
-		"item": "cpp:decor/garland_item"
-	}
-}

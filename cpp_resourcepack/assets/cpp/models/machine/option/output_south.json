@@ -1,6 +1,0 @@
-{
-	"parent": "cpp:machine/option/temp",
-	"textures": {
-		"layer0": "cpp:machine/option/output_south"
-	}
-}

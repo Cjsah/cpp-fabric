@@ -1,7 +1,0 @@
-{
-	"parent": "cpp:head/head_big_template",
-	"textures": {
-		"particle": "cpp:head/trader_llama",
-		"layer": "cpp:head/trader_llama"
-	}
-}

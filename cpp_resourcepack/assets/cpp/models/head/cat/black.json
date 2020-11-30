@@ -1,7 +1,0 @@
-{
-	"parent": "cpp:head/cat/cat",
-	"textures": {
-		"particle": "entity/cat/all_black",
-		"layer": "entity/cat/all_black"
-	}
-}

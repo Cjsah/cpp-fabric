@@ -1,7 +1,0 @@
-{
-    "parent": "cpp:sign/sign",
-    "textures": {
-        "particle": "cpp:sign/orange",
-        "texture": "cpp:sign/orange"
-    }
-}

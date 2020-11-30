@@ -1,7 +1,0 @@
-{
-	"parent": "cpp:head/fox_template",
-	"textures": {
-		"particle": "entity/fox/fox",
-		"layer": "entity/fox/fox"
-	}
-}

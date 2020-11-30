@@ -1,7 +1,0 @@
-{
-	"parent": "cpp:head/cow_template",
-	"textures": {
-		"particle": "entity/cow/red_mooshroom",
-		"layer": "entity/cow/red_mooshroom"
-	}
-}

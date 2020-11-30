@@ -1,7 +1,0 @@
-{
-	"parent": "item/generated",
-	"textures": {
-		"particle": "cpp:character/19",
-		"layer0": "cpp:character/19"
-	}
-}

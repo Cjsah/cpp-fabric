@@ -1,9 +1,0 @@
-{
-    "parent": "block/acacia_leaves",
-	"overrides": [
-		{ "predicate": { "custom_model_data": 12970301 }, "model": "cpp:leaves/fruit_leaves"},
-		{ "predicate": { "custom_model_data": 12970302 }, "model": "cpp:leaves/ore_leaves"},
-		{ "predicate": { "custom_model_data": 12970303 }, "model": "cpp:leaves/wool_leaves"},
-		{ "predicate": { "custom_model_data": 12970304 }, "model": "cpp:leaves/sakura_leaves"}
-	]
-}
