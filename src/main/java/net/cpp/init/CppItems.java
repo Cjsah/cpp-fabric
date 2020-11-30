@@ -6,7 +6,7 @@ import net.minecraft.util.registry.Registry;
 
 import static net.cpp.Craftingpp.CPP_GROUP;
 
-public class CppItems {
+public final class CppItems {
 
     public static final String modId = "cpp";
     // 插件
@@ -18,7 +18,7 @@ public class CppItems {
     public static Item COBBLESTONE_PLUGIN = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item STONE_PLUGIN = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item BLACK_STONE_PLUGIN = new Item(new Item.Settings().group(CPP_GROUP));
-    public static Item NETHERRACH_PLUGIN = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item NETHERRACK_PLUGIN = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item END_STONE_PLUGIN = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item BASALT_PLUGIN = new Item(new Item.Settings().group(CPP_GROUP));
     // 上古卷轴
@@ -124,7 +124,7 @@ public class CppItems {
     public static Item GREEN_DOUGHNUT = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item HONEY_PANCAKE = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item BOILED_EGG = new Item(new Item.Settings().group(CPP_GROUP));
-    public static Item BACKED_CARROT = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item BAKED_CARROT = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item BACON = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item VEGETABLE_KEBAB = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item BEEF_KEBAB = new Item(new Item.Settings().group(CPP_GROUP));
@@ -343,7 +343,7 @@ public class CppItems {
         COBBLESTONE_PLUGIN = registerItem("cobblestone_plugin", COBBLESTONE_PLUGIN);
         STONE_PLUGIN = registerItem("stone_plugin", STONE_PLUGIN);
         BLACK_STONE_PLUGIN = registerItem("black_stone_plugin", BLACK_STONE_PLUGIN);
-        NETHERRACH_PLUGIN = registerItem("netherrach_plugin", NETHERRACH_PLUGIN);
+        NETHERRACK_PLUGIN = registerItem("netherrack_plugin", NETHERRACK_PLUGIN);
         END_STONE_PLUGIN = registerItem("end_stone_plugin", END_STONE_PLUGIN);
         BASALT_PLUGIN = registerItem("basalt_plugin", BASALT_PLUGIN);
         ANCIENT_SCROLL = registerItem("ancient_scroll", ANCIENT_SCROLL);
@@ -443,7 +443,7 @@ public class CppItems {
         GREEN_DOUGHNUT = registerItem("green_doughnut", GREEN_DOUGHNUT);
         HONEY_PANCAKE = registerItem("honey_pancake", HONEY_PANCAKE);
         BOILED_EGG = registerItem("boiled_egg", BOILED_EGG);
-        BACKED_CARROT = registerItem("backed_carrot", BACKED_CARROT);
+        BAKED_CARROT = registerItem("baked_carrot", BAKED_CARROT);
         BACON = registerItem("bacon", BACON);
         VEGETABLE_KEBAB = registerItem("vegetable_kebab", VEGETABLE_KEBAB);
         BEEF_KEBAB = registerItem("beef_kebab", BEEF_KEBAB);

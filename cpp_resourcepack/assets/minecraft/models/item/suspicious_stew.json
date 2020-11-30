@@ -14,8 +14,6 @@
 		{ "predicate": { "custom_model_data": 12970008 }, "model": "cpp:food/rabbit_stew"},
 		{ "predicate": { "custom_model_data": 12970009 }, "model": "cpp:food/fish_and_chips"},
 		{ "predicate": { "custom_model_data": 12970010 }, "model": "cpp:food/caramel_pudding"},
-		{ "predicate": { "custom_model_data": 12970011 }, "model": "cpp:food/honey_pancake"},
-		{ "predicate": { "custom_model_data": 12970012 }, "model": "cpp:food/netherite_mushroom_stew"},
-		{ "predicate": { "custom_model_data": 12970013 }, "model": "cpp:food/double_color_vine_salad"}
+		{ "predicate": { "custom_model_data": 12970011 }, "model": "cpp:food/honey_pancake"}
 	]
 }

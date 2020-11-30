@@ -1,7 +1,7 @@
 package net.cpp.block;
 
-import net.cpp.Registeror;
 import net.cpp.block.entity.CraftingMachineBlockEntity;
+import net.cpp.init.CppStats;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.BlockView;
@@ -12,7 +12,7 @@ public class CraftingMachineBlock extends AMachineBlock {
 	 */
 	@Override
 	public Identifier getStatIdentifier() {
-		return Registeror.INTERACT_WITH_CRAFTING_MACHINE;
+		return CppStats.INTERACT_WITH_CRAFTING_MACHINE;
 	}
 	/*
 	 * 以下是BlockEntityProvider的方法

@@ -32,10 +32,6 @@
 		{ "predicate": { "custom_model_data": 12970026 }, "model": "cpp:food/zongzi.cooked_porkchop"},
 		{ "predicate": { "custom_model_data": 12970027 }, "model": "cpp:food/zongzi.salt"},
 		{ "predicate": { "custom_model_data": 12970028 }, "model": "cpp:food/zongzi.soda_water"},
-		{ "predicate": { "custom_model_data": 12970029 }, "model": "cpp:food/zongzi.honey_bottle"},
-		{ "predicate": { "custom_model_data": 12970030 }, "model": "cpp:food/baked_shroomlight"},
-		{ "predicate": { "custom_model_data": 12970031 }, "model": "cpp:food/soul_fried_chicken"},
-		{ "predicate": { "custom_model_data": 12970032 }, "model": "cpp:food/luxurious_netherite_barbecue"},
-		{ "predicate": { "custom_model_data": 12970033 }, "model": "cpp:food/assorted_root_candy"}
+		{ "predicate": { "custom_model_data": 12970029 }, "model": "cpp:food/zongzi.honey_bottle"}
 	]
 }

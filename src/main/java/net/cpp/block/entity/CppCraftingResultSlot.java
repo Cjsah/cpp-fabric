@@ -1,6 +1,6 @@
 package net.cpp.block.entity;
 
-import net.cpp.Registeror;
+import net.cpp.init.CppRecipes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
@@ -57,7 +57,7 @@ public class CppCraftingResultSlot extends Slot {
 
 	public ItemStack onTakeItem(PlayerEntity player, ItemStack stack) {
 		this.onCrafted(stack);
-		DefaultedList<ItemStack> defaultedList = player.world.getRecipeManager().getRemainingStacks(Registeror.CPP_CRAFTING,
+		DefaultedList<ItemStack> defaultedList = player.world.getRecipeManager().getRemainingStacks(CppRecipes.CRAFTING,
 				this.input, player.world);
 
 		for (int i = 0; i < defaultedList.size(); ++i) {

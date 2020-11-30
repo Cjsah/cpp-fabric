@@ -18,31 +18,36 @@
 [C]§f============
 [C]§e特别感谢/Special Thanks
 [C]§f============
+[C]§f月下贱影
 [C]§f一米八微笑
 [C]§f明月庄主
+[C]§fSPGoding
 [C]§fRhythm萱
 [C]§f唯一丶为伊
-[C]§f月下贱影
+[C]§f8Index
 [C]§fLIXIAOGANG
-[C]§fSPGoding
 [C]§f陌余Oucher
 [C]§fuuu2011
 [C]§f爱发电用户_AU9c
+[C]§f甘小蔗
+[C]§f空白
 [C]§f火星浮云
 [C]§f这是彩虹糖呢
+[C]§f古镇天
 [C]§f支持国产mod
 [C]§f倪采臣
 [C]§fzzzz
-[C]§f空白
+[C]§f大吃货
 [C]§f折君
 [C]§fHao_Tian22
 [C]§fAppleeeee
 [C]§f爱发电用户_JCmn
 [C]§f落天望月
 [C]§f爱发电用户_4eyN
-[C]§fchyx
 [C]§fswitefaster
 [C]§f猫君
+[C]§fchyx
+[C]§fTUCAOEVER
 
 [C]§7灵感参考/Inspired by
 [C]§f热力膨胀
@@ -57,6 +62,8 @@
 [C]§fMagic Amateur Group小组
 [C]§fNuclear Fusion小组
 [C]§fMCmod百科小组
+[C]§f天狼星black
+[C]§fMC先生
 [C]§fpineapple_
 [C]§f贰逼
 [C]§fECS
@@ -77,5 +84,4 @@
 [C]§fStark
 [C]§fyap
 [C]§fLakejason
-[C]§f天狼星black
-[C]§fMC先生
+[C]§fPh-苯

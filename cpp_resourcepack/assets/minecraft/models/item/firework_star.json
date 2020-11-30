@@ -41,7 +41,6 @@
 		{ "predicate": { "custom_model_data": 12970059 }, "model": "cpp:material/ammonia_refrigerant"},
 		{ "predicate": { "custom_model_data": 12970060 }, "model": "cpp:material/coal_nugget"},
 		{ "predicate": { "custom_model_data": 12970061 }, "model": "cpp:material/splint"},
-		{ "predicate": { "custom_model_data": 12970062 }, "model": "cpp:material/copper_dust"},
 		
 		{ "predicate": { "custom_model_data": 12970071 }, "model": "cpp:decor/red_lip"},
 		{ "predicate": { "custom_model_data": 12970072 }, "model": "cpp:machine/block_breaker"},
@@ -137,6 +136,7 @@
 		{ "predicate": { "custom_model_data": 12971054 }, "model": "cpp:machine/option/low_temperature"},
 		{ "predicate": { "custom_model_data": 12971055 }, "model": "cpp:machine/option/normal_temperature"},
 		{ "predicate": { "custom_model_data": 12971056 }, "model": "cpp:machine/option/high_temperature"},
+		{ "predicate": { "custom_model_data": 12971057 }, "model": "cpp:machine/option/mend_mode"},
 		
 		{ "predicate": { "custom_model_data": 12971061 }, "model": "cpp:machine/effects/fire_resistance"},
 		{ "predicate": { "custom_model_data": 12971062 }, "model": "cpp:machine/effects/water_breathing"},

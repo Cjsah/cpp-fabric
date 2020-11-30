@@ -29,3 +29,9 @@ bin/
 run/
 /build/
 /run/
+.github/
+logs/
+mylib/
+eula.txt
+ps.bat
+server.properties

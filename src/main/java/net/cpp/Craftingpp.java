@@ -1,8 +1,6 @@
 package net.cpp;
 
-import net.cpp.init.CppBlockEntities;
-import net.cpp.init.CppBlocks;
-import net.cpp.init.CppItems;
+import net.cpp.init.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
@@ -11,15 +9,16 @@ import net.minecraft.util.Identifier;
 
 public class Craftingpp implements ModInitializer {
 
-	public static final ItemGroup CPP_GROUP = FabricItemGroupBuilder.create(new Identifier("cpp", "title")).icon(() -> new ItemStack(CppBlocks.CRAFTING_MACHINE_BLOCK)).build();
+	public static final ItemGroup CPP_GROUP = FabricItemGroupBuilder.create(new Identifier("cpp", "title")).icon(() -> new ItemStack(CppBlocks.CRAFTING_MACHINE)).build();
 
 	@Override
 	public void onInitialize() {
-
-		CppBlocks.register();
 		CppItems.register();
+		CppBlocks.register();
 		CppBlockEntities.register();
-		CppBlockEntities.registerServerGUI();
+		CppScreenHandler.register();
+		CppRecipes.register();
+		CppStats.register();
 
 //		Registry.register(Registry.BLOCK, new Identifier("cpp", "crafting_machine"), CRAFTING_MACHINE_BLOCK);
 //		Registry.register(Registry.ITEM, new Identifier("cpp", "crafting_machine"), new BlockItem(CRAFTING_MACHINE_BLOCK, new Item.Settings().group(CPP_GROUP)));

@@ -5,19 +5,17 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
-import org.jetbrains.annotations.Nullable;
-
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.cpp.Registeror;
+import net.cpp.init.CppBlockEntities;
+import net.cpp.init.CppBlocks;
+import net.cpp.init.CppRecipes;
 import net.cpp.other.ICppCraftingRecipe;
-import net.cpp.screen.CraftingMachineScreenHandler;
+import net.cpp.gui.handler.CraftingMachineScreenHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ChestBlockEntity;
-import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -26,25 +24,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeFinder;
-import net.minecraft.recipe.RecipeInputProvider;
-import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.RecipeUnlocker;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+
 
 /**
  * 合成器方块实体
@@ -53,7 +46,7 @@ import net.minecraft.world.World;
  *
  */
 public class CraftingMachineBlockEntity extends AMachineBlockEntity {
-	public static final Text TITLE = Registeror.CRAFTING_MACHINE_BLOCK.getName();
+	public static final Text TITLE = CppBlocks.CRAFTING_MACHINE.getName();
 	private CppCraftingInventory inputInventory = new CppCraftingInventory();
 	private int viewerCnt = 0;
 	private Direction outputDir = Direction.EAST;
@@ -83,14 +76,14 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity {
 	};
 
 	public CraftingMachineBlockEntity() {
-		super(Registeror.CRAFTING_MACHINE_BLOCK_ENTITY);
+		super(CppBlockEntities.CRAFTING_MACHINE);
 	}
 	/*
 	 * 以下是AMachineBlock的方法
 	 */
 	@Override
 	public Text getTitle() {
-		return Registeror.CRAFTING_MACHINE_BLOCK.getName();
+		return CppBlocks.CRAFTING_MACHINE.getName();
 	}
 	/*
 	 * 以下是LootableContainerBlockEntity的方法
@@ -110,16 +103,16 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity {
 			return inputInventory.removeStack(slot, amount);
 		}
 		if (slot == 9) {
+			ItemStack itemStack;
 			if (amount >= leftover.getCount()) {
-				ItemStack itemStack = leftover;
+				itemStack = leftover;
 				leftover = ItemStack.EMPTY;
-				return itemStack;
 			} else {
-				ItemStack itemStack = leftover.copy();
+				itemStack = leftover.copy();
 				itemStack.setCount(amount);
 				leftover.setCount(leftover.getCount() - amount);
-				return itemStack;
 			}
+			return itemStack;
 		}
 		return ItemStack.EMPTY;
 	}
@@ -345,7 +338,7 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity {
 		ItemStack itemStack = ItemStack.EMPTY;
 		if (!getWorld().isClient) {
 			Optional<ICppCraftingRecipe> optional = getWorld().getServer().getRecipeManager()
-					.getFirstMatch(Registeror.CPP_CRAFTING, inputInventory, getWorld());
+					.getFirstMatch(CppRecipes.CRAFTING, inputInventory, getWorld());
 			if (optional.isPresent()) {
 				ICppCraftingRecipe craftingRecipe = optional.get();
 				if (shouldCraftRecipe(craftingRecipe)) {
