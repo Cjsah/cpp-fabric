@@ -93,10 +93,11 @@ public final class CppItems {
     public static Item ANGRY_HAND = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item TOUGHEN_HAND = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item GOLEM = new Item(new Item.Settings().group(CPP_GROUP));
-    public static Item BREAK_GOLEM = new Item(new Item.Settings().group(CPP_GROUP));
-    public static Item SMART_GOLEM = new Item(new Item.Settings().group(CPP_GROUP));
-    public static Item ANGRY_GOLEM = new Item(new Item.Settings().group(CPP_GROUP));
-    public static Item TOUGHEN_GOLEM = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item FARMER_GOLEM = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item MINER_GOLEM = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item FISHER_GOLEM = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item WARRIOR_GOLEM = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item HERDER_GOLEM = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item SANTA_GIFT = new Item(new Item.Settings().group(CPP_GROUP));
     // 食物
     public static Item KETCHUP = new Item(new Item.Settings().group(CPP_GROUP));
@@ -412,10 +413,11 @@ public final class CppItems {
         ANGRY_HAND = registerItem("angry_hand", ANGRY_HAND);
         TOUGHEN_HAND = registerItem("toughen_hand", TOUGHEN_HAND);
         GOLEM = registerItem("golem", GOLEM);
-        BREAK_GOLEM = registerItem("break_golem", BREAK_GOLEM);
-        SMART_GOLEM = registerItem("smart_golem", SMART_GOLEM);
-        ANGRY_GOLEM = registerItem("angry_golem", ANGRY_GOLEM);
-        TOUGHEN_GOLEM = registerItem("toughen_golem", TOUGHEN_GOLEM);
+        FARMER_GOLEM = registerItem("farmer_golem", FARMER_GOLEM);
+        MINER_GOLEM = registerItem("miner_golem", MINER_GOLEM);
+        FISHER_GOLEM = registerItem("fisher_golem", FISHER_GOLEM);
+        WARRIOR_GOLEM = registerItem("warrior_golem", WARRIOR_GOLEM);
+        HERDER_GOLEM = registerItem("herder_golem", HERDER_GOLEM);
         SANTA_GIFT = registerItem("santa_gift", SANTA_GIFT);
         KETCHUP = registerItem("ketchup", KETCHUP);
         STRAWBERRY_JAM = registerItem("strawberry_jam", STRAWBERRY_JAM);
