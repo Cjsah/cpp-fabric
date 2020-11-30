@@ -1,4 +1,4 @@
-package net.cpp.other;
+package net.cpp.recipe;
 
 import java.util.Iterator;
 
@@ -20,7 +20,7 @@ import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-public class CppCraftingShapelessRecipe implements ICppCraftingRecipe {
+ public class CppCraftingShapelessRecipe implements ICppCraftingRecipe {
 	private final Identifier id;
 	private final String group;
 	private final ItemStack output;
@@ -31,27 +31,6 @@ public class CppCraftingShapelessRecipe implements ICppCraftingRecipe {
 		this.group = group;
 		this.output = output;
 		this.input = input;
-	}
-
-	public Identifier getId() {
-		return this.id;
-	}
-
-	public RecipeSerializer<?> getSerializer() {
-		return CppRecipes.CPP_CRAFTING_SHAPELESS;
-	}
-
-	@Environment(EnvType.CLIENT)
-	public String getGroup() {
-		return this.group;
-	}
-
-	public ItemStack getOutput() {
-		return this.output;
-	}
-
-	public DefaultedList<Ingredient> getPreviewInputs() {
-		return this.input;
 	}
 
 	public boolean matches(CraftingInventory craftingInventory, World world) {
@@ -78,7 +57,29 @@ public class CppCraftingShapelessRecipe implements ICppCraftingRecipe {
 		return width * height >= this.input.size();
 	}
 
-	public static class Serializer implements RecipeSerializer<CppCraftingShapelessRecipe> {
+
+	 public ItemStack getOutput() {
+		 return this.output;
+	 }
+
+	 public DefaultedList<Ingredient> getPreviewInputs() {
+		 return this.input;
+	 }
+
+	 @Environment(EnvType.CLIENT)
+	 public String getGroup() {
+		 return this.group;
+	 }
+
+	 public Identifier getId() {
+		 return this.id;
+	 }
+
+	 public RecipeSerializer<?> getSerializer() {
+		 return CppRecipes.CPP_CRAFTING_SHAPELESS;
+	 }
+
+	 public static class Serializer implements RecipeSerializer<CppCraftingShapelessRecipe> {
 		public CppCraftingShapelessRecipe read(Identifier identifier, JsonObject jsonObject) {
 			String string = JsonHelper.getString(jsonObject, "group", "");
 			DefaultedList<Ingredient> defaultedList = getIngredients(JsonHelper.getArray(jsonObject, "ingredients"));
@@ -87,7 +88,7 @@ public class CppCraftingShapelessRecipe implements ICppCraftingRecipe {
 			} else if (defaultedList.size() > 9) {
 				throw new JsonParseException("Too many ingredients for shapeless recipe");
 			} else {
-				ItemStack itemStack = CppCraftingShapedRecipe.getItemStack(JsonHelper.getObject(jsonObject, "result"));
+				ItemStack itemStack = ICppCraftingRecipe.getItemStack(JsonHelper.getObject(jsonObject, "result"));
 				return new CppCraftingShapelessRecipe(identifier, string, itemStack, defaultedList);
 			}
 		}

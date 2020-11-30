@@ -1,8 +1,9 @@
 package net.cpp.init;
 
-import net.cpp.other.CppCraftingShapedRecipe;
-import net.cpp.other.CppCraftingShapelessRecipe;
-import net.cpp.other.ICppCraftingRecipe;
+import net.cpp.recipe.AllInOneMachineRecipe;
+import net.cpp.recipe.CppCraftingShapedRecipe;
+import net.cpp.recipe.CppCraftingShapelessRecipe;
+import net.cpp.recipe.ICppCraftingRecipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 
@@ -17,6 +18,11 @@ public final class CppRecipes {
     public static final RecipeSerializer<CppCraftingShapelessRecipe> CPP_CRAFTING_SHAPELESS = RecipeSerializer
             .register("cpp:crafting_shapeless", new CppCraftingShapelessRecipe.Serializer());
 
+    public static final RecipeType<AllInOneMachineRecipe> ALL_IN_ONE_MACHINE_RECIPE_TYPE = RecipeType
+            .register("cpp:all_in_one_mahcine_processing");
+
+    public static final RecipeSerializer<AllInOneMachineRecipe> ALL_IN_ONE_MACHINE_SERIALIZER = RecipeSerializer
+            .register("cpp:high_ordinary", new AllInOneMachineRecipe.Serializer());
 
     public static void register() {}
 

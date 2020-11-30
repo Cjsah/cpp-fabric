@@ -1,4 +1,4 @@
-package net.cpp.other;
+package net.cpp.recipe;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -131,19 +131,6 @@ public class CppCraftingShapedRecipe implements ICppCraftingRecipe {
 		return map;
 	}
 
-	public static ItemStack getItemStack(JsonObject json) {
-		String string = JsonHelper.getString(json, "item");
-		Item item = (Item) Registry.ITEM.getOrEmpty(new Identifier(string)).orElseThrow(() -> {
-			return new JsonSyntaxException("Unknown item '" + string + "'");
-		});
-		if (json.has("data")) {
-			throw new JsonParseException("Disallowed data tag found");
-		} else {
-			int i = JsonHelper.getInt(json, "count", 1);
-			return new ItemStack(item, i);
-		}
-	}
-
 	private static String[] getPattern(JsonArray json) {
 		String[] strings = new String[json.size()];
 		if (strings.length > 3) {
@@ -257,7 +244,7 @@ public class CppCraftingShapedRecipe implements ICppCraftingRecipe {
 			int i = strings[0].length();
 			int j = strings.length;
 			DefaultedList<Ingredient> defaultedList = CppCraftingShapedRecipe.getIngredients(strings, map, i, j);
-			ItemStack itemStack = CppCraftingShapedRecipe.getItemStack(JsonHelper.getObject(jsonObject, "result"));
+			ItemStack itemStack = ICppCraftingRecipe.getItemStack(JsonHelper.getObject(jsonObject, "result"));
 			return new CppCraftingShapedRecipe(identifier, string, i, j, defaultedList, itemStack);
 		}
 

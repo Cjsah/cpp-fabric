@@ -34,4 +34,5 @@ logs/
 mylib/
 eula.txt
 ps.bat
+run.bat
 server.properties

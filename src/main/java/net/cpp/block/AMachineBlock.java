@@ -19,6 +19,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 /**
  * 机器模板，子类只需要实现两个方法{@link BlockEntityProvider#createBlockEntity(BlockView)}和{@link #getStatIdentifier()}

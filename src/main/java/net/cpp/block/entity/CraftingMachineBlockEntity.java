@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppRecipes;
-import net.cpp.other.ICppCraftingRecipe;
+import net.cpp.recipe.ICppCraftingRecipe;
 import net.cpp.gui.handler.CraftingMachineScreenHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
