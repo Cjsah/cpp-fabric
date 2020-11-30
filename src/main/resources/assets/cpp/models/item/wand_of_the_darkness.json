@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:item/handheld",
+    "textures": {
+        "layer0": "cpp:item/wand_of_the_darkness"
+    }
+}

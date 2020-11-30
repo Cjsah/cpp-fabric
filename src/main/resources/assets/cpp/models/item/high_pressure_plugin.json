@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:item/handheld",
+    "textures": {
+        "layer0": "cpp:item/high_pressure_plugin"
+    }
+}
