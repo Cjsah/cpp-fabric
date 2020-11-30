@@ -13,6 +13,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
+import net.cpp.init.CppRecipes;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -82,7 +83,7 @@ public class CppCraftingShapedRecipe implements ICppCraftingRecipe {
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return Registeror.CPP_CRAFTING_SHAPED;
+		return CppRecipes.CPP_CRAFTING_SHAPED;
 	}
 
 	private boolean matchesSmall(CraftingInventory inv, int offsetX, int offsetY, boolean bl) {

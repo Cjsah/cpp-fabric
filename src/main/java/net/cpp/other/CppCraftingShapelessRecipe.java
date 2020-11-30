@@ -5,9 +5,8 @@ import java.util.Iterator;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
 import it.unimi.dsi.fastutil.ints.IntList;
-import net.cpp.Registeror;
+import net.cpp.init.CppRecipes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.inventory.CraftingInventory;
@@ -16,8 +15,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeFinder;
 import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.recipe.ShapelessRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
@@ -41,7 +38,7 @@ public class CppCraftingShapelessRecipe implements ICppCraftingRecipe {
 	}
 
 	public RecipeSerializer<?> getSerializer() {
-		return Registeror.CPP_CRAFTING_SHAPELESS;
+		return CppRecipes.CPP_CRAFTING_SHAPELESS;
 	}
 
 	@Environment(EnvType.CLIENT)
