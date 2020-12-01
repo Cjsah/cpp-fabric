@@ -8,7 +8,7 @@ import static net.cpp.Craftingpp.CPP_GROUP;
 
 public final class CppItems {
 
-    public static final String modId = "cpp";
+    public static final String MODID = "cpp";
     // 插件
     public static Item EMPTY_PLUGIN = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item LOW_TEMPERATURE_PLUGIN = new Item(new Item.Settings().group(CPP_GROUP));
@@ -690,6 +690,6 @@ public final class CppItems {
     }
 
     private static Item registerItem(String id, Item item) {
-        return Registry.register(Registry.ITEM, new Identifier(modId, id), item);
+        return Registry.register(Registry.ITEM, new Identifier(MODID, id), item);
     }
 }
