@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "cpp:crafting_machine"
+          "name": "cpp:sun_stone"
         }
       ],
       "conditions": [

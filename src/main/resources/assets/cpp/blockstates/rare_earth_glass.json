@@ -1,0 +1,9 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "cpp:block/rare_earth_glass"
+      }
+    ]
+  }
+}
