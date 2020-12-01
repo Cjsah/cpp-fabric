@@ -11,6 +11,18 @@ public class Craftingpp implements ModInitializer {
 
 	public static final ItemGroup CPP_GROUP = FabricItemGroupBuilder.create(new Identifier("cpp", "title")).icon(() -> new ItemStack(CppBlocks.CRAFTING_MACHINE)).build();
 
+	public static final ItemGroup CPP_GROUP_MACHINE = FabricItemGroupBuilder.create(new Identifier("cpp", "title.machine")).icon(() -> new ItemStack(CppBlocks.CRAFTING_MACHINE)).build();
+	public static final ItemGroup CPP_GROUP_MISC = FabricItemGroupBuilder.create(new Identifier("cpp", "title.misc")).icon(() -> new ItemStack(CppBlocks.CRAFTING_MACHINE)).build();
+	public static final ItemGroup CPP_GROUP_TOOL = FabricItemGroupBuilder.create(new Identifier("cpp", "title.tool")).icon(() -> new ItemStack(CppBlocks.CRAFTING_MACHINE)).build();
+	public static final ItemGroup CPP_GROUP_FOOD = FabricItemGroupBuilder.create(new Identifier("cpp", "title.food")).icon(() -> new ItemStack(CppBlocks.CRAFTING_MACHINE)).build();
+	public static final ItemGroup CPP_GROUP_PLANT = FabricItemGroupBuilder.create(new Identifier("cpp", "title.plant")).icon(() -> new ItemStack(CppBlocks.CRAFTING_MACHINE)).build();
+
+
+
+
+
+
+
 	@Override
 	public void onInitialize() {
 		CppItems.register();
