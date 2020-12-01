@@ -358,9 +358,6 @@ public final class CppItems {
 
 
     public static void register() {
-        Registry.register(Registry.ITEM, new Identifier("cpp:crafting_machine"), new BlockItem(CppBlocks.CRAFTING_MACHINE, new Item.Settings().group(CPP_GROUP_MACHINE)));
-        Registry.register(Registry.ITEM, new Identifier("cpp:all_in_one_machine"), new BlockItem(CppBlocks.ALL_IN_ONE_MACHINE, new Item.Settings().group(CPP_GROUP_MACHINE)));
-
         EMPTY_PLUGIN = registerItem("empty_plugin", EMPTY_PLUGIN);
         LOW_TEMPERATURE_PLUGIN = registerItem("low_temperature_plugin", LOW_TEMPERATURE_PLUGIN);
         LOW_PRESSURE_PLUGIN = registerItem("low_pressure_plugin", LOW_PRESSURE_PLUGIN);

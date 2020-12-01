@@ -5,9 +5,13 @@ import net.cpp.block.CraftingMachineBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+import static net.cpp.Craftingpp.CPP_GROUP_MACHINE;
 
 public final class CppBlocks {
     public static final Block CRAFTING_MACHINE = Registry.register(Registry.BLOCK, new Identifier("cpp:crafting_machine"), new CraftingMachineBlock());
@@ -20,6 +24,13 @@ public final class CppBlocks {
 
 
 
-    public static void register() {}
+    public static void register() {
+        registerItem("crafting_machine",CRAFTING_MACHINE);
+        registerItem("all_in_one_machine",ALL_IN_ONE_MACHINE);
+    }
+
+    private static void registerItem(String id,Block block) {
+        Registry.register(Registry.ITEM, new Identifier("cpp:"+id), new BlockItem(block, new Item.Settings().group(CPP_GROUP_MACHINE)));
+    }
 
 }
