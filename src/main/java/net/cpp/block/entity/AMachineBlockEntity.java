@@ -12,25 +12,6 @@ import net.minecraft.util.math.Direction;
 public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 		implements SidedInventory, Tickable, NamedScreenHandlerFactory, IOutputDiractionalBlockEntity {
 	protected Direction outputDir = Direction.EAST;
-	protected final PropertyDelegate propertyDelegate = new PropertyDelegate() {
-
-		@Override
-		public int size() {
-			return 1;
-		}
-
-		@Override
-		public void set(int index, int value) {
-			if (index == 0) {
-				setOutputDir(IOutputDiractionalBlockEntity.byteToDir((byte) value));
-			}
-		}
-
-		@Override
-		public int get(int index) {
-			return index == 0 ? dirToByte() : -1;
-		}
-	};
 
 	protected AMachineBlockEntity(BlockEntityType<?> blockEntityType) {
 		super(blockEntityType);
@@ -55,11 +36,6 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 	@Override
 	public Direction getOutputDir() {
 		return outputDir;
-	}
-
-	@Override
-	public void shiftOutputDir() {
-		propertyDelegate.set(0, dirToByte() + 1);
 	}
 
 	/*

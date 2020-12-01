@@ -35,17 +35,19 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity {
 
 		@Override
 		public int size() {
-			return 3;
+			return 4;
 		}
 
 		@Override
 		public void set(int index, int value) {
 			switch (index) {
 			case 0:
-				workTime = value;
+				setOutputDir(IOutputDiractionalBlockEntity.byteToDir((byte) value));
 			case 1:
-				expStorage = value;
+				workTime = value;
 			case 2:
+				expStorage = value;
+			case 3:
 				temperature = Temperature.values()[value % 9 / 3];
 				pressure = Pressure.values()[value % 3];
 			default:
@@ -57,10 +59,12 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity {
 		public int get(int index) {
 			switch (index) {
 			case 0:
-				return workTime;
+				return dirToByte();
 			case 1:
-				return expStorage;
+				return workTime;
 			case 2:
+				return expStorage;
+			case 3:
 				return temperature.ordinal() * 3 + pressure.ordinal();
 			default:
 				return -1;
@@ -95,7 +99,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity {
 	}
 
 	/*
-	 * 以下是LockableContainerBlockEntity的方法（非 Javadoc）
+	 * 以下是LockableContainerBlockEntity的方法
 	 */
 	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
@@ -121,9 +125,15 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity {
 		// TODO 自动生成的方法存根
 		return new CraftingScreenHandler(syncId, playerInventory);
 	}
-
 	/*
-	 * 以下是SidedInventory的方法（非 Javadoc）
+	 * 以下是IOutputDiractionalBlockEntity的方法
+	 */
+	@Override
+	public void shiftOutputDir() {
+		propertyDelegate.set(0, dirToByte() + 1);
+	}
+	/*
+	 * 以下是SidedInventory的方法
 	 */
 	@Override
 	public int[] getAvailableSlots(Direction side) {
@@ -143,7 +153,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity {
 	}
 
 	/*
-	 * 以下是Tickable的方法（非 Javadoc）
+	 * 以下是Tickable的方法
 	 */
 	@Override
 	public void tick() {
@@ -201,7 +211,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity {
 	}
 
 	/*
-	 * 以下是Inventory的方法（非 Javadoc）
+	 * 以下是Inventory的方法
 	 */
 	@Override
 	public int size() {

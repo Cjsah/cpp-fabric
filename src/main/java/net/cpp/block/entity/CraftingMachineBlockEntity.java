@@ -7,6 +7,8 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
 
+import net.cpp.block.entity.AllInOneMachineBlockEntity.Pressure;
+import net.cpp.block.entity.AllInOneMachineBlockEntity.Temperature;
 import net.cpp.gui.handler.CraftingMachineScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
@@ -28,6 +30,7 @@ import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeUnlocker;
+import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -53,7 +56,34 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity {
 	 * 试图输出到指定方向的容器，但是没输出完就塞满了，剩下的物品
 	 */
 	private ItemStack leftover = ItemStack.EMPTY;
+	private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
 
+		@Override
+		public int size() {
+			return 1;
+		}
+
+		@Override
+		public void set(int index, int value) {
+			switch (index) {
+			case 0:
+				setOutputDir(IOutputDiractionalBlockEntity.byteToDir((byte) value));
+			default:
+				break;
+			}
+		}
+
+		@Override
+		public int get(int index) {
+			switch (index) {
+			case 0:
+				return dirToByte();
+			default:
+				return -1;
+			}
+		}
+	};
+	
 	public CraftingMachineBlockEntity() {
 		super(CppBlockEntities.CRAFTING_MACHINE);
 	}
@@ -162,7 +192,7 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity {
 	@Override
 	public ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
 		CraftingMachineScreenHandler handler = new CraftingMachineScreenHandler(syncId, playerInventory, this,
-				super.propertyDelegate, ScreenHandlerContext.create(world, pos));
+				propertyDelegate, ScreenHandlerContext.create(world, pos));
 		inputInventory.setHandler(handler);
 		return handler;
 	}

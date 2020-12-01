@@ -1,6 +1,5 @@
 package net.cpp.gui.handler;
 
-import net.cpp.block.entity.CppCraftingResultSlot;
 import net.cpp.block.entity.CraftingMachineBlockEntity;
 import net.cpp.gui.screen.CraftingMachineScreen;
 import net.cpp.init.CppScreenHandler;
@@ -117,7 +116,7 @@ public class CraftingMachineScreenHandler extends AbstractRecipeScreenHandler<In
     @Override
     @Environment(EnvType.CLIENT)
     public RecipeBookCategory getCategory() {
-        return RecipeBookCategory.CRAFTING;
+        throw new UnsupportedOperationException("合成器配方没有配方书页面");
     }
 
     @Override
