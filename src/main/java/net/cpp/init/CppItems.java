@@ -79,6 +79,7 @@ public final class CppItems {
     public static Item ORIGIN_OF_THE_WORLD = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item COMPRESSOR = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item ELDER_S_WORDS = new Item(new Item.Settings().group(CPP_GROUP));
+    public static Item COORDINATE_RECORDER = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item MUFFLER = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item SACHET = new Item(new Item.Settings().group(CPP_GROUP));
     public static Item GRAFTER = new Item(new Item.Settings().group(CPP_GROUP));
@@ -420,6 +421,7 @@ public final class CppItems {
         ORIGIN_OF_THE_WORLD = registerItem("origin_of_the_world", ORIGIN_OF_THE_WORLD);
         COMPRESSOR = registerItem("compressor", COMPRESSOR);
         ELDER_S_WORDS = registerItem("elder_s_words", ELDER_S_WORDS);
+        COORDINATE_RECORDER = registerItem("coordinate_recorder", COORDINATE_RECORDER);
         MUFFLER = registerItem("muffler", MUFFLER);
         SACHET = registerItem("sachet", SACHET);
         GRAFTER = registerItem("grafter", GRAFTER);
