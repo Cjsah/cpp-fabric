@@ -12,7 +12,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class CraftingMachineScreen extends HandledScreen<CraftingMachineScreenHandler> {
-    private static final Identifier TEXTURE = new Identifier("cpp:textures/gui/crafting_machine_gui.png");
+    private static final Identifier TEXTURE = new Identifier("cpp:textures/gui/crafting_machine.png");
     //	private static final Identifier RECIPE_BUTTON_TEXTURE = new Identifier("minecraft:textures/gui/recipe_button.png");
 //	private final RecipeBookWidget recipeBook = new RecipeBookWidget();
     private boolean narrow;
