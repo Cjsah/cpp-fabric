@@ -1,8 +1,8 @@
 package net.cpp.gui.handler;
 
 import net.cpp.block.entity.CppCraftingResultSlot;
-import net.cpp.block.entity.CraftingMachineBlockEntity;
-import net.cpp.gui.screen.CraftingMachineScreen;
+import net.cpp.block.entity.AllInOneMachineBlockEntity;
+import net.cpp.gui.screen.AllInOneMachineScreen;
 import net.cpp.init.CppScreenHandler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -30,30 +30,27 @@ import net.minecraft.world.World;
  * @author Ph-苯
  *
  */
-public class CraftingMachineScreenHandler extends AbstractRecipeScreenHandler<Inventory> {
-    public CraftingMachineScreen screen;
-    private ScreenHandlerContext context;
+public class AllInOneMachineScreenHandler extends AbstractRecipeScreenHandler<Inventory> {
+    public AllInOneMachineScreen screen;
     private PlayerEntity player;
     private World world;
-    private CraftingMachineBlockEntity blockEntity;
+    private AllInOneMachineBlockEntity blockEntity;
     private CraftingInventory inputUI;
     private CraftingResultInventory resultUI = new CraftingResultInventory();
     public final PropertyDelegate propertyDelegate;
 
-    public CraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new CraftingMachineBlockEntity(), new ArrayPropertyDelegate(1),
+    public AllInOneMachineScreenHandler(int syncId, PlayerInventory playerInventory) {
+        this(syncId, playerInventory, new AllInOneMachineBlockEntity(), new ArrayPropertyDelegate(1),
                 ScreenHandlerContext.EMPTY);
     }
 
-    public CraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory,
-                                        CraftingMachineBlockEntity blockEntity, PropertyDelegate propertyDelegate, ScreenHandlerContext context) {
+    public AllInOneMachineScreenHandler(int syncId, PlayerInventory playerInventory,
+                                        AllInOneMachineBlockEntity blockEntity, PropertyDelegate propertyDelegate, ScreenHandlerContext context) {
         super(CppScreenHandler.CRAFTING_MACHINE, syncId);
         player = playerInventory.player;
         world = player.world;
         this.blockEntity = blockEntity;
-        inputUI = blockEntity.getInputInventory();
         this.propertyDelegate = propertyDelegate;
-        this.context = context;
 
         addSlot(new CppCraftingResultSlot(player, inputUI, resultUI, 0, 124, 35));
         for (int m = 0; m < 3; ++m) {
@@ -70,7 +67,6 @@ public class CraftingMachineScreenHandler extends AbstractRecipeScreenHandler<In
             this.addSlot(new Slot(player.inventory, m, 8 + m * 18, 142));
         }
         blockEntity.onOpen(player);
-        updateResultUI();
         addProperties(propertyDelegate);
     }
 
@@ -100,12 +96,12 @@ public class CraftingMachineScreenHandler extends AbstractRecipeScreenHandler<In
 
     @Override
     public int getCraftingWidth() {
-        return blockEntity.getInputInventory().getWidth();
+        return 2;
     }
 
     @Override
     public int getCraftingHeight() {
-        return blockEntity.getInputInventory().getHeight();
+        return 1;
     }
 
     @Override
@@ -146,9 +142,7 @@ public class CraftingMachineScreenHandler extends AbstractRecipeScreenHandler<In
             ItemStack itemStack2 = slot.getStack();
             itemStack = itemStack2.copy();
             if (index == 0) {
-                this.context.run((world, blockPos) -> {
                     itemStack2.getItem().onCraft(itemStack2, world, player);
-                });
                 if (!this.insertItem(itemStack2, 10, 46, true)) {
                     return ItemStack.EMPTY;
                 }
@@ -194,22 +188,9 @@ public class CraftingMachineScreenHandler extends AbstractRecipeScreenHandler<In
     }
 
     @Override
-    public void onContentChanged(Inventory inventory) {
-        this.context.run((world2, blockPos) -> {
-            updateResultUI();
-        });
-    }
-
-    @Override
     public boolean canInsertIntoSlot(ItemStack stack, Slot slot) {
         return slot.inventory != this.resultUI && super.canInsertIntoSlot(stack, slot);
     }
 
-    private void updateResultUI() {
-        if (player instanceof ServerPlayerEntity) {
-            resultUI.setStack(0, blockEntity.getResult());
-            ((ServerPlayerEntity) player).networkHandler
-                    .sendPacket(new ScreenHandlerSlotUpdateS2CPacket(syncId, 0, resultUI.getStack(0)));
-        }
-    }
+
 }

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "working=false": {
+      "model": "cpp:block/all_in_one_machine"
+    },
+    "working=true": {
+      "model": "cpp:block/all_in_one_machine_active"
+    }
+  }
+}

@@ -22,7 +22,7 @@ public final class CppRecipes {
             .register("cpp:all_in_one_mahcine_processing");
 
     public static final RecipeSerializer<AllInOneMachineRecipe> ALL_IN_ONE_MACHINE_SERIALIZER = RecipeSerializer
-            .register("cpp:high_ordinary", new AllInOneMachineRecipe.Serializer());
+            .register("cpp:all_in_one_mahcine_processing", new AllInOneMachineRecipe.Serializer());
 
     public static void register() {}
 

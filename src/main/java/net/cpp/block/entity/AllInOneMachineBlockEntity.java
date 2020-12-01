@@ -1,5 +1,6 @@
 package net.cpp.block.entity;
 
+import net.cpp.gui.handler.CraftingMachineScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppRecipes;
@@ -14,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.Recipe;
+import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
@@ -117,7 +119,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity {
 	@Override
 	protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
 		// TODO 自动生成的方法存根
-		return null;
+		return new CraftingScreenHandler(syncId, playerInventory);
 	}
 
 	/*

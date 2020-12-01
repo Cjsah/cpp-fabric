@@ -1,7 +1,5 @@
 package net.cpp.recipe;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
 import com.google.gson.JsonArray;
@@ -13,7 +11,6 @@ import it.unimi.dsi.fastutil.ints.IntList;
 import net.cpp.block.entity.AllInOneMachineBlockEntity.Pressure;
 import net.cpp.block.entity.AllInOneMachineBlockEntity.Temperature;
 import net.cpp.init.CppRecipes;
-import net.cpp.recipe.AllInOneMachineRecipe.Serializer.RecipeParameters;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -185,20 +182,6 @@ public class AllInOneMachineRecipe implements Recipe<Inventory> {
 			}
 
 			return defaultedList;
-		}
-
-
-		public static class RecipeParameters {
-			public final Identifier id;
-			public final DefaultedList<Ingredient> input;
-			public final DefaultedList<ResultItemStack> output;
-
-			public RecipeParameters(Identifier id, DefaultedList<Ingredient> input,
-					DefaultedList<ResultItemStack> output) {
-				this.id = id;
-				this.input = input;
-				this.output = output;
-			}
 		}
 	}
 

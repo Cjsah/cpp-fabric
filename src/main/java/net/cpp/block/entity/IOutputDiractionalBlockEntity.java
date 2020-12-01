@@ -10,7 +10,7 @@ public interface IOutputDiractionalBlockEntity {
 	 * @see #outputDir
 	 * @see #shiftOutputDir()
 	 */
-	Direction setOutputDir(Direction dir);
+	void setOutputDir(Direction dir);
 	/**
 	 * 
 	 * @param b
@@ -19,8 +19,8 @@ public interface IOutputDiractionalBlockEntity {
 	 * @see #byteToDir(byte)
 	 * @see #dirToByte()
 	 */
-	default Direction setOutputDir(byte b) {
-		return setOutputDir(byteToDir((byte) (dirToByte() + 1)));
+	default void setOutputDir(byte b) {
+		setOutputDir(byteToDir((byte) (dirToByte() + 1)));
 	}
 
 	/**
@@ -39,8 +39,8 @@ public interface IOutputDiractionalBlockEntity {
 	 * @see #outputDir
 	 * @see #getOutputDir()
 	 */
-	default Direction shiftOutputDir() {
-		return setOutputDir(byteToDir((byte) (dirToByte(getOutputDir()) + 1)));
+	default void shiftOutputDir() {
+		setOutputDir(byteToDir((byte) (dirToByte(getOutputDir()) + 1)));
 	}
 
 	/**

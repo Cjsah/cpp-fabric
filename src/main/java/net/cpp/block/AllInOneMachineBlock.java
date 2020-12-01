@@ -14,7 +14,7 @@ public class AllInOneMachineBlock extends AMachineBlock {
 	public static final BooleanProperty WORKING = BooleanProperty.of("working");
 
 	public AllInOneMachineBlock() {
-		this.setDefaultState((BlockState) ((BlockState) this.stateManager.getDefaultState()).with(WORKING, false));
+		setDefaultState(stateManager.getDefaultState().with(WORKING, false));
 	}
 
 	/*

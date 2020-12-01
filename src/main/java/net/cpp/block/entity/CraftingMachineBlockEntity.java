@@ -5,11 +5,13 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
+import javax.annotation.Nullable;
+
+import net.cpp.gui.handler.CraftingMachineScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppRecipes;
 import net.cpp.recipe.ICppCraftingRecipe;
-import net.cpp.gui.handler.CraftingMachineScreenHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
@@ -26,7 +28,6 @@ import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeUnlocker;
-import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -35,8 +36,6 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
 
 
 /**
@@ -49,31 +48,11 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity {
 	public static final Text TITLE = CppBlocks.CRAFTING_MACHINE.getName();
 	private CppCraftingInventory inputInventory = new CppCraftingInventory();
 	private int viewerCnt = 0;
-	private Direction outputDir = Direction.EAST;
 //	private final Object2IntOpenHashMap<Identifier> recipesUsed = new Object2IntOpenHashMap<Identifier>();
 	/**
 	 * 试图输出到指定方向的容器，但是没输出完就塞满了，剩下的物品
 	 */
 	private ItemStack leftover = ItemStack.EMPTY;
-	private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
-
-		@Override
-		public int size() {
-			return 1;
-		}
-
-		@Override
-		public void set(int index, int value) {
-			if (index == 0) {
-				setOutputDir(IOutputDiractionalBlockEntity.byteToDir((byte) value));
-			}
-		}
-
-		@Override
-		public int get(int index) {
-			return index == 0 ? IOutputDiractionalBlockEntity.dirToByte(getOutputDir()) : -1;
-		}
-	};
 
 	public CraftingMachineBlockEntity() {
 		super(CppBlockEntities.CRAFTING_MACHINE);
@@ -83,7 +62,7 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity {
 	 */
 	@Override
 	public Text getTitle() {
-		return CppBlocks.CRAFTING_MACHINE.getName();
+		return TITLE;
 	}
 	/*
 	 * 以下是LootableContainerBlockEntity的方法
@@ -183,7 +162,7 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity {
 	@Override
 	public ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
 		CraftingMachineScreenHandler handler = new CraftingMachineScreenHandler(syncId, playerInventory, this,
-				propertyDelegate, ScreenHandlerContext.create(world, pos));
+				super.propertyDelegate, ScreenHandlerContext.create(world, pos));
 		inputInventory.setHandler(handler);
 		return handler;
 	}
