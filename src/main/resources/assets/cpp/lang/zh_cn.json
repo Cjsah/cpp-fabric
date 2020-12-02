@@ -337,6 +337,9 @@
   "item.cpp.glass_sign": "玻璃告示牌",
 
   "block.cpp.crafting_machine": "合成器",
+  "block.cpp.all_in_one_machine": "多功能一体机",
 
   "container.cpp.crafting_machine": "合成器"
+
+
 }
