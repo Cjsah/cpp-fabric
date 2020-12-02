@@ -1,8 +1,11 @@
 package net.cpp.block.entity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.inventory.SidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.text.Text;
@@ -12,40 +15,33 @@ import net.minecraft.util.math.Direction;
 public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 		implements SidedInventory, Tickable, NamedScreenHandlerFactory, IOutputDiractionalBlockEntity {
 	protected Direction outputDir = Direction.EAST;
-	protected final PropertyDelegate propertyDelegate = new PropertyDelegate() {
-
-		@Override
-		public int size() {
-			return 1;
-		}
-
-		@Override
-		public void set(int index, int value) {
-			if (index == 0) {
-				setOutputDir(IOutputDiractionalBlockEntity.byteToDir((byte) value));
-			}
-		}
-
-		@Override
-		public int get(int index) {
-			return index == 0 ? dirToByte() : -1;
-		}
-	};
 
 	protected AMachineBlockEntity(BlockEntityType<?> blockEntityType) {
 		super(blockEntityType);
 	}
 
 	/*
-	 * 以下是LockableContainerBlockEntity的方法（非 Javadoc）
+	 * 以下是LockableContainerBlockEntity的方法
 	 */
+	@Override
+	public void fromTag(BlockState state, CompoundTag tag) {
+		super.fromTag(state, tag);
+		outputDir = IOutputDiractionalBlockEntity.byteToDir(tag.getByte("outputDir"));
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		super.toTag(tag);
+		tag.putByte("outputDir", IOutputDiractionalBlockEntity.dirToByte(outputDir));
+		return tag;
+	}
 	@Override
 	public Text getContainerName() {
 		return getCustomName() != null ? getCustomName() : getTitle();
 	}
 
 	/*
-	 * 以下是IOutputDiractional的方法（非 Javadoc）
+	 * 以下是IOutputDiractional的方法
 	 */
 	@Override
 	public void setOutputDir(Direction dir) {
@@ -55,11 +51,6 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 	@Override
 	public Direction getOutputDir() {
 		return outputDir;
-	}
-
-	@Override
-	public void shiftOutputDir() {
-		propertyDelegate.set(0, dirToByte() + 1);
 	}
 
 	/*

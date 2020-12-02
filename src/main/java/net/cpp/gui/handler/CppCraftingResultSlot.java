@@ -1,4 +1,4 @@
-package net.cpp.block.entity;
+package net.cpp.gui.handler;
 
 import net.cpp.init.CppRecipes;
 import net.minecraft.entity.player.PlayerEntity;

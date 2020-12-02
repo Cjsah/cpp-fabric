@@ -11,7 +11,7 @@ import net.minecraft.util.Identifier;
 
 public class OutputDirectionButton extends TexturedButtonWidget {
 	public static final Identifier TEXTURE = new Identifier("cpp:textures/gui/output_direction_button.png");
-	public PropertyDelegate propertyDelegate;
+	public final PropertyDelegate propertyDelegate;
 
 	public OutputDirectionButton(ButtonWidget.PressAction pressAction, PropertyDelegate propertyDelegate) {
 		super(0, 0, 16, 16, 0, 0, 0, TEXTURE, pressAction);
@@ -28,5 +28,9 @@ public class OutputDirectionButton extends TexturedButtonWidget {
 			this.renderToolTip(matrices, mouseX, mouseY);
 		}
 	}
-
+	@Override
+	public void onPress() {
+		propertyDelegate.set(0, propertyDelegate.get(0) + 1);
+		super.onPress();
+	}
 }

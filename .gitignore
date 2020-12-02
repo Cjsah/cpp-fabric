@@ -10,6 +10,7 @@ run/
 
 *.launch
 .github/
+.metadata
 
 # idea
 
@@ -37,6 +38,7 @@ mylib/
 
 /run.bat
 /ps.bat
+copy resources to bin.bat
 
 # cpp
 
