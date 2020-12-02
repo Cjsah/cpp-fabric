@@ -20,7 +20,9 @@ public class AllInOneMachineScreen extends HandledScreen<AllInOneMachineScreenHa
 	public static final Identifier TEXTURE = new Identifier("cpp:textures/gui/all_in_one_machine.png");
 	public static final Identifier XP = new Identifier("cpp:textures/gui/xp.png");
 	private boolean narrow;
-	public final OutputDirectionButton oButton;
+	public final OutputDirectionButton oButton = new OutputDirectionButton(buttonWidget -> {
+		this.client.interactionManager.clickButton(this.handler.syncId, 1010);
+	}, handler.blockEntity.propertyDelegate);
 	public final TexturedButtonWidget temperatureButton = new TexturedButtonWidget(0, 0, 16, 16, 0, 0, 0, TEXTURE,
 			buttonWidget -> {
 				handler.blockEntity.shiftTemperature();
@@ -41,6 +43,7 @@ public class AllInOneMachineScreen extends HandledScreen<AllInOneMachineScreenHa
 	public final TexturedButtonWidget pressureButton = new TexturedButtonWidget(0, 0, 16, 16, 0, 0, 0, TEXTURE,
 			buttonWidget -> {
 				handler.blockEntity.shiftPressure();
+
 				this.client.interactionManager.clickButton(this.handler.syncId, 1012);
 			}) {
 		@Override
@@ -58,10 +61,6 @@ public class AllInOneMachineScreen extends HandledScreen<AllInOneMachineScreenHa
 
 	public AllInOneMachineScreen(AllInOneMachineScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
-		oButton = new OutputDirectionButton(buttonWidget -> {
-			handler.blockEntity.propertyDelegate.set(0, handler.blockEntity.propertyDelegate.get(0) + 1);
-			this.client.interactionManager.clickButton(this.handler.syncId, 1010);
-		}, handler.blockEntity.propertyDelegate);
 	}
 
 	@Override
@@ -113,8 +112,6 @@ public class AllInOneMachineScreen extends HandledScreen<AllInOneMachineScreenHa
 		super.onMouseClick(slot, invSlot, clickData, actionType);
 	}
 
-	public void refreshRecipeBook() {
-	}
 
 	public void removed() {
 		super.removed();

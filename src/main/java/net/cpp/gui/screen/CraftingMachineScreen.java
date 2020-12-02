@@ -19,8 +19,7 @@ public class CraftingMachineScreen extends HandledScreen<CraftingMachineScreenHa
 	public CraftingMachineScreen(CraftingMachineScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 		oButton = new OutputDirectionButton(buttonWidget -> {
-			handler.propertyDelegate.set(0, handler.propertyDelegate.get(0) + 1);
-			this.client.interactionManager.clickButton(this.handler.syncId, 1010);
+			client.interactionManager.clickButton(handler.syncId, 1010);
 		}, handler.propertyDelegate);
 	}
 
@@ -67,9 +66,6 @@ public class CraftingMachineScreen extends HandledScreen<CraftingMachineScreenHa
 
 	protected void onMouseClick(Slot slot, int invSlot, int clickData, SlotActionType actionType) {
 		super.onMouseClick(slot, invSlot, clickData, actionType);
-	}
-
-	public void refreshRecipeBook() {
 	}
 
 	public void removed() {

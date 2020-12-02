@@ -119,7 +119,6 @@ public class AllInOneMachineScreenHandler extends AbstractRecipeScreenHandler<In
 	 */
 	@Override
 	public boolean onButtonClick(PlayerEntity player, int id) {
-//		System.out.println(id);
 		boolean clicked = false;
 		switch (id) {
 		case 1010:

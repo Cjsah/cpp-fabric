@@ -12,6 +12,7 @@ import net.cpp.recipe.AllInOneMachineRecipe;
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.Item;
@@ -62,7 +63,6 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity implements R
 				expStorage = value;
 				break;
 			case 3:
-				System.out.println(value / 0x10 + " " + value % 0x10);
 				temperature = Temperature.values()[value % 0x100 / 0x10 % Temperature.values().length];
 				pressure = Pressure.values()[value % 0x10 % Pressure.values().length];
 				break;
@@ -202,7 +202,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity implements R
 	 */
 	@Override
 	public void tick() {
-		System.out.println(world + ":" + propertyDelegate.get(3));
+//		System.out.println(world + ":" + propertyDelegate.get(3));
 //		boolean working = isWorking();
 //		boolean dirty = false;
 //		if (working)
@@ -264,6 +264,12 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity implements R
 		return 5;
 	}
 
+	@Override
+	public void onOpen(PlayerEntity player) {
+		propertyDelegate.set(3, propertyDelegate.get(3));
+		super.onOpen(player);
+	}
+
 	/*
 	 * 以下是自定义方法
 	 */
@@ -284,11 +290,11 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity implements R
 	}
 
 	public void shiftTemperature() {
-		propertyDelegate.set(3, (temperature.ordinal() + 1) % Temperature.values().length * 0x10 + pressure.ordinal());
+		propertyDelegate.set(3, propertyDelegate.get(3) + 16);
 	}
 
 	public void shiftPressure() {
-		propertyDelegate.set(3, temperature.ordinal() * 0x10 + (pressure.ordinal() + 1) % Pressure.values().length);
+		propertyDelegate.set(3, propertyDelegate.get(3) + 1);
 	}
 
 	public boolean isWorking() {
@@ -343,10 +349,10 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity implements R
 	}
 
 	public enum Temperature {
-		HIGH, ORDINARY, LOW
+		ORDINARY, LOW, HIGH
 	}
 
 	public enum Pressure {
-		HIGH, ORDINARY, LOW
+		ORDINARY, LOW, HIGH
 	}
 }
