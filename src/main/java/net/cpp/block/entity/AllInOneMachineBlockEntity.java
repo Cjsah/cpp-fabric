@@ -1,5 +1,9 @@
 package net.cpp.block.entity;
 
+import java.lang.Enum;
+import java.util.Iterator;
+
+import net.cpp.gui.handler.AllInOneMachineScreenHandler;
 import net.cpp.gui.handler.CraftingMachineScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
@@ -15,23 +19,30 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeFinder;
+import net.minecraft.recipe.RecipeInputProvider;
+import net.minecraft.recipe.RecipeUnlocker;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import javax.annotation.Nullable;
 
-public class AllInOneMachineBlockEntity extends AMachineBlockEntity {
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+
+public class AllInOneMachineBlockEntity extends AMachineBlockEntity implements RecipeUnlocker, RecipeInputProvider {
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2 };
 	private int workTime = 0;
 	private int expStorage = 0;
 	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(5, ItemStack.EMPTY);
 	private Temperature temperature = Temperature.ORDINARY;
 	private Pressure pressure = Pressure.ORDINARY;
-	private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
+	private final Object2IntOpenHashMap<Identifier> recipesUsed = new Object2IntOpenHashMap<Identifier>();
+	public final PropertyDelegate propertyDelegate = new PropertyDelegate() {
 
 		@Override
 		public int size() {
@@ -43,13 +54,18 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity {
 			switch (index) {
 			case 0:
 				setOutputDir(IOutputDiractionalBlockEntity.byteToDir((byte) value));
+				break;
 			case 1:
 				workTime = value;
+				break;
 			case 2:
 				expStorage = value;
+				break;
 			case 3:
-				temperature = Temperature.values()[value % 9 / 3];
-				pressure = Pressure.values()[value % 3];
+				System.out.println(value / 0x10 + " " + value % 0x10);
+				temperature = Temperature.values()[value % 0x100 / 0x10 % Temperature.values().length];
+				pressure = Pressure.values()[value % 0x10 % Pressure.values().length];
+				break;
 			default:
 				break;
 			}
@@ -65,7 +81,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity {
 			case 2:
 				return expStorage;
 			case 3:
-				return temperature.ordinal() * 3 + pressure.ordinal();
+				return temperature.ordinal() * 0x10 + pressure.ordinal();
 			default:
 				return -1;
 			}
@@ -107,7 +123,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity {
 		Inventories.fromTag(tag, inventory);
 		workTime = tag.getInt("processTime");
 		expStorage = tag.getInt("expStorage");
-		propertyDelegate.set(2, tag.getByte("temperaturePressure"));
+		propertyDelegate.set(3, tag.getByte("temperaturePressure"));
 	}
 
 	@Override
@@ -116,15 +132,15 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity {
 		Inventories.toTag(tag, inventory);
 		tag.putInt("processTime", workTime);
 		tag.putInt("expStorage", expStorage);
-		tag.putByte("temperaturePressure", (byte) propertyDelegate.get(2));
+		tag.putByte("temperaturePressure", (byte) propertyDelegate.get(3));
 		return tag;
 	}
 
 	@Override
 	protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
-		// TODO 自动生成的方法存根
-		return new CraftingScreenHandler(syncId, playerInventory);
+		return new AllInOneMachineScreenHandler(syncId, playerInventory, this);
 	}
+
 	/*
 	 * 以下是IOutputDiractionalBlockEntity的方法
 	 */
@@ -132,6 +148,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity {
 	public void shiftOutputDir() {
 		propertyDelegate.set(0, dirToByte() + 1);
 	}
+
 	/*
 	 * 以下是SidedInventory的方法
 	 */
@@ -153,61 +170,90 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity {
 	}
 
 	/*
+	 * 以下是RecipeUnlocker的方法
+	 */
+	@Override
+	public void setLastRecipe(Recipe<?> recipe) {
+		if (recipe != null) {
+			Identifier identifier = recipe.getId();
+			recipesUsed.addTo(identifier, 1);
+		}
+	}
+
+	@Override
+	public Recipe<?> getLastRecipe() {
+		return null;
+	}
+
+	/*
+	 * 以下是RecipeInputProvider的方法
+	 */
+	@Override
+	public void provideRecipeInputs(RecipeFinder finder) {
+		Iterator<ItemStack> var2 = this.inventory.iterator();
+		while (var2.hasNext()) {
+			ItemStack itemStack = (ItemStack) var2.next();
+			finder.addItem(itemStack);
+		}
+	}
+
+	/*
 	 * 以下是Tickable的方法
 	 */
 	@Override
 	public void tick() {
-		boolean working = isWorking();
-		boolean dirty = false;
-		if (working)
-			workTime++;
-		if (!this.world.isClient) {
-			ItemStack itemStack = this.inventory.get(2);
-			if (!this.isWorking() && (itemStack.isEmpty() || this.inventory.get(0).isEmpty())) {
-				if (!this.isWorking() && this.workTime > 0) {
-					this.workTime = MathHelper.clamp(this.workTime - 2, 0, this.getWorkTimeTotal());
-				}
-			} else {
-				AllInOneMachineRecipe recipe = this.world.getRecipeManager()
-						.getFirstMatch(CppRecipes.ALL_IN_ONE_MACHINE_RECIPE_TYPE, this, this.world)
-						.orElse((AllInOneMachineRecipe) null);
-				if (!this.isWorking() && this.canAcceptRecipeOutput(recipe)) {
-					if (this.isWorking()) {
-						dirty = true;
-						if (!itemStack.isEmpty()) {
-							Item item = itemStack.getItem();
-							itemStack.decrement(1);
-							if (itemStack.isEmpty()) {
-								Item item2 = item.getRecipeRemainder();
-								this.inventory.set(1, item2 == null ? ItemStack.EMPTY : new ItemStack(item2));
-							}
-						}
-					}
-				}
-
-				if (this.isWorking() && this.canAcceptRecipeOutput(recipe)) {
-					++this.workTime;
-					if (this.workTime == this.getWorkTimeTotal()) {
-						this.workTime = 0;
-//						this.workTimeTotal = this.getworkTime();
-						this.craftRecipe(recipe);
-						dirty = true;
-					}
-				} else {
-					this.workTime = 0;
-				}
-			}
-
-			if (working != this.isWorking()) {
-				dirty = true;
-				this.world.setBlockState(this.pos, (BlockState) this.world.getBlockState(this.pos)
-						.with(AbstractFurnaceBlock.LIT, this.isWorking()), 3);
-			}
-		}
-
-		if (dirty) {
-			this.markDirty();
-		}
+		System.out.println(world + ":" + propertyDelegate.get(3));
+//		boolean working = isWorking();
+//		boolean dirty = false;
+//		if (working)
+//			workTime++;
+//		if (!this.world.isClient) {
+//			ItemStack itemStack = this.inventory.get(2);
+//			if (!this.isWorking() && (itemStack.isEmpty() || this.inventory.get(0).isEmpty())) {
+//				if (!this.isWorking() && this.workTime > 0) {
+//					this.workTime = MathHelper.clamp(this.workTime - 2, 0, this.getWorkTimeTotal());
+//				}
+//			} else {
+//				AllInOneMachineRecipe recipe = this.world.getRecipeManager()
+//						.getFirstMatch(CppRecipes.ALL_IN_ONE_MACHINE_RECIPE_TYPE, this, this.world)
+//						.orElse((AllInOneMachineRecipe) null);
+//				if (!this.isWorking() && this.canAcceptRecipeOutput(recipe)) {
+//					if (this.isWorking()) {
+//						dirty = true;
+//						if (!itemStack.isEmpty()) {
+//							Item item = itemStack.getItem();
+//							itemStack.decrement(1);
+//							if (itemStack.isEmpty()) {
+//								Item item2 = item.getRecipeRemainder();
+//								this.inventory.set(1, item2 == null ? ItemStack.EMPTY : new ItemStack(item2));
+//							}
+//						}
+//					}
+//				}
+//
+//				if (this.isWorking() && this.canAcceptRecipeOutput(recipe)) {
+//					++this.workTime;
+//					if (this.workTime == this.getWorkTimeTotal()) {
+//						this.workTime = 0;
+////						this.workTimeTotal = this.getworkTime();
+//						this.craftRecipe(recipe);
+//						dirty = true;
+//					}
+//				} else {
+//					this.workTime = 0;
+//				}
+//			}
+//
+//			if (working != this.isWorking()) {
+//				dirty = true;
+//				this.world.setBlockState(this.pos, (BlockState) this.world.getBlockState(this.pos)
+//						.with(AbstractFurnaceBlock.LIT, this.isWorking()), 3);
+//			}
+//		}
+//
+//		if (dirty) {
+//			this.markDirty();
+//		}
 	}
 
 	/*
@@ -221,6 +267,30 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity {
 	/*
 	 * 以下是自定义方法
 	 */
+	public Temperature getTemperature() {
+		return temperature;
+	}
+
+	public void setTemperature(Temperature temperature) {
+		propertyDelegate.set(3, temperature.ordinal() * 0x10 + pressure.ordinal());
+	}
+
+	public Pressure getPressure() {
+		return pressure;
+	}
+
+	public void setPressure(Pressure pressure) {
+		propertyDelegate.set(3, temperature.ordinal() * 0x10 + pressure.ordinal());
+	}
+
+	public void shiftTemperature() {
+		propertyDelegate.set(3, (temperature.ordinal() + 1) % Temperature.values().length * 0x10 + pressure.ordinal());
+	}
+
+	public void shiftPressure() {
+		propertyDelegate.set(3, temperature.ordinal() * 0x10 + (pressure.ordinal() + 1) % Pressure.values().length);
+	}
+
 	public boolean isWorking() {
 		return workTime > 0;
 	}

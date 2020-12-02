@@ -11,7 +11,7 @@ public final class CppScreenHandler {
     public static final ScreenHandlerType<CraftingMachineScreenHandler> CRAFTING_MACHINE = ScreenHandlerRegistry
             .registerSimple(Registry.BLOCK.getId(CppBlocks.CRAFTING_MACHINE), CraftingMachineScreenHandler::new);
     public static final ScreenHandlerType<AllInOneMachineScreenHandler> ALL_IN_ONE_MACHINE = ScreenHandlerRegistry
-            .registerSimple(Registry.BLOCK.getId(CppBlocks.CRAFTING_MACHINE), AllInOneMachineScreenHandler::new);
+            .registerSimple(Registry.BLOCK.getId(CppBlocks.ALL_IN_ONE_MACHINE), AllInOneMachineScreenHandler::new);
 
     public static void register() {
 

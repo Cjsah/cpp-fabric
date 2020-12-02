@@ -7,8 +7,7 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
 
-import net.cpp.block.entity.AllInOneMachineBlockEntity.Pressure;
-import net.cpp.block.entity.AllInOneMachineBlockEntity.Temperature;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.cpp.gui.handler.CraftingMachineScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
@@ -29,12 +28,15 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeFinder;
+import net.minecraft.recipe.RecipeInputProvider;
 import net.minecraft.recipe.RecipeUnlocker;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -47,11 +49,11 @@ import net.minecraft.world.World;
  * @author Ph-苯
  *
  */
-public class CraftingMachineBlockEntity extends AMachineBlockEntity {
+public class CraftingMachineBlockEntity extends AMachineBlockEntity implements RecipeUnlocker, RecipeInputProvider {
 	public static final Text TITLE = CppBlocks.CRAFTING_MACHINE.getName();
 	private CppCraftingInventory inputInventory = new CppCraftingInventory();
 	private int viewerCnt = 0;
-//	private final Object2IntOpenHashMap<Identifier> recipesUsed = new Object2IntOpenHashMap<Identifier>();
+	private final Object2IntOpenHashMap<Identifier> recipesUsed = new Object2IntOpenHashMap<Identifier>();
 	/**
 	 * 试图输出到指定方向的容器，但是没输出完就塞满了，剩下的物品
 	 */
@@ -170,14 +172,13 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity {
 	}
 
 	/*
-	 * 以下是LockableContainerBlockEntity的方法（非 Javadoc）
+	 * 以下是LockableContainerBlockEntity的方法
 	 */
 	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
 		inventoryFromTag(tag, inputInventory);
 		leftover = ItemStack.fromTag(tag.getCompound("leftover"));
-		outputDir = IOutputDiractionalBlockEntity.byteToDir(tag.getByte("outputDir"));
 	}
 
 	@Override
@@ -185,7 +186,6 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity {
 		super.toTag(tag);
 		inventoryToTag(tag, inputInventory);
 		tag.put("leftover", itemStackToTag(leftover));
-		tag.putByte("outputDir", IOutputDiractionalBlockEntity.dirToByte(outputDir));
 		return tag;
 	}
 
@@ -198,7 +198,7 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity {
 	}
 
 	/*
-	 * 以下是SidedInventory的方法（非 Javadoc）
+	 * 以下是SidedInventory的方法
 	 */
 	@Override
 	public int[] getAvailableSlots(Direction side) {
@@ -222,32 +222,32 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity {
 		return false;
 	}
 
-//	/*
-//	 * 以下是RecipeUnlocker的方法（非 Javadoc）
-//	 */
-//	@Override
-//	public void setLastRecipe(Recipe<?> recipe) {
-//		if (recipe != null) {
-//			Identifier identifier = recipe.getId();
-//			this.recipesUsed.addTo(identifier, 1);
-//		}
-//	}
-//
-//	@Override
-//	public Recipe<?> getLastRecipe() {
-//		return null;
-//	}
-//
-//	/*
-//	 * 以下是RecipeInputProvider的方法（非 Javadoc）
-//	 */
-//	@Override
-//	public void provideRecipeInputs(RecipeFinder finder) {
-//		inputInventory.provideRecipeInputs(finder);
-//	}
+	/*
+	 * 以下是RecipeUnlocker的方法
+	 */
+	@Override
+	public void setLastRecipe(Recipe<?> recipe) {
+		if (recipe != null) {
+			Identifier identifier = recipe.getId();
+			recipesUsed.addTo(identifier, 1);
+		}
+	}
+
+	@Override
+	public Recipe<?> getLastRecipe() {
+		return null;
+	}
 
 	/*
-	 * 以下是Tickable的方法（非 Javadoc）
+	 * 以下是RecipeInputProvider的方法
+	 */
+	@Override
+	public void provideRecipeInputs(RecipeFinder finder) {
+		inputInventory.provideRecipeInputs(finder);
+	}
+
+	/*
+	 * 以下是Tickable的方法
 	 */
 	@Override
 	public void tick() {
@@ -282,7 +282,7 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity {
 	}
 
 	/*
-	 * 以下是Inventory的方法（非 Javadoc）
+	 * 以下是Inventory的方法
 	 */
 	@Override
 	public int size() {

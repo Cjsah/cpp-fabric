@@ -203,7 +203,9 @@ public class CraftingMachineScreenHandler extends AbstractRecipeScreenHandler<In
     public boolean canInsertIntoSlot(ItemStack stack, Slot slot) {
         return slot.inventory != this.resultUI && super.canInsertIntoSlot(stack, slot);
     }
-
+    /*
+	 * 以下是自定义方法
+	 */
     private void updateResultUI() {
         if (player instanceof ServerPlayerEntity) {
             resultUI.setStack(0, blockEntity.getResult());

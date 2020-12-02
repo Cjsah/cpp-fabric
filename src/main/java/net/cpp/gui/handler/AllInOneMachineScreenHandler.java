@@ -1,5 +1,6 @@
 package net.cpp.gui.handler;
 
+import static net.cpp.gui.handler.SlotTool.*;
 import net.cpp.block.entity.AllInOneMachineBlockEntity;
 import net.cpp.gui.screen.AllInOneMachineScreen;
 import net.cpp.init.CppScreenHandler;
@@ -14,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeFinder;
+import net.minecraft.recipe.RecipeInputProvider;
 import net.minecraft.recipe.book.RecipeBookCategory;
 import net.minecraft.screen.AbstractRecipeScreenHandler;
 import net.minecraft.screen.ArrayPropertyDelegate;
@@ -33,28 +35,23 @@ public class AllInOneMachineScreenHandler extends AbstractRecipeScreenHandler<In
 	public AllInOneMachineScreen screen;
 	private PlayerEntity player;
 	private World world;
-	private AllInOneMachineBlockEntity blockEntity;
-	private CraftingInventory inputUI;
-	private CraftingResultInventory resultUI = new CraftingResultInventory();
-	public final PropertyDelegate propertyDelegate;
+	public final AllInOneMachineBlockEntity blockEntity;
 
 	public AllInOneMachineScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, new AllInOneMachineBlockEntity(), new ArrayPropertyDelegate(1),
-				ScreenHandlerContext.EMPTY);
+		this(syncId, playerInventory, new AllInOneMachineBlockEntity());
 	}
 
 	public AllInOneMachineScreenHandler(int syncId, PlayerInventory playerInventory,
-			AllInOneMachineBlockEntity blockEntity, PropertyDelegate propertyDelegate, ScreenHandlerContext context) {
-		super(CppScreenHandler.CRAFTING_MACHINE, syncId);
+			AllInOneMachineBlockEntity blockEntity) {
+		super(CppScreenHandler.ALL_IN_ONE_MACHINE, syncId);
 		player = playerInventory.player;
 		world = player.world;
 		this.blockEntity = blockEntity;
-		this.propertyDelegate = propertyDelegate;
-		addSlot(new Slot(blockEntity, 0, 8 + 3 * 18, 18));
-		addSlot(new Slot(blockEntity, 1, 8 + 4 * 18, 18));
-		addSlot(new ExperienceBottleSlot(blockEntity, 2, 8 + 6 * 18, 18));
-		addSlot(new ResultSlot(blockEntity, 3, 8 + 3 * 18, 18 + 2 * 18));
-		addSlot(new ResultSlot(blockEntity, 4, 8 + 4 * 18, 18 + 2 * 18));
+		addSlot(new Slot(blockEntity, 0, x(3), y(0)));
+		addSlot(new Slot(blockEntity, 1, x(4), y(0)));
+		addSlot(new ExperienceBottleSlot(blockEntity, 2, x(6), y(0)));
+		addSlot(new ResultSlot(blockEntity, 3, x(3), y(2)));
+		addSlot(new ResultSlot(blockEntity, 4, x(4), y(2)));
 		for (int m = 0; m < 3; ++m) {
             for (int l = 0; l < 9; ++l) {
                 this.addSlot(new Slot(player.inventory, l + m * 9 + 9, 8 + l * 18, 84 + m * 18));
@@ -64,7 +61,7 @@ public class AllInOneMachineScreenHandler extends AbstractRecipeScreenHandler<In
             this.addSlot(new Slot(player.inventory, m, 8 + m * 18, 142));
         }
 		blockEntity.onOpen(player);
-		addProperties(propertyDelegate);
+		addProperties(blockEntity.propertyDelegate);
 	}
 
 	/*
@@ -72,18 +69,17 @@ public class AllInOneMachineScreenHandler extends AbstractRecipeScreenHandler<In
 	 */
 	@Override
 	public void populateRecipeFinder(RecipeFinder finder) {
-		inputUI.provideRecipeInputs(finder);
+		blockEntity.provideRecipeInputs(finder);
 	}
 
 	@Override
 	public void clearCraftingSlots() {
-		inputUI.clear();
-		resultUI.clear();
+		blockEntity.clear();
 	}
 
 	@Override
 	public boolean matches(Recipe<? super Inventory> recipe) {
-		return recipe.matches(inputUI, world);
+		return recipe.matches(blockEntity, world);
 	}
 
 	@Override
@@ -123,11 +119,25 @@ public class AllInOneMachineScreenHandler extends AbstractRecipeScreenHandler<In
 	 */
 	@Override
 	public boolean onButtonClick(PlayerEntity player, int id) {
-		if (id == 1010) {
+//		System.out.println(id);
+		boolean clicked = false;
+		switch (id) {
+		case 1010:
 			blockEntity.shiftOutputDir();
-			return true;
+			clicked = true;
+			break;
+		case 1011:
+			blockEntity.shiftTemperature();
+			clicked = true;
+			break;
+		case 1012:
+			blockEntity.shiftPressure();
+			clicked = true;
+			break;
+		default:
+			break;
 		}
-		return false;
+		return clicked;
 	}
 
 	@Override
@@ -185,7 +195,10 @@ public class AllInOneMachineScreenHandler extends AbstractRecipeScreenHandler<In
 
 	@Override
 	public boolean canInsertIntoSlot(ItemStack stack, Slot slot) {
-		return slot.inventory != this.resultUI && super.canInsertIntoSlot(stack, slot);
+		return slot.inventory != this.blockEntity && super.canInsertIntoSlot(stack, slot);
 	}
-
+	/*
+	 * 以下是自定义方法
+	 */
+	
 }

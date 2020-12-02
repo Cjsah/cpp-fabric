@@ -1,10 +1,14 @@
 package net.cpp.gui.screen;
 
+import static net.cpp.gui.handler.SlotTool.*;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.cpp.gui.handler.AllInOneMachineScreenHandler;
 import net.cpp.gui.handler.CraftingMachineScreenHandler;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.slot.Slot;
@@ -13,16 +17,51 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class AllInOneMachineScreen extends HandledScreen<AllInOneMachineScreenHandler> {
-	private static final Identifier TEXTURE = new Identifier("cpp:textures/gui/all_in_one_machine.png");
+	public static final Identifier TEXTURE = new Identifier("cpp:textures/gui/all_in_one_machine.png");
+	public static final Identifier XP = new Identifier("cpp:textures/gui/xp.png");
 	private boolean narrow;
 	public final OutputDirectionButton oButton;
+	public final TexturedButtonWidget temperatureButton = new TexturedButtonWidget(0, 0, 16, 16, 0, 0, 0, TEXTURE,
+			buttonWidget -> {
+				handler.blockEntity.shiftTemperature();
+				this.client.interactionManager.clickButton(this.handler.syncId, 1011);
+			}) {
+		@Override
+		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+			MinecraftClient minecraftClient = MinecraftClient.getInstance();
+			minecraftClient.getTextureManager().bindTexture(TEXTURE);
+			RenderSystem.enableDepthTest();
+			drawTexture(matrices, x, y, (handler.blockEntity.propertyDelegate.get(3) / 0x10) * 16,
+					isHovered() ? 166 + 16 : 166, 16, 16);
+			if (this.isHovered()) {
+				this.renderToolTip(matrices, mouseX, mouseY);
+			}
+		}
+	};
+	public final TexturedButtonWidget pressureButton = new TexturedButtonWidget(0, 0, 16, 16, 0, 0, 0, TEXTURE,
+			buttonWidget -> {
+				handler.blockEntity.shiftPressure();
+				this.client.interactionManager.clickButton(this.handler.syncId, 1012);
+			}) {
+		@Override
+		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+			MinecraftClient minecraftClient = MinecraftClient.getInstance();
+			minecraftClient.getTextureManager().bindTexture(TEXTURE);
+			RenderSystem.enableDepthTest();
+			drawTexture(matrices, x, y, (handler.blockEntity.propertyDelegate.get(3) % 0x10) * 16,
+					isHovered() ? 198 + 16 : 198, 16, 16);
+			if (this.isHovered()) {
+				this.renderToolTip(matrices, mouseX, mouseY);
+			}
+		}
+	};
 
 	public AllInOneMachineScreen(AllInOneMachineScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 		oButton = new OutputDirectionButton(buttonWidget -> {
-			handler.propertyDelegate.set(0, handler.propertyDelegate.get(0) + 1);
+			handler.blockEntity.propertyDelegate.set(0, handler.blockEntity.propertyDelegate.get(0) + 1);
 			this.client.interactionManager.clickButton(this.handler.syncId, 1010);
-		}, handler.propertyDelegate);
+		}, handler.blockEntity.propertyDelegate);
 	}
 
 	@Override
@@ -34,10 +73,14 @@ public class AllInOneMachineScreen extends HandledScreen<AllInOneMachineScreenHa
 
 	protected void init() {
 		super.init();
-		this.narrow = this.width < 379;
-		oButton.setPos(x + 94, y + 57);
-		this.addButton(oButton);
-		this.titleX = 29;
+		narrow = this.width < 379;
+		temperatureButton.setPos(x + x(1), y + y(0));
+		addButton(temperatureButton);
+		pressureButton.setPos(x + x(1), y + y(1));
+		addButton(pressureButton);
+		oButton.setPos(x + x(1), y + y(2));
+		addButton(oButton);
+		titleX = 29;
 	}
 
 	public void tick() {

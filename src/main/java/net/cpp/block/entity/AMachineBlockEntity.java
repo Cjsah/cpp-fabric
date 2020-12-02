@@ -1,8 +1,11 @@
 package net.cpp.block.entity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.inventory.SidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.text.Text;
@@ -18,15 +21,27 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 	}
 
 	/*
-	 * 以下是LockableContainerBlockEntity的方法（非 Javadoc）
+	 * 以下是LockableContainerBlockEntity的方法
 	 */
+	@Override
+	public void fromTag(BlockState state, CompoundTag tag) {
+		super.fromTag(state, tag);
+		outputDir = IOutputDiractionalBlockEntity.byteToDir(tag.getByte("outputDir"));
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		super.toTag(tag);
+		tag.putByte("outputDir", IOutputDiractionalBlockEntity.dirToByte(outputDir));
+		return tag;
+	}
 	@Override
 	public Text getContainerName() {
 		return getCustomName() != null ? getCustomName() : getTitle();
 	}
 
 	/*
-	 * 以下是IOutputDiractional的方法（非 Javadoc）
+	 * 以下是IOutputDiractional的方法
 	 */
 	@Override
 	public void setOutputDir(Direction dir) {
