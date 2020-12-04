@@ -1,4 +1,4 @@
-package net.cpp.item;
+package net.cpp.api;
 
 import com.google.common.collect.ImmutableList;
 import net.fabricmc.api.EnvType;
@@ -19,14 +19,20 @@ import net.minecraft.util.UseAction;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PotionItem extends Item {
     public final ImmutableList<StatusEffectInstance> effect;
 
-    public PotionItem(Settings settings, @Nullable StatusEffectInstance... effect) {
+    public PotionItem(Settings settings) {
         super(settings);
-        this.effect = effect != null ? ImmutableList.copyOf(effect) : null;
+        this.effect = ImmutableList.copyOf(new ArrayList<>());
+    }
+
+    public PotionItem(Settings settings, StatusEffectInstance... effect) {
+        super(settings);
+        this.effect = ImmutableList.copyOf(effect);
     }
 
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
@@ -79,19 +85,10 @@ public class PotionItem extends Item {
         return ItemUsage.consumeHeldItem(world, user, hand);
     }
 
-//    public String getTranslationKey(ItemStack stack) {
-//        return PotionUtil.getPotion(stack).finishTranslationKey(this.getTranslationKey() + ".effect.");
-//    }
-
     @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         PotionUtil.buildTooltip(stack, tooltip, 1.0F);
     }
-
-//    public boolean hasGlint(ItemStack stack) {
-//        return super.hasGlint(stack) || !PotionUtil.getPotionEffects(stack).isEmpty();
-//    }
-
 
     public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
         if (this.isIn(group)) {

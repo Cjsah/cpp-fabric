@@ -1,16 +1,13 @@
 package net.cpp.init;
 
-import net.cpp.item.PotionItem;
+import net.cpp.api.PotionItem;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
-import net.minecraft.potion.Potions;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
-import java.util.ArrayList;
 
 import static net.cpp.Craftingpp.CPP_GROUP_MACHINE;
 import static net.cpp.Craftingpp.CPP_GROUP_MISC;
