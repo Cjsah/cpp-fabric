@@ -1,7 +1,5 @@
 package net.cpp;
 
-import java.io.IOException;
-
 import net.cpp.init.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
@@ -24,5 +22,7 @@ public class Craftingpp implements ModInitializer {
 		CppBlockEntities.register();
 		CppScreenHandler.register();
 		CppRecipes.register();
+		CppStats.register();
+		CppEffect.register();
 	}
 }

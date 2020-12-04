@@ -339,7 +339,9 @@
   "block.cpp.crafting_machine": "合成器",
   "block.cpp.all_in_one_machine": "多功能一体机",
 
-  "container.cpp.crafting_machine": "合成器"
+  "container.cpp.crafting_machine": "合成器",
+
+  "effect.cpp.chain": "连环"
 
 
 }

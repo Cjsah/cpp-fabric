@@ -1,6 +1,6 @@
 package net.cpp.init;
 
-import net.cpp.api.PotionItem;
+import net.cpp.api.CppPotion;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.BlockItem;
@@ -197,27 +197,27 @@ public final class CppItems {
     public static Item TOMATO = new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build()));
     public static Item CITRUS = new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build()));
     // 药剂
-    public static Item AGENTIA_OF_LIGHTNESS = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.SLOW_FALLING, 4800, 0));
-    public static Item AGENTIA_OF_EYESIGHT = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.NIGHT_VISION, 9600, 0));
-    public static Item AGENTIA_OF_FIRE_SHIELD = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 9600, 0));
-    public static Item AGENTIA_OF_WATERLESS = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.WATER_BREATHING, 9600, 0));
-    public static Item AGENTIA_OF_TRANSPARENTNESS = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.INVISIBILITY, 9600, 0));
-    public static Item AGENTIA_OF_BOUNCE = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.JUMP_BOOST, 4800, 1));
-    public static Item AGENTIA_OF_AGILENESS = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.SPEED, 4800, 1));
-    public static Item AGENTIA_OF_SHARPNESS = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.STRENGTH, 4800, 1));
-    public static Item AGENTIA_OF_REJUVENESS = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.REGENERATION, 2400, 1));
-    public static Item AGENTIA_OF_BLOOD = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 1, 2));
-    public static Item AGENTIA_OF_EXTREMENESS = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.HASTE, 4800, 1));
-    public static Item AGENTIA_OF_SHIELD = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.RESISTANCE, 4800, 1));
-    public static Item AGENTIA_OF_TIDE = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 4800, 0));
-    public static Item AGENTIA_OF_CHAIN = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1));
-    public static Item AGENTIA_OF_SKY = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.SPEED, 7200, 1), new StatusEffectInstance(StatusEffects.SLOW_FALLING, 7200, 0));
-    public static Item AGENTIA_OF_OCEAN = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.WATER_BREATHING, 14400, 0), new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 7200, 0));
-    public static Item AGENTIA_OF_RIDGE = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.STRENGTH, 7200, 1), new StatusEffectInstance(StatusEffects.NIGHT_VISION, 14400, 0));
-    public static Item AGENTIA_OF_DIRT = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.INVISIBILITY, 14400, 0));
-    public static Item AGENTIA_OF_EARTH = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.JUMP_BOOST, 7200, 1), new StatusEffectInstance(StatusEffects.HASTE, 7200, 1));
-    public static Item AGENTIA_OF_FIRE = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 14400, 0), new StatusEffectInstance(StatusEffects.RESISTANCE, 7200, 1));
-    public static Item AGENTIA_OF_LIFE = new PotionItem(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.REGENERATION, 3600, 1), new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 1, 3));
+    public static Item AGENTIA_OF_LIGHTNESS = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.SLOW_FALLING, 4800, 0));
+    public static Item AGENTIA_OF_EYESIGHT = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.NIGHT_VISION, 9600, 0));
+    public static Item AGENTIA_OF_FIRE_SHIELD = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 9600, 0));
+    public static Item AGENTIA_OF_WATERLESS = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.WATER_BREATHING, 9600, 0));
+    public static Item AGENTIA_OF_TRANSPARENTNESS = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.INVISIBILITY, 9600, 0));
+    public static Item AGENTIA_OF_BOUNCE = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.JUMP_BOOST, 4800, 1));
+    public static Item AGENTIA_OF_AGILENESS = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.SPEED, 4800, 1));
+    public static Item AGENTIA_OF_SHARPNESS = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.STRENGTH, 4800, 1));
+    public static Item AGENTIA_OF_REJUVENESS = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.REGENERATION, 2400, 1));
+    public static Item AGENTIA_OF_BLOOD = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 1, 2));
+    public static Item AGENTIA_OF_EXTREMENESS = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.HASTE, 4800, 1));
+    public static Item AGENTIA_OF_SHIELD = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.RESISTANCE, 4800, 1));
+    public static Item AGENTIA_OF_TIDE = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 4800, 0));
+    public static Item AGENTIA_OF_CHAIN = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(CppEffect.CHAIN, 9600, 0));
+    public static Item AGENTIA_OF_SKY = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.SPEED, 7200, 1), new StatusEffectInstance(StatusEffects.SLOW_FALLING, 7200, 0));
+    public static Item AGENTIA_OF_OCEAN = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.WATER_BREATHING, 14400, 0), new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 7200, 0));
+    public static Item AGENTIA_OF_RIDGE = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.STRENGTH, 7200, 1), new StatusEffectInstance(StatusEffects.NIGHT_VISION, 14400, 0));
+    public static Item AGENTIA_OF_DIRT = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.INVISIBILITY, 14400, 0), new StatusEffectInstance(CppEffect.CHAIN, 14400, 0));
+    public static Item AGENTIA_OF_EARTH = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.JUMP_BOOST, 7200, 1), new StatusEffectInstance(StatusEffects.HASTE, 7200, 1));
+    public static Item AGENTIA_OF_FIRE = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 14400, 0), new StatusEffectInstance(StatusEffects.RESISTANCE, 7200, 1));
+    public static Item AGENTIA_OF_LIFE = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.REGENERATION, 3600, 1), new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 1, 3));
     // 植物
     public static Item LYCORIS_RADIATA_SEED = new Item(new Item.Settings().group(CPP_GROUP_PLANT));
     public static Item TRIFOLIUM_SEED = new Item(new Item.Settings().group(CPP_GROUP_PLANT));
