@@ -1,10 +1,17 @@
 package net.cpp;
 
+import com.google.common.collect.ImmutableList;
+import net.cpp.api.CppChain;
 import net.cpp.init.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 
 public class Craftingpp implements ModInitializer {
@@ -23,6 +30,16 @@ public class Craftingpp implements ModInitializer {
 		CppScreenHandler.register();
 		CppRecipes.register();
 		CppStats.register();
-		CppEffect.register();
+		CppEffects.register();
+		CppEvents.register();
+
+		ImmutableList<Block> list = ImmutableList.of(Blocks.DIAMOND_ORE, Blocks.IRON_ORE, Blocks.EMERALD_ORE);
+		// 连环药水效果
+		PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, entity) -> {
+			StatusEffectInstance effect = player.getStatusEffect(CppEffects.CHAIN);
+			if (effect != null && list.contains(state.getBlock()) && player.getMainHandStack().getItem() == Items.DIAMOND_PICKAXE) {
+				CppChain.chain(world, player, pos, state.getBlock());
+			}
+		});
 	}
 }

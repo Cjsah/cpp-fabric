@@ -210,11 +210,11 @@ public final class CppItems {
     public static Item AGENTIA_OF_EXTREMENESS = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.HASTE, 4800, 1));
     public static Item AGENTIA_OF_SHIELD = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.RESISTANCE, 4800, 1));
     public static Item AGENTIA_OF_TIDE = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 4800, 0));
-    public static Item AGENTIA_OF_CHAIN = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(CppEffect.CHAIN, 9600, 0));
+    public static Item AGENTIA_OF_CHAIN = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(CppEffects.CHAIN, 9600, 0));
     public static Item AGENTIA_OF_SKY = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.SPEED, 7200, 1), new StatusEffectInstance(StatusEffects.SLOW_FALLING, 7200, 0));
     public static Item AGENTIA_OF_OCEAN = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.WATER_BREATHING, 14400, 0), new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 7200, 0));
     public static Item AGENTIA_OF_RIDGE = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.STRENGTH, 7200, 1), new StatusEffectInstance(StatusEffects.NIGHT_VISION, 14400, 0));
-    public static Item AGENTIA_OF_DIRT = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.INVISIBILITY, 14400, 0), new StatusEffectInstance(CppEffect.CHAIN, 14400, 0));
+    public static Item AGENTIA_OF_DIRT = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.INVISIBILITY, 14400, 0), new StatusEffectInstance(CppEffects.CHAIN, 14400, 0));
     public static Item AGENTIA_OF_EARTH = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.JUMP_BOOST, 7200, 1), new StatusEffectInstance(StatusEffects.HASTE, 7200, 1));
     public static Item AGENTIA_OF_FIRE = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 14400, 0), new StatusEffectInstance(StatusEffects.RESISTANCE, 7200, 1));
     public static Item AGENTIA_OF_LIFE = new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.REGENERATION, 3600, 1), new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 1, 3));
