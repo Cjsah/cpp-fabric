@@ -8,8 +8,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 
 import it.unimi.dsi.fastutil.ints.IntList;
-import net.cpp.block.entity.AllInOneMachineBlockEntity.Pressure;
-import net.cpp.block.entity.AllInOneMachineBlockEntity.Temperature;
 import net.cpp.init.CppRecipes;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
@@ -29,18 +27,18 @@ import net.minecraft.world.World;
 
 public class AllInOneMachineRecipe implements Recipe<Inventory> {
 	protected final Identifier id;
-	private final Temperature temperature;
-	private final Pressure pressure;
+	public final int temperaturePressure;
 	protected final DefaultedList<Ingredient> input;
 	protected final DefaultedList<ResultItemStack> output;
+	public final int time;
 
-	public AllInOneMachineRecipe(Identifier id, Temperature temperature,Pressure pressure,DefaultedList<Ingredient> input,
-			DefaultedList<ResultItemStack> output) {
+	public AllInOneMachineRecipe(Identifier id, int temperaturePressure,DefaultedList<Ingredient> input,
+			DefaultedList<ResultItemStack> output, int time) {
 		this.id = id;
-		this.temperature = temperature;
-		this.pressure = pressure;
+		this.temperaturePressure = temperaturePressure;
 		this.output = output;
 		this.input = input;
+		this.time = time;
 	}
 
 	@Override
@@ -108,7 +106,33 @@ public class AllInOneMachineRecipe implements Recipe<Inventory> {
 		z += Math.random() < d - z ? 1 : 0;
 		return z;
 	}
-
+	public static int getTemperaturePressure(String temperature, String pressure) {
+		int rst = 0;
+		switch (temperature) {
+		case "ordinary":
+			rst += 0;
+			break;
+		case "low":
+			rst += 1;
+			break;
+		case "high":
+			rst += 2;
+			break;
+		}
+		rst *= 16;
+		switch (pressure) {
+		case "ordinary":
+			rst += 0;
+			break;
+		case "low":
+			rst += 1;
+			break;
+		case "high":
+			rst += 2;
+			break;
+		}
+		return rst;
+	}
 	public static class Serializer implements RecipeSerializer<AllInOneMachineRecipe> {
 		public AllInOneMachineRecipe read(Identifier identifier, JsonObject jsonObject) {
 			DefaultedList<Ingredient> inputList = getIngredients(JsonHelper.getArray(jsonObject, "ingredients"));
@@ -117,17 +141,15 @@ public class AllInOneMachineRecipe implements Recipe<Inventory> {
 			} else if (inputList.size() > 2) {
 				throw new JsonParseException("太多原料");
 			} else {
-				Temperature temperature = Temperature.valueOf(JsonHelper.getString(jsonObject, "temperature", "ordinary"));
-				Pressure pressure = Pressure.valueOf(JsonHelper.getString(jsonObject, "pressure", "ordinary"));
+				int temperaturePressure = JsonHelper.getInt(jsonObject, "temperature_pressure", 0);
 				DefaultedList<ResultItemStack> resultList = getResults(JsonHelper.getArray(jsonObject, "results"));
-				return new AllInOneMachineRecipe(identifier, temperature, pressure, inputList, resultList);
+				int time = JsonHelper.getInt(jsonObject, "time", 100);
+				return new AllInOneMachineRecipe(identifier, temperaturePressure, inputList, resultList, time);
 			}
 		}
 
 		public AllInOneMachineRecipe read(Identifier identifier, PacketByteBuf packetByteBuf) {
-			byte b = packetByteBuf.readByte();
-			Temperature temperature = Temperature.values()[b % 9 / 3];
-			Pressure pressure = Pressure.values()[b % 3];
+			int temperaturePressure = packetByteBuf.readInt();
 			
 			int i = packetByteBuf.readVarInt();
 			DefaultedList<Ingredient> ingredients = DefaultedList.ofSize(i, Ingredient.EMPTY);
@@ -140,7 +162,8 @@ public class AllInOneMachineRecipe implements Recipe<Inventory> {
 			for (int j = 0; j < results.size(); ++j) {
 				results.set(j, ResultItemStack.valueOf(packetByteBuf));
 			}
-			return new AllInOneMachineRecipe(identifier, temperature, pressure, ingredients, results);
+			int time = packetByteBuf.readInt();
+			return new AllInOneMachineRecipe(identifier, temperaturePressure, ingredients, results, time);
 		}
 
 		public void write(PacketByteBuf packetByteBuf, AllInOneMachineRecipe recipe) {
