@@ -12,6 +12,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class Craftingpp implements ModInitializer {
@@ -32,13 +33,13 @@ public class Craftingpp implements ModInitializer {
 		CppStats.register();
 		CppEffects.register();
 		CppEvents.register();
+		CppChainMap.register();
 
-		ImmutableList<Block> list = ImmutableList.of(Blocks.DIAMOND_ORE, Blocks.IRON_ORE, Blocks.EMERALD_ORE);
 		// 连环药水效果
 		PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, entity) -> {
 			StatusEffectInstance effect = player.getStatusEffect(CppEffects.CHAIN);
-			if (effect != null && list.contains(state.getBlock()) && player.getMainHandStack().getItem() == Items.DIAMOND_PICKAXE) {
-				CppChain.chain(world, player, pos, state.getBlock());
+			if (effect != null && CppChainMap.ChainBlocks.contains(state.getBlock()) && CppChainMap.ChainTools.contains(player.getMainHandStack().getItem())) {
+				CppChain.chain(world, (ServerPlayerEntity) player, pos, state.getBlock());
 			}
 		});
 	}
