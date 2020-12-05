@@ -1,12 +1,18 @@
 package net.cpp;
 
-import java.io.IOException;
-
+import com.google.common.collect.ImmutableList;
+import net.cpp.api.CppChain;
 import net.cpp.init.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class Craftingpp implements ModInitializer {
@@ -24,5 +30,17 @@ public class Craftingpp implements ModInitializer {
 		CppBlockEntities.register();
 		CppScreenHandler.register();
 		CppRecipes.register();
+		CppStats.register();
+		CppEffects.register();
+		CppEvents.register();
+		CppChainMap.register();
+
+		// 连环药水效果
+		PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, entity) -> {
+			StatusEffectInstance effect = player.getStatusEffect(CppEffects.CHAIN);
+			if (effect != null && CppChainMap.ChainBlocks.contains(state.getBlock()) && CppChainMap.ChainTools.contains(player.getMainHandStack().getItem())) {
+				CppChain.chain(world, (ServerPlayerEntity) player, pos, state.getBlock());
+			}
+		});
 	}
 }
