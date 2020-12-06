@@ -1,5 +1,7 @@
 package net.cpp.block.entity;
 
+import static net.minecraft.item.Items.EXPERIENCE_BOTTLE;
+
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,15 +44,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-
 /**
  * 合成器方块实体
  * 
  * @author Ph-苯
  *
  */
-public class CraftingMachineBlockEntity extends AMachineBlockEntity implements RecipeUnlocker, RecipeInputProvider {
+public class CraftingMachineBlockEntity extends AMachineBlockEntity
+		implements RecipeUnlocker, RecipeInputProvider, SidedInventory {
 	public static final Text TITLE = CppBlocks.CRAFTING_MACHINE.getName();
+	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 	private CppCraftingInventory inputInventory = new CppCraftingInventory();
 	private int viewerCnt = 0;
 	private final Object2IntOpenHashMap<Identifier> recipesUsed = new Object2IntOpenHashMap<Identifier>();
@@ -85,10 +88,11 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity implements R
 			}
 		}
 	};
-	
+
 	public CraftingMachineBlockEntity() {
 		super(CppBlockEntities.CRAFTING_MACHINE);
 	}
+
 	/*
 	 * 以下是AMachineBlock的方法
 	 */
@@ -96,6 +100,7 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity implements R
 	public Text getTitle() {
 		return TITLE;
 	}
+
 	/*
 	 * 以下是LootableContainerBlockEntity的方法
 	 */
@@ -256,8 +261,7 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity implements R
 			if (getOutputInventory() != null) {
 				if (!getLeftover().isEmpty()) {
 					setLeftover(output(getLeftover()));
-				}
-				if (!isEmpty() && viewerCnt <= 0) {
+				} else if (!isEmpty() && viewerCnt <= 0) {
 					ItemStack outputStack = getResult();
 					if (!getResult().isEmpty()) {
 						boolean everyNotSingle = true;
@@ -269,7 +273,7 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity implements R
 						if (everyNotSingle) {
 							ItemStack restStack = output(getResult());
 							if (!outputStack.equals(restStack)) {
-								setLeftover(restStack);
+								setLeftover(restStack.copy());
 								for (int i = 0; i < 9; i++) {
 									inputInventory.removeStack(i, 1);
 								}
@@ -307,13 +311,32 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity implements R
 	}
 
 	/*
+	 * 以下是SidedInventory的方法
+	 */
+
+	@Override
+	public int[] getAvailableSlots(Direction side) {
+		return AVAILABLE_SLOTS;
+	}
+
+	@Override
+	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
+		return slot >= 0 && slot <= 8 && !getStack(slot).isEmpty();
+	}
+
+	@Override
+	public boolean canExtract(int slot, ItemStack stack, Direction dir) {
+		return false;
+	}
+
+	/*
 	 * 以下是自定义方法
 	 */
 	/**
 	 * @see #leftover
 	 */
 	public ItemStack getLeftover() {
-		return getStack(9);
+		return getStack(9).copy();
 	}
 
 	/**
@@ -358,28 +381,4 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity implements R
 		return itemStack;
 	}
 
-	/**
-	 * 输出一叠物品
-	 * 
-	 * @param outputStack 要被输出的物品
-	 * @return 因输出不下而剩下的物品
-	 */
-	public ItemStack output(ItemStack outputStack) {
-		Inventory inventory = getOutputInventory();
-		ItemStack restStack = ItemStack.EMPTY;
-		if (inventory != null) {
-			Direction direction = getOutputDir();
-			if (!this.isInventoryFull(inventory, direction)) {
-				restStack = transfer(this, inventory, outputStack, direction);
-				if (restStack.isEmpty()) {
-					inventory.markDirty();
-				}
-
-			}
-		}
-		return restStack;
-	}
-
-
-	
 }
