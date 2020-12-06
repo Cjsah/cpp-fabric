@@ -20,6 +20,7 @@ public final class CppItems {
     public static final String MODID = "cpp";
 
     // 稀有物品
+    public static final Item SHARD_OF_THE_DARKNESS;
     public static final Item WING_OF_SKY;
     public static final Item HEART_OF_CRYSTAL;
     public static final Item LIMB_OF_RIDGE;
@@ -370,13 +371,14 @@ public final class CppItems {
     public static final Item GLASS_SIGN;
 
     static {
-        WING_OF_SKY = registerItem("wing_of_sky", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-        HEART_OF_CRYSTAL = registerItem("heart_of_crystal", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-        LIMB_OF_RIDGE = registerItem("limb_of_ridge", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-        SOUL_OF_DIRT = registerItem("soul_of_dirt", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-        CERTIFICATION_OF_EARTH = registerItem("certification_of_earth", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-        NOVA_OF_FIRE = registerItem("nova_of_fire", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-        SPIRIT_OF_LIFE = registerItem("spirit_of_life", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+        SHARD_OF_THE_DARKNESS = registerItem("shard_of_the_darkness", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
+        WING_OF_SKY = registerItem("wing_of_sky", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
+        HEART_OF_CRYSTAL = registerItem("heart_of_crystal", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
+        LIMB_OF_RIDGE = registerItem("limb_of_ridge", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
+        SOUL_OF_DIRT = registerItem("soul_of_dirt", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
+        CERTIFICATION_OF_EARTH = registerItem("certification_of_earth", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
+        NOVA_OF_FIRE = registerItem("nova_of_fire", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
+        SPIRIT_OF_LIFE = registerItem("spirit_of_life", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 
         EMPTY_PLUGIN = registerItem("empty_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
         LOW_TEMPERATURE_PLUGIN = registerItem("low_temperature_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));

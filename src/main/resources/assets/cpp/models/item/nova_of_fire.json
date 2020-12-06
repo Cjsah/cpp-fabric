@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/handheld",
     "textures": {
-        "layer0": "cpp:item/black_stone_plugin"
+        "layer0": "cpp:item/nova_of_fire"
     }
 }
