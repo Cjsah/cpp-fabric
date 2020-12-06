@@ -11,6 +11,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.screen.AbstractFurnaceScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
@@ -43,7 +44,6 @@ public class AllInOneMachineScreen extends HandledScreen<AllInOneMachineScreenHa
 	public final TexturedButtonWidget pressureButton = new TexturedButtonWidget(0, 0, 16, 16, 0, 0, 0, TEXTURE,
 			buttonWidget -> {
 				handler.blockEntity.shiftPressure();
-
 				this.client.interactionManager.clickButton(this.handler.syncId, 1012);
 			}) {
 		@Override
@@ -92,6 +92,25 @@ public class AllInOneMachineScreen extends HandledScreen<AllInOneMachineScreenHa
 		int i = this.x;
 		int j = (this.height - this.backgroundHeight) / 2;
 		this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
+
+		if (handler.blockEntity.isWorking()) {
+//			System.out.println(handler.blockEntity.getWorkTimeTotal());
+			this.drawTexture(matrices, x + 74, y + 36, 176, 0, 11,
+					handler.blockEntity.getWorkTimeTotal() > 0
+							? 1 + 15 * handler.blockEntity.getWorkTime() / handler.blockEntity.getWorkTimeTotal()
+							: 0);
+		}
+		int exp = handler.blockEntity.getExpStorage();
+		if (exp > 0) {
+			client.getTextureManager().bindTexture(XP);
+			int t = (int) (System.currentTimeMillis() % (16 * 50) / 50);
+//			System.out.println(t);
+			drawTexture(matrices, x + 152, y + 68 - (exp + 1) / 2, 0, t * 50, 16,
+					(exp + 1) / 2, 16, 800);
+		}
+		client.getTextureManager().bindTexture(TEXTURE);
+		drawTexture(matrices, x + 152, y + 18, 176, 18, 16,
+				50);
 	}
 
 	protected boolean isPointWithinBounds(int xPosition, int yPosition, int width, int height, double pointX,
@@ -111,7 +130,6 @@ public class AllInOneMachineScreen extends HandledScreen<AllInOneMachineScreenHa
 	protected void onMouseClick(Slot slot, int invSlot, int clickData, SlotActionType actionType) {
 		super.onMouseClick(slot, invSlot, clickData, actionType);
 	}
-
 
 	public void removed() {
 		super.removed();

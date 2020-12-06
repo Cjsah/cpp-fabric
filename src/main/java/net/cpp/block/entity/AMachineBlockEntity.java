@@ -96,6 +96,28 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 		});
 	}
 
+	/**
+	 * 输出一叠物品
+	 * 
+	 * @param outputStack 要被输出的物品
+	 * @return 因输出不下而剩下的物品
+	 */
+	public ItemStack output(ItemStack outputStack) {
+		Inventory inventory = getOutputInventory();
+		ItemStack restStack = outputStack;
+		if (inventory != null) {
+			Direction direction = getOutputDir();
+			if (!this.isInventoryFull(inventory, direction)) {
+				restStack = transfer(this, inventory, outputStack, direction);
+				if (restStack.isEmpty()) {
+					inventory.markDirty();
+				}
+
+			}
+		}
+		return restStack;
+	}
+
 	public abstract Text getTitle();
 
 	/**
