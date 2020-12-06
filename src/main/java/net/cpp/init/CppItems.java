@@ -19,6 +19,14 @@ public final class CppItems {
 
     public static final String MODID = "cpp";
 
+    // 稀有物品
+    public static final Item WING_OF_SKY;
+    public static final Item HEART_OF_CRYSTAL;
+    public static final Item LIMB_OF_RIDGE;
+    public static final Item SOUL_OF_DIRT;
+    public static final Item CERTIFICATION_OF_EARTH;
+    public static final Item NOVA_OF_FIRE;
+    public static final Item SPIRIT_OF_LIFE;
     // 插件
     public static final Item EMPTY_PLUGIN;
     public static final Item LOW_TEMPERATURE_PLUGIN;
@@ -27,7 +35,7 @@ public final class CppItems {
     public static final Item HIGH_PRESSURE_PLUGIN;
     public static final Item COBBLESTONE_PLUGIN;
     public static final Item STONE_PLUGIN;
-    public static final Item BLACK_STONE_PLUGIN;
+    public static final Item BLACKSTONE_PLUGIN;
     public static final Item NETHERRACK_PLUGIN;
     public static final Item END_STONE_PLUGIN;
     public static final Item BASALT_PLUGIN;
@@ -362,6 +370,13 @@ public final class CppItems {
     public static final Item GLASS_SIGN;
 
     static {
+        WING_OF_SKY = registerItem("wing_of_sky", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+        HEART_OF_CRYSTAL = registerItem("heart_of_crystal", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+        LIMB_OF_RIDGE = registerItem("limb_of_ridge", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+        SOUL_OF_DIRT = registerItem("soul_of_dirt", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+        CERTIFICATION_OF_EARTH = registerItem("certification_of_earth", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+        NOVA_OF_FIRE = registerItem("nova_of_fire", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+        SPIRIT_OF_LIFE = registerItem("spirit_of_life", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
 
         EMPTY_PLUGIN = registerItem("empty_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
         LOW_TEMPERATURE_PLUGIN = registerItem("low_temperature_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
@@ -370,7 +385,7 @@ public final class CppItems {
         HIGH_PRESSURE_PLUGIN = registerItem("high_pressure_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
         COBBLESTONE_PLUGIN = registerItem("cobblestone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
         STONE_PLUGIN = registerItem("stone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-        BLACK_STONE_PLUGIN = registerItem("black_stone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+        BLACKSTONE_PLUGIN = registerItem("blackstone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
         NETHERRACK_PLUGIN = registerItem("netherrack_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
         END_STONE_PLUGIN = registerItem("end_stone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
         BASALT_PLUGIN = registerItem("basalt_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
