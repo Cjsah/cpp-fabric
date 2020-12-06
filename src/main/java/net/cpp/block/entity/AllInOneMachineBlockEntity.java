@@ -5,9 +5,12 @@ import static net.cpp.init.CppItems.*;
 import static net.cpp.init.CppBlocks.*;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -34,11 +37,15 @@ import net.minecraft.util.math.Direction;
 
 public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 		implements SidedInventory /* implements RecipeUnlocker, RecipeInputProvider */ {
+	public static final Set<Item> UNCONSUMABLE = new HashSet<>(Arrays.asList(LAVA_BUCKET, COBBLESTONE_PLUGIN,
+			STONE_PLUGIN, BLACKSTONE_PLUGIN, NETHERRACK_PLUGIN, END_STONE_PLUGIN, BASALT_PLUGIN, GREEN_FORCE_OF_WATER));
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2 };
 	private static final Map<Item, ItemStack> ORE_RATES = new HashMap<>();
 	private static final Map<Integer, Recipe> RECIPES = new HashMap<>();
-	private static final Map<Integer,Set<Recipe>> SPECIAL_RECIPE_CODES = new HashMap<>();
+	private static final Map<Integer, List<Recipe>> SPECIAL_RECIPES = new HashMap<>();
 	private static final Map<Item, ItemStack> ITEM_BUFFER = new HashMap<>();
+	private Recipe lastTickRecipe;
+	private ItemStack[] lastTickOutputs;
 	private int workTime = 0;
 	private int workTimeTotal;
 	private int expStorage = 0;
@@ -251,27 +258,30 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 			if (getStack(0).isEmpty() && getStack(1).isEmpty()) {
 				workTime = 0;
 			} else {
-//				if (temperature == Degree.HIGH && pressure == Degree.HIGH) {
-//					ItemStack input1 = getStack(0), input2 = getStack(1);
-//					Item item1 = input1.getItem(), item2 = input2.getItem();
-//					if (item1 != item2 && ORE_RATES.containsKey(item1) && ORE_RATES.containsKey(item2)) {
-//						
-//					}
-//				}
 				int c = getHashCode(temperature, pressure, getStack(0).getItem(), getStack(1).getItem());
-				if (SPECIAL_RECIPE_CODES.containsKey(c)) {
-					c += Math.random() < 0.5 ? 0 : 1;
+				Recipe recipe;
+				if (SPECIAL_RECIPES.containsKey(c)) {
+					List<Recipe> list = SPECIAL_RECIPES.get(c);
+					recipe = list.get((int) (Math.random() * list.size()));
+				} else {
+					recipe = RECIPES.get(c);
 				}
-				Recipe recipe = RECIPES.get(c);
 				if (recipe == null) {
 					workTime = 0;
-				}
-				if (recipe != null) {
+				} else {
 					boolean shapeless = recipe.input1 == getStack(0).getItem() && recipe.input2 == getStack(1).getItem()
 							|| recipe.input1 == getStack(1).getItem() && recipe.input2 == getStack(0).getItem();
+					boolean awkwardPotion = temperature != Degree.ORDINARY || pressure != Degree.LOW
+							|| "minecraft:awkward".equals(getStack(0).getTag().getString("Potion"))
+							|| "minecraft:awkward".equals(getStack(1).getTag().getString("Potion"));
 					if (expStorage >= recipe.experience && shapeless && recipe.temperature == temperature
-							&& recipe.pressure == pressure) {
-						ItemStack[] outputs = recipe.output();
+							&& recipe.pressure == pressure && awkwardPotion) {
+						ItemStack[] outputs;
+						if (lastTickRecipe != recipe) {
+							lastTickOutputs = recipe.output();
+							lastTickRecipe = recipe;
+						}
+						outputs = lastTickOutputs;
 						if ((getStack(3).isEmpty() || getStack(3).isItemEqualIgnoreDamage(outputs[0])
 								&& getStack(3).getCount() + outputs[0].getCount() <= getStack(3).getMaxCount())
 								&& (outputs[1].isEmpty() || getStack(4).isEmpty()
@@ -280,12 +290,12 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 							workTimeTotal = recipe.time;
 							reciped = true;
 							if (workTime >= recipe.time) {
-								getStack(0).increment(-1);
-								getStack(1).increment(-1);
+								if (!UNCONSUMABLE.contains(getStack(0).getItem()))
+									getStack(0).increment(-1);
+								if (!UNCONSUMABLE.contains(getStack(1).getItem()))
+									getStack(1).increment(-1);
 								if (getStack(3).isEmpty()) {
 									setStack(3, outputs[0]);
-//									System.out.println(outputs[0]);
-//									System.out.println(getStack(3));
 								} else
 									getStack(3).increment(outputs[0].getCount());
 								if (!outputs[1].isEmpty())
@@ -295,6 +305,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 										getStack(4).increment(outputs[1].getCount());
 								workTime = 0;
 								expStorage -= recipe.experience;
+								lastTickOutputs = recipe.output();
 							} else {
 //								workTime++;
 								workTime += 10;
@@ -326,6 +337,21 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	public void onOpen(PlayerEntity player) {
 		propertyDelegate.set(3, propertyDelegate.get(3));
 		super.onOpen(player);
+//		int rand = new Random(new File(".").getAbsolutePath().hashCode()).nextInt();
+//		for (Map.Entry<Item, ItemStack> entry1 : ORE_RATES.entrySet()) {
+//			for (Map.Entry<Item, ItemStack> entry2 : ORE_RATES.entrySet()) {
+//				if (entry1.equals(entry2))
+//					break;
+//				float randf = (entry1.getValue().hashCode() ^ entry2.getValue().hashCode() ^ rand >>> 1) % 90 / 30f + 1;
+////				System.out.println(randf);
+//				float c1 = randf * entry1.getValue().getCount();
+//				float c2 = (5 - randf) * entry2.getValue().getCount();
+//				addRecipe(Degree.HIGH, Degree.HIGH, entry1.getKey(), entry2.getKey(), entry1.getValue(),
+//						entry2.getValue(), c1, c1 + 1, c2, c2 + 1, 4, 200);
+//				System.out.println(String.format("%s:%f,%s:%f", entry1.getValue().getItem().toString(), c1,
+//						entry2.getValue().getItem().toString(), c2));
+//			}
+//		}
 	}
 
 	/*
@@ -340,8 +366,8 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
 		return slot == 2 && stack.getItem() == EXPERIENCE_BOTTLE
-				|| (slot == 0 && stack.getItem() != getStack(1).getItem())
-				|| (slot == 1 && stack.getItem() != getStack(0).getItem());
+				|| (slot == 0 && stack.getItem() != getStack(1).getItem() && stack.getItem() != EXPERIENCE_BOTTLE)
+				|| (slot == 1 && stack.getItem() != getStack(0).getItem() && stack.getItem() != EXPERIENCE_BOTTLE);
 	}
 
 	@Override
@@ -480,7 +506,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	static {
 		ORE_RATES.put(COAL_ORE, new ItemStack(COAL));
 		ORE_RATES.put(DIAMOND_ORE, new ItemStack(DIAMOND));
-		ORE_RATES.put(EMERALD_ORE, new ItemStack(DIAMOND));
+		ORE_RATES.put(EMERALD_ORE, new ItemStack(EMERALD));
 		ORE_RATES.put(GOLD_ORE, new ItemStack(GOLD_INGOT));
 		ORE_RATES.put(IRON_ORE, new ItemStack(IRON_INGOT));
 		ORE_RATES.put(LAPIS_ORE, new ItemStack(LAPIS_LAZULI, 6));
@@ -494,15 +520,13 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 		int rand = new Random(new File(".").getAbsolutePath().hashCode()).nextInt();
 		for (Map.Entry<Item, ItemStack> entry1 : ORE_RATES.entrySet()) {
 			for (Map.Entry<Item, ItemStack> entry2 : ORE_RATES.entrySet()) {
-				System.out.println(1);
-				if (entry1.equals(entry1))
+				if (entry1.equals(entry2))
 					break;
 				float randf = (entry1.getValue().hashCode() ^ entry2.getValue().hashCode() ^ rand) % 90 / 30f + 1;
-				RECIPES.put(getHashCode(Degree.HIGH, Degree.HIGH, entry1.getKey(), entry2.getKey()),
-						new Recipe(Degree.HIGH, Degree.HIGH, entry1.getKey(), entry2.getKey(), entry1.getValue(),
-								entry2.getValue(), randf * entry1.getValue().getCount(),
-								randf * entry2.getValue().getCount() + 1, (5 - randf) * entry1.getValue().getCount(),
-								(5 - randf) * entry2.getValue().getCount() + 1, 4, 200));
+				addRecipe(Degree.HIGH, Degree.HIGH, entry1.getKey(), entry2.getKey(), entry1.getValue(),
+						entry2.getValue(), randf * entry1.getValue().getCount(),
+						randf * entry1.getValue().getCount() + 1, (5 - randf) * entry2.getValue().getCount(),
+						(5 - randf) * entry2.getValue().getCount() + 1, 4, 200);
 
 			}
 		}
@@ -646,13 +670,15 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 		addRecipe(Degree.ORDINARY, Degree.ORDINARY, MELON_SEEDS, FERTILIZER, new ItemStack(MELON, 2), 2, 40);
 		addRecipe(Degree.ORDINARY, Degree.ORDINARY, CARROT, FERTILIZER, new ItemStack(CARROT, 6), 2, 40);
 		addRecipe(Degree.ORDINARY, Degree.ORDINARY, POTATO, FERTILIZER, new ItemStack(POTATO, 6), 2, 40);
-		Item[] plants = new Item[] { COCOA_BEANS, CACTUS, SUGAR_CANE, RED_MUSHROOM, BROWN_MUSHROOM, TWISTING_VINES,
-				WEEPING_VINES, VINE, NETHER_WART, LILY_PAD };
-		// TODO
-
+		for (Item item : new Item[] { COCOA_BEANS, CACTUS, SUGAR_CANE, RED_MUSHROOM, BROWN_MUSHROOM, TWISTING_VINES,
+				WEEPING_VINES, VINE, NETHER_WART, LILY_PAD, DANDELION, POPPY, BLUE_ORCHID, ALLIUM, AZURE_BLUET,
+				RED_TULIP, ORANGE_TULIP, WHITE_TULIP, PINK_TULIP, OXEYE_DAISY, CORNFLOWER, LILY_OF_THE_VALLEY,
+				WITHER_ROSE, SUNFLOWER, LILAC, PEONY, ROSE_BUSH })
+			addRecipe(Degree.ORDINARY, Degree.ORDINARY, item, FERTILIZER, new ItemStack(item, 4), 2, 40);
+		for (Item item : new Item[] { BAMBOO, SWEET_BERRIES, KELP })
+			addRecipe(Degree.ORDINARY, Degree.ORDINARY, item, FERTILIZER, new ItemStack(item, 8), 2, 40);
 		addRecipe(Degree.ORDINARY, Degree.ORDINARY, CHORUS_FLOWER, FERTILIZER, new ItemStack(CHORUS_FRUIT, 2),
 				new ItemStack(CHORUS_FLOWER), 0F, 4F, 2, 40);
-		addRecipe(Degree.ORDINARY, Degree.ORDINARY, BAMBOO, FERTILIZER, new ItemStack(BAMBOO, 8), 2, 40);
 		addRecipe(Degree.ORDINARY, Degree.ORDINARY, OAK_SAPLING, FERTILIZER, new ItemStack(OAK_LOG, 4),
 				new ItemStack(OAK_SAPLING), 0F, 4F, 2, 40);
 		addRecipe(Degree.ORDINARY, Degree.ORDINARY, SPRUCE_SAPLING, FERTILIZER, new ItemStack(SPRUCE_LOG, 4),
@@ -667,23 +693,107 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 				new ItemStack(DARK_OAK_SAPLING), 0F, 4F, 2, 40);
 		{
 			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, CRIMSON_FUNGUS, FERTILIZER);
-			SPECIAL_RECIPE_CODES.add(c);
-			RECIPES.put(c, new Recipe(Degree.ORDINARY, Degree.ORDINARY, CRIMSON_FUNGUS, FERTILIZER,
-					new ItemStack(CRIMSON_STEM, 3), new ItemStack(CRIMSON_FUNGUS), 0F, 4F, 2, 40));
-			RECIPES.put(c + 1, new Recipe(Degree.ORDINARY, Degree.ORDINARY, CRIMSON_FUNGUS, FERTILIZER,
-					new ItemStack(NETHER_WART_BLOCK, 3), new ItemStack(CRIMSON_FUNGUS), 0F, 4F, 2, 40));
+			RECIPES.put(c, Recipe.PLACE_TAKER);
+			SPECIAL_RECIPES.put(c, Arrays.asList(
+					new Recipe(Degree.ORDINARY, Degree.ORDINARY, CRIMSON_FUNGUS, FERTILIZER,
+							new ItemStack(CRIMSON_STEM, 3), new ItemStack(CRIMSON_FUNGUS), 0F, 4F, 2, 40),
+					new Recipe(Degree.ORDINARY, Degree.ORDINARY, CRIMSON_FUNGUS, FERTILIZER,
+							new ItemStack(NETHER_WART_BLOCK, 3), new ItemStack(CRIMSON_FUNGUS), 0F, 4F, 2, 40)));
 		}
 		{
 			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, WARPED_FUNGUS, FERTILIZER);
-			SPECIAL_RECIPE_CODES.add(c);
-			RECIPES.put(c, new Recipe(Degree.ORDINARY, Degree.ORDINARY, WARPED_FUNGUS, FERTILIZER,
-					new ItemStack(WARPED_STEM, 3), new ItemStack(WARPED_FUNGUS), 0F, 4F, 2, 40));
-			RECIPES.put(c + 1, new Recipe(Degree.ORDINARY, Degree.ORDINARY, WARPED_FUNGUS, FERTILIZER,
-					new ItemStack(WARPED_WART_BLOCK, 3), new ItemStack(WARPED_FUNGUS), 0F, 4F, 2, 40));
+			RECIPES.put(c, Recipe.PLACE_TAKER);
+			SPECIAL_RECIPES.put(c,
+					Arrays.asList(
+							new Recipe(Degree.ORDINARY, Degree.ORDINARY, WARPED_FUNGUS, FERTILIZER,
+									new ItemStack(WARPED_STEM, 3), new ItemStack(WARPED_FUNGUS), 0F, 4F, 2, 40),
+							new Recipe(Degree.ORDINARY, Degree.ORDINARY, WARPED_FUNGUS, FERTILIZER,
+									new ItemStack(WARPED_WART_BLOCK, 3), new ItemStack(WARPED_FUNGUS), 0F, 4F, 2, 40)));
 		}
-		addRecipe(Degree.ORDINARY, Degree.ORDINARY, MELON_SEEDS, FERTILIZER, new ItemStack(MELON, 2), 2, 40);
-		addRecipe(Degree.ORDINARY, Degree.ORDINARY, MELON_SEEDS, FERTILIZER, new ItemStack(MELON, 2), 2, 40);
-		addRecipe(Degree.ORDINARY, Degree.ORDINARY, MELON_SEEDS, FERTILIZER, new ItemStack(MELON, 2), 2, 40);
+		Item[] fruits = new Item[] { APRICOT, BANANA, BLUEBERRY, CHERRY, CHINESE_DATE, COCONUT, GOLDEN_GRAPE, GRAPE,
+				GRAPEFRUIT, HAWTHORN, LEMON, LONGAN, LOQUAT, LYCHEE, MANGO, ORANGE, PAYAPA, PEACH, PEAR, PERSIMMON,
+				PLUM, POMEGRANATE, STRAWBERRY, TOMATO };
+		{
+			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, FRUIT_SAPLING, FERTILIZER);
+			RECIPES.put(c, Recipe.PLACE_TAKER);
+			List<Recipe> list = new ArrayList<>();
+			for (Item item : fruits)
+				list.add(new Recipe(Degree.ORDINARY, Degree.ORDINARY, FRUIT_SAPLING, FERTILIZER, new ItemStack(item, 2),
+						new ItemStack(FRUIT_SAPLING), 0F, 4F, 2, 40));
+			SPECIAL_RECIPES.put(c, list);
+		}
+		{
+			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, WOOL_SAPLING, FERTILIZER);
+			RECIPES.put(c, Recipe.PLACE_TAKER);
+			List<Recipe> list = new ArrayList<>();
+			for (Item item : new Item[] { WHITE_WOOL, ORANGE_WOOL, MAGENTA_WOOL, LIGHT_BLUE_WOOL, YELLOW_WOOL,
+					LIME_WOOL, PINK_WOOL, GRAY_WOOL, LIGHT_GRAY_WOOL, CYAN_WOOL, PURPLE_WOOL, BLUE_WOOL, BROWN_WOOL,
+					GREEN_WOOL, RED_WOOL, BLACK_WOOL })
+				list.add(new Recipe(Degree.ORDINARY, Degree.ORDINARY, WOOL_SAPLING, FERTILIZER, new ItemStack(item, 2),
+						new ItemStack(FRUIT_SAPLING), 0F, 4F, 2, 40));
+			SPECIAL_RECIPES.put(c, list);
+		}
+		addRecipe(Degree.ORDINARY, Degree.ORDINARY, SAKURA_SAPLING, FERTILIZER, new ItemStack(CHERRY),
+				new ItemStack(SAKURA_SAPLING), 2F, 5F, 0F, 4F, 2, 40);
+		{
+			Item[] seeds = new Item[] { LYCORIS_RADIATA_SEED, TRIFOLIUM_SEED, BLACKTHORN_SEED, CATTAIL_SEED,
+					MARIGOLD_SEED, HIBISCUS_SEED, HYACINTH_SEED, CALAMUS_SEED, WILD_LILIUM_SEED, BAUHINIA_SEED,
+					FLUFFY_GRASS_SEED, GERBERA_SEED, ESPARTO_SEED, GLOW_FORSYTHIA_SEED, GLAZED_SHADE_SEED, STELERA_SEED,
+					FORAGE_CRYSTAL_SEED, ISORCHID_SEED, BURNING_CHRYSANTHE_SEED, OXALIS_SEED },
+					plants = new Item[] { LYCORIS_RADIATA, TRIFOLIUM, BLACKTHORN, CATTAIL, MARIGOLD, HIBISCUS, HYACINTH,
+							CALAMUS, WILD_LILIUM, BAUHINIA, FLUFFY_GRASS, GERBERA, ESPARTO, GLOW_FORSYTHIA,
+							GLAZED_SHADE, STELERA, FORAGE_CRYSTAL, ISORCHID, BURNING_CHRYSANTHE, OXALIS };
+			for (int i = 0; i < seeds.length; i++) {
+				addRecipe(Degree.ORDINARY, Degree.ORDINARY, seeds[i], FERTILIZER, new ItemStack(plants[i]), 2, 40);
+				addRecipe(Degree.ORDINARY, Degree.ORDINARY, plants[i], FERTILIZER, new ItemStack(plants[i], 4), 2, 40);
+			}
+		}
+		/**
+		 * 常温低压
+		 */
+		addRecipe(Degree.ORDINARY, Degree.LOW, PHANTOM_MEMBRANE, POTION, new ItemStack(AGENTIA_OF_LIGHTNESS), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, GOLDEN_CARROT, POTION, new ItemStack(AGENTIA_OF_EYESIGHT), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, MAGMA_CREAM, POTION, new ItemStack(AGENTIA_OF_FIRE_SHIELD), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, PUFFERFISH, POTION, new ItemStack(AGENTIA_OF_WATERLESS), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, ENDER_PEARL, POTION, new ItemStack(AGENTIA_OF_TRANSPARENTNESS), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, RABBIT_FOOT, POTION, new ItemStack(AGENTIA_OF_BOUNCE), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, SUGAR, POTION, new ItemStack(AGENTIA_OF_SHARPNESS), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, BLAZE_POWDER, POTION, new ItemStack(AGENTIA_OF_BLOOD), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, GHAST_TEAR, POTION, new ItemStack(AGENTIA_OF_EXTREMENESS), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, GLISTERING_MELON_SLICE, POTION, new ItemStack(AGENTIA_OF_SHIELD), 4,
+				200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, ENCHANTED_IRON, POTION, new ItemStack(AGENTIA_OF_TIDE), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, ENCHANTED_DIAMOND, POTION, new ItemStack(AGENTIA_OF_CHAIN), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, WING_OF_SKY, POTION, new ItemStack(AGENTIA_OF_SKY), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, HEART_OF_CRYSTAL, POTION, new ItemStack(AGENTIA_OF_OCEAN), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, LIMB_OF_RIDGE, POTION, new ItemStack(AGENTIA_OF_RIDGE), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, SOUL_OF_DIRT, POTION, new ItemStack(AGENTIA_OF_DIRT), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, CERTIFICATION_OF_EARTH, POTION, new ItemStack(AGENTIA_OF_EARTH), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, NOVA_OF_FIRE, POTION, new ItemStack(AGENTIA_OF_FIRE), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, SPIRIT_OF_LIFE, POTION, new ItemStack(AGENTIA_OF_LIFE), 4, 200);
+		/*
+		 * 低温高压
+		 */
+		for (Item item : fruits)
+			addRecipe(Degree.ORDINARY, Degree.LOW, HONEY_BOTTLE, item, new ItemStack(COLD_DRINK), 2, 100);
+		addRecipe(Degree.ORDINARY, Degree.LOW, HONEY_BOTTLE, APPLE, new ItemStack(COLD_DRINK), 2, 100);
+		/**
+		 * 低温常压
+		 */
+		addRecipe(Degree.ORDINARY, Degree.LOW, LAVA_BUCKET, COBBLESTONE_PLUGIN, new ItemStack(COBBLESTONE, 4), 1, 20);
+		addRecipe(Degree.ORDINARY, Degree.LOW, LAVA_BUCKET, STONE_PLUGIN, new ItemStack(STONE, 4), 1, 20);
+		addRecipe(Degree.ORDINARY, Degree.LOW, LAVA_BUCKET, BLACKSTONE_PLUGIN, new ItemStack(COBBLESTONE, 4), 1, 20);
+		addRecipe(Degree.ORDINARY, Degree.LOW, LAVA_BUCKET, NETHERRACK_PLUGIN, new ItemStack(COBBLESTONE, 4), 1, 20);
+		addRecipe(Degree.ORDINARY, Degree.LOW, LAVA_BUCKET, END_STONE_PLUGIN, new ItemStack(COBBLESTONE, 1), 1, 20);
+		addRecipe(Degree.ORDINARY, Degree.LOW, LAVA_BUCKET, BASALT_PLUGIN, new ItemStack(COBBLESTONE, 3), 1, 20);
+		/*
+		 * 低温低压
+		 */
+		addRecipe(Degree.ORDINARY, Degree.LOW, POTION, AMMONIA_REFRIGERANT, new ItemStack(SNOW_BLOCK),
+				new ItemStack(AMMONIA_REFRIGERANT), 1, 20);
+		addRecipe(Degree.ORDINARY, Degree.LOW, POTION, GREEN_FORCE_OF_WATER, new ItemStack(SNOW_BLOCK),
+				new ItemStack(AMMONIA_REFRIGERANT), 1, 20);
+
 	}
 
 	public enum Degree {
@@ -691,6 +801,8 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	}
 
 	public static class Recipe {
+		public static final Recipe PLACE_TAKER = new Recipe(null, null, AIR, AIR, ItemStack.EMPTY, ItemStack.EMPTY, 0,
+				0, 0, 0);
 		public final Degree temperature;
 		public final Degree pressure;
 		public final Item input1, input2;
