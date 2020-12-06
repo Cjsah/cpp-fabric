@@ -53,13 +53,13 @@ public class AllInOneMachineScreenHandler extends AbstractRecipeScreenHandler<In
 		addSlot(new ResultSlot(blockEntity, 3, x(3), y(2)));
 		addSlot(new ResultSlot(blockEntity, 4, x(4), y(2)));
 		for (int m = 0; m < 3; ++m) {
-            for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(player.inventory, l + m * 9 + 9, 8 + l * 18, 84 + m * 18));
-            }
-        }
-        for (int m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(player.inventory, m, 8 + m * 18, 142));
-        }
+			for (int l = 0; l < 9; ++l) {
+				this.addSlot(new Slot(player.inventory, l + m * 9 + 9, 8 + l * 18, 84 + m * 18));
+			}
+		}
+		for (int m = 0; m < 9; ++m) {
+			this.addSlot(new Slot(player.inventory, m, 8 + m * 18, 142));
+		}
 		blockEntity.onOpen(player);
 		addProperties(blockEntity.propertyDelegate);
 	}
@@ -69,7 +69,7 @@ public class AllInOneMachineScreenHandler extends AbstractRecipeScreenHandler<In
 	 */
 	@Override
 	public void populateRecipeFinder(RecipeFinder finder) {
-		blockEntity.provideRecipeInputs(finder);
+//		blockEntity.provideRecipeInputs(finder);
 	}
 
 	@Override
@@ -146,43 +146,45 @@ public class AllInOneMachineScreenHandler extends AbstractRecipeScreenHandler<In
 		if (slot != null && slot.hasStack()) {
 			ItemStack itemStack2 = slot.getStack();
 			itemStack = itemStack2.copy();
-			if (index == 0) {
-				itemStack2.getItem().onCraft(itemStack2, world, player);
-				if (!this.insertItem(itemStack2, 10, 46, true)) {
+			if (index >= 0 && index <= 4) {
+				if (!this.insertItem(itemStack2, 5, 41, true)) {
 					return ItemStack.EMPTY;
 				}
-
 				slot.onStackChanged(itemStack2, itemStack);
-			} else if (index >= 10 && index < 46) {
-				if (!this.insertItem(itemStack2, 1, 10, false)) {
-					if (index < 37) {
-						if (!this.insertItem(itemStack2, 37, 46, false)) {
-							return ItemStack.EMPTY;
-						}
-					} else if (!this.insertItem(itemStack2, 10, 37, false)) {
+			} else {
+				if (getSlot(2).canInsert(itemStack2)) {
+					if (!this.insertItem(itemStack2, 2, 3, false))
 						return ItemStack.EMPTY;
-					}
+				} else {
+					if (!this.insertItem(itemStack2, 0, 2, false))
+						return ItemStack.EMPTY;
+					//TODO 尽量让两个原料格物品不同
+//					ItemStack input1 = getSlot(0).getStack(), input2 = getSlot(1).getStack();
+//					if (input1.isEmpty() && !input2.getItem().equals(itemStack2.getItem())) {
+//						if (!insertItem(itemStack2, 0, 1, false))
+//							return ItemStack.EMPTY;
+//					} else if (input2.isEmpty() && !input1.getItem().equals(itemStack2.getItem())) {
+//						if (insertItem(itemStack2, 1, 2, false))
+//							return ItemStack.EMPTY;
+//					} else if (input1.isEmpty() && input2.isEmpty()) {
+//						if (insertItem(itemStack2, 0, 2, false))
+//						return ItemStack.EMPTY;
+//					}
 				}
-			} else if (!this.insertItem(itemStack2, 10, 46, false)) {
+			}
+			if (!this.insertItem(itemStack2, 5, 41, false)) {
 				return ItemStack.EMPTY;
 			}
-
 			if (itemStack2.isEmpty()) {
 				slot.setStack(ItemStack.EMPTY);
 			} else {
 				slot.markDirty();
 			}
-
 			if (itemStack2.getCount() == itemStack.getCount()) {
 				return ItemStack.EMPTY;
 			}
-
-			ItemStack itemStack3 = slot.onTakeItem(player, itemStack2);
-			if (index == 0) {
-				player.dropItem(itemStack3, false);
-			}
+			slot.onTakeItem(player, itemStack2);
 		}
-
 		return itemStack;
 	}
 
@@ -199,5 +201,18 @@ public class AllInOneMachineScreenHandler extends AbstractRecipeScreenHandler<In
 	/*
 	 * 以下是自定义方法
 	 */
-	
+
+	public class InputSlot extends Slot {
+		public final int index;
+
+		public InputSlot(Inventory inventory, int index, int x, int y) {
+			super(inventory, index, x, y);
+			this.index = index;
+		}
+
+		@Override
+		public boolean canInsert(ItemStack stack) {
+			return super.canInsert(stack);
+		}
+	}
 }
