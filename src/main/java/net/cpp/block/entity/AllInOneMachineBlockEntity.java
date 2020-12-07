@@ -298,10 +298,10 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 				}
 			}
 			if (!getStack(3).isEmpty()) {
-				setStack(3, output(getStack(3).copy()));
+				setStack(3, output(getStack(3)));
 			}
 			if (!getStack(4).isEmpty()) {
-				setStack(4, output(getStack(4).copy()));
+				setStack(4, output(getStack(4)));
 			}
 			if (!reciped)
 				workTimeTotal = 0;
@@ -311,10 +311,6 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	/*
 	 * 以下是Inventory的方法
 	 */
-	@Override
-	public int size() {
-		return 5;
-	}
 
 	@Override
 	public void onOpen(PlayerEntity player) {

@@ -71,4 +71,12 @@ public class CraftingMachineScreen extends HandledScreen<CraftingMachineScreenHa
 	public void removed() {
 		super.removed();
 	}
+
+	@Override
+	protected void drawMouseoverTooltip(MatrixStack matrices, int x, int y) {
+		if (oButton.isHovered()) {
+			renderTooltip(matrices, oButton.getTooltip(), x, y);
+		}
+		super.drawMouseoverTooltip(matrices, x, y);
+	}
 }
