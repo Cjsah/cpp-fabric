@@ -198,26 +198,6 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	}
 
 	/*
-	 * 以下是SidedInventory的方法
-	 */
-//	@Override
-//	public int[] getAvailableSlots(Direction side) {
-//		return AVAILABLE_SLOTS;
-//	}
-//
-//	@Override
-//	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-//		return slot == 0 && !getStack(1).getItem().equals(stack.getItem())
-//				|| slot == 1 && !getStack(0).getItem().equals(stack.getItem())
-//				|| slot == 2 && stack.getItem().equals(EXPERIENCE_BOTTLE);
-//	}
-//
-//	@Override
-//	public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-//		return false;
-//	}
-
-	/*
 	 * 以下是RecipeUnlocker的方法
 	 */
 //	@Override
@@ -294,9 +274,9 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 							reciped = true;
 							if (workTime >= recipe.time) {
 								if (!UNCONSUMABLE.contains(getStack(0).getItem()))
-									getStack(0).increment(-1);
+									getStack(0).decrement(1);
 								if (!UNCONSUMABLE.contains(getStack(1).getItem()))
-									getStack(1).increment(-1);
+									getStack(1).decrement(1);
 								if (getStack(3).isEmpty()) {
 									setStack(3, outputs[0]);
 								} else
@@ -309,9 +289,9 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 								workTime = 0;
 								expStorage -= recipe.experience;
 								lastTickOutputs = recipe.output();
+								lastTickRecipeCode = c;
 							} else {
-//								workTime++;
-								workTime += 10;
+								workTime++;
 							}
 						}
 					}
@@ -340,6 +320,22 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	public void onOpen(PlayerEntity player) {
 		propertyDelegate.set(3, propertyDelegate.get(3));
 		super.onOpen(player);
+//		if (world.isClient)
+//			return;
+//		int rand = new Random(new File(".").getAbsolutePath().hashCode()).nextInt();
+//		System.out.println(rand);
+//		for (Map.Entry<Item, ItemStack> entry1 : ORE_RATES.entrySet()) {
+//			for (Map.Entry<Item, ItemStack> entry2 : ORE_RATES.entrySet()) {
+//				if (entry1.equals(entry2))
+//					break;
+//				float randf = (entry1.getValue().hashCode() ^ entry2.getValue().hashCode() ^ rand >>> 1) % 90 / 30f + 1;
+//				System.out.println(randf);
+//				float c1 = randf * entry1.getValue().getCount();
+//				float c2 = (5 - randf) * entry2.getValue().getCount();
+//				addRecipe(Degree.HIGH, Degree.HIGH, entry1.getKey(), entry2.getKey(), entry1.getValue(),
+//						entry2.getValue(), c1, c1 + 1, c2, c2, 4, 200);
+//			}
+//		}
 	}
 
 	/*
@@ -415,10 +411,6 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	public boolean isWorking() {
 		return workTime > 0;
 	}
-
-//	public Recipe getRecipe() {
-//		return RECIPES.get(getHashCode(temperature, pressure, getStack(0).getItem(), getStack(1).getItem()));
-//	}
 
 	public int getExpStorage() {
 		return expStorage;
@@ -507,12 +499,11 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 			for (Map.Entry<Item, ItemStack> entry2 : ORE_RATES.entrySet()) {
 				if (entry1.equals(entry2))
 					break;
-				float randf = (entry1.getValue().hashCode() ^ entry2.getValue().hashCode() ^ rand) % 90 / 30f + 1;
+				float randf = (entry1.getValue().hashCode() ^ entry2.getValue().hashCode() ^ rand >>> 1) % 90 / 30f + 1;
+				float c1 = randf * entry1.getValue().getCount();
+				float c2 = (5 - randf) * entry2.getValue().getCount();
 				addRecipe(Degree.HIGH, Degree.HIGH, entry1.getKey(), entry2.getKey(), entry1.getValue(),
-						entry2.getValue(), randf * entry1.getValue().getCount(),
-						randf * entry1.getValue().getCount() + 1, (5 - randf) * entry2.getValue().getCount(),
-						(5 - randf) * entry2.getValue().getCount() + 1, 4, 200);
-
+						entry2.getValue(), c1, c1 + 1, c2, c2, 4, 200);
 			}
 		}
 		/*
@@ -848,8 +839,6 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 		}
 
 		public ItemStack[] output() {
-//			System.out.println(1);
-//			System.out.println(output2);
 			ItemStack[] rst = new ItemStack[2];
 			rst[0] = output1.copy();
 			rst[1] = output2.copy();
@@ -859,14 +848,10 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 				rst[0].setCount(certianCount(count1Min, count1Max));
 			}
 			if (!output2.isEmpty()) {
-//				System.out.println(count2Max + " " + );
 				if (count2Min == count2Max) {
 					rst[1].setCount((int) count2Max);
 				} else {
-//					System.out.println(2);
 					rst[1].setCount(certianCount(count2Min, count2Max));
-//					if (rst[1].getCount() == 0)
-//						rst[1] = ItemStack.EMPTY;
 				}
 			}
 			return rst;
@@ -874,7 +859,6 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 
 		public static int certianCount(float min, float max) {
 			int rst = (int) Math.floor(min + Math.random() * (max - min));
-//			System.out.println(String.format("[%f, %f)->%d%n", min, max, rst));
 			return rst;
 		}
 	}

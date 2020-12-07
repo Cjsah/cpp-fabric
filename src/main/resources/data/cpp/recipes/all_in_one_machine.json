@@ -12,13 +12,13 @@
     "B": {
       "item": "furnace"
     },
-    "B": {
+    "C": {
       "item": "barrel"
     },
     "D": {
       "item": "cpp:enchanted_gold"
     },
-    "D": {
+    "E": {
       "item": "cpp:soul_of_dirt"
     }
   },

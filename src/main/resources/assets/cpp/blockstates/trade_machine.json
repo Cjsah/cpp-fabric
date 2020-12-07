@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "cpp:block/trade_machine"
+    }
+  }
+}
