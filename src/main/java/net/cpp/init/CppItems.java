@@ -12,6 +12,13 @@ import net.minecraft.util.registry.Registry;
 import static net.cpp.Craftingpp.CPP_GROUP_MACHINE;
 import static net.cpp.Craftingpp.CPP_GROUP_MISC;
 import static net.cpp.Craftingpp.CPP_GROUP_TOOL;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import static net.cpp.Craftingpp.CPP_GROUP_FOOD;
 import static net.cpp.Craftingpp.CPP_GROUP_PLANT;
 
@@ -369,22 +376,29 @@ public final class CppItems {
     public static final Item RED_SIGN;
     public static final Item BLACK_SIGN;
     public static final Item GLASS_SIGN;
-
+    public static final Map<Item, Item> SEEDS_TO_FLOWERS;
+    public static final Set<Item> FRUITS;
     static {
-        SHARD_OF_THE_DARKNESS = registerItem("shard_of_the_darkness", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
+        SHARD_OF_THE_DARKNESS = registerItem("shard_of_the_darkness",
+                new Item(new Item.Settings().group(CPP_GROUP_MISC)));
         WING_OF_SKY = registerItem("wing_of_sky", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
         HEART_OF_CRYSTAL = registerItem("heart_of_crystal", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
         LIMB_OF_RIDGE = registerItem("limb_of_ridge", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
         SOUL_OF_DIRT = registerItem("soul_of_dirt", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-        CERTIFICATION_OF_EARTH = registerItem("certification_of_earth", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
+        CERTIFICATION_OF_EARTH = registerItem("certification_of_earth",
+                new Item(new Item.Settings().group(CPP_GROUP_MISC)));
         NOVA_OF_FIRE = registerItem("nova_of_fire", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
         SPIRIT_OF_LIFE = registerItem("spirit_of_life", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 
         EMPTY_PLUGIN = registerItem("empty_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-        LOW_TEMPERATURE_PLUGIN = registerItem("low_temperature_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-        LOW_PRESSURE_PLUGIN = registerItem("low_pressure_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-        HIGH_TEMPERATURE_PLUGIN = registerItem("high_temperature_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-        HIGH_PRESSURE_PLUGIN = registerItem("high_pressure_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+        LOW_TEMPERATURE_PLUGIN = registerItem("low_temperature_plugin",
+                new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+        LOW_PRESSURE_PLUGIN = registerItem("low_pressure_plugin",
+                new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+        HIGH_TEMPERATURE_PLUGIN = registerItem("high_temperature_plugin",
+                new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+        HIGH_PRESSURE_PLUGIN = registerItem("high_pressure_plugin",
+                new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
         COBBLESTONE_PLUGIN = registerItem("cobblestone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
         STONE_PLUGIN = registerItem("stone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
         BLACKSTONE_PLUGIN = registerItem("blackstone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
@@ -401,13 +415,17 @@ public final class CppItems {
         COAL_NUGGET = registerItem("coal_nugget", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
         CINDER = registerItem("cinder", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
         SPLINT = registerItem("splint", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-        Registry.register(Registry.ITEM, new Identifier("cpp:rare_earth_glass"), new BlockItem(CppBlocks.RARE_EARTH_GLASS, new Item.Settings().group(CPP_GROUP_MISC)));
-        Registry.register(Registry.ITEM, new Identifier("cpp:reinforced_glass"), new BlockItem(CppBlocks.REINFORCED_GLASS, new Item.Settings().group(CPP_GROUP_MISC)));
+        Registry.register(Registry.ITEM, new Identifier("cpp:rare_earth_glass"),
+                new BlockItem(CppBlocks.RARE_EARTH_GLASS, new Item.Settings().group(CPP_GROUP_MISC)));
+        Registry.register(Registry.ITEM, new Identifier("cpp:reinforced_glass"),
+                new BlockItem(CppBlocks.REINFORCED_GLASS, new Item.Settings().group(CPP_GROUP_MISC)));
         SILICON_PLATE = registerItem("silicon_plate", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
         MOON_SHARD = registerItem("moon_shard", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
         SUN_SHARD = registerItem("sun_shard", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-        Registry.register(Registry.ITEM, new Identifier("cpp:moon_stone"), new BlockItem(CppBlocks.MOON_STONE, new Item.Settings().group(CPP_GROUP_MISC)));
-        Registry.register(Registry.ITEM, new Identifier("cpp:sun_stone"), new BlockItem(CppBlocks.SUN_STONE, new Item.Settings().group(CPP_GROUP_MISC)));
+        Registry.register(Registry.ITEM, new Identifier("cpp:moon_stone"),
+                new BlockItem(CppBlocks.MOON_STONE, new Item.Settings().group(CPP_GROUP_MISC)));
+        Registry.register(Registry.ITEM, new Identifier("cpp:sun_stone"),
+                new BlockItem(CppBlocks.SUN_STONE, new Item.Settings().group(CPP_GROUP_MISC)));
         CLAY_BUCKET = registerItem("clay_bucket", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 
         COPPER_DUST = registerItem("copper_dust", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
@@ -433,16 +451,24 @@ public final class CppItems {
         AMMONIA_REFRIGERANT = registerItem("ammonia_refrigerant", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 
         BLUE_FORCE_OF_SKY = registerItem("blue_force_of_sky", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-        GREEN_FORCE_OF_WATER = registerItem("green_force_of_water", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-        CYAN_FORCE_OF_MOUNTAIN = registerItem("cyan_force_of_mountain", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-        ORANGE_FORCE_OF_DIRT = registerItem("orange_force_of_dirt", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-        YELLOW_FORCE_OF_EARTH = registerItem("yellow_force_of_earth", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+        GREEN_FORCE_OF_WATER = registerItem("green_force_of_water",
+                new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+        CYAN_FORCE_OF_MOUNTAIN = registerItem("cyan_force_of_mountain",
+                new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+        ORANGE_FORCE_OF_DIRT = registerItem("orange_force_of_dirt",
+                new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+        YELLOW_FORCE_OF_EARTH = registerItem("yellow_force_of_earth",
+                new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         RED_FORCE_OF_FIRE = registerItem("red_force_of_fire", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-        PURPLE_FORCE_OF_LIFE = registerItem("purple_force_of_life", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-        WHITE_FORCE_OF_LIGHTNING = registerItem("white_force_of_lightning", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+        PURPLE_FORCE_OF_LIFE = registerItem("purple_force_of_life",
+                new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+        WHITE_FORCE_OF_LIGHTNING = registerItem("white_force_of_lightning",
+                new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         BLACK_FORCE_OF_MOON = registerItem("black_force_of_moon", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-        PORTABLE_CRAFTING_TABLE = registerItem("portable_crafting_table", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-        PORTABLE_CRAFTING_MACHINE = registerItem("portable_crafting_machine", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+        PORTABLE_CRAFTING_TABLE = registerItem("portable_crafting_table",
+                new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+        PORTABLE_CRAFTING_MACHINE = registerItem("portable_crafting_machine",
+                new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         MAGNET = registerItem("magnet", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         TIME_CHECKER = registerItem("time_checker", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         TIME_CONDITIONER = registerItem("time_conditioner", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
@@ -471,120 +497,342 @@ public final class CppItems {
         HERDER_GOLEM = registerItem("herder_golem", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         SANTA_GIFT = registerItem("santa_gift", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 
-        KETCHUP = registerItem("ketchup", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
-        STRAWBERRY_JAM = registerItem("strawberry_jam", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
-        BLUE_BERRY_JAM = registerItem("blue_berry_jam", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
-        ORANGE_JAM = registerItem("orange_jam", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
-        CHERRY_JAM = registerItem("cherry_jam", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
-        APPLE_JAM = registerItem("apple_jam", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
-        YEAST_POWDER = registerItem("yeast_powder", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
-        BUTTER = registerItem("butter", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
-        CHEESE = registerItem("cheese", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
-        RAISIN = registerItem("raisin", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 200, 0), 1.0F).build())));
-        TOFFEE_APPLE = registerItem("toffee_apple", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())));
-        CANDIED_HAW = registerItem("candied_haw", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build()).maxCount(16)));
-        CUPCAKE = registerItem("cupcake", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
-        CAKE_ROLL = registerItem("cake_roll", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
-        CROISSANT = registerItem("croissant", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
-        CARAMEL_PUDDING = registerItem("caramel_pudding", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build()).maxCount(16)));
-        DOUGHNUT = registerItem("doughnut", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(7).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())));
-        PURPLE_DOUGHNUT = registerItem("purple_doughnut", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(7).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())));
-        PINK_DOUGHNUT = registerItem("pink_doughnut", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(7).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())));
-        WHITE_DOUGHNUT = registerItem("white_doughnut", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(7).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())));
-        BLUE_DOUGHNUT = registerItem("blue_doughnut", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(7).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())));
-        GREEN_DOUGHNUT = registerItem("green_doughnut", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(7).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())));
-        HONEY_PANCAKE = registerItem("honey_pancake", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build()).maxCount(16)));
-        BOILED_EGG = registerItem("boiled_egg", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
-        BAKED_CARROT = registerItem("baked_carrot", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
-        BACON = registerItem("bacon", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).build())));
-        VEGETABLE_KEBAB = registerItem("vegetable_kebab", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 600, 0), 1.0F).build()).maxCount(16)));
-        BEEF_KEBAB = registerItem("beef_kebab", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(16).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build()).maxCount(16)));
-        PORK_KEBAB = registerItem("pork_kebab", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(16).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build()).maxCount(16)));
-        LAMB_KEBAB = registerItem("lamb_kebab", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(14).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build()).maxCount(16)));
-        CHICKEN_KEBAB = registerItem("chicken_kebab", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(14).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build()).maxCount(16)));
-        RAW_COLORFUL_VEGETABLE = registerItem("raw_colorful_vegetable", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).build()).maxCount(1)));
-        RAW_BRAISED_PORK_WITH_POTATOES = registerItem("raw_braised_pork_with_potatoes", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).build()).maxCount(1)));
-        RAW_BRAISED_BEEF_WITH_POTATOES = registerItem("raw_braised_beef_with_potatoes", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).build()).maxCount(1)));
-        RAW_RABBIT_STEW = registerItem("raw_rabbit_stew", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).build()).maxCount(1)));
-        COLORFUL_VEGETABLE = registerItem("colorful_vegetable", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(14).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 600, 0), 1.0F).build()).maxCount(1)));
-        BRAISED_PORK_WITH_POTATOES = registerItem("braised_pork_with_potatoes", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(16).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build()).maxCount(1)));
-        BRAISED_BEEF_WITH_POTATOES = registerItem("braised_beef_with_potatoes", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(16).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build()).maxCount(1)));
-        RABBIT_STEW = registerItem("rabbit_stew", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(16).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build()).maxCount(1)));
-        DUMPLING = registerItem("dumpling", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(8).saturationModifier(0.3F).build())));
-        MEAT_FLOSS_BREAD = registerItem("meat_floss_bread", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build()).maxCount(16)));
-        CHRISTMAS_ROAST_CHICKEN = registerItem("christmas_roast_chicken", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(16).saturationModifier(0.3F).build()).maxCount(8)));
-        FISH_AND_CHIPS = registerItem("fish_and_chips", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(16).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build()).maxCount(8)));
-        BURGER = registerItem("burger", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(20).saturationModifier(0.3F).build()).maxCount(8)));
-        PIZZA = registerItem("pizza", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
-        SUSHI = registerItem("sushi", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
-        QINGTUAN = registerItem("qingtuan", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
-        SAKURA_MOCHI = registerItem("sakura_mochi", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
-        ZONGZI = registerItem("zongzi", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
-        ZONGZI_BOILED_EGG = registerItem("zongzi_boiled_egg", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
-        ZONGZI_CHINESE_DATA = registerItem("zongzi_chinese_data", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
-        ZONGZI_COOKED_PORKCHOP = registerItem("zongzi_cooked_porkchop", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
-        ZONGZI_SALT = registerItem("zongzi_salt", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
-        ZONGZI_SODA_WATER = registerItem("zongzi_soda_water", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
-        ZONGZI_HONEY_BOTTLE = registerItem("zongzi_honey_bottle", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
-        SANDWICH = registerItem("sandwich", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build()).maxCount(16)));
-        STARGAZY_PIE = registerItem("stargazy_pie", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(16).saturationModifier(0.3F).build()).maxCount(8)));
-        BAKED_SHROOMLIGHT = registerItem("baked_shroomlight", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 600, 0), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 600, 0), 1.0F).build())));
-        SOUL_FRIED_CHICKEN = registerItem("soul_fried_chicken", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 600, 0), 1.0F).build()).maxCount(16)));
-        LUXURIOUS_NETHERITE_BARBECUE = registerItem("luxurious_netherite_barbecue", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(20).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build()).maxCount(1)));
-        ASSORTED_ROOT_CANDY = registerItem("assorted_root_candy", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build()).maxCount(16)));
-        NETHERITE_MUSHROOM_STEW = registerItem("netherite_mushroom_stew", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(12).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 200, 0), 1.0F).build()).maxCount(1)));
-        DOUBLE_COLOR_VINE_SALAD = registerItem("double_color_vine_salad", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(6).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 600, 0), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 200, 0), 1.0F).build()).maxCount(1)));
-        COLD_DRINK = registerItem("cold_drink", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(6).saturationModifier(0.3F).build()).maxCount(16)));
+        KETCHUP = registerItem("ketchup", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
+        STRAWBERRY_JAM = registerItem("strawberry_jam", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
+        BLUE_BERRY_JAM = registerItem("blue_berry_jam", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
+        ORANGE_JAM = registerItem("orange_jam", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
+        CHERRY_JAM = registerItem("cherry_jam", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
+        APPLE_JAM = registerItem("apple_jam", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
+        YEAST_POWDER = registerItem("yeast_powder", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
+        BUTTER = registerItem("butter", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
+        CHEESE = registerItem("cheese", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
+        RAISIN = registerItem("raisin",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 200, 0), 1.0F).build())));
+        TOFFEE_APPLE = registerItem("toffee_apple",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())));
+        CANDIED_HAW = registerItem("candied_haw",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())
+                        .maxCount(16)));
+        CUPCAKE = registerItem("cupcake", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
+        CAKE_ROLL = registerItem("cake_roll", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
+        CROISSANT = registerItem("croissant", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
+        CARAMEL_PUDDING = registerItem("caramel_pudding",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())
+                        .maxCount(16)));
+        DOUGHNUT = registerItem("doughnut",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(7).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())));
+        PURPLE_DOUGHNUT = registerItem("purple_doughnut",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(7).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())));
+        PINK_DOUGHNUT = registerItem("pink_doughnut",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(7).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())));
+        WHITE_DOUGHNUT = registerItem("white_doughnut",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(7).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())));
+        BLUE_DOUGHNUT = registerItem("blue_doughnut",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(7).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())));
+        GREEN_DOUGHNUT = registerItem("green_doughnut",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(7).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())));
+        HONEY_PANCAKE = registerItem("honey_pancake",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())
+                        .maxCount(16)));
+        BOILED_EGG = registerItem("boiled_egg", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
+        BAKED_CARROT = registerItem("baked_carrot", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
+        BACON = registerItem("bacon", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).build())));
+        VEGETABLE_KEBAB = registerItem("vegetable_kebab",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 600, 0), 1.0F).build())
+                        .maxCount(16)));
+        BEEF_KEBAB = registerItem("beef_kebab",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(16).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build())
+                        .maxCount(16)));
+        PORK_KEBAB = registerItem("pork_kebab",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(16).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build())
+                        .maxCount(16)));
+        LAMB_KEBAB = registerItem("lamb_kebab",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(14).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build())
+                        .maxCount(16)));
+        CHICKEN_KEBAB = registerItem("chicken_kebab",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(14).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build())
+                        .maxCount(16)));
+        RAW_COLORFUL_VEGETABLE = registerItem("raw_colorful_vegetable",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).build()).maxCount(1)));
+        RAW_BRAISED_PORK_WITH_POTATOES = registerItem("raw_braised_pork_with_potatoes",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).build()).maxCount(1)));
+        RAW_BRAISED_BEEF_WITH_POTATOES = registerItem("raw_braised_beef_with_potatoes",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).build()).maxCount(1)));
+        RAW_RABBIT_STEW = registerItem("raw_rabbit_stew", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).build()).maxCount(1)));
+        COLORFUL_VEGETABLE = registerItem("colorful_vegetable",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(14).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 600, 0), 1.0F).build())
+                        .maxCount(1)));
+        BRAISED_PORK_WITH_POTATOES = registerItem("braised_pork_with_potatoes",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(16).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build())
+                        .maxCount(1)));
+        BRAISED_BEEF_WITH_POTATOES = registerItem("braised_beef_with_potatoes",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(16).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build())
+                        .maxCount(1)));
+        RABBIT_STEW = registerItem("rabbit_stew",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(16).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build())
+                        .maxCount(1)));
+        DUMPLING = registerItem("dumpling", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(8).saturationModifier(0.3F).build())));
+        MEAT_FLOSS_BREAD = registerItem("meat_floss_bread",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())
+                        .maxCount(16)));
+        CHRISTMAS_ROAST_CHICKEN = registerItem("christmas_roast_chicken",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(16).saturationModifier(0.3F).build()).maxCount(8)));
+        FISH_AND_CHIPS = registerItem("fish_and_chips",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(16).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())
+                        .maxCount(8)));
+        BURGER = registerItem("burger", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(20).saturationModifier(0.3F).build()).maxCount(8)));
+        PIZZA = registerItem("pizza", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
+        SUSHI = registerItem("sushi", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
+        QINGTUAN = registerItem("qingtuan", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
+        SAKURA_MOCHI = registerItem("sakura_mochi", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
+        ZONGZI = registerItem("zongzi", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
+        ZONGZI_BOILED_EGG = registerItem("zongzi_boiled_egg", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
+        ZONGZI_CHINESE_DATA = registerItem("zongzi_chinese_data", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
+        ZONGZI_COOKED_PORKCHOP = registerItem("zongzi_cooked_porkchop",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
+        ZONGZI_SALT = registerItem("zongzi_salt", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
+        ZONGZI_SODA_WATER = registerItem("zongzi_soda_water", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
+        ZONGZI_HONEY_BOTTLE = registerItem("zongzi_honey_bottle", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
+        SANDWICH = registerItem("sandwich",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build())
+                        .maxCount(16)));
+        STARGAZY_PIE = registerItem("stargazy_pie", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(16).saturationModifier(0.3F).build()).maxCount(8)));
+        BAKED_SHROOMLIGHT = registerItem("baked_shroomlight", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F)
+                        .statusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 600, 0), 1.0F)
+                        .statusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 600, 0), 1.0F).build())));
+        SOUL_FRIED_CHICKEN = registerItem("soul_fried_chicken", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F)
+                        .statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 600, 0), 1.0F).build())
+                .maxCount(16)));
+        LUXURIOUS_NETHERITE_BARBECUE = registerItem("luxurious_netherite_barbecue",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(20).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build())
+                        .maxCount(1)));
+        ASSORTED_ROOT_CANDY = registerItem("assorted_root_candy",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.SPEED, 600, 0), 1.0F).build())
+                        .maxCount(16)));
+        NETHERITE_MUSHROOM_STEW = registerItem("netherite_mushroom_stew",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(12).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 200, 0), 1.0F).build())
+                        .maxCount(1)));
+        DOUBLE_COLOR_VINE_SALAD = registerItem("double_color_vine_salad",
+                new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                        .food((new FoodComponent.Builder()).hunger(6).saturationModifier(0.3F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 600, 0), 1.0F)
+                                .statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 200, 0), 1.0F).build())
+                        .maxCount(1)));
+        COLD_DRINK = registerItem("cold_drink", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(6).saturationModifier(0.3F).build()).maxCount(16)));
 
-        APRICOT = registerItem("apricot", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        BANANA = registerItem("banana", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        BLUEBERRY = registerItem("blueberry", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        CHERRY = registerItem("cherry", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        CHINESE_DATE = registerItem("chinese_date", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        COCONUT = registerItem("coconut", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        GOLDEN_GRAPE = registerItem("golden_grape", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        GRAPE = registerItem("grape", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        GRAPEFRUIT = registerItem("grapefruit", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        HAWTHORN = registerItem("hawthorn", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        LEMON = registerItem("lemon", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        LONGAN = registerItem("longan", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        LOQUAT = registerItem("loquat", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        LYCHEE = registerItem("lychee", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        MANGO = registerItem("mango", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        ORANGE = registerItem("orange", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        PAYAPA = registerItem("payapa", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        PEACH = registerItem("peach", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        PEAR = registerItem("pear", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        PERSIMMON = registerItem("persimmon", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        PLUM = registerItem("plum", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        POMEGRANATE = registerItem("pomegranate", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        STRAWBERRY = registerItem("strawberry", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        TOMATO = registerItem("tomato", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
-        CITRUS = registerItem("citrus", new Item(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        APRICOT = registerItem("apricot", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        BANANA = registerItem("banana", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        BLUEBERRY = registerItem("blueberry", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        CHERRY = registerItem("cherry", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        CHINESE_DATE = registerItem("chinese_date", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        COCONUT = registerItem("coconut", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        GOLDEN_GRAPE = registerItem("golden_grape", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        GRAPE = registerItem("grape", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        GRAPEFRUIT = registerItem("grapefruit", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        HAWTHORN = registerItem("hawthorn", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        LEMON = registerItem("lemon", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        LONGAN = registerItem("longan", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        LOQUAT = registerItem("loquat", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        LYCHEE = registerItem("lychee", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        MANGO = registerItem("mango", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        ORANGE = registerItem("orange", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        PAYAPA = registerItem("payapa", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        PEACH = registerItem("peach", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        PEAR = registerItem("pear", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        PERSIMMON = registerItem("persimmon", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        PLUM = registerItem("plum", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        POMEGRANATE = registerItem("pomegranate", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        STRAWBERRY = registerItem("strawberry", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        TOMATO = registerItem("tomato", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
+        CITRUS = registerItem("citrus", new Item(new Item.Settings().group(CPP_GROUP_FOOD)
+                .food((new FoodComponent.Builder()).hunger(4).saturationModifier(0.3F).build())));
 
-        AGENTIA_OF_LIGHTNESS = registerItem("agentia_of_lightness", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.SLOW_FALLING, 4800, 0)));
-        AGENTIA_OF_EYESIGHT = registerItem("agentia_of_eyesight", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.NIGHT_VISION, 9600, 0)));
-        AGENTIA_OF_FIRE_SHIELD = registerItem("agentia_of_fire_shield", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 9600, 0)));
-        AGENTIA_OF_WATERLESS = registerItem("agentia_of_waterless", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.WATER_BREATHING, 9600, 0)));
-        AGENTIA_OF_TRANSPARENTNESS = registerItem("agentia_of_transparentness", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.INVISIBILITY, 9600, 0)));
-        AGENTIA_OF_BOUNCE = registerItem("agentia_of_bounce", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.JUMP_BOOST, 4800, 1)));
-        AGENTIA_OF_AGILENESS = registerItem("agentia_of_agileness", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.SPEED, 4800, 1)));
-        AGENTIA_OF_SHARPNESS = registerItem("agentia_of_sharpness", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.STRENGTH, 4800, 1)));
-        AGENTIA_OF_REJUVENESS = registerItem("agentia_of_rejuveness", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.REGENERATION, 2400, 1)));
-        AGENTIA_OF_BLOOD = registerItem("agentia_of_blood", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 1, 2)));
-        AGENTIA_OF_EXTREMENESS = registerItem("agentia_of_extremeness", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.HASTE, 4800, 1)));
-        AGENTIA_OF_SHIELD = registerItem("agentia_of_shield", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.RESISTANCE, 4800, 1)));
-        AGENTIA_OF_TIDE = registerItem("agentia_of_tide", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 4800, 0)));
-        AGENTIA_OF_CHAIN = registerItem("agentia_of_chain", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(CppEffects.CHAIN, 9600, 0)));
-        AGENTIA_OF_SKY = registerItem("agentia_of_sky", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.SPEED, 7200, 1), new StatusEffectInstance(StatusEffects.SLOW_FALLING, 7200, 0)));
-        AGENTIA_OF_OCEAN = registerItem("agentia_of_ocean", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.WATER_BREATHING, 14400, 0), new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 7200, 0)));
-        AGENTIA_OF_RIDGE = registerItem("agentia_of_ridge", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.STRENGTH, 7200, 1), new StatusEffectInstance(StatusEffects.NIGHT_VISION, 14400, 0)));
-        AGENTIA_OF_DIRT = registerItem("agentia_of_dirt", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.INVISIBILITY, 14400, 0), new StatusEffectInstance(CppEffects.CHAIN, 14400, 0)));
-        AGENTIA_OF_EARTH = registerItem("agentia_of_earth", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.JUMP_BOOST, 7200, 1), new StatusEffectInstance(StatusEffects.HASTE, 7200, 1)));
-        AGENTIA_OF_FIRE = registerItem("agentia_of_fire", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 14400, 0), new StatusEffectInstance(StatusEffects.RESISTANCE, 7200, 1)));
-        AGENTIA_OF_LIFE = registerItem("agentia_of_life", new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1), new StatusEffectInstance(StatusEffects.REGENERATION, 3600, 1), new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 1, 3)));
+        AGENTIA_OF_LIGHTNESS = registerItem("agentia_of_lightness",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.SLOW_FALLING, 4800, 0)));
+        AGENTIA_OF_EYESIGHT = registerItem("agentia_of_eyesight",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.NIGHT_VISION, 9600, 0)));
+        AGENTIA_OF_FIRE_SHIELD = registerItem("agentia_of_fire_shield",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 9600, 0)));
+        AGENTIA_OF_WATERLESS = registerItem("agentia_of_waterless",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.WATER_BREATHING, 9600, 0)));
+        AGENTIA_OF_TRANSPARENTNESS = registerItem("agentia_of_transparentness",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.INVISIBILITY, 9600, 0)));
+        AGENTIA_OF_BOUNCE = registerItem("agentia_of_bounce",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.JUMP_BOOST, 4800, 1)));
+        AGENTIA_OF_AGILENESS = registerItem("agentia_of_agileness",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.SPEED, 4800, 1)));
+        AGENTIA_OF_SHARPNESS = registerItem("agentia_of_sharpness",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.STRENGTH, 4800, 1)));
+        AGENTIA_OF_REJUVENESS = registerItem("agentia_of_rejuveness",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.REGENERATION, 2400, 1)));
+        AGENTIA_OF_BLOOD = registerItem("agentia_of_blood",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 1, 2)));
+        AGENTIA_OF_EXTREMENESS = registerItem("agentia_of_extremeness",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.HASTE, 4800, 1)));
+        AGENTIA_OF_SHIELD = registerItem("agentia_of_shield",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.RESISTANCE, 4800, 1)));
+        AGENTIA_OF_TIDE = registerItem("agentia_of_tide",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 4800, 0)));
+        AGENTIA_OF_CHAIN = registerItem("agentia_of_chain",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(CppEffects.CHAIN, 9600, 0)));
+        AGENTIA_OF_SKY = registerItem("agentia_of_sky",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.SPEED, 7200, 1),
+                        new StatusEffectInstance(StatusEffects.SLOW_FALLING, 7200, 0)));
+        AGENTIA_OF_OCEAN = registerItem("agentia_of_ocean",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.WATER_BREATHING, 14400, 0),
+                        new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 7200, 0)));
+        AGENTIA_OF_RIDGE = registerItem("agentia_of_ridge",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.STRENGTH, 7200, 1),
+                        new StatusEffectInstance(StatusEffects.NIGHT_VISION, 14400, 0)));
+        AGENTIA_OF_DIRT = registerItem("agentia_of_dirt",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.INVISIBILITY, 14400, 0),
+                        new StatusEffectInstance(CppEffects.CHAIN, 14400, 0)));
+        AGENTIA_OF_EARTH = registerItem("agentia_of_earth",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.JUMP_BOOST, 7200, 1),
+                        new StatusEffectInstance(StatusEffects.HASTE, 7200, 1)));
+        AGENTIA_OF_FIRE = registerItem("agentia_of_fire",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 14400, 0),
+                        new StatusEffectInstance(StatusEffects.RESISTANCE, 7200, 1)));
+        AGENTIA_OF_LIFE = registerItem("agentia_of_life",
+                new CppPotion(new Item.Settings().group(CPP_GROUP_MISC).maxCount(1),
+                        new StatusEffectInstance(StatusEffects.REGENERATION, 3600, 1),
+                        new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 1, 3)));
 
-        LYCORIS_RADIATA_SEED = registerItem("lycoris_radiata_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
+        LYCORIS_RADIATA_SEED = registerItem("lycoris_radiata_seed",
+                new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
         TRIFOLIUM_SEED = registerItem("trifolium_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
         BLACKTHORN_SEED = registerItem("blackthorn_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
         CATTAIL_SEED = registerItem("cattail_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
@@ -602,7 +850,8 @@ public final class CppItems {
         STELERA_SEED = registerItem("stelera_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
         FORAGE_CRYSTAL_SEED = registerItem("forage_crystal_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
         ISORCHID_SEED = registerItem("isorchid_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-        BURNING_CHRYSANTHE_SEED = registerItem("burning_chrysanthe_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
+        BURNING_CHRYSANTHE_SEED = registerItem("burning_chrysanthe_seed",
+                new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
         OXALIS_SEED = registerItem("oxalis_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
         LYCORIS_RADIATA = registerItem("lycoris_radiata", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
         TRIFOLIUM = registerItem("trifolium", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
@@ -655,15 +904,18 @@ public final class CppItems {
         STAR_WAND = registerItem("star_wand", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         DREAM_WAND = registerItem("dream_wand", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         TEMPERANCER = registerItem("temperancer", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-        WAND_OF_THE_DARKNESS = registerItem("wand_of_the_darkness", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+        WAND_OF_THE_DARKNESS = registerItem("wand_of_the_darkness",
+                new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 
         RED_LIP = registerItem("red_lip", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         PURPLE_EYE = registerItem("purple_eye", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         LASH = registerItem("lash", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         CAT_BREED = registerItem("cat_breed", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         GARLAND = registerItem("garland", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-        BLACK_FRAMED_GLASSES = registerItem("black_framed_glasses", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-        ORANGE_FRAMED_GLASSES = registerItem("orange_framed_glasses", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+        BLACK_FRAMED_GLASSES = registerItem("black_framed_glasses",
+                new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+        ORANGE_FRAMED_GLASSES = registerItem("orange_framed_glasses",
+                new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         JOKING_GLASSES = registerItem("joking_glasses", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         MINION_GOGGLES = registerItem("minion_goggles", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         PANTS = registerItem("pants", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
@@ -675,12 +927,14 @@ public final class CppItems {
         NURSE_HAT = registerItem("nurse_hat", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         JACKET = registerItem("jacket", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         RED_COAT = registerItem("red_coat", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-        TIGHT_LEATHER_LEGGINGS = registerItem("tight_leather_leggings", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+        TIGHT_LEATHER_LEGGINGS = registerItem("tight_leather_leggings",
+                new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         BLUE_JEANS = registerItem("blue_jeans", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
         SNOW_BOOTS = registerItem("snow_boots", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 
         CLASSICAL_PAINTING = registerItem("classical_painting", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-        SPRING_FESTIVAL_DECORATIONS = registerItem("spring_festival_decorations", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
+        SPRING_FESTIVAL_DECORATIONS = registerItem("spring_festival_decorations",
+                new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 
         CHARACTER = registerItem("character", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 
@@ -724,12 +978,29 @@ public final class CppItems {
         RED_SIGN = registerItem("red_sign", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
         BLACK_SIGN = registerItem("black_sign", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
         GLASS_SIGN = registerItem("glass_sign", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
+        {
+            Item[] flowers = { LYCORIS_RADIATA, TRIFOLIUM, BLACKTHORN, CATTAIL, MARIGOLD, HIBISCUS, HYACINTH, CALAMUS,
+                    WILD_LILIUM, BAUHINIA, FLUFFY_GRASS, GERBERA, ESPARTO, GLOW_FORSYTHIA, GLAZED_SHADE, STELERA,
+                    FORAGE_CRYSTAL, ISORCHID, BURNING_CHRYSANTHE, OXALIS },
+                    seeds = { LYCORIS_RADIATA_SEED, TRIFOLIUM_SEED, BLACKTHORN_SEED, CATTAIL_SEED, MARIGOLD_SEED,
+                            HIBISCUS_SEED, HYACINTH_SEED, CALAMUS_SEED, WILD_LILIUM_SEED, BAUHINIA_SEED,
+                            FLUFFY_GRASS_SEED, GERBERA_SEED, ESPARTO_SEED, GLOW_FORSYTHIA_SEED, GLAZED_SHADE_SEED,
+                            STELERA_SEED, FORAGE_CRYSTAL_SEED, ISORCHID_SEED, BURNING_CHRYSANTHE_SEED, OXALIS_SEED };
+            SEEDS_TO_FLOWERS = new HashMap<Item, Item>();
+            for (int i = 0; i < flowers.length; i++)
+                SEEDS_TO_FLOWERS.put(seeds[i], flowers[i]);
+        }
+
+        FRUITS = new HashSet<>(Arrays.asList(APRICOT, BANANA, BLUEBERRY, CHERRY, CHINESE_DATE, COCONUT, GOLDEN_GRAPE,
+                GRAPE, GRAPEFRUIT, HAWTHORN, LEMON, LONGAN, LOQUAT, LYCHEE, MANGO, ORANGE, PAYAPA, PEACH, PEAR,
+                PERSIMMON, PLUM, POMEGRANATE, STRAWBERRY, TOMATO));
     }
 
     private static Item registerItem(String id, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(MODID, id), item);
     }
 
-    public static void register() {}
+    public static void register() {
+    }
 
 }
