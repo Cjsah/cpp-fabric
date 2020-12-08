@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "cpp:block/chest_dropper_side",
+        "down": "cpp:block/chest_dropper_bottom",
+        "up": "cpp:block/chest_dropper_top",
+        "north": "cpp:block/chest_dropper_side",
+        "east": "cpp:block/chest_dropper_side",
+        "south": "cpp:block/chest_dropper_side",
+        "west": "cpp:block/chest_dropper_side"
+    }
+}

@@ -1,11 +1,17 @@
 package net.cpp.gui.screen;
 
 import static net.cpp.gui.handler.SlotTool.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.cpp.gui.handler.AllInOneMachineScreenHandler;
 import net.cpp.gui.handler.CraftingMachineScreenHandler;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
@@ -15,11 +21,19 @@ import net.minecraft.screen.AbstractFurnaceScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 public class AllInOneMachineScreen extends HandledScreen<AllInOneMachineScreenHandler> {
 	public static final Identifier TEXTURE = new Identifier("cpp:textures/gui/all_in_one_machine.png");
 	public static final Identifier XP = new Identifier("cpp:textures/gui/xp.png");
+	public static final TranslatableText[] TEMPERATURE_TEXTS = { new TranslatableText("gui.high_temperature"),
+			new TranslatableText("gui.ordinary_temperature"), new TranslatableText("gui.low_temperature") };
+	public static final TranslatableText[] PRESSURE_TEXTS = { new TranslatableText("gui.high_pressure"),
+			new TranslatableText("gui.ordinary_pressure"), new TranslatableText("gui.low_pressure") };
+	public final List<Text> temperatureTooltip = Arrays.asList(TEMPERATURE_TEXTS[0],
+			OutputDirectionButton.CLICK_TO_SHIFT);
+	public final List<Text> pressureTooltip = Arrays.asList(PRESSURE_TEXTS[0], OutputDirectionButton.CLICK_TO_SHIFT);
 	private boolean narrow;
 	public final OutputDirectionButton oButton = new OutputDirectionButton(buttonWidget -> {
 		this.client.interactionManager.clickButton(this.handler.syncId, 1010);
@@ -61,6 +75,8 @@ public class AllInOneMachineScreen extends HandledScreen<AllInOneMachineScreenHa
 
 	public AllInOneMachineScreen(AllInOneMachineScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
+		temperatureTooltip.set(1, OutputDirectionButton.CLICK_TO_SHIFT);
+		pressureTooltip.set(1, OutputDirectionButton.CLICK_TO_SHIFT);
 	}
 
 	@Override
@@ -105,12 +121,10 @@ public class AllInOneMachineScreen extends HandledScreen<AllInOneMachineScreenHa
 			client.getTextureManager().bindTexture(XP);
 			int t = (int) (System.currentTimeMillis() % (16 * 50) / 50);
 //			System.out.println(t);
-			drawTexture(matrices, x + 152, y + 68 - (exp + 1) / 2, 0, t * 50, 16,
-					(exp + 1) / 2, 16, 800);
+			drawTexture(matrices, x + 152, y + 68 - (exp + 1) / 2, 0, t * 50, 16, (exp + 1) / 2, 16, 800);
 		}
 		client.getTextureManager().bindTexture(TEXTURE);
-		drawTexture(matrices, x + 152, y + 18, 176, 18, 16,
-				50);
+		drawTexture(matrices, x + 152, y + 18, 176, 18, 16, 50);
 	}
 
 	protected boolean isPointWithinBounds(int xPosition, int yPosition, int width, int height, double pointX,
@@ -133,5 +147,19 @@ public class AllInOneMachineScreen extends HandledScreen<AllInOneMachineScreenHa
 
 	public void removed() {
 		super.removed();
+	}
+
+	@Override
+	protected void drawMouseoverTooltip(MatrixStack matrices, int x, int y) {
+		if (oButton.isHovered()) {
+			renderTooltip(matrices, oButton.getTooltip(), x, y);
+		} else if (temperatureButton.isHovered()) {
+			temperatureTooltip.set(0, TEMPERATURE_TEXTS[handler.blockEntity.getTemperature().ordinal()]);
+			renderTooltip(matrices, temperatureTooltip, x, y);
+		} else if (pressureButton.isHovered()) {
+			pressureTooltip.set(0, PRESSURE_TEXTS[handler.blockEntity.getPressure().ordinal()]);
+			renderTooltip(matrices, pressureTooltip, x, y);
+		}
+		super.drawMouseoverTooltip(matrices, x, y);
 	}
 }

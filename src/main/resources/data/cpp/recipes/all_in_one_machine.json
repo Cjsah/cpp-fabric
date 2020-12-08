@@ -1,0 +1,28 @@
+{
+  "type": "cpp:crafting_shaped",
+  "pattern": [
+    "ABA",
+    "ACA",
+    "DED"
+  ],
+  "key": {
+    "A": {
+      "item": "cpp:enchanted_iron"
+    },
+    "B": {
+      "item": "furnace"
+    },
+    "C": {
+      "item": "barrel"
+    },
+    "D": {
+      "item": "cpp:enchanted_gold"
+    },
+    "E": {
+      "item": "cpp:soul_of_dirt"
+    }
+  },
+  "result": {
+    "item": "cpp:all_in_one_machine"
+  }
+}

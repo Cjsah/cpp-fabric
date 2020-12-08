@@ -55,7 +55,10 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 	public Text getContainerName() {
 		return getCustomName() != null ? getCustomName() : getTitle();
 	}
-
+	@Override
+	public int size() {
+		return getInvStackList().size();
+	}
 	/*
 	 * 以下是IOutputDiractional的方法
 	 */
@@ -108,7 +111,7 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 		if (inventory != null) {
 			Direction direction = getOutputDir();
 			if (!this.isInventoryFull(inventory, direction)) {
-				restStack = transfer(this, inventory, outputStack, direction);
+				restStack = transfer(this, inventory, outputStack.copy(), direction);
 				if (restStack.isEmpty()) {
 					inventory.markDirty();
 				}

@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "cpp:block/trade_machine_side",
+        "down": "cpp:block/trade_machine_down",
+        "up": "cpp:block/trade_machine_top",
+        "north": "cpp:block/trade_machine_front",
+        "east": "cpp:block/trade_machine_side",
+        "south": "cpp:block/trade_machine_side",
+        "west": "cpp:block/trade_machine_side"
+    }
+}

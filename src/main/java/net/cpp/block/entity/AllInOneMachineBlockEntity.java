@@ -31,6 +31,7 @@ import net.minecraft.tag.Tag;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
@@ -44,7 +45,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	private static final Map<Integer, Recipe> RECIPES = new HashMap<>();
 	private static final Map<Integer, List<Recipe>> SPECIAL_RECIPES = new HashMap<>();
 	private static final Map<Item, ItemStack> ITEM_BUFFER = new HashMap<>();
-	private Recipe lastTickRecipe;
+	private int lastTickRecipeCode;
 	private ItemStack[] lastTickOutputs;
 	private int workTime = 0;
 	private int workTimeTotal;
@@ -197,26 +198,6 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	}
 
 	/*
-	 * 以下是SidedInventory的方法
-	 */
-//	@Override
-//	public int[] getAvailableSlots(Direction side) {
-//		return AVAILABLE_SLOTS;
-//	}
-//
-//	@Override
-//	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-//		return slot == 0 && !getStack(1).getItem().equals(stack.getItem())
-//				|| slot == 1 && !getStack(0).getItem().equals(stack.getItem())
-//				|| slot == 2 && stack.getItem().equals(EXPERIENCE_BOTTLE);
-//	}
-//
-//	@Override
-//	public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-//		return false;
-//	}
-
-	/*
 	 * 以下是RecipeUnlocker的方法
 	 */
 //	@Override
@@ -272,14 +253,16 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 					boolean shapeless = recipe.input1 == getStack(0).getItem() && recipe.input2 == getStack(1).getItem()
 							|| recipe.input1 == getStack(1).getItem() && recipe.input2 == getStack(0).getItem();
 					boolean awkwardPotion = temperature != Degree.ORDINARY || pressure != Degree.LOW
-							|| "minecraft:awkward".equals(getStack(0).getTag().getString("Potion"))
-							|| "minecraft:awkward".equals(getStack(1).getTag().getString("Potion"));
+							|| getStack(0).getTag() != null
+									&& "minecraft:awkward".equals(getStack(0).getTag().getString("Potion"))
+							|| getStack(1).getTag() != null
+									&& "minecraft:awkward".equals(getStack(1).getTag().getString("Potion"));
 					if (expStorage >= recipe.experience && shapeless && recipe.temperature == temperature
 							&& recipe.pressure == pressure && awkwardPotion) {
 						ItemStack[] outputs;
-						if (lastTickRecipe != recipe) {
+						if (lastTickRecipeCode != c) {
 							lastTickOutputs = recipe.output();
-							lastTickRecipe = recipe;
+							lastTickRecipeCode = c;
 						}
 						outputs = lastTickOutputs;
 						if ((getStack(3).isEmpty() || getStack(3).isItemEqualIgnoreDamage(outputs[0])
@@ -291,9 +274,9 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 							reciped = true;
 							if (workTime >= recipe.time) {
 								if (!UNCONSUMABLE.contains(getStack(0).getItem()))
-									getStack(0).increment(-1);
+									getStack(0).decrement(1);
 								if (!UNCONSUMABLE.contains(getStack(1).getItem()))
-									getStack(1).increment(-1);
+									getStack(1).decrement(1);
 								if (getStack(3).isEmpty()) {
 									setStack(3, outputs[0]);
 								} else
@@ -306,19 +289,19 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 								workTime = 0;
 								expStorage -= recipe.experience;
 								lastTickOutputs = recipe.output();
+								lastTickRecipeCode = c;
 							} else {
-//								workTime++;
-								workTime += 10;
+								workTime++;
 							}
 						}
 					}
 				}
 			}
 			if (!getStack(3).isEmpty()) {
-				setStack(3, output(getStack(3).copy()));
+				setStack(3, output(getStack(3)));
 			}
 			if (!getStack(4).isEmpty()) {
-				setStack(4, output(getStack(4).copy()));
+				setStack(4, output(getStack(4)));
 			}
 			if (!reciped)
 				workTimeTotal = 0;
@@ -328,28 +311,25 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	/*
 	 * 以下是Inventory的方法
 	 */
-	@Override
-	public int size() {
-		return 5;
-	}
 
 	@Override
 	public void onOpen(PlayerEntity player) {
 		propertyDelegate.set(3, propertyDelegate.get(3));
 		super.onOpen(player);
+//		if (world.isClient)
+//			return;
 //		int rand = new Random(new File(".").getAbsolutePath().hashCode()).nextInt();
+//		System.out.println(rand);
 //		for (Map.Entry<Item, ItemStack> entry1 : ORE_RATES.entrySet()) {
 //			for (Map.Entry<Item, ItemStack> entry2 : ORE_RATES.entrySet()) {
 //				if (entry1.equals(entry2))
 //					break;
 //				float randf = (entry1.getValue().hashCode() ^ entry2.getValue().hashCode() ^ rand >>> 1) % 90 / 30f + 1;
-////				System.out.println(randf);
+//				System.out.println(randf);
 //				float c1 = randf * entry1.getValue().getCount();
 //				float c2 = (5 - randf) * entry2.getValue().getCount();
 //				addRecipe(Degree.HIGH, Degree.HIGH, entry1.getKey(), entry2.getKey(), entry1.getValue(),
-//						entry2.getValue(), c1, c1 + 1, c2, c2 + 1, 4, 200);
-//				System.out.println(String.format("%s:%f,%s:%f", entry1.getValue().getItem().toString(), c1,
-//						entry2.getValue().getItem().toString(), c2));
+//						entry2.getValue(), c1, c1 + 1, c2, c2, 4, 200);
 //			}
 //		}
 	}
@@ -428,13 +408,6 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 		return workTime > 0;
 	}
 
-	public Recipe getRecipe() {
-//		System.out.println(getStack(0).getItem());
-//		System.out.println(getStack(1).getItem());
-//		System.out.println(getHashCode(temperature, pressure, getStack(0).getItem(), getStack(1).getItem()));
-		return RECIPES.get(getHashCode(temperature, pressure, getStack(0).getItem(), getStack(1).getItem()));
-	}
-
 	public int getExpStorage() {
 		return expStorage;
 	}
@@ -493,14 +466,14 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	private static void addRecipe(Degree temperature, Degree pressure, Item input1, Item input2, ItemStack output1,
 			ItemStack output2, float count2Min, float count2Max, int experience, int time) {
 		addRecipe(temperature, pressure, input1, input2, output1, output2, output1.getCount(), output1.getCount(),
-				count2Min, count2Max, 4, 200);
+				count2Min, count2Max, experience, time);
 	}
 
 	private static void addRecipe(Degree temperature, Degree pressure, Item input1, Item input2, ItemStack output1,
 			ItemStack output2, float count1Min, float count1Max, float count2Min, float count2Max, int experience,
 			int time) {
 		RECIPES.put(getHashCode(temperature, pressure, input1, input2), new Recipe(temperature, pressure, input1,
-				input2, output1, output2, count1Min, count1Max, count2Min, count2Max, 4, 200));
+				input2, output1, output2, count1Min, count1Max, count2Min, count2Max, experience, time));
 	}
 
 	static {
@@ -522,12 +495,11 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 			for (Map.Entry<Item, ItemStack> entry2 : ORE_RATES.entrySet()) {
 				if (entry1.equals(entry2))
 					break;
-				float randf = (entry1.getValue().hashCode() ^ entry2.getValue().hashCode() ^ rand) % 90 / 30f + 1;
+				float randf = (entry1.getValue().hashCode() ^ entry2.getValue().hashCode() ^ rand >>> 1) % 90 / 30f + 1;
+				float c1 = randf * entry1.getValue().getCount();
+				float c2 = (5 - randf) * entry2.getValue().getCount();
 				addRecipe(Degree.HIGH, Degree.HIGH, entry1.getKey(), entry2.getKey(), entry1.getValue(),
-						entry2.getValue(), randf * entry1.getValue().getCount(),
-						randf * entry1.getValue().getCount() + 1, (5 - randf) * entry2.getValue().getCount(),
-						(5 - randf) * entry2.getValue().getCount() + 1, 4, 200);
-
+						entry2.getValue(), c1, c1 + 1, c2, c2, 4, 200);
 			}
 		}
 		/*
@@ -723,6 +695,15 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 			SPECIAL_RECIPES.put(c, list);
 		}
 		{
+			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, ORE_SAPLING, FERTILIZER);
+			RECIPES.put(c, Recipe.PLACE_TAKER);
+			List<Recipe> list = new ArrayList<>();
+			for (Item item : ORE_RATES.keySet())
+				list.add(new Recipe(Degree.ORDINARY, Degree.ORDINARY, ORE_SAPLING, FERTILIZER, new ItemStack(item, 2),
+						new ItemStack(ORE_SAPLING), 0F, 4F, 2, 40));
+			SPECIAL_RECIPES.put(c, list);
+		}
+		{
 			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, WOOL_SAPLING, FERTILIZER);
 			RECIPES.put(c, Recipe.PLACE_TAKER);
 			List<Recipe> list = new ArrayList<>();
@@ -730,7 +711,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 					LIME_WOOL, PINK_WOOL, GRAY_WOOL, LIGHT_GRAY_WOOL, CYAN_WOOL, PURPLE_WOOL, BLUE_WOOL, BROWN_WOOL,
 					GREEN_WOOL, RED_WOOL, BLACK_WOOL })
 				list.add(new Recipe(Degree.ORDINARY, Degree.ORDINARY, WOOL_SAPLING, FERTILIZER, new ItemStack(item, 2),
-						new ItemStack(FRUIT_SAPLING), 0F, 4F, 2, 40));
+						new ItemStack(WOOL_SAPLING), 0F, 4F, 2, 40));
 			SPECIAL_RECIPES.put(c, list);
 		}
 		addRecipe(Degree.ORDINARY, Degree.ORDINARY, SAKURA_SAPLING, FERTILIZER, new ItemStack(CHERRY),
@@ -775,23 +756,27 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 		 * 低温高压
 		 */
 		for (Item item : fruits)
-			addRecipe(Degree.ORDINARY, Degree.LOW, HONEY_BOTTLE, item, new ItemStack(COLD_DRINK), 2, 100);
-		addRecipe(Degree.ORDINARY, Degree.LOW, HONEY_BOTTLE, APPLE, new ItemStack(COLD_DRINK), 2, 100);
+			addRecipe(Degree.LOW, Degree.HIGH, HONEY_BOTTLE, item, new ItemStack(COLD_DRINK), 2, 100);
+		addRecipe(Degree.LOW, Degree.HIGH, HONEY_BOTTLE, APPLE, new ItemStack(COLD_DRINK), 2, 100);
+		addRecipe(Degree.LOW, Degree.HIGH, POTION, AMMONIA_REFRIGERANT, new ItemStack(ICE),
+				new ItemStack(AMMONIA_REFRIGERANT), 1, 20);
+		addRecipe(Degree.LOW, Degree.HIGH, GREEN_FORCE_OF_WATER, AMMONIA_REFRIGERANT, new ItemStack(ICE),
+				new ItemStack(AMMONIA_REFRIGERANT), 1, 20);
 		/**
 		 * 低温常压
 		 */
-		addRecipe(Degree.ORDINARY, Degree.LOW, LAVA_BUCKET, COBBLESTONE_PLUGIN, new ItemStack(COBBLESTONE, 4), 1, 20);
-		addRecipe(Degree.ORDINARY, Degree.LOW, LAVA_BUCKET, STONE_PLUGIN, new ItemStack(STONE, 4), 1, 20);
-		addRecipe(Degree.ORDINARY, Degree.LOW, LAVA_BUCKET, BLACKSTONE_PLUGIN, new ItemStack(COBBLESTONE, 4), 1, 20);
-		addRecipe(Degree.ORDINARY, Degree.LOW, LAVA_BUCKET, NETHERRACK_PLUGIN, new ItemStack(COBBLESTONE, 4), 1, 20);
-		addRecipe(Degree.ORDINARY, Degree.LOW, LAVA_BUCKET, END_STONE_PLUGIN, new ItemStack(COBBLESTONE, 1), 1, 20);
-		addRecipe(Degree.ORDINARY, Degree.LOW, LAVA_BUCKET, BASALT_PLUGIN, new ItemStack(COBBLESTONE, 3), 1, 20);
+		addRecipe(Degree.LOW, Degree.ORDINARY, LAVA_BUCKET, COBBLESTONE_PLUGIN, new ItemStack(COBBLESTONE, 4), 1, 20);
+		addRecipe(Degree.LOW, Degree.ORDINARY, LAVA_BUCKET, STONE_PLUGIN, new ItemStack(STONE, 4), 1, 20);
+		addRecipe(Degree.LOW, Degree.ORDINARY, LAVA_BUCKET, BLACKSTONE_PLUGIN, new ItemStack(BLACKSTONE, 4), 1, 20);
+		addRecipe(Degree.LOW, Degree.ORDINARY, LAVA_BUCKET, NETHERRACK_PLUGIN, new ItemStack(NETHERRACK, 4), 1, 20);
+		addRecipe(Degree.LOW, Degree.ORDINARY, LAVA_BUCKET, END_STONE_PLUGIN, new ItemStack(END_STONE, 1), 1, 20);
+		addRecipe(Degree.LOW, Degree.ORDINARY, LAVA_BUCKET, BASALT_PLUGIN, new ItemStack(BASALT, 3), 1, 20);
 		/*
 		 * 低温低压
 		 */
-		addRecipe(Degree.ORDINARY, Degree.LOW, POTION, AMMONIA_REFRIGERANT, new ItemStack(SNOW_BLOCK),
+		addRecipe(Degree.LOW, Degree.LOW, POTION, AMMONIA_REFRIGERANT, new ItemStack(SNOW_BLOCK),
 				new ItemStack(AMMONIA_REFRIGERANT), 1, 20);
-		addRecipe(Degree.ORDINARY, Degree.LOW, POTION, GREEN_FORCE_OF_WATER, new ItemStack(SNOW_BLOCK),
+		addRecipe(Degree.LOW, Degree.LOW, GREEN_FORCE_OF_WATER, AMMONIA_REFRIGERANT, new ItemStack(SNOW_BLOCK),
 				new ItemStack(AMMONIA_REFRIGERANT), 1, 20);
 
 	}
@@ -850,8 +835,6 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 		}
 
 		public ItemStack[] output() {
-//			System.out.println(1);
-//			System.out.println(output2);
 			ItemStack[] rst = new ItemStack[2];
 			rst[0] = output1.copy();
 			rst[1] = output2.copy();
@@ -861,14 +844,10 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 				rst[0].setCount(certianCount(count1Min, count1Max));
 			}
 			if (!output2.isEmpty()) {
-//				System.out.println(count2Max + " " + );
 				if (count2Min == count2Max) {
 					rst[1].setCount((int) count2Max);
 				} else {
-//					System.out.println(2);
 					rst[1].setCount(certianCount(count2Min, count2Max));
-//					if (rst[1].getCount() == 0)
-//						rst[1] = ItemStack.EMPTY;
 				}
 			}
 			return rst;
@@ -876,7 +855,6 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 
 		public static int certianCount(float min, float max) {
 			int rst = (int) Math.floor(min + Math.random() * (max - min));
-//			System.out.println(String.format("[%f, %f)->%d%n", min, max, rst));
 			return rst;
 		}
 	}

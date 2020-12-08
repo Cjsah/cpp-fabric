@@ -1,0 +1,7 @@
+{
+    "parent": "cpp:block/empty_bookshelf",
+    "textures": {
+        "top": "block/oak_planks",
+        "side": "cpp:block/bookshelf0"
+    }
+}

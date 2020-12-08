@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "cpp:block/mob_projector_top",
+        "down": "cpp:block/mob_projector_bottom",
+        "up": "cpp:block/mob_projector_top",
+        "north": "cpp:block/mob_projector_front",
+        "east": "cpp:block/mob_projector_side",
+        "south": "cpp:block/mob_projector_side",
+        "west": "cpp:block/mob_projector_side"
+    }
+}

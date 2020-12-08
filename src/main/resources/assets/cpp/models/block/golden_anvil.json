@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "cpp:block/golden_anvil_top",
+        "down": "cpp:block/golden_anvil_bottom",
+        "up": "cpp:block/golden_anvil_top",
+        "north": "cpp:block/golden_anvil_side",
+        "east": "cpp:block/golden_anvil_front",
+        "south": "cpp:block/golden_anvil_side",
+        "west": "cpp:block/golden_anvil_side"
+    }
+}

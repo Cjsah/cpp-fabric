@@ -52,7 +52,6 @@ import net.minecraft.world.World;
  */
 public class CraftingMachineBlockEntity extends AMachineBlockEntity
 		implements RecipeUnlocker, RecipeInputProvider, SidedInventory {
-	public static final Text TITLE = CppBlocks.CRAFTING_MACHINE.getName();
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 	private CppCraftingInventory inputInventory = new CppCraftingInventory();
 	private int viewerCnt = 0;
@@ -98,7 +97,7 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity
 	 */
 	@Override
 	public Text getTitle() {
-		return TITLE;
+		return CppBlocks.CRAFTING_MACHINE.getName();
 	}
 
 	/*
@@ -273,7 +272,7 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity
 						if (everyNotSingle) {
 							ItemStack restStack = output(getResult());
 							if (!outputStack.equals(restStack)) {
-								setLeftover(restStack.copy());
+								setLeftover(restStack);
 								for (int i = 0; i < 9; i++) {
 									inputInventory.removeStack(i, 1);
 								}
