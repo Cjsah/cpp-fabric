@@ -355,6 +355,7 @@
   "block.cpp.rare_earth_glass": "稀土玻璃",
   "block.cpp.reinforced_glass": "钢化玻璃",
 
+  "gui.click_to_shift": "点击切换",
   "gui.output_to_east": "向东输出",
   "gui.output_to_west": "向西输出",
   "gui.output_to_up": "向上输出",

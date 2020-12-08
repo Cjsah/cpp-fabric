@@ -1,5 +1,6 @@
 package net.cpp.block;
 
+import net.cpp.block.entity.ItemProcessorBlockEntity;
 import net.cpp.init.CppStats;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.Identifier;
@@ -10,7 +11,7 @@ public class ItemProcessorBlock extends AMachineBlock {
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
 		// TODO 自动生成的方法存根
-		return null;
+		return new ItemProcessorBlockEntity();
 	}
 
 	@Override

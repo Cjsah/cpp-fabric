@@ -1,81 +1,10 @@
 package net.cpp.init;
 
-import net.cpp.api.CppPotion;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.FoodComponent;
-import net.minecraft.item.Item;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-
+import static net.cpp.Craftingpp.CPP_GROUP_FOOD;
 import static net.cpp.Craftingpp.CPP_GROUP_MACHINE;
 import static net.cpp.Craftingpp.CPP_GROUP_MISC;
+import static net.cpp.Craftingpp.CPP_GROUP_PLANT;
 import static net.cpp.Craftingpp.CPP_GROUP_TOOL;
-import static net.cpp.init.CppItems.APRICOT;
-import static net.cpp.init.CppItems.BANANA;
-import static net.cpp.init.CppItems.BAUHINIA;
-import static net.cpp.init.CppItems.BAUHINIA_SEED;
-import static net.cpp.init.CppItems.BLACKTHORN;
-import static net.cpp.init.CppItems.BLACKTHORN_SEED;
-import static net.cpp.init.CppItems.BLUEBERRY;
-import static net.cpp.init.CppItems.BURNING_CHRYSANTHE;
-import static net.cpp.init.CppItems.BURNING_CHRYSANTHE_SEED;
-import static net.cpp.init.CppItems.CALAMUS;
-import static net.cpp.init.CppItems.CALAMUS_SEED;
-import static net.cpp.init.CppItems.CATTAIL;
-import static net.cpp.init.CppItems.CATTAIL_SEED;
-import static net.cpp.init.CppItems.CHERRY;
-import static net.cpp.init.CppItems.CHINESE_DATE;
-import static net.cpp.init.CppItems.COCONUT;
-import static net.cpp.init.CppItems.ESPARTO;
-import static net.cpp.init.CppItems.ESPARTO_SEED;
-import static net.cpp.init.CppItems.FLUFFY_GRASS;
-import static net.cpp.init.CppItems.FLUFFY_GRASS_SEED;
-import static net.cpp.init.CppItems.FORAGE_CRYSTAL;
-import static net.cpp.init.CppItems.FORAGE_CRYSTAL_SEED;
-import static net.cpp.init.CppItems.GERBERA;
-import static net.cpp.init.CppItems.GERBERA_SEED;
-import static net.cpp.init.CppItems.GLAZED_SHADE;
-import static net.cpp.init.CppItems.GLAZED_SHADE_SEED;
-import static net.cpp.init.CppItems.GLOW_FORSYTHIA;
-import static net.cpp.init.CppItems.GLOW_FORSYTHIA_SEED;
-import static net.cpp.init.CppItems.GOLDEN_GRAPE;
-import static net.cpp.init.CppItems.GRAPE;
-import static net.cpp.init.CppItems.GRAPEFRUIT;
-import static net.cpp.init.CppItems.HAWTHORN;
-import static net.cpp.init.CppItems.HIBISCUS;
-import static net.cpp.init.CppItems.HIBISCUS_SEED;
-import static net.cpp.init.CppItems.HYACINTH;
-import static net.cpp.init.CppItems.HYACINTH_SEED;
-import static net.cpp.init.CppItems.ISORCHID;
-import static net.cpp.init.CppItems.ISORCHID_SEED;
-import static net.cpp.init.CppItems.LEMON;
-import static net.cpp.init.CppItems.LONGAN;
-import static net.cpp.init.CppItems.LOQUAT;
-import static net.cpp.init.CppItems.LYCHEE;
-import static net.cpp.init.CppItems.LYCORIS_RADIATA;
-import static net.cpp.init.CppItems.LYCORIS_RADIATA_SEED;
-import static net.cpp.init.CppItems.MANGO;
-import static net.cpp.init.CppItems.MARIGOLD;
-import static net.cpp.init.CppItems.MARIGOLD_SEED;
-import static net.cpp.init.CppItems.ORANGE;
-import static net.cpp.init.CppItems.OXALIS;
-import static net.cpp.init.CppItems.OXALIS_SEED;
-import static net.cpp.init.CppItems.PAYAPA;
-import static net.cpp.init.CppItems.PEACH;
-import static net.cpp.init.CppItems.PEAR;
-import static net.cpp.init.CppItems.PERSIMMON;
-import static net.cpp.init.CppItems.PLUM;
-import static net.cpp.init.CppItems.POMEGRANATE;
-import static net.cpp.init.CppItems.STELERA;
-import static net.cpp.init.CppItems.STELERA_SEED;
-import static net.cpp.init.CppItems.STRAWBERRY;
-import static net.cpp.init.CppItems.TOMATO;
-import static net.cpp.init.CppItems.TRIFOLIUM;
-import static net.cpp.init.CppItems.TRIFOLIUM_SEED;
-import static net.cpp.init.CppItems.WILD_LILIUM;
-import static net.cpp.init.CppItems.WILD_LILIUM_SEED;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -83,8 +12,16 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static net.cpp.Craftingpp.CPP_GROUP_FOOD;
-import static net.cpp.Craftingpp.CPP_GROUP_PLANT;
+import net.cpp.api.CppPotion;
+import net.cpp.item.CompressedExperienceBottleItem;
+import net.cpp.item.CompressedItem;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.FoodComponent;
+import net.minecraft.item.Item;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public final class CppItems {
 
@@ -440,6 +377,8 @@ public final class CppItems {
 	public static final Item RED_SIGN;
 	public static final Item BLACK_SIGN;
 	public static final Item GLASS_SIGN;
+	public static final Item COMPRESSED_ITEM;
+	public static final Item COMPRESSED_EXPERIENCE_BOTTLE;
 	public static final Map<Item, Item> SEEDS_TO_FLOWERS;
 	public static final Set<Item> FRUITS;
 	static {
@@ -1042,6 +981,10 @@ public final class CppItems {
 		RED_SIGN = registerItem("red_sign", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		BLACK_SIGN = registerItem("black_sign", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		GLASS_SIGN = registerItem("glass_sign", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
+		COMPRESSED_ITEM = registerItem("compressed_item",
+				new CompressedItem());
+		COMPRESSED_EXPERIENCE_BOTTLE = registerItem("compressed_experience_bottle",
+				new CompressedExperienceBottleItem());
 		{
 			Item[] flowers = { LYCORIS_RADIATA, TRIFOLIUM, BLACKTHORN, CATTAIL, MARIGOLD, HIBISCUS, HYACINTH, CALAMUS,
 					WILD_LILIUM, BAUHINIA, FLUFFY_GRASS, GERBERA, ESPARTO, GLOW_FORSYTHIA, GLAZED_SHADE, STELERA,

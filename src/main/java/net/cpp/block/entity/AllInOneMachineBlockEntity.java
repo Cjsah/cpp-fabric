@@ -1,8 +1,9 @@
 package net.cpp.block.entity;
 
-import static net.minecraft.item.Items.*;
+import static net.cpp.init.CppBlocks.RARE_EARTH_GLASS;
+import static net.cpp.init.CppBlocks.REINFORCED_GLASS;
 import static net.cpp.init.CppItems.*;
-import static net.cpp.init.CppBlocks.*;
+import static net.minecraft.item.Items.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,7 +16,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.cpp.gui.handler.AllInOneMachineScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
@@ -27,12 +27,9 @@ import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tag.Tag;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 
@@ -61,7 +58,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	 * 可用的压强
 	 */
 	private Set<Degree> availabePressure = EnumSet.of(Degree.ORDINARY);
-	private final Object2IntOpenHashMap<Identifier> recipesUsed = new Object2IntOpenHashMap<Identifier>();
+//	private final Object2IntOpenHashMap<Identifier> recipesUsed = new Object2IntOpenHashMap<Identifier>();
 	public final PropertyDelegate propertyDelegate = new PropertyDelegate() {
 
 		@Override
