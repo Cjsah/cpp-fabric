@@ -18,6 +18,7 @@ public class CppPotion extends PotionItem {
     public CppPotion(Settings settings, StatusEffectInstance... effect) {
         super(settings);
         this.effect = ImmutableList.copyOf(effect);
+        System.out.println(super.isFood());
     }
 
     @Override
