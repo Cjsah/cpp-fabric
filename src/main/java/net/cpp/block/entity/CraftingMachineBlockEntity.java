@@ -1,13 +1,6 @@
 package net.cpp.block.entity;
 
-import static net.minecraft.item.Items.EXPERIENCE_BOTTLE;
-
-import java.util.Arrays;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.IntStream;
-
-import javax.annotation.Nullable;
 
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.cpp.gui.handler.CraftingMachineScreenHandler;
@@ -15,20 +8,12 @@ import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppRecipes;
 import net.cpp.recipe.ICppCraftingRecipe;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ChestBlock;
-import net.minecraft.block.InventoryProvider;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.IntArrayTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeFinder;
 import net.minecraft.recipe.RecipeInputProvider;
@@ -40,7 +25,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 

@@ -1,10 +1,5 @@
 package net.cpp.block.entity;
 
-import java.util.Map;
-import java.util.WeakHashMap;
-
-import com.google.common.base.Objects;
-
 public class Pair<K, V> {
 //	private static final Map<Long, Pair> BUFFER = new WeakHashMap<Long, Pair>();
 	public final K e1;

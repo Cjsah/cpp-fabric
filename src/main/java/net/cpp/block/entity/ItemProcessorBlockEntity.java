@@ -14,22 +14,23 @@ import static net.cpp.init.CppItems.WOOL_LEAVES;
 import static net.cpp.init.CppItems.WOOL_SAPLING;
 import static net.minecraft.item.Items.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Set;
 
-import org.jetbrains.annotations.NotNull;
-
+import net.cpp.gui.handler.ItemProcessorScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppItems;
+import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Recipe;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.screen.PropertyDelegate;
@@ -39,11 +40,13 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 
 public class ItemProcessorBlockEntity extends AMachineBlockEntity implements SidedInventory {
+	public static final Set<Item> LEATHERS = new HashSet<Item>(
+			Arrays.asList(LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS));
 	public static final Map<Item, Map<Item, ItemStackAndCount>> RECIPES = new HashMap<>();
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1 };
 	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4, ItemStack.EMPTY);
 	private int lastTickCount = -1;
-	private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
+	public final PropertyDelegate propertyDelegate = new PropertyDelegate() {
 
 		@Override
 		public int size() {
@@ -77,42 +80,126 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity implements Sid
 
 	@Override
 	public void tick() {
-		if (!world.isClient && !getStack(0).isEmpty()) {
+		if (!world.isClient && !getStack(0).isEmpty() && !getStack(1).isEmpty()) {
 			Item tool = getStack(0).getItem();
+			ItemStack input1 = getStack(1), output1 = getStack(2);
 			if (tool == RED_FORCE_OF_FIRE) {
-				SmeltingRecipe recipe = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING,
-						new SimpleInventory(new ItemStack[] { getStack(1) }), this.world).get();
+// 红色火之力
+				SmeltingRecipe recipe = world.getRecipeManager()
+						.getFirstMatch(RecipeType.SMELTING, new SimpleInventory(new ItemStack[] { input1 }), this.world)
+						.orElse(null);
 				if (recipe != null) {
 					ItemStack result = recipe.getOutput();
-					if (getStack(2).isItemEqual(result) && (getStack(2).isEmpty()
-							|| getStack(2).getCount() + result.getCount() <= getStack(2).getMaxCount())) {
-						getStack(1).decrement(1);
-						getStack(2).increment(result.getCount());
+					boolean processed = false;
+					if (processed = output1.isEmpty())
+						setStack(2, result.copy());
+					else if (processed = output1.isItemEqual(result)
+							&& output1.getCount() + result.getCount() <= output1.getMaxCount())
+						output1.increment(result.getCount());
+					if (processed)
+						input1.decrement(1);
+				}
+			} else if (tool == CppItems.COMPRESSOR) {
+// 压缩器
+				if (input1.getCount() >= input1.getMaxCount()
+						&& (output1.isEmpty() || output1.getCount() < output1.getMaxCount())) {
+					ItemStack output;
+					if (input1.getItem() == CppItems.COMPRESSED_ITEM
+							|| input1.getItem() == CppItems.COMPRESSED_EXPERIENCE_BOTTLE) {
+						output = input1.copy();
+						output.setCount(1);
+						output.getOrCreateTag().putByte("mutiple",
+								(byte) (input1.getOrCreateTag().getByte("mutiple") + 1));
+					} else {
+						output = new ItemStack(
+								input1.getItem() == EXPERIENCE_BOTTLE ? CppItems.COMPRESSED_EXPERIENCE_BOTTLE
+										: CppItems.COMPRESSED_ITEM);
+						CompoundTag inputItemNBT = itemStackToTag(input1);
+						inputItemNBT.remove("Slot");
+						inputItemNBT.remove("Count");
+						output.putSubTag("item", inputItemNBT);
+						output.getTag().putByte("mutiple", (byte) 1);
 					}
+					boolean ed = false;
+					if (ed = output1.isEmpty())
+						setStack(2, output);
+					else if (ed = ItemStack.areItemsEqual(output1, output) && ItemStack.areTagsEqual(output1, output))
+						output1.increment(1);
+					if (ed)
+						input1.decrement(input1.getMaxCount());
 				}
 			} else {
-				ItemStackAndCount itemStackAndCount = RECIPES.get(tool).get(getStack(1).getItem());
-				if (itemStackAndCount != null && getStack(1).getCount() >= itemStackAndCount.count) {
-					if (getStack(1).getItem() == GILDED_BLACKSTONE) {
-						if (lastTickCount == -1) {
+				if (tool.isIn(FabricToolTags.AXES)) {
+					tool = STONE_AXE;
+				} else if (tool.isIn(FabricToolTags.HOES)) {
+					tool = STONE_HOE;
+				} else if (tool.isIn(FabricToolTags.PICKAXES)) {
+					tool = STONE_PICKAXE;
+				} else if (tool.isIn(FabricToolTags.SHEARS)) {
+					tool = SHEARS;
+				} else if (tool.isIn(FabricToolTags.SHOVELS)) {
+					tool = STONE_SHOVEL;
+				}
+				ItemStackAndCount itemStackAndCount = RECIPES.get(tool).get(input1.getItem());
+				if (itemStackAndCount != null && input1.getCount() >= itemStackAndCount.count) {
+					boolean used = false;
+					if (input1.getItem() == GILDED_BLACKSTONE) {
+						if (lastTickCount == -1)
 							lastTickCount = 2 + (int) (4 * Math.random());
-						}
-						if (getStack(2).isEmpty()
-								|| getStack(2).getCount() + lastTickCount <= getStack(2).getMaxCount()) {
-							lastTickCount = -1;
-							getStack(1).decrement(1);
-							if (getStack(2).isEmpty())
-								setStack(2, itemStackAndCount.itemStack.copy());
+						if ((output1.isEmpty() || output1.getItem() == GOLD_NUGGET
+								&& output1.getCount() + lastTickCount <= output1.getMaxCount())) {
+							input1.decrement(1);
+							if (output1.isEmpty())
+								setStack(2, new ItemStack(GOLD_NUGGET, lastTickCount));
 							else
-								getStack(2).increment(lastTickCount);
+								output1.increment(lastTickCount);
+							used = true;
+							lastTickCount = -1;
 						}
-					} else if ((getStack(2).isEmpty() || getStack(2).getCount()
-							+ itemStackAndCount.itemStack.getCount() <= getStack(2).getMaxCount())) {
-						getStack(1).decrement(itemStackAndCount.count);
-						if (getStack(2).isEmpty())
-							setStack(2, itemStackAndCount.itemStack.copy());
-						else
-							getStack(2).increment(itemStackAndCount.itemStack.getCount());
+					} else if ((output1.isEmpty() || ItemStack.areItemsEqual(itemStackAndCount.itemStack, output1)
+							&& output1.getCount() + itemStackAndCount.itemStack.getCount() <= output1.getMaxCount())) {
+						Item result1 = itemStackAndCount.itemStack.getItem();
+						ItemStack output2 = getStack(3);
+						boolean able = true;
+						if (LEATHERS.contains(input1.getItem())) {
+							if (output1.isEmpty()) {
+								output1 = input1.copy();
+								output1.getOrCreateSubTag("display").remove("color");
+								setStack(2, output1);
+								input1.decrement(1);
+							}
+						} else {
+							if (result1 == CARVED_PUMPKIN) {
+								if (output2.isEmpty() || output2.getItem() == PUMPKIN_SEEDS
+										&& output2.getCount() + 4 <= output2.getMaxCount()) {
+									if (output2.isEmpty())
+										setStack(3, new ItemStack(PUMPKIN_SEEDS, 4));
+									else
+										output2.increment(4);
+								} else
+									able = false;
+							} else if (result1 == OBSIDIAN) {
+								if (output2.isEmpty() || output2.getItem() == BUCKET
+										&& output2.getCount() + 1 <= output2.getMaxCount()) {
+									if (output2.isEmpty())
+										setStack(3, new ItemStack(BUCKET, 1));
+									else
+										output2.increment(1);
+								} else
+									able = false;
+							}
+							if (able) {
+								input1.decrement(itemStackAndCount.count);
+								if (output1.isEmpty())
+									setStack(2, itemStackAndCount.itemStack.copy());
+								else
+									output1.increment(itemStackAndCount.itemStack.getCount());
+								used = true;
+							}
+						}
+					}
+					if (used && getStack(0).damage(1, world.random, null)) {
+						getStack(0).decrement(1);
 					}
 				}
 			}
@@ -140,8 +227,7 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity implements Sid
 
 	@Override
 	protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
-		// TODO 自动生成的方法存根
-		return null;
+		return new ItemProcessorScreenHandler(syncId, playerInventory, this);
 	}
 
 	@Override
@@ -182,8 +268,11 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity implements Sid
 	}
 
 	static {
-		Map<Item, ItemStackAndCount> map;
+		Map<Item, ItemStackAndCount> map, marker = new HashMap<>();
 
+		for (Item item : FabricToolTags.SHOVELS.values()) {
+			RECIPES.put(item, marker);
+		}
 		map = new HashMap<>();
 		put(map, GRASS_BLOCK, DIRT);
 		put(map, MYCELIUM, DIRT);
@@ -194,26 +283,40 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity implements Sid
 		put(map, SNOW_BLOCK, SNOWBALL, 4);
 		RECIPES.put(STONE_SHOVEL, map);
 
+		for (Item item : FabricToolTags.HOES.values()) {
+			RECIPES.put(item, marker);
+		}
 		map = new HashMap<>();
 		put(map, COARSE_DIRT, DIRT);
 		RECIPES.put(STONE_HOE, map);
 
+		for (Item item : FabricToolTags.PICKAXES.values()) {
+			RECIPES.put(item, marker);
+		}
 		map = new HashMap<>();
 		put(map, STONE, COBBLESTONE);
 		put(map, CRIMSON_NYLIUM, NETHERRACK);
 		put(map, WARPED_NYLIUM, NETHERRACK);
-		put(map, GLOWSTONE, GLOWSTONE_DUST);
+		put(map, GLOWSTONE, GLOWSTONE_DUST, 4);
 		RECIPES.put(STONE_PICKAXE, map);
 
+		for (Item item : FabricToolTags.SHEARS.values()) {
+			RECIPES.put(item, marker);
+		}
 		map = new HashMap<>();
 		put(map, PUMPKIN, CARVED_PUMPKIN);
 		RECIPES.put(SHEARS, map);
 
+		for (Item item : FabricToolTags.AXES.values()) {
+			RECIPES.put(item, marker);
+		}
 		map = new HashMap<>();
-		put(map, MELON, MELON_SLICE);
+		put(map, MELON, MELON_SLICE, 9);
 		put(map, ACACIA_LOG, STRIPPED_ACACIA_LOG);
 		put(map, ACACIA_WOOD, STRIPPED_ACACIA_WOOD);
+		put(map, BIRCH_LOG, STRIPPED_BIRCH_LOG);
 		put(map, BIRCH_WOOD, STRIPPED_BIRCH_WOOD);
+		put(map, CRIMSON_STEM, STRIPPED_CRIMSON_STEM);
 		put(map, CRIMSON_HYPHAE, STRIPPED_CRIMSON_HYPHAE);
 		put(map, DARK_OAK_LOG, STRIPPED_DARK_OAK_LOG);
 		put(map, DARK_OAK_WOOD, STRIPPED_DARK_OAK_WOOD);
@@ -262,7 +365,7 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity implements Sid
 		put(map, IRON_NUGGET, 9, IRON_INGOT);
 		put(map, GOLD_NUGGET, 9, GOLD_INGOT);
 		put(map, NETHERITE_INGOT, 9, NETHERITE_BLOCK);
-		put(map, RABBIT_HIDE, 9, LEATHER);
+		put(map, RABBIT_HIDE, 4, LEATHER);
 		put(map, SNOWBALL, 4, SNOW_BLOCK);
 		put(map, GLOWSTONE_DUST, 4, GLOWSTONE);
 		put(map, CLAY_BALL, 4, CLAY);
@@ -271,8 +374,10 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity implements Sid
 
 		map = new HashMap<>();
 		for (Map.Entry<Item, Item> entry : CppItems.SEEDS_TO_FLOWERS.entrySet())
-			put(map, entry.getKey(), entry.getValue(), 3);
+			put(map, entry.getValue(), entry.getKey(), 3);
 		RECIPES.put(CppBlocks.CRAFTING_MACHINE.asItem(), map);
+
+		RECIPES.put(RED_FORCE_OF_FIRE, new HashMap<>());
 
 		map = new HashMap<>();
 		for (Item item : new Item[] { WHITE_STAINED_GLASS, ORANGE_STAINED_GLASS, MAGENTA_STAINED_GLASS,
@@ -329,6 +434,8 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity implements Sid
 		map = new HashMap<>();
 		put(map, DIRT, MYCELIUM);
 		RECIPES.put(MYCELIUM, map);
+
+		RECIPES.put(CppItems.COMPRESSOR, marker);
 	}
 
 	public static class ItemStackAndCount {

@@ -12,14 +12,13 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class CraftingMachineScreen extends HandledScreen<CraftingMachineScreenHandler> {
-	private static final Identifier TEXTURE = new Identifier("cpp:textures/gui/crafting_machine.png");
-	private boolean narrow;
+	public static final Identifier BACKGROUND = new Identifier("cpp:textures/gui/crafting_machine.png");
 	public final OutputDirectionButton oButton;
 
 	public CraftingMachineScreen(CraftingMachineScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 		oButton = new OutputDirectionButton(buttonWidget -> {
-			client.interactionManager.clickButton(handler.syncId, 1010);
+			client.interactionManager.clickButton(handler.syncId, OutputDirectionButton.SYNCHRONIZED_ID);
 		}, handler.propertyDelegate);
 	}
 
@@ -32,7 +31,6 @@ public class CraftingMachineScreen extends HandledScreen<CraftingMachineScreenHa
 
 	protected void init() {
 		super.init();
-		this.narrow = this.width < 379;
 		oButton.setPos(x + 94, y + 57);
 		this.addButton(oButton);
 		this.titleX = 29;
@@ -44,7 +42,7 @@ public class CraftingMachineScreen extends HandledScreen<CraftingMachineScreenHa
 
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.client.getTextureManager().bindTexture(TEXTURE);
+		this.client.getTextureManager().bindTexture(BACKGROUND);
 		int i = this.x;
 		int j = (this.height - this.backgroundHeight) / 2;
 		this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
@@ -52,7 +50,7 @@ public class CraftingMachineScreen extends HandledScreen<CraftingMachineScreenHa
 
 	protected boolean isPointWithinBounds(int xPosition, int yPosition, int width, int height, double pointX,
 			double pointY) {
-		return !this.narrow && super.isPointWithinBounds(xPosition, yPosition, width, height, pointX, pointY);
+		return super.isPointWithinBounds(xPosition, yPosition, width, height, pointX, pointY);
 	}
 
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
