@@ -1,39 +1,71 @@
 package net.cpp.api;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffectUtil;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.stat.Stats;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class CppFood extends Item {
-    public final ImmutableList<StatusEffectInstance> effect;
+public class CppFoodOrPotion extends Item {
+    private static final MutableText field_25817;
+    private final UseAction useAction;
 
-    public CppFood(Settings settings) {
+    public CppFoodOrPotion(UseAction useAction, Settings settings) {
         super(settings);
-        this.effect = null;
+        this.useAction = useAction;
     }
 
-    public CppFood(Settings settings, StatusEffectInstance... effect) {
-        super(settings);
-        this.effect = ImmutableList.copyOf(effect);
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        return this.useAction;
+    }
+
+    @Override
+    public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+
+        PlayerEntity playerEntity = (PlayerEntity)user;
+
+        if (this.isFood()) {
+            stack = this.eatFood(world, stack, playerEntity);
+        }
+
+        if (this.useAction == UseAction.DRINK && (playerEntity == null || !playerEntity.abilities.creativeMode)) {
+            if (stack.isEmpty()) {
+                return new ItemStack(Items.GLASS_BOTTLE);
+            }
+
+            if (playerEntity != null) {
+                playerEntity.inventory.insertStack(new ItemStack(Items.GLASS_BOTTLE));
+            }
+        }
+
+        return stack;
     }
 
     @Override
@@ -67,6 +99,8 @@ public class CppFood extends Item {
                     mutableText = new TranslatableText("potion.withDuration", mutableText, StatusEffectUtil.durationToString(statusEffectInstance, 1.0F));
                 }
             }
+        }else if (this.useAction == UseAction.DRINK) {
+            tooltip.add(field_25817);
         }
 
         if (!list3.isEmpty()) {
@@ -103,4 +137,35 @@ public class CppFood extends Item {
         }
         return list;
     }
+
+    public ItemStack eatFood(World world, ItemStack stack, PlayerEntity player) {
+        player.getHungerManager().eat(stack.getItem(), stack);
+        player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+        if (this.useAction == UseAction.EAT) {
+            world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.random.nextFloat() * 0.1F + 0.9F);
+        }
+        if (player instanceof ServerPlayerEntity) {
+            Criteria.CONSUME_ITEM.trigger((ServerPlayerEntity)player, stack);
+        }
+        applyFoodEffects(stack.getItem(), world, player);
+        if (!player.abilities.creativeMode) {
+            stack.decrement(1);
+        }
+        return stack;
+    }
+
+    private void applyFoodEffects(Item item, World world, LivingEntity targetEntity) {
+        List<Pair<StatusEffectInstance, Float>> list = Objects.requireNonNull(item.getFoodComponent()).getStatusEffects();
+
+        for (Pair<StatusEffectInstance, Float> pair : list) {
+            if (!world.isClient && pair.getFirst() != null && world.random.nextFloat() < pair.getSecond()) {
+                targetEntity.addStatusEffect(new StatusEffectInstance(pair.getFirst()));
+            }
+        }
+    }
+
+    static {
+        field_25817 = (new TranslatableText("effect.none")).formatted(Formatting.GRAY);
+    }
+
 }
