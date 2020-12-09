@@ -175,7 +175,7 @@ public final class CppItems {
 	public static final Item SAKURA_MOCHI;
 	public static final Item ZONGZI;
 	public static final Item ZONGZI_BOILED_EGG;
-	public static final Item ZONGZI_CHINESE_DATA;
+	public static final Item ZONGZI_CHINESE_DATE;
 	public static final Item ZONGZI_COOKED_PORKCHOP;
 	public static final Item ZONGZI_SALT;
 	public static final Item ZONGZI_SODA_WATER;
@@ -533,7 +533,7 @@ public final class CppItems {
 		SAKURA_MOCHI = registerItem("sakura_mochi", new CppFood(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
 		ZONGZI = registerItem("zongzi", new CppFood(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
 		ZONGZI_BOILED_EGG = registerItem("zongzi_boiled_egg", new CppFood(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
-		ZONGZI_CHINESE_DATA = registerItem("zongzi_chinese_data", new CppFood(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
+		ZONGZI_CHINESE_DATE = registerItem("zongzi_chinese_date", new CppFood(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
 		ZONGZI_COOKED_PORKCHOP = registerItem("zongzi_cooked_porkchop", new CppFood(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
 		ZONGZI_SALT = registerItem("zongzi_salt", new CppFood(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
 		ZONGZI_SODA_WATER = registerItem("zongzi_soda_water", new CppFood(new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
