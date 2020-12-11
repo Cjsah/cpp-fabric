@@ -31,7 +31,6 @@ public class AllInOneMachineScreenHandler extends AMachineScreenHandler {
 			AllInOneMachineBlockEntity blockEntity) {
 		super(CppScreenHandler.ALL_IN_ONE_MACHINE, syncId, playerInventory, blockEntity);
 		player = playerInventory.player;
-//		world = player.world;
 		this.blockEntity = blockEntity;
 		addSlot(new Slot(blockEntity, 0, x(3), y(0)));
 		addSlot(new Slot(blockEntity, 1, x(4), y(0)));
@@ -41,51 +40,6 @@ public class AllInOneMachineScreenHandler extends AMachineScreenHandler {
 		blockEntity.onOpen(player);
 		addProperties(blockEntity.propertyDelegate);
 	}
-
-//	/*
-//	 * 以下是AbstractRecipeScreenHandler的方法
-//	 */
-//	@Override
-//	public void populateRecipeFinder(RecipeFinder finder) {
-////		blockEntity.provideRecipeInputs(finder);
-//	}
-//
-//	@Override
-//	public void clearCraftingSlots() {
-//		blockEntity.clear();
-//	}
-//
-//	@Override
-//	public boolean matches(Recipe<? super Inventory> recipe) {
-//		return recipe.matches(blockEntity, world);
-//	}
-//
-//	@Override
-//	public int getCraftingResultSlotIndex() {
-//		return 0;
-//	}
-//
-//	@Override
-//	public int getCraftingWidth() {
-//		return 2;
-//	}
-//
-//	@Override
-//	public int getCraftingHeight() {
-//		return 1;
-//	}
-//
-//	@Override
-//	@Environment(EnvType.CLIENT)
-//	public int getCraftingSlotCount() {
-//		return 3;
-//	}
-//
-//	@Override
-//	@Environment(EnvType.CLIENT)
-//	public RecipeBookCategory getCategory() {
-//		throw new UnsupportedOperationException("多功能一体机配方没有配方书页面");
-//	}
 
 	/*
 	 * 以下是ScreenHandler的方法
@@ -160,17 +114,5 @@ public class AllInOneMachineScreenHandler extends AMachineScreenHandler {
 	 * 以下是自定义方法
 	 */
 
-//	public class InputSlot extends Slot {
-//		public final int index;
-//
-//		public InputSlot(Inventory inventory, int index, int x, int y) {
-//			super(inventory, index, x, y);
-//			this.index = index;
-//		}
-//
-//		@Override
-//		public boolean canInsert(ItemStack stack) {
-//			return super.canInsert(stack);
-//		}
-//	}
+
 }

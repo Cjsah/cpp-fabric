@@ -1,5 +1,8 @@
 package net.cpp.gui.screen;
 
+import static net.cpp.gui.handler.SlotTool.x;
+import static net.cpp.gui.handler.SlotTool.y;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.cpp.gui.handler.CraftingMachineScreenHandler;

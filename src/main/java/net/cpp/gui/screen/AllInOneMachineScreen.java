@@ -128,11 +128,18 @@ public class AllInOneMachineScreen extends HandledScreen<AllInOneMachineScreenHa
 		} else if (xpIsHovered(x, y)) {
 			renderTooltip(matrices, new LiteralText(String.format("%d/100", handler.blockEntity.getExpStorage())), x,
 					y);
+		} else if (workTimeIsHovered(x, y)) {
+			renderTooltip(matrices, new LiteralText(String.format("%.1fs/%.1fs", handler.blockEntity.getWorkTime() / 20.,
+					handler.blockEntity.getWorkTimeTotal() / 20.)), x, y);
 		}
 		super.drawMouseoverTooltip(matrices, x, y);
 	}
 
 	public boolean xpIsHovered(int mx, int my) {
 		return mx >= x + 151 && mx <= x + 151 + 18 && my >= y + 17 && my <= y + 17 + 52;
+	}
+
+	public boolean workTimeIsHovered(int mx, int my) {
+		return mx >= x + 74 && mx <= x + 74 + 11 && my >= y + 36 && my <= y + 36 + 16;
 	}
 }

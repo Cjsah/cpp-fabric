@@ -35,9 +35,6 @@ public class MobProjectorBlock extends AMachineBlock {
 
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		if (!world.isClient())
-			dropExperience((ServerWorld) world, pos,
-					((AllInOneMachineBlockEntity) world.getBlockEntity(pos)).getExpStorage());
 		super.onBreak(world, pos, state, player);
 	}
 
