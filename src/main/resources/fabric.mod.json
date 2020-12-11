@@ -15,7 +15,7 @@
     "sources": "https://github.com/cjsah/cpp-fabric"
   },
 
-  "license": "GPL-3.0",
+  "license": "",
   "icon": "assets/cpp/icon.png",
 
   "environment": "*",
