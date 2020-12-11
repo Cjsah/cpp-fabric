@@ -1,6 +1,6 @@
 package net.cpp.gui.handler;
 
-public final class SlotTool {
+public class SlotTool {
 	private SlotTool() {
 		
 	}

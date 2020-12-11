@@ -3,6 +3,7 @@ package net.cpp.init;
 import net.cpp.block.AllInOneMachineBlock;
 import net.cpp.block.CraftingMachineBlock;
 import net.cpp.block.ItemProcessorBlock;
+import net.cpp.block.MobProjectorBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
@@ -25,7 +26,7 @@ public final class CppBlocks {
 	public static final Block ITEM_PROCESSER = Registry.register(Registry.BLOCK,
 			new Identifier("cpp:item_processer"), new ItemProcessorBlock());
 	public static final Block MOB_PROJECTOR = Registry.register(Registry.BLOCK,
-			new Identifier("cpp:mob_projector"), new AllInOneMachineBlock());
+			new Identifier("cpp:mob_projector"), new MobProjectorBlock());
 	public static final Block BEACON_ENHANCER = Registry.register(Registry.BLOCK,
 			new Identifier("cpp:beacon_enhancer"), new AllInOneMachineBlock());
 	public static final Block GOLDEN_ANVIL = Registry.register(Registry.BLOCK,

@@ -38,7 +38,7 @@ mylib/
 
 /run.bat
 /ps.bat
-copy resources to bin.bat
+/copy resources to bin.bat
 
 # cpp
 
