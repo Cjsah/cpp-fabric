@@ -153,12 +153,6 @@ public class AllInOneMachineScreenHandler extends AMachineScreenHandler {
 	}
 
 	@Override
-	public void close(PlayerEntity player) {
-		super.close(player);
-		blockEntity.onClose(player);
-	}
-
-	@Override
 	public boolean canInsertIntoSlot(ItemStack stack, Slot slot) {
 		return slot.inventory != this.blockEntity && super.canInsertIntoSlot(stack, slot);
 	}
@@ -166,17 +160,17 @@ public class AllInOneMachineScreenHandler extends AMachineScreenHandler {
 	 * 以下是自定义方法
 	 */
 
-	public class InputSlot extends Slot {
-		public final int index;
-
-		public InputSlot(Inventory inventory, int index, int x, int y) {
-			super(inventory, index, x, y);
-			this.index = index;
-		}
-
-		@Override
-		public boolean canInsert(ItemStack stack) {
-			return super.canInsert(stack);
-		}
-	}
+//	public class InputSlot extends Slot {
+//		public final int index;
+//
+//		public InputSlot(Inventory inventory, int index, int x, int y) {
+//			super(inventory, index, x, y);
+//			this.index = index;
+//		}
+//
+//		@Override
+//		public boolean canInsert(ItemStack stack) {
+//			return super.canInsert(stack);
+//		}
+//	}
 }

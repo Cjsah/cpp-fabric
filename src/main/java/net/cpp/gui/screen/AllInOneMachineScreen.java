@@ -14,6 +14,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -21,6 +22,7 @@ import net.minecraft.util.Identifier;
 public class AllInOneMachineScreen extends HandledScreen<AllInOneMachineScreenHandler> {
 	public static final Identifier BACKGROUND = new Identifier("cpp:textures/gui/all_in_one_machine.png");
 	public static final Identifier XP = new Identifier("cpp:textures/gui/xp.png");
+	public static final Identifier FRAME = new Identifier("cpp:textures/gui/frame.png");
 	public static final TranslatableText[] TEMPERATURE_TEXTS = { new TranslatableText("gui.ordinary_temperature"),
 			new TranslatableText("gui.low_temperature"), new TranslatableText("gui.high_temperature") };
 	public static final TranslatableText[] PRESSURE_TEXTS = { new TranslatableText("gui.ordinary_pressure"),
@@ -109,8 +111,8 @@ public class AllInOneMachineScreen extends HandledScreen<AllInOneMachineScreenHa
 			int t = (int) (System.currentTimeMillis() % (16 * 50) / 50);
 			drawTexture(matrices, x + 152, y + 68 - (exp + 1) / 2, 0, t * 50, 16, (exp + 1) / 2, 16, 800);
 		}
-		client.getTextureManager().bindTexture(BACKGROUND);
-		drawTexture(matrices, x + 152, y + 18, 176, 18, 16, 50);
+		client.getTextureManager().bindTexture(FRAME);
+		drawTexture(matrices, x + 151, y + 17, 0, 0, 18, 52, 18, 52);
 	}
 
 	@Override
@@ -123,7 +125,14 @@ public class AllInOneMachineScreen extends HandledScreen<AllInOneMachineScreenHa
 		} else if (pressureButton.isHovered()) {
 			pressureTooltip.set(0, PRESSURE_TEXTS[handler.blockEntity.getPressure().ordinal()]);
 			renderTooltip(matrices, pressureTooltip, x, y);
+		} else if (xpIsHovered(x, y)) {
+			renderTooltip(matrices, new LiteralText(String.format("%d/100", handler.blockEntity.getExpStorage())), x,
+					y);
 		}
 		super.drawMouseoverTooltip(matrices, x, y);
+	}
+
+	public boolean xpIsHovered(int mx, int my) {
+		return mx >= x + 151 && mx <= x + 151 + 18 && my >= y + 17 && my <= y + 17 + 52;
 	}
 }

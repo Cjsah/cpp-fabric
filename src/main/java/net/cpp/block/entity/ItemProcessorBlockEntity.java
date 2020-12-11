@@ -15,17 +15,21 @@ import static net.cpp.init.CppItems.WOOL_SAPLING;
 import static net.minecraft.item.Items.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.cpp.block.entity.AllInOneMachineBlockEntity.Recipe;
 import net.cpp.gui.handler.ItemProcessorScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppItems;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
@@ -76,6 +80,19 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity implements Sid
 
 	public ItemProcessorBlockEntity() {
 		super(CppBlockEntities.ITEM_PROCESSER);
+	}
+
+	@Override
+	public void fromTag(BlockState state, CompoundTag tag) {
+		super.fromTag(state, tag);
+		Inventories.fromTag(tag, inventory);
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		super.toTag(tag);
+		Inventories.toTag(tag, inventory);
+		return tag;
 	}
 
 	@Override
@@ -140,7 +157,8 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity implements Sid
 				} else if (tool.isIn(FabricToolTags.SHOVELS)) {
 					tool = STONE_SHOVEL;
 				}
-				ItemStackAndCount itemStackAndCount = RECIPES.get(tool).get(input1.getItem());
+				ItemStackAndCount itemStackAndCount = RECIPES.getOrDefault(tool, Collections.emptyMap())
+						.get(input1.getItem());
 				if (itemStackAndCount != null && input1.getCount() >= itemStackAndCount.count) {
 					boolean used = false;
 					if (input1.getItem() == GILDED_BLACKSTONE) {
@@ -237,7 +255,7 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity implements Sid
 
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-		return slot == 0 || slot == 1;
+		return slot == 0 && stack != null && RECIPES.containsKey(stack.getItem()) || slot == 1;
 	}
 
 	@Override

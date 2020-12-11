@@ -1,24 +1,20 @@
 package net.cpp.block;
 
 import net.cpp.block.entity.AllInOneMachineBlockEntity;
+import net.cpp.block.entity.MobProjectorBlockEntity;
 import net.cpp.init.CppStats;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.state.StateManager.Builder;
-import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class AllInOneMachineBlock extends AMachineBlock {
-	public static final BooleanProperty WORKING = BooleanProperty.of("working");
+public class MobProjectorBlock extends AMachineBlock {
 
-	public AllInOneMachineBlock() {
-		setDefaultState(stateManager.getDefaultState().with(WORKING, false));
+	public MobProjectorBlock() {
 	}
 
 	/*
@@ -26,15 +22,7 @@ public class AllInOneMachineBlock extends AMachineBlock {
 	 */
 	@Override
 	public Identifier getStatIdentifier() {
-		return CppStats.INTERACT_WITH_ALL_IN_ONE_MACHINE;
-	}
-
-	/*
-	 * 以下是Block的方法
-	 */
-	@Override
-	protected void appendProperties(Builder<Block, BlockState> builder) {
-		builder.add(WORKING);
+		return CppStats.INTERACT_WITH_MOB_PROJECTOR;
 	}
 
 	/*
@@ -42,7 +30,7 @@ public class AllInOneMachineBlock extends AMachineBlock {
 	 */
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
-		return new AllInOneMachineBlockEntity();
+		return new MobProjectorBlockEntity();
 	}
 
 	@Override

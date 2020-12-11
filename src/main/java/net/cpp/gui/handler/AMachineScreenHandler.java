@@ -18,13 +18,13 @@ public abstract class AMachineScreenHandler extends ScreenHandler {
 		super(type, syncId);
 		this.playerInventory = playerInventory;
 		this.blockEntity = blockEntity;
-		for (int m = 0; m < 9; ++m) {
-			this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 142));
-		}
 		for (int m = 0; m < 3; ++m) {
 			for (int l = 0; l < 9; ++l) {
 				this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 84 + m * 18));
 			}
+		}
+		for (int m = 0; m < 9; ++m) {
+			this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 142));
 		}
 	}
 
@@ -49,11 +49,11 @@ public abstract class AMachineScreenHandler extends ScreenHandler {
 		if (slot != null && slot.hasStack()) {
 			ItemStack itemStack2 = slot.getStack();
 			itemStack = itemStack2.copy();
-			if (index >= 0 && index < 9) {
-				if (!insertItem(itemStack2, 9, 36, true))
+			if (index >= 27 && index < 36) {
+				if (!insertItem(itemStack2, 0, 27, true))
 					return ItemStack.EMPTY;
-			} else if (index >= 9 && index < 36)
-				if (!insertItem(itemStack2, 0, 9, false))
+			} else if (index >= 0 && index < 27)
+				if (!insertItem(itemStack2, 27, 36, false))
 					return ItemStack.EMPTY;
 		}
 		return itemStack;

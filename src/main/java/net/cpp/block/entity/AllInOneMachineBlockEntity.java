@@ -34,7 +34,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 
 public class AllInOneMachineBlockEntity extends AMachineBlockEntity
-		implements SidedInventory /* implements RecipeUnlocker, RecipeInputProvider */ {
+		implements SidedInventory {
 	public static final Set<Item> UNCONSUMABLE = new HashSet<>(Arrays.asList(LAVA_BUCKET, COBBLESTONE_PLUGIN,
 			STONE_PLUGIN, BLACKSTONE_PLUGIN, NETHERRACK_PLUGIN, END_STONE_PLUGIN, BASALT_PLUGIN, GREEN_FORCE_OF_WATER));
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2 };
@@ -146,7 +146,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
 		Inventories.fromTag(tag, inventory);
-		workTime = tag.getInt("processTime");
+		workTime = tag.getInt("workTime");
 		expStorage = tag.getInt("expStorage");
 		propertyDelegate.set(3, tag.getByte("temperaturePressure"));
 		for (int i = 0, a = tag.getInt("availabeTemperature"); a > 0 && i < Degree.values().length; i++) {
@@ -165,7 +165,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	public CompoundTag toTag(CompoundTag tag) {
 		super.toTag(tag);
 		Inventories.toTag(tag, inventory);
-		tag.putInt("processTime", workTime);
+		tag.putInt("workTime", workTime);
 		tag.putInt("expStorage", expStorage);
 		tag.putByte("temperaturePressure", (byte) propertyDelegate.get(3));
 		int a = 0;
@@ -193,34 +193,6 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	public void shiftOutputDir() {
 		propertyDelegate.set(0, dirToByte() + 1);
 	}
-
-	/*
-	 * 以下是RecipeUnlocker的方法
-	 */
-//	@Override
-//	public void setLastRecipe(Recipe<?> recipe) {
-//		if (recipe != null) {
-//			Identifier identifier = recipe.getId();
-//			recipesUsed.addTo(identifier, 1);
-//		}
-//	}
-//
-//	@Override
-//	public Recipe<?> getLastRecipe() {
-//		return null;
-//	}
-//
-//	/*
-//	 * 以下是RecipeInputProvider的方法
-//	 */
-//	@Override
-//	public void provideRecipeInputs(RecipeFinder finder) {
-//		Iterator<ItemStack> var2 = this.inventory.iterator();
-//		while (var2.hasNext()) {
-//			ItemStack itemStack = (ItemStack) var2.next();
-//			finder.addItem(itemStack);
-//		}
-//	}
 
 	/*
 	 * 以下是Tickable的方法
@@ -311,24 +283,8 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 
 	@Override
 	public void onOpen(PlayerEntity player) {
-		propertyDelegate.set(3, propertyDelegate.get(3));
+//		propertyDelegate.set(3, propertyDelegate.get(3));
 		super.onOpen(player);
-//		if (world.isClient)
-//			return;
-//		int rand = new Random(new File(".").getAbsolutePath().hashCode()).nextInt();
-//		System.out.println(rand);
-//		for (Map.Entry<Item, ItemStack> entry1 : ORE_RATES.entrySet()) {
-//			for (Map.Entry<Item, ItemStack> entry2 : ORE_RATES.entrySet()) {
-//				if (entry1.equals(entry2))
-//					break;
-//				float randf = (entry1.getValue().hashCode() ^ entry2.getValue().hashCode() ^ rand >>> 1) % 90 / 30f + 1;
-//				System.out.println(randf);
-//				float c1 = randf * entry1.getValue().getCount();
-//				float c2 = (5 - randf) * entry2.getValue().getCount();
-//				addRecipe(Degree.HIGH, Degree.HIGH, entry1.getKey(), entry2.getKey(), entry1.getValue(),
-//						entry2.getValue(), c1, c1 + 1, c2, c2, 4, 200);
-//			}
-//		}
 	}
 
 	/*
