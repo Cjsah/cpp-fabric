@@ -28,7 +28,6 @@ public class Craftingpp implements ModInitializer {
 		CppRecipes.register();
 		CppStats.register();
 		CppEffects.register();
-		CppEvents.register();
 		CppChainMap.register();
 
 		// 连环药水效果

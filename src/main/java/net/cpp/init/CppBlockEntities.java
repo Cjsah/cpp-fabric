@@ -24,9 +24,7 @@ public final class CppBlockEntities {
 	public static void register() {
 	}
 
-	private static <T extends BlockEntity> BlockEntityType<T> registerBlockEntityType(Supplier<T> supplier,
-			Block block) {
-		return Registry.register(Registry.BLOCK_ENTITY_TYPE, Registry.BLOCK.getId(block).toString(),
-				BlockEntityType.Builder.create(supplier, block).build(null));
+	private static <T extends BlockEntity> BlockEntityType<T> registerBlockEntityType(Supplier<T> supplier, Block block) {
+		return Registry.register(Registry.BLOCK_ENTITY_TYPE, Registry.BLOCK.getId(block).toString(), BlockEntityType.Builder.create(supplier, block).build(null));
 	}
 }

@@ -65,8 +65,7 @@ public final class CppBlocks {
 	}
 
 	private static void registerMachineItem(Block block) {
-		Registry.register(Registry.ITEM, Registry.BLOCK.getId(block),
-				new BlockItem(block, new Item.Settings().group(CPP_GROUP_MACHINE)));
+		Registry.register(Registry.ITEM, Registry.BLOCK.getId(block), new BlockItem(block, new Item.Settings().group(CPP_GROUP_MACHINE)));
 	}
 
 }
