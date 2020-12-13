@@ -116,9 +116,9 @@ public class CraftingMachineScreenHandler extends AMachineScreenHandler {
 			itemStack = itemStack2.copy();
 			if (index >= 36 && index < 46) {
 				if (index == 45)
-					this.context.run((world, blockPos) -> {
-						itemStack2.getItem().onCraft(itemStack2, world, player);
-					});
+//					this.context.run((world, blockPos) -> {
+						itemStack2.getItem().onCraft(itemStack2, blockEntity.getWorld(), player);
+//					});
 				if (!this.insertItem(itemStack2, 0, 36, true)) {
 					return ItemStack.EMPTY;
 				}
@@ -129,22 +129,12 @@ public class CraftingMachineScreenHandler extends AMachineScreenHandler {
 					return ItemStack.EMPTY;
 				}
 			}
-			if (itemStack2.isEmpty()) {
-				slot.setStack(ItemStack.EMPTY);
-			} else {
-				slot.markDirty();
-			}
-			if (itemStack2.getCount() == itemStack.getCount()) {
-				return ItemStack.EMPTY;
-			}
-
 			ItemStack itemStack3 = slot.onTakeItem(player, itemStack2);
-			if (index == 0) {
+			if (index == 45) {
 				player.dropItem(itemStack3, false);
 			}
 		}
-
-		return itemStack;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -155,9 +145,10 @@ public class CraftingMachineScreenHandler extends AMachineScreenHandler {
 
 	@Override
 	public void onContentChanged(Inventory inventory) {
-		this.context.run((world2, blockPos) -> {
+//		updateResultUI();
+//		this.context.run((world2, blockPos) -> {
 			updateResultUI();
-		});
+//		});
 	}
 
 	@Override
@@ -172,7 +163,7 @@ public class CraftingMachineScreenHandler extends AMachineScreenHandler {
 		if (player instanceof ServerPlayerEntity) {
 			resultUI.setStack(0, blockEntity.getResult());
 			((ServerPlayerEntity) player).networkHandler
-					.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(syncId, 0, resultUI.getStack(0)));
+					.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(syncId, 45, resultUI.getStack(0)));
 		}
 	}
 }

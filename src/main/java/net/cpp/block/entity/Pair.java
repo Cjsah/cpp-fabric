@@ -17,6 +17,7 @@ public class Pair<K, V> {
 //		Pair<K, V> pair = new Pair<K, V>(e1, e2);
 //		BUFFER.put(l, pair);
 //		return pair;
+
 		return new Pair<K, V>(e1, e2);
 	}
 }
