@@ -1,19 +1,15 @@
 package net.cpp.gui.handler;
 
-import static net.cpp.gui.handler.SlotTool.x;
-import static net.cpp.gui.handler.SlotTool.y;
-
-import net.cpp.block.entity.AllInOneMachineBlockEntity;
+import net.cpp.api.CodingTool;
 import net.cpp.block.entity.MobProjectorBlockEntity;
 import net.cpp.init.CppScreenHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.slot.Slot;
 
-public class MobProjectorScreenHandler extends AMachineScreenHandler {
+public class MobProjectorScreenHandler extends AExpMachineScreenHandler {
 	private PlayerEntity player;
 	public final MobProjectorBlockEntity blockEntity;
 
@@ -21,17 +17,14 @@ public class MobProjectorScreenHandler extends AMachineScreenHandler {
 		this(syncId, playerInventory, new MobProjectorBlockEntity());
 	}
 
-	public MobProjectorScreenHandler(int syncId, PlayerInventory playerInventory,
-			MobProjectorBlockEntity blockEntity) {
+	public MobProjectorScreenHandler(int syncId, PlayerInventory playerInventory, MobProjectorBlockEntity blockEntity) {
 		super(CppScreenHandler.MOB_PROJECTOR, syncId, playerInventory, blockEntity);
 		player = playerInventory.player;
 		this.blockEntity = blockEntity;
-		addSlot(new Slot(blockEntity, 0, x(4), y(0)));
-		addSlot(new Slot(blockEntity, 1, x(4), y(1)));
-		addSlot(new Slot(blockEntity, 2, x(4), y(2)));
-		addSlot(new ExperienceBottleSlot(blockEntity, 3, x(6), y(0)));
+		addSlot(new Slot(blockEntity, 1, CodingTool.x(4), CodingTool.y(0)));
+		addSlot(new Slot(blockEntity, 2, CodingTool.x(4), CodingTool.y(1)));
+		addSlot(new Slot(blockEntity, 3, CodingTool.x(4), CodingTool.y(2)));
 		blockEntity.onOpen(player);
-		addProperties(blockEntity.propertyDelegate);
 	}
 
 	/*
@@ -40,43 +33,29 @@ public class MobProjectorScreenHandler extends AMachineScreenHandler {
 
 	@Override
 	public ItemStack transferSlot(PlayerEntity player, int index) {
-		ItemStack itemStack = ItemStack.EMPTY;
 		Slot slot = (Slot) this.slots.get(index);
 		if (slot != null && slot.hasStack()) {
-			ItemStack itemStack2 = slot.getStack();
-			itemStack = itemStack2.copy();
-			if (index >= 36 && index < 40) {
-				if (!this.insertItem(itemStack2, 0, 36, true))
-					return ItemStack.EMPTY;
-				slot.onStackChanged(itemStack2, itemStack);
-			} else {
-				if (getSlot(39).canInsert(itemStack2)) {
-					if (!this.insertItem(itemStack2, 39, 40, false))
-						return ItemStack.EMPTY;
-				}else if (itemStack2.getItem() == Items.EGG) {
-					if (!this.insertItem(itemStack2, 36, 37, false))
-						return ItemStack.EMPTY;
-				} else if (!this.insertItem(itemStack2, 37, 39, false)) {
-					return ItemStack.EMPTY;
-				} else if (super.transferSlot(player, index) == ItemStack.EMPTY) {
-					return ItemStack.EMPTY;
+			ItemStack itemStack = slot.getStack();
+			if (index >= 36 && index < 42)
+				insertItem(itemStack, 0, 36, true);
+			else if (index < 36) {
+				if (itemStack.getItem() == Items.EXPERIENCE_BOTTLE)
+					insertItem(itemStack, 36, 37, false);
+				else if (itemStack.getItem() == Items.EGG)
+					insertItem(itemStack, 37, 38, false);
+				else {
+					for (int i = 0; i < 2; i++) {
+						if (getSlot(i + 38).getStack().isEmpty()) {
+							if (!ItemStack.areItemsEqual(itemStack, getSlot((i ^ 1) + 38).getStack())) {
+								insertItem(itemStack, i + 38, i + 39, false);
+							}
+						} else {
+							insertItem(itemStack, i + 38, i + 39, false);
+						}
+					}
 				}
 			}
-			if (itemStack2.isEmpty()) {
-				slot.setStack(ItemStack.EMPTY);
-			} else {
-				slot.markDirty();
-			}
-			if (itemStack2.getCount() == itemStack.getCount()) {
-				return ItemStack.EMPTY;
-			}
-			slot.onTakeItem(player, itemStack2);
 		}
-		return itemStack;
-	}
-
-	@Override
-	public boolean canInsertIntoSlot(ItemStack stack, Slot slot) {
-		return slot.inventory != this.blockEntity && super.canInsertIntoSlot(stack, slot);
+		return ItemStack.EMPTY;
 	}
 }

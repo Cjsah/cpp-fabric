@@ -1,11 +1,13 @@
 package net.cpp.init;
 
 import net.cpp.block.AllInOneMachineBlock;
+import net.cpp.block.BeaconEnhancerBlock;
 import net.cpp.block.CraftingMachineBlock;
 import net.cpp.block.ItemProcessorBlock;
 import net.cpp.block.MobProjectorBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
+import net.minecraft.block.BeaconBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
@@ -21,22 +23,22 @@ public final class CppBlocks {
 			new Identifier("cpp:crafting_machine"), new CraftingMachineBlock());
 	public static final Block ALL_IN_ONE_MACHINE = Registry.register(Registry.BLOCK,
 			new Identifier("cpp:all_in_one_machine"), new AllInOneMachineBlock());
-	public static final Block TRADE_MACHINE = Registry.register(Registry.BLOCK,
-			new Identifier("cpp:trade_machine"), new AllInOneMachineBlock());
-	public static final Block ITEM_PROCESSER = Registry.register(Registry.BLOCK,
-			new Identifier("cpp:item_processer"), new ItemProcessorBlock());
-	public static final Block MOB_PROJECTOR = Registry.register(Registry.BLOCK,
-			new Identifier("cpp:mob_projector"), new MobProjectorBlock());
-	public static final Block BEACON_ENHANCER = Registry.register(Registry.BLOCK,
-			new Identifier("cpp:beacon_enhancer"), new AllInOneMachineBlock());
-	public static final Block GOLDEN_ANVIL = Registry.register(Registry.BLOCK,
-			new Identifier("cpp:golden_anvil"), new AllInOneMachineBlock());
-	public static final Block DUSTBIN = Registry.register(Registry.BLOCK,
-			new Identifier("cpp:dustbin"), new AllInOneMachineBlock());
-	public static final Block CHEST_DROPPER = Registry.register(Registry.BLOCK,
-			new Identifier("cpp:chest_dropper"), new AllInOneMachineBlock());
-	public static final Block EMPTY_BOOKSHELF = Registry.register(Registry.BLOCK,
-			new Identifier("cpp:empty_bookshelf"), new AllInOneMachineBlock());
+	public static final Block TRADE_MACHINE = Registry.register(Registry.BLOCK, new Identifier("cpp:trade_machine"),
+			new AllInOneMachineBlock());
+	public static final Block ITEM_PROCESSER = Registry.register(Registry.BLOCK, new Identifier("cpp:item_processer"),
+			new ItemProcessorBlock());
+	public static final Block MOB_PROJECTOR = Registry.register(Registry.BLOCK, new Identifier("cpp:mob_projector"),
+			new MobProjectorBlock());
+	public static final Block BEACON_ENHANCER = Registry.register(Registry.BLOCK, new Identifier("cpp:beacon_enhancer"),
+			new BeaconEnhancerBlock());
+	public static final Block GOLDEN_ANVIL = Registry.register(Registry.BLOCK, new Identifier("cpp:golden_anvil"),
+			new AllInOneMachineBlock());
+	public static final Block DUSTBIN = Registry.register(Registry.BLOCK, new Identifier("cpp:dustbin"),
+			new AllInOneMachineBlock());
+	public static final Block CHEST_DROPPER = Registry.register(Registry.BLOCK, new Identifier("cpp:chest_dropper"),
+			new AllInOneMachineBlock());
+	public static final Block EMPTY_BOOKSHELF = Registry.register(Registry.BLOCK, new Identifier("cpp:empty_bookshelf"),
+			new AllInOneMachineBlock());
 	public static final Block RARE_EARTH_GLASS = Registry.register(Registry.BLOCK,
 			new Identifier("cpp:rare_earth_glass"), new Block(FabricBlockSettings.of(Material.METAL).requiresTool()
 					.breakByTool(FabricToolTags.PICKAXES, 2).strength(5.0F, 6.0F).sounds(BlockSoundGroup.METAL)));
@@ -65,7 +67,8 @@ public final class CppBlocks {
 	}
 
 	private static void registerMachineItem(Block block) {
-		Registry.register(Registry.ITEM, Registry.BLOCK.getId(block), new BlockItem(block, new Item.Settings().group(CPP_GROUP_MACHINE)));
+		Registry.register(Registry.ITEM, Registry.BLOCK.getId(block),
+				new BlockItem(block, new Item.Settings().group(CPP_GROUP_MACHINE)));
 	}
 
 }

@@ -1,5 +1,7 @@
 package net.cpp.block.entity;
 
+import static net.cpp.api.CodingTool.of;
+import static net.cpp.api.CodingTool.setOf;
 import static net.minecraft.entity.EntityType.BAT;
 import static net.minecraft.entity.EntityType.BEE;
 import static net.minecraft.entity.EntityType.BLAZE;
@@ -57,7 +59,6 @@ import static net.minecraft.entity.EntityType.ZOMBIE_VILLAGER;
 import static net.minecraft.item.Items.BAMBOO;
 import static net.minecraft.item.Items.BEETROOT_SEEDS;
 import static net.minecraft.item.Items.BLAZE_POWDER;
-import static net.minecraft.item.Items.BLUE_WOOL;
 import static net.minecraft.item.Items.BONE;
 import static net.minecraft.item.Items.BOOK;
 import static net.minecraft.item.Items.CARROT;
@@ -108,21 +109,18 @@ import static net.minecraft.item.Items.WHITE_CARPET;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import net.cpp.gui.handler.MobProjectorScreenHandler;
 import net.cpp.init.CppBlockEntities;
-import net.cpp.init.CppBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -131,73 +129,52 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.ItemTags;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Direction.Axis;
 
-public class MobProjectorBlockEntity extends AMachineBlockEntity implements SidedInventory {
+public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2, 3 };
 	private static final Map<Set<Item>, Recipe> RECIPES = new HashMap<>();
 	public static final int WORK_TIME_TOTAL = 200;
-	private int workTime = 0;
-	private int expStorage = 0;
 	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4, ItemStack.EMPTY);
 	private int currentRecipeCode;
-	public final PropertyDelegate propertyDelegate = new PropertyDelegate() {
-
+	public final PropertyDelegate propertyDelegate = new ExpPropertyDelegate() {
 		@Override
 		public int size() {
-			return 4;
+			return 5;
 		}
 
 		@Override
 		public void set(int index, int value) {
 			switch (index) {
-			case 0:
-				setOutputDir(IOutputDiractionalBlockEntity.byteToDir((byte) value));
+			case 4:
+				currentRecipeCode=value;
 				break;
-			case 1:
-				workTime = value;
-				break;
-			case 2:
-				expStorage = value;
-				break;
-			case 3:
-				currentRecipeCode = value;
-				break;
+			default:
+				super.set(index, value);
 			}
 		}
 
 		@Override
 		public int get(int index) {
 			switch (index) {
-			case 0:
-				return dirToByte();
-			case 1:
-				return workTime;
-			case 2:
-				return expStorage;
-			case 3:
+			case 4:
 				return currentRecipeCode;
 			default:
-				return -1;
+				return super.get(index);
 			}
 		}
 	};
 
 	public MobProjectorBlockEntity() {
 		super(CppBlockEntities.MOB_PROJECTOR);
+		workTimeTotal = WORK_TIME_TOTAL;
 	}
 
-	/*
-	 * 以下是AMachineBlock的方法
-	 */
 	@Override
-	public Text getTitle() {
-		return CppBlocks.MOB_PROJECTOR.getName();
+	public PropertyDelegate getPropertyDelegate() {
+		return propertyDelegate;
 	}
 
 	/*
@@ -211,7 +188,6 @@ public class MobProjectorBlockEntity extends AMachineBlockEntity implements Side
 	@Override
 	protected void setInvStackList(DefaultedList<ItemStack> list) {
 		inventory = list;
-
 	}
 
 	/*
@@ -221,16 +197,12 @@ public class MobProjectorBlockEntity extends AMachineBlockEntity implements Side
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
 		Inventories.fromTag(tag, inventory);
-		workTime = tag.getInt("workTime");
-		expStorage = tag.getInt("expStorage");
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		super.toTag(tag);
 		Inventories.toTag(tag, inventory);
-		tag.putInt("workTime", workTime);
-		tag.putInt("expStorage", expStorage);
 		return tag;
 	}
 
@@ -240,28 +212,17 @@ public class MobProjectorBlockEntity extends AMachineBlockEntity implements Side
 	}
 
 	/*
-	 * 以下是IOutputDiractionalBlockEntity的方法
-	 */
-	@Override
-	public void shiftOutputDir() {
-		propertyDelegate.set(0, dirToByte() + 1);
-	}
-
-	/*
 	 * 以下是Tickable的方法
 	 */
 	@Override
 	public void tick() {
 		if (!world.isClient) {
-			if (getStack(3).getItem() == EXPERIENCE_BOTTLE && expStorage <= 91) {
-				getStack(3).decrement(1);
-				expStorage += 9;
-			}
-			boolean empty = true;
-			if (getStack(0).getItem() == Items.EGG) {
-				Recipe recipe = RECIPES.get(setOf(getStack(1).getItem(), getStack(2).getItem()));
+			expBottle(getStack(0));
+			boolean reciped = true;// 有配方吗？
+			if (getStack(1).getItem() == Items.EGG) {
+				Recipe recipe = RECIPES.get(setOf(getStack(2).getItem(), getStack(3).getItem()));
 				if (recipe != null) {
-					empty = false;
+					reciped = false;
 					currentRecipeCode = recipe.code;
 					if (expStorage >= recipe.experience)
 						if (workTime >= WORK_TIME_TOTAL) {
@@ -269,31 +230,25 @@ public class MobProjectorBlockEntity extends AMachineBlockEntity implements Side
 							int dx = (int) (getOutputDir().getOffsetX() * (1 + entityType.getWidth())) + pos.getX();
 							int dy = pos.getY();
 							if (getOutputDir().getOffsetY() < 0)
-								dy -= 1 + entityType.getHeight();
+								dy -= entityType.getHeight();
 							else if (getOutputDir().getOffsetY() > 0)
 								dy += 1;
 							int dz = (int) (getOutputDir().getOffsetZ() * (1 + entityType.getWidth())) + pos.getZ();
-							BlockPos spawnPos = new BlockPos(dx, dy, dz);
-//						System.out.println(new BlockPos(
-//								(int) (getOutputDir().getOffsetX() * (.5 + entityType.getWidth())),
-//								(int) (.0 + getOutputDir().getOffsetY() * (.0 + entityType.getHeight())),
-//								(int) (getOutputDir().getOffsetZ() * (.5 + entityType.getWidth()))));
-							entityType.spawn((ServerWorld) world, null, null, null, spawnPos, SpawnReason.SPAWNER,
-									false, false);
+							entityType.spawn((ServerWorld) world, null, null, null, new BlockPos(dx, dy, dz),
+									SpawnReason.SPAWNER, false, false);
 							workTime = 0;
 							expStorage -= recipe.experience;
-							getStack(0).decrement(1);
-							getStack(1).decrement(1);
-							getStack(2).decrement(1);
+							for (int i = 0; i < 3; i++)
+								getStack(i + 1).decrement(1);
 						} else {
 							workTime++;
-//							workTime += 19;
+//							workTime += 9;
 						}
 				} else {
 
 				}
 			}
-			if (empty) {
+			if (reciped) {
 				currentRecipeCode = -1;
 				workTime = 0;
 			}
@@ -310,35 +265,17 @@ public class MobProjectorBlockEntity extends AMachineBlockEntity implements Side
 
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-		return slot == 0 && stack.getItem() == Items.EGG || slot == 1 && !ItemStack.areItemsEqual(stack, getStack(2))
-				|| slot == 2 && !ItemStack.areItemsEqual(stack, getStack(1))
-				|| slot == 3 && stack.getItem() == EXPERIENCE_BOTTLE;
-	}
-
-	@Override
-	public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-		return false;
+		if (stack.getItem() == Items.EGG) 
+			return slot == 1;
+		if (stack.getItem() == EXPERIENCE_BOTTLE)
+			return slot == 0;
+		return slot == 2 && !ItemStack.areItemsEqual(stack, getStack(3))
+				|| slot == 3 && !ItemStack.areItemsEqual(stack, getStack(2));
 	}
 
 	/*
 	 * 以下是自定义方法
 	 */
-
-	public boolean isWorking() {
-		return workTime > 0;
-	}
-
-	public int getExpStorage() {
-		return expStorage;
-	}
-
-	public int getWorkTime() {
-		return workTime;
-	}
-
-	public int getWorkTimeTotal() {
-		return WORK_TIME_TOTAL;
-	}
 
 	public int getCurrentRecipeCode() {
 		return currentRecipeCode;
@@ -355,45 +292,8 @@ public class MobProjectorBlockEntity extends AMachineBlockEntity implements Side
 		RECIPES.put(set, new Recipe(set, map, exp, code));
 	}
 
-	public static <E> Set<E> setOf(E e1, E e2) {
-		Set<E> rst = new HashSet<>();
-		rst.add(e1);
-		rst.add(e2);
-		return Collections.unmodifiableSet(rst);
-	}
-
-	public static <K, V> Map<K, V> of(K k1, V v1) {
-		Map<K, V> rst = new HashMap<>();
-		rst.put(k1, v1);
-		return Collections.unmodifiableMap(rst);
-	}
-
-	public static <K, V> Map<K, V> of(K k1, V v1, K k2, V v2) {
-		Map<K, V> rst = new HashMap<>();
-		rst.put(k1, v1);
-		rst.put(k2, v2);
-		return Collections.unmodifiableMap(rst);
-	}
-
-	public static <K, V> Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3) {
-		Map<K, V> rst = new HashMap<>();
-		rst.put(k1, v1);
-		rst.put(k2, v2);
-		rst.put(k3, v3);
-		return Collections.unmodifiableMap(rst);
-	}
-
-	public static <K, V> Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4) {
-		Map<K, V> rst = new HashMap<>();
-		rst.put(k1, v1);
-		rst.put(k2, v2);
-		rst.put(k3, v3);
-		rst.put(k4, v4);
-		return Collections.unmodifiableMap(rst);
-	}
-
 	static {
-		for (Item item: ItemTags.WOOL.values())
+		for (Item item : ItemTags.WOOL.values())
 			addRecipe(item, WHEAT, 4, SHEEP, 1);
 		addRecipe(LEATHER, WHEAT, 4, of(COW, .9, MOOSHROOM, .1), 2);
 		addRecipe(PORKCHOP, CARROT, 4, PIG, 3);

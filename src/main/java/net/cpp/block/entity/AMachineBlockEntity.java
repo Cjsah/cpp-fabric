@@ -1,6 +1,5 @@
 package net.cpp.block.entity;
 
-import java.util.UUID;
 import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
@@ -17,9 +16,9 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.text.Text;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +26,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
-		implements Tickable, NamedScreenHandlerFactory, IOutputDiractionalBlockEntity {
+		implements Tickable, NamedScreenHandlerFactory, IOutputDiractional,SidedInventory {
 	protected Direction outputDir = Direction.EAST;
 
 	protected AMachineBlockEntity(BlockEntityType<?> blockEntityType) {
@@ -40,24 +39,26 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
-		outputDir = IOutputDiractionalBlockEntity.byteToDir(tag.getByte("outputDir"));
+		outputDir = IOutputDiractional.byteToDir(tag.getByte("outputDir"));
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		super.toTag(tag);
-		tag.putByte("outputDir", IOutputDiractionalBlockEntity.dirToByte(outputDir));
+		tag.putByte("outputDir", IOutputDiractional.dirToByte(outputDir));
 		return tag;
 	}
 
 	@Override
 	public Text getContainerName() {
-		return getCustomName() != null ? getCustomName() : getTitle();
+		return getCustomName() != null ? getCustomName() : getCachedState().getBlock().getName();
 	}
+
 	@Override
 	public int size() {
 		return getInvStackList().size();
 	}
+
 	/*
 	 * 以下是IOutputDiractional的方法
 	 */
@@ -71,9 +72,15 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 		return outputDir;
 	}
 
+	@Override
+	public boolean canExtract(int slot, ItemStack stack, Direction dir) {
+		return false;
+	}
 	/*
 	 * 以下是自定义方法
 	 */
+	public abstract PropertyDelegate getPropertyDelegate();
+
 	/**
 	 * 改编自漏斗的代码，获取输出方向的物品栏
 	 * 
@@ -104,7 +111,7 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 	 * @param outputStack 要被输出的物品
 	 * @return 因输出不下而剩下的物品
 	 */
-	public ItemStack output(ItemStack outputStack) {
+	protected ItemStack output(ItemStack outputStack) {
 		Inventory inventory = getOutputInventory();
 		ItemStack restStack = outputStack;
 		if (inventory != null) {
@@ -120,7 +127,29 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 		return restStack;
 	}
 
-	public abstract Text getTitle();
+	/**
+	 * @param index
+	 * @param input
+	 * @return {@code input}能完全容纳{@code getStack(index)}
+	 */
+	protected boolean canInsert(int index, ItemStack input) {
+		return getStack(index).isEmpty() || input.isEmpty() || ItemStack.areItemsEqual(input, getStack(index))
+				&& getStack(index).getCount() + input.getCount() <= getStack(index).getMaxCount();
+	}
+
+	/**
+	 * 将{@code input}全部放入{@code getStack(index)}中
+	 * 
+	 * @param index
+	 * @param input
+	 */
+	protected void insert(int index, ItemStack input) {
+		if (!input.isEmpty())
+			if (getStack(index).isEmpty())
+				setStack(index, input);
+			else
+				getStack(index).increment(input.getCount());
+	}
 
 	/**
 	 * 改编自漏斗的代码，获取指定位置的物品栏
@@ -324,36 +353,24 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 		}
 	}
 
-	/**
-	 * 将UUID转化为包含4个元素的int型数组</br>
-	 * （本类未使用）
-	 * 
-	 * @see #intArrayToUUID(IntArrayTag)
-	 * @param uuid
-	 * @return 转化的数组
-	 */
-	public static int[] uuidToIntArray(UUID uuid) {
-		int[] arr = new int[4];
-		arr[0] = (int) (uuid.getMostSignificantBits() >> 32);
-		arr[1] = (int) uuid.getMostSignificantBits();
-		arr[2] = (int) (uuid.getLeastSignificantBits() >> 32);
-		arr[3] = (int) uuid.getLeastSignificantBits();
-		return arr;
-	}
+	protected class OutputDirectionPropertyDelegate implements PropertyDelegate {
+		@Override
+		public int size() {
+			return 1;
+		}
 
-	/**
-	 * 将长为4的int数组标签转化为UUID</br>
-	 * （本类未使用）
-	 * 
-	 * @see #uuidToIntArray(UUID)
-	 * @param uuidListTag
-	 * @return 转化的UUID
-	 */
-	public static UUID intArrayToUUID(IntArrayTag uuidListTag) {
-		long mostSigBits = uuidListTag.get(0).getLong() << 32;
-		mostSigBits += uuidListTag.get(1).getLong();
-		long leastSigBits = uuidListTag.get(2).getLong() << 32;
-		leastSigBits += uuidListTag.get(3).getLong();
-		return new UUID(mostSigBits, leastSigBits);
+		@Override
+		public void set(int index, int value) {
+			if (index == 0)
+				setOutputDir(IOutputDiractional.byteToDir((byte) value));
+		}
+
+		@Override
+		public int get(int index) {
+			if (index == 0)
+				return dirToByte();
+			else
+				return -1;
+		}
 	}
 }

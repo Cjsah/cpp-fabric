@@ -5,11 +5,13 @@ import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.cpp.block.entity.AMachineBlockEntity;
+import net.cpp.block.entity.IOutputDiractional;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.screen.PropertyDelegate;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -22,12 +24,14 @@ public class OutputDirectionButton extends TexturedButtonWidget {
 			new TranslatableText("gui.output_to_down"), new TranslatableText("gui.output_to_south"),
 			new TranslatableText("gui.output_to_west") };
 	public static final TranslatableText CLICK_TO_SHIFT = new TranslatableText("gui.click_to_shift");
-	public final PropertyDelegate propertyDelegate;
-	public final List<Text> tooltipTexts = Arrays.asList(DIRECTION_TEXT[0], CLICK_TO_SHIFT);
+	private final List<Text> tooltipTexts = Arrays.asList(DIRECTION_TEXT[0], CLICK_TO_SHIFT);
+	private final AMachineBlockEntity blockEntity;
 
-	public OutputDirectionButton(ButtonWidget.PressAction pressAction, PropertyDelegate propertyDelegate) {
-		super(0, 0, 16, 16, 0, 0, 0, TEXTURE, pressAction);
-		this.propertyDelegate = propertyDelegate;
+	public OutputDirectionButton(ButtonWidget.PressAction pressAction, AMachineBlockEntity blockEntity) {
+		super(0, 0, 16, 16, 0, 0, 0, TEXTURE, 16, 16, pressAction, (button, matrices, mouseX, mouseY) -> {
+			
+		}, LiteralText.EMPTY);
+		this.blockEntity = blockEntity;
 	}
 
 	@Override
@@ -35,7 +39,8 @@ public class OutputDirectionButton extends TexturedButtonWidget {
 		MinecraftClient minecraftClient = MinecraftClient.getInstance();
 		minecraftClient.getTextureManager().bindTexture(TEXTURE);
 		RenderSystem.enableDepthTest();
-		drawTexture(matrices, x, y, propertyDelegate.get(0) * 16, isHovered() ? 16 : 0, 16, 16, 96, 32);
+		drawTexture(matrices, x, y, IOutputDiractional.dirToByte(blockEntity.getOutputDir()) * 16, isHovered() ? 16 : 0,
+				16, 16, 96, 32);
 		if (this.isHovered()) {
 			this.renderToolTip(matrices, mouseX, mouseY);
 		}
@@ -43,12 +48,12 @@ public class OutputDirectionButton extends TexturedButtonWidget {
 
 	@Override
 	public void onPress() {
-		propertyDelegate.set(0, propertyDelegate.get(0) + 1);
+		blockEntity.shiftOutputDir();
 		super.onPress();
 	}
 
 	public List<Text> getTooltip() {
-		tooltipTexts.set(0, DIRECTION_TEXT[propertyDelegate.get(0)]);
+		tooltipTexts.set(0, DIRECTION_TEXT[IOutputDiractional.dirToByte(blockEntity.getOutputDir())]);
 		tooltipTexts.set(1, CLICK_TO_SHIFT);
 		return tooltipTexts;
 	}

@@ -3,10 +3,12 @@ package net.cpp.init;
 import java.util.function.Supplier;
 
 import net.cpp.block.entity.AllInOneMachineBlockEntity;
+import net.cpp.block.entity.BeaconEnhancerBlockEntity;
 import net.cpp.block.entity.CraftingMachineBlockEntity;
 import net.cpp.block.entity.ItemProcessorBlockEntity;
 import net.cpp.block.entity.MobProjectorBlockEntity;
 import net.minecraft.block.Block;
+import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.registry.Registry;
@@ -20,6 +22,8 @@ public final class CppBlockEntities {
 			ItemProcessorBlockEntity::new, CppBlocks.ITEM_PROCESSER);
 	public static final BlockEntityType<MobProjectorBlockEntity> MOB_PROJECTOR = registerBlockEntityType(
 			MobProjectorBlockEntity::new, CppBlocks.MOB_PROJECTOR);
+	public static final BlockEntityType<BeaconEnhancerBlockEntity> BEACON_ENHANCER = registerBlockEntityType(
+			BeaconEnhancerBlockEntity::new, CppBlocks.BEACON_ENHANCER);
 
 	public static void register() {
 	}

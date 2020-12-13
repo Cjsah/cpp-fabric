@@ -16,37 +16,30 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import net.cpp.block.AllInOneMachineBlock;
 import net.cpp.gui.handler.AllInOneMachineScreenHandler;
 import net.cpp.init.CppBlockEntities;
-import net.cpp.init.CppBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 
-public class AllInOneMachineBlockEntity extends AMachineBlockEntity
-		implements SidedInventory {
+public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	public static final Set<Item> UNCONSUMABLE = new HashSet<>(Arrays.asList(LAVA_BUCKET, COBBLESTONE_PLUGIN,
 			STONE_PLUGIN, BLACKSTONE_PLUGIN, NETHERRACK_PLUGIN, END_STONE_PLUGIN, BASALT_PLUGIN, GREEN_FORCE_OF_WATER));
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2 };
 	private static final Map<Item, ItemStack> ORE_RATES = new HashMap<>();
 	private static final Map<Integer, Recipe> RECIPES = new HashMap<>();
-	private static final Map<Integer, List<Recipe>> SPECIAL_RECIPES = new HashMap<>();
-	private static final Map<Item, ItemStack> ITEM_BUFFER = new HashMap<>();
+	private static final Map<Integer, List<Recipe>> RANDOM_RECIPES = new HashMap<>();
 	private int lastTickRecipeCode;
 	private ItemStack[] lastTickOutputs;
-	private int workTime = 0;
-	private int workTimeTotal;
-	private int expStorage = 0;
 	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(5, ItemStack.EMPTY);
 	private Degree temperature = Degree.ORDINARY;
 	private Degree pressure = Degree.ORDINARY;
@@ -59,7 +52,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	 */
 	private Set<Degree> availabePressure = EnumSet.of(Degree.ORDINARY);
 //	private final Object2IntOpenHashMap<Identifier> recipesUsed = new Object2IntOpenHashMap<Identifier>();
-	public final PropertyDelegate propertyDelegate = new PropertyDelegate() {
+	public final PropertyDelegate propertyDelegate = new ExpPropertyDelegate() {
 
 		@Override
 		public int size() {
@@ -69,42 +62,22 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 		@Override
 		public void set(int index, int value) {
 			switch (index) {
-			case 0:
-				setOutputDir(IOutputDiractionalBlockEntity.byteToDir((byte) value));
-				break;
-			case 1:
-				workTime = value;
-				break;
-			case 2:
-				expStorage = value;
-				break;
-			case 3:
+			case 4:
 				setTemperature(Degree.values()[value / 16 % Degree.values().length]);
 				setPressure(Degree.values()[value % 16 % Degree.values().length]);
 				break;
-			case 4:
-				workTimeTotal = value;
-				break;
 			default:
-				break;
+				super.set(index, value);
 			}
 		}
 
 		@Override
 		public int get(int index) {
 			switch (index) {
-			case 0:
-				return dirToByte();
-			case 1:
-				return workTime;
-			case 2:
-				return expStorage;
-			case 3:
-				return temperature.ordinal() * 16 + pressure.ordinal();
 			case 4:
-				return workTimeTotal;
+				return temperature.ordinal() * 16 + pressure.ordinal();
 			default:
-				return -1;
+				return super.get(index);
 			}
 		}
 	};
@@ -117,12 +90,9 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 		addAvailablePressure(Degree.LOW);
 	}
 
-	/*
-	 * 以下是AMachineBlock的方法
-	 */
 	@Override
-	public Text getTitle() {
-		return CppBlocks.ALL_IN_ONE_MACHINE.getName();
+	public PropertyDelegate getPropertyDelegate() {
+		return propertyDelegate;
 	}
 
 	/*
@@ -146,9 +116,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
 		Inventories.fromTag(tag, inventory);
-		workTime = tag.getInt("workTime");
-		expStorage = tag.getInt("expStorage");
-		propertyDelegate.set(3, tag.getByte("temperaturePressure"));
+		propertyDelegate.set(4, tag.getInt("temperaturePressure"));
 		for (int i = 0, a = tag.getInt("availabeTemperature"); a > 0 && i < Degree.values().length; i++) {
 			if ((a & 1) == 1)
 				availabeTemperature.add(Degree.values()[i]);
@@ -165,9 +133,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	public CompoundTag toTag(CompoundTag tag) {
 		super.toTag(tag);
 		Inventories.toTag(tag, inventory);
-		tag.putInt("workTime", workTime);
-		tag.putInt("expStorage", expStorage);
-		tag.putByte("temperaturePressure", (byte) propertyDelegate.get(3));
+		tag.putInt("temperaturePressure", propertyDelegate.get(4));
 		int a = 0;
 		for (Degree degree : availabeTemperature) {
 			a |= 1 << degree.ordinal();
@@ -187,93 +153,84 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 	}
 
 	/*
-	 * 以下是IOutputDiractionalBlockEntity的方法
-	 */
-	@Override
-	public void shiftOutputDir() {
-		propertyDelegate.set(0, dirToByte() + 1);
-	}
-
-	/*
 	 * 以下是Tickable的方法
 	 */
 	@Override
 	public void tick() {
+//		System.out.println(temperature + " " + pressure);
 		if (!world.isClient) {
-			boolean reciped = false;
-			if (!getStack(2).isEmpty() && expStorage <= 91) {
-				getStack(2).increment(-1);
-				expStorage += 9;
-			}
-			if (getStack(0).isEmpty() && getStack(1).isEmpty()) {
-				workTime = 0;
-			} else {
-				int c = getHashCode(temperature, pressure, getStack(0).getItem(), getStack(1).getItem());
-				Recipe recipe;
-				if (SPECIAL_RECIPES.containsKey(c)) {
-					List<Recipe> list = SPECIAL_RECIPES.get(c);
-					recipe = list.get((int) (Math.random() * list.size()));
-				} else {
-					recipe = RECIPES.get(c);
-				}
-				if (recipe == null) {
-					workTime = 0;
-				} else {
-					boolean shapeless = recipe.input1 == getStack(0).getItem() && recipe.input2 == getStack(1).getItem()
-							|| recipe.input1 == getStack(1).getItem() && recipe.input2 == getStack(0).getItem();
-					boolean awkwardPotion = temperature != Degree.ORDINARY || pressure != Degree.LOW
-							|| getStack(0).getTag() != null
-									&& "minecraft:awkward".equals(getStack(0).getTag().getString("Potion"))
-							|| getStack(1).getTag() != null
-									&& "minecraft:awkward".equals(getStack(1).getTag().getString("Potion"));
-					if (expStorage >= recipe.experience && shapeless && recipe.temperature == temperature
-							&& recipe.pressure == pressure && awkwardPotion) {
-						ItemStack[] outputs;
-						if (lastTickRecipeCode != c) {
-							lastTickOutputs = recipe.output();
-							lastTickRecipeCode = c;
-						}
-						outputs = lastTickOutputs;
-						if ((getStack(3).isEmpty() || getStack(3).isItemEqualIgnoreDamage(outputs[0])
-								&& getStack(3).getCount() + outputs[0].getCount() <= getStack(3).getMaxCount())
-								&& (outputs[1].isEmpty() || getStack(4).isEmpty()
-										|| getStack(4).isItemEqualIgnoreDamage(outputs[1]) && getStack(4).getCount()
-												+ outputs[1].getCount() <= getStack(4).getMaxCount())) {
-							workTimeTotal = recipe.time;
-							reciped = true;
-							if (workTime >= recipe.time) {
-								if (!UNCONSUMABLE.contains(getStack(0).getItem()))
-									getStack(0).decrement(1);
-								if (!UNCONSUMABLE.contains(getStack(1).getItem()))
-									getStack(1).decrement(1);
-								if (getStack(3).isEmpty()) {
-									setStack(3, outputs[0]);
-								} else
-									getStack(3).increment(outputs[0].getCount());
-								if (!outputs[1].isEmpty())
-									if (getStack(4).isEmpty())
-										setStack(4, outputs[1]);
-									else
-										getStack(4).increment(outputs[1].getCount());
-								workTime = 0;
-								expStorage -= recipe.experience;
+			expBottle(getStack(0));
+			boolean reciped = false;// 有配方吗？
+			if (!getStack(1 + 0).isEmpty() && !getStack(1 + 1).isEmpty()) {
+				int code = getHashCode(temperature, pressure, getStack(1 + 0).getItem(), getStack(1 + 1).getItem());
+				Recipe recipe = RECIPES.get(code);
+//				System.out.println(recipe);
+				if (recipe != null) {
+
+					// 防止哈希码出错，再检查一遍
+					if ((recipe.temperature == temperature && recipe.pressure == pressure)
+
+							// 无序配方的检查
+							&& (recipe.input1 == getStack(1).getItem() && recipe.input2 == getStack(2).getItem()
+									|| recipe.input1 == getStack(2).getItem() && recipe.input2 == getStack(1).getItem())
+
+							// 酿造配方需要检测药水的NBT
+							&& (temperature != Degree.ORDINARY || pressure != Degree.LOW
+									|| getStack(1).getTag() != null
+											&& "minecraft:awkward".equals(getStack(1).getTag().getString("Potion"))
+									|| getStack(2).getTag() != null
+											&& "minecraft:awkward".equals(getStack(2).getTag().getString("Potion")))) {
+						reciped = true;// 确定有配方了
+						workTimeTotal = recipe.time;
+						if (expStorage >= recipe.experience) {
+							if (RANDOM_RECIPES.containsKey(code)) {// 若为随机配方，则从配方列表中随机抽取一个配方
+								List<Recipe> list = RANDOM_RECIPES.get(code);
+								recipe = list.get((int) (Math.random() * list.size()));
+							}
+
+							// 如果上次的配方代号与这次相同，则不重新获取产物，
+							// 防止有随机数量的输出的配方因为阻塞而不断刷新随机数量
+							ItemStack[] outputs;
+							if (lastTickRecipeCode != code) {
 								lastTickOutputs = recipe.output();
-								lastTickRecipeCode = c;
-							} else {
-								workTime++;
+								lastTickRecipeCode = code;
+							}
+							outputs = lastTickOutputs;
+
+							if (canInsert(3, outputs[0]) && canInsert(4, outputs[1])) {
+								if (workTime >= workTimeTotal) {
+									for (int i = 0; i < 2; i++) {
+										if (!UNCONSUMABLE.contains(getStack(i + 1).getItem())) {// 有些物品不消耗
+											getStack(i + 1).decrement(1);
+										}
+										insert(i + 3, outputs[i]);
+									}
+									expStorage -= recipe.experience;
+									workTime = 0;
+
+									// 成功产出后刷新成品，防止有随机数量的配方每次的成品相同
+									lastTickOutputs = recipe.output();
+								} else {
+									workTime++;
+								}
 							}
 						}
+
 					}
 				}
 			}
-			if (!getStack(3).isEmpty()) {
-				setStack(3, output(getStack(3)));
-			}
-			if (!getStack(4).isEmpty()) {
-				setStack(4, output(getStack(4)));
-			}
-			if (!reciped)
+			if (!reciped) {// 如果没有配方，数据清零
+				workTime = 0;
 				workTimeTotal = 0;
+				lastTickRecipeCode = 0;
+				lastTickOutputs = null;
+			}
+			for (int i = 0; i < 2; i++) {// 输出成品栏的物品
+				if (!getStack(i + 3).isEmpty()) {
+					setStack(i + 3, output(getStack(i + 3)));
+				}
+			}
+			world.setBlockState(pos, getCachedState().with(AllInOneMachineBlock.WORKING, isWorking()));// 更新方块状态
 		}
 	}
 
@@ -298,19 +255,16 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-		return slot == 2 && stack.getItem() == EXPERIENCE_BOTTLE
-				|| (slot == 0 && stack.getItem() != getStack(1).getItem() && stack.getItem() != EXPERIENCE_BOTTLE)
-				|| (slot == 1 && stack.getItem() != getStack(0).getItem() && stack.getItem() != EXPERIENCE_BOTTLE);
-	}
-
-	@Override
-	public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-		return false;
+		if (stack.getItem() == EXPERIENCE_BOTTLE)
+			return slot == 0;
+		return (slot == 1 && stack.getItem() != getStack(2).getItem())
+				|| (slot == 2 && stack.getItem() != getStack(1).getItem());
 	}
 
 	/*
 	 * 以下是自定义方法
 	 */
+
 	public Degree getTemperature() {
 		return temperature;
 	}
@@ -355,45 +309,6 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 
 	public boolean addAvailablePressure(Degree degree) {
 		return availabePressure.add(degree);
-	}
-
-	public boolean isWorking() {
-		return workTime > 0;
-	}
-
-	public int getExpStorage() {
-		return expStorage;
-	}
-
-	public int getWorkTime() {
-		return workTime;
-	}
-
-	public int getWorkTimeTotal() {
-		return workTimeTotal;
-	}
-
-	public static <T> Set<T> createSet(T val1, T val2) {
-		HashSet<T> set = new HashSet<>(2);
-		set.add(val1);
-		set.add(val2);
-		return set;
-	}
-
-	@SafeVarargs
-	public static <T> Set<T> createSet(T... vals) {
-		HashSet<T> set = new HashSet<>(vals.length);
-		for (T val : vals)
-			set.add(val);
-		return set;
-	}
-
-	public static ItemStack ofItem(Item item) {
-		if (ITEM_BUFFER.containsKey(item))
-			return ITEM_BUFFER.get(item);
-		ItemStack rst = new ItemStack(item);
-		ITEM_BUFFER.put(item, rst);
-		return rst;
 	}
 
 	public static int getHashCode(Degree temperature, Degree pressure, Item input1, Item input2) {
@@ -619,7 +534,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 		{
 			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, CRIMSON_FUNGUS, FERTILIZER);
 			RECIPES.put(c, Recipe.PLACE_TAKER);
-			SPECIAL_RECIPES.put(c, Arrays.asList(
+			RANDOM_RECIPES.put(c, Arrays.asList(
 					new Recipe(Degree.ORDINARY, Degree.ORDINARY, CRIMSON_FUNGUS, FERTILIZER,
 							new ItemStack(CRIMSON_STEM, 3), new ItemStack(CRIMSON_FUNGUS), 0F, 4F, 2, 40),
 					new Recipe(Degree.ORDINARY, Degree.ORDINARY, CRIMSON_FUNGUS, FERTILIZER,
@@ -628,7 +543,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 		{
 			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, WARPED_FUNGUS, FERTILIZER);
 			RECIPES.put(c, Recipe.PLACE_TAKER);
-			SPECIAL_RECIPES.put(c,
+			RANDOM_RECIPES.put(c,
 					Arrays.asList(
 							new Recipe(Degree.ORDINARY, Degree.ORDINARY, WARPED_FUNGUS, FERTILIZER,
 									new ItemStack(WARPED_STEM, 3), new ItemStack(WARPED_FUNGUS), 0F, 4F, 2, 40),
@@ -645,7 +560,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 			for (Item item : fruits)
 				list.add(new Recipe(Degree.ORDINARY, Degree.ORDINARY, FRUIT_SAPLING, FERTILIZER, new ItemStack(item, 2),
 						new ItemStack(FRUIT_SAPLING), 0F, 4F, 2, 40));
-			SPECIAL_RECIPES.put(c, list);
+			RANDOM_RECIPES.put(c, list);
 		}
 		{
 			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, ORE_SAPLING, FERTILIZER);
@@ -654,7 +569,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 			for (Item item : ORE_RATES.keySet())
 				list.add(new Recipe(Degree.ORDINARY, Degree.ORDINARY, ORE_SAPLING, FERTILIZER, new ItemStack(item, 2),
 						new ItemStack(ORE_SAPLING), 0F, 4F, 2, 40));
-			SPECIAL_RECIPES.put(c, list);
+			RANDOM_RECIPES.put(c, list);
 		}
 		{
 			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, WOOL_SAPLING, FERTILIZER);
@@ -665,7 +580,7 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 					GREEN_WOOL, RED_WOOL, BLACK_WOOL })
 				list.add(new Recipe(Degree.ORDINARY, Degree.ORDINARY, WOOL_SAPLING, FERTILIZER, new ItemStack(item, 2),
 						new ItemStack(WOOL_SAPLING), 0F, 4F, 2, 40));
-			SPECIAL_RECIPES.put(c, list);
+			RANDOM_RECIPES.put(c, list);
 		}
 		addRecipe(Degree.ORDINARY, Degree.ORDINARY, SAKURA_SAPLING, FERTILIZER, new ItemStack(CHERRY),
 				new ItemStack(SAKURA_SAPLING), 2F, 5F, 0F, 4F, 2, 40);
@@ -696,8 +611,9 @@ public class AllInOneMachineBlockEntity extends AMachineBlockEntity
 		addRecipe(Degree.ORDINARY, Degree.LOW, GHAST_TEAR, POTION, new ItemStack(AGENTIA_OF_EXTREMENESS), 4, 200);
 		addRecipe(Degree.ORDINARY, Degree.LOW, GLISTERING_MELON_SLICE, POTION, new ItemStack(AGENTIA_OF_SHIELD), 4,
 				200);
-		addRecipe(Degree.ORDINARY, Degree.LOW, ENCHANTED_IRON, POTION, new ItemStack(AGENTIA_OF_TIDE), 4, 200);
-		addRecipe(Degree.ORDINARY, Degree.LOW, ENCHANTED_DIAMOND, POTION, new ItemStack(AGENTIA_OF_CHAIN), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, NAUTILUS_SHELL, POTION, new ItemStack(AGENTIA_OF_TIDE), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, ENCHANTED_IRON, POTION, new ItemStack(AGENTIA_OF_CHAIN), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.LOW, ENCHANTED_DIAMOND, POTION, new ItemStack(AGENTIA_OF_SHIELD), 4, 200);
 		addRecipe(Degree.ORDINARY, Degree.LOW, WING_OF_SKY, POTION, new ItemStack(AGENTIA_OF_SKY), 4, 200);
 		addRecipe(Degree.ORDINARY, Degree.LOW, HEART_OF_CRYSTAL, POTION, new ItemStack(AGENTIA_OF_OCEAN), 4, 200);
 		addRecipe(Degree.ORDINARY, Degree.LOW, LIMB_OF_RIDGE, POTION, new ItemStack(AGENTIA_OF_RIDGE), 4, 200);

@@ -5,13 +5,11 @@ import java.util.Optional;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.cpp.gui.handler.CraftingMachineScreenHandler;
 import net.cpp.init.CppBlockEntities;
-import net.cpp.init.CppBlocks;
 import net.cpp.init.CppRecipes;
 import net.cpp.recipe.ICppCraftingRecipe;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.Recipe;
@@ -22,7 +20,6 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
@@ -35,7 +32,7 @@ import net.minecraft.world.World;
  *
  */
 public class CraftingMachineBlockEntity extends AMachineBlockEntity
-		implements RecipeUnlocker, RecipeInputProvider, SidedInventory {
+		implements RecipeUnlocker, RecipeInputProvider {
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 	private CppCraftingInventory inputInventory = new CppCraftingInventory();
 	private int viewerCnt = 0;
@@ -44,46 +41,16 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity
 	 * 试图输出到指定方向的容器，但是没输出完就塞满了，剩下的物品
 	 */
 	private ItemStack leftover = ItemStack.EMPTY;
-	private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
-
-		@Override
-		public int size() {
-			return 1;
-		}
-
-		@Override
-		public void set(int index, int value) {
-			switch (index) {
-			case 0:
-				setOutputDir(IOutputDiractionalBlockEntity.byteToDir((byte) value));
-			default:
-				break;
-			}
-		}
-
-		@Override
-		public int get(int index) {
-			switch (index) {
-			case 0:
-				return dirToByte();
-			default:
-				return -1;
-			}
-		}
-	};
+	private final PropertyDelegate propertyDelegate = new OutputDirectionPropertyDelegate();
 
 	public CraftingMachineBlockEntity() {
 		super(CppBlockEntities.CRAFTING_MACHINE);
 	}
 
-	/*
-	 * 以下是AMachineBlock的方法
-	 */
 	@Override
-	public Text getTitle() {
-		return CppBlocks.CRAFTING_MACHINE.getName();
+	public PropertyDelegate getPropertyDelegate() {
+		return propertyDelegate;
 	}
-
 	/*
 	 * 以下是LootableContainerBlockEntity的方法
 	 */
@@ -305,11 +272,6 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
 		return slot >= 0 && slot <= 8 && !getStack(slot).isEmpty();
-	}
-
-	@Override
-	public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-		return false;
 	}
 
 	/*
