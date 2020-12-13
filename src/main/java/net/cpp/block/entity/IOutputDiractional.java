@@ -2,7 +2,7 @@ package net.cpp.block.entity;
 
 import net.minecraft.util.math.Direction;
 
-public interface IOutputDiractionalBlockEntity {
+public interface IOutputDiractional {
 	/**
 	 * 设置输出方向
 	 * 

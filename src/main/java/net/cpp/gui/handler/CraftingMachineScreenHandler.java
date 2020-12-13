@@ -55,7 +55,6 @@ public class CraftingMachineScreenHandler extends AMachineScreenHandler {
 
 		blockEntity.onOpen(player);
 		updateResultUI();
-		addProperties(propertyDelegate);
 	}
 
 //	/*

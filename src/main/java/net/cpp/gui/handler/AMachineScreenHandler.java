@@ -26,6 +26,7 @@ public abstract class AMachineScreenHandler extends ScreenHandler {
 		for (int m = 0; m < 9; ++m) {
 			this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 142));
 		}
+		addProperties(blockEntity.getPropertyDelegate());
 	}
 
 	@Override
@@ -44,18 +45,16 @@ public abstract class AMachineScreenHandler extends ScreenHandler {
 
 	@Override
 	public ItemStack transferSlot(PlayerEntity player, int index) {
-		ItemStack itemStack = ItemStack.EMPTY;
 		Slot slot = (Slot) this.slots.get(index);
 		if (slot != null && slot.hasStack()) {
-			ItemStack itemStack2 = slot.getStack();
-			itemStack = itemStack2.copy();
+			ItemStack itemStack = slot.getStack();
 			if (index >= 27 && index < 36) {
-				if (!insertItem(itemStack2, 0, 27, true))
-					return ItemStack.EMPTY;
-			} else if (index >= 0 && index < 27)
-				if (!insertItem(itemStack2, 27, 36, false))
-					return ItemStack.EMPTY;
+				insertItem(itemStack, 0, 27, false);
+			} else if (index >= 0 && index < 27) {
+				insertItem(itemStack, 27, 36, false);
+			}
+			slot.onTakeItem(player, itemStack);
 		}
-		return itemStack;
+		return ItemStack.EMPTY;
 	}
 }
