@@ -15,6 +15,7 @@ import java.util.Set;
 import net.cpp.api.CppFoodOrPotion;
 import net.cpp.item.CompressedExperienceBottleItem;
 import net.cpp.item.CompressedItem;
+import net.cpp.item.PortableCraftingMachine;
 import net.cpp.item.PortableCraftingTable;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -455,7 +456,7 @@ public final class CppItems {
 		WHITE_FORCE_OF_LIGHTNING = registerItem("white_force_of_lightning", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		BLACK_FORCE_OF_MOON = registerItem("black_force_of_moon", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		PORTABLE_CRAFTING_TABLE = registerItem("portable_crafting_table", new PortableCraftingTable(new Item.Settings().group(CPP_GROUP_TOOL)));
-		PORTABLE_CRAFTING_MACHINE = registerItem("portable_crafting_machine", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+		PORTABLE_CRAFTING_MACHINE = registerItem("portable_crafting_machine", new PortableCraftingMachine(new Item.Settings().group(CPP_GROUP_TOOL)));
 		MAGNET = registerItem("magnet", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		TIME_CHECKER = registerItem("time_checker", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		TIME_CONDITIONER = registerItem("time_conditioner", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));

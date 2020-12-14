@@ -27,7 +27,6 @@ public abstract class AMachineScreen<T extends AMachineScreenHandler> extends Ha
 	protected void init() {
 		super.init();
 		addButton(oButton);
-		titleX = 29;
 	}
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
