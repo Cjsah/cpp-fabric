@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.IntArrayTag;
 
 public class CodingTool {
@@ -26,9 +27,10 @@ public class CodingTool {
 	/**
 	 * 将UUID转化为包含4个元素的int型数组</br>
 	 * （本类未使用）
-	 * 
+	 *
+	 * @author Phoupraw
 	 * @see CodingTool#intArrayToUUID(IntArrayTag)
-	 * @param uuid
+	 * @param uuid 要转化为数组的uuid
 	 * @return 转化的数组
 	 */
 	public static int[] uuidToIntArray(UUID uuid) {
@@ -43,9 +45,10 @@ public class CodingTool {
 	/**
 	 * 将长为4的int数组标签转化为UUID</br>
 	 * （本类未使用）
-	 * 
+	 *
+	 * @author Phoupraw
 	 * @see #uuidToIntArray(UUID)
-	 * @param uuidListTag
+	 * @param uuidListTag 含有uuid的tag
 	 * @return 转化的UUID
 	 */
 	public static UUID intArrayToUUID(IntArrayTag uuidListTag) {
@@ -54,6 +57,17 @@ public class CodingTool {
 		long leastSigBits = uuidListTag.get(2).getLong() << 32;
 		leastSigBits += uuidListTag.get(3).getLong();
 		return new UUID(mostSigBits, leastSigBits);
+	}
+
+	/**
+	 * 获取某个玩家的经验值
+	 *
+	 * @author Cjsah
+	 * @param player 被获取经验值的玩家
+	 * @return 获取到的经验值
+	 */
+	public static int getExperience(PlayerEntity player) {
+		return Math.round(player.experienceProgress * player.getNextLevelExperience());
 	}
 
 	@SafeVarargs
