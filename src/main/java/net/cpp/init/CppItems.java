@@ -13,9 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.cpp.api.CppFoodOrPotion;
-import net.cpp.item.CompressedExperienceBottleItem;
-import net.cpp.item.CompressedItem;
-import net.cpp.item.PortableCraftingTable;
+import net.cpp.item.*;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.BlockItem;
@@ -383,6 +381,7 @@ public final class CppItems {
 	public static final Item COMPRESSED_EXPERIENCE_BOTTLE;
 	public static final Map<Item, Item> SEEDS_TO_FLOWERS;
 	public static final Set<Item> FRUITS;
+
 	static {
 		SHARD_OF_THE_DARKNESS = registerItem("shard_of_the_darkness", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		WING_OF_SKY = registerItem("wing_of_sky", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
@@ -445,9 +444,9 @@ public final class CppItems {
 		BOTTLE_OF_AIR = registerItem("bottle_of_air", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		AMMONIA_REFRIGERANT = registerItem("ammonia_refrigerant", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 
-		BLUE_FORCE_OF_SKY = registerItem("blue_force_of_sky", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+		BLUE_FORCE_OF_SKY = registerItem("blue_force_of_sky", new BlueForceOfSky(new Item.Settings().group(CPP_GROUP_TOOL)));
 		GREEN_FORCE_OF_WATER = registerItem("green_force_of_water", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-		CYAN_FORCE_OF_MOUNTAIN = registerItem("cyan_force_of_mountain", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+		CYAN_FORCE_OF_MOUNTAIN = registerItem("cyan_force_of_mountain", new CyanForceOfMountain(new Item.Settings().group(CPP_GROUP_TOOL)));
 		ORANGE_FORCE_OF_DIRT = registerItem("orange_force_of_dirt", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		YELLOW_FORCE_OF_EARTH = registerItem("yellow_force_of_earth", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		RED_FORCE_OF_FIRE = registerItem("red_force_of_fire", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));

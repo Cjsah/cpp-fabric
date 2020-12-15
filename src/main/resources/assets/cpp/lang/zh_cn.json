@@ -370,7 +370,10 @@
   "gui.low_pressure": "低压",
   "container.cpp.crafting_machine": "合成器",
 
-  "effect.cpp.chain": "连环"
+  "effect.cpp.chain": "连环",
+
+  "chat.cpp.title": "[Craftingpp]",
+  "chat.cpp.announcement": "%s %s"
 
 
 }
