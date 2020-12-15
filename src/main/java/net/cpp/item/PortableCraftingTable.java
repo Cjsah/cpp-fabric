@@ -24,7 +24,7 @@ public class PortableCraftingTable extends Item {
 
 		if (!user.isSneaking()) {
 			if (!world.isClient()) {
-				user.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, playerInventory, playerEntity) -> new PortableCraftingTableScreenHandler(i, playerInventory , ScreenHandlerContext.create(world, new BlockPos(user.getPos())) ), new TranslatableText("container.crafting")));
+				user.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, playerInventory, playerEntity) -> new PortableCraftingTableScreenHandler(i, playerInventory , ScreenHandlerContext.create(world, new BlockPos(user.getPos())) ), stack.getName()));
 			} else {
 				user.playSound(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1.0F, 1.0F);
 			}
