@@ -31,13 +31,13 @@ public class MobProjectorScreen extends AExpMachineScreen<MobProjectorScreenHand
 
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
 		super.drawBackground(matrices, delta, mouseX, mouseY);
-		
+
 //		System.out.println(handler.blockEntity.getCurrentRecipeCode());
 		if (handler.blockEntity.getCurrentRecipeCode() > 0) {
 			client.getTextureManager().bindTexture(PICTURES.get(handler.blockEntity.getCurrentRecipeCode()));
 			drawTexture(matrices, x + 19, y + 18, 0, 0, 52, 52, 52, 52);
 		}
-		
+
 		client.getTextureManager().bindTexture(BACKGROUND);
 		drawTexture(matrices, x + 106, y + 40, 88, 0, 38, 26, 128, 128);
 		int t = (int) (System.currentTimeMillis() % (12 * 50) / 50) / 2;
@@ -54,11 +54,7 @@ public class MobProjectorScreen extends AExpMachineScreen<MobProjectorScreenHand
 	static {
 		List<Identifier> list = new LinkedList<>();
 		list.add(null);
-		for (String s : new String[] { "sheep", "cow", "pig", "chicken", "rabbit", "bat", "squid", "creeper", "zombie",
-				"skeleton", "spider", "silverfish", "polar_bear", "witch", "slime", "phantom", "piglin", "ghast",
-				"magma_cube", "blaze", "enderman", "endermite", "strider", "villager", "vindicator", "guardian",
-				"shulker", "wither_skeleton", "wolf", "cat", "horse", "donkey", "llama", "parrot", "turtle", "fox",
-				"panda", "bee", "dolphin", "cod", "salmon", "tropical_fish", "pufferfish" })
+		for (String s : new String[] { "sheep", "cow", "pig", "chicken", "rabbit", "bat", "squid", "creeper", "zombie", "skeleton", "spider", "silverfish", "polar_bear", "witch", "slime", "phantom", "piglin", "ghast", "magma_cube", "blaze", "enderman", "endermite", "strider", "villager", "vindicator", "guardian", "shulker", "wither_skeleton", "wolf", "cat", "horse", "donkey", "llama", "parrot", "turtle", "fox", "panda", "bee", "dolphin", "cod", "salmon", "tropical_fish", "pufferfish" })
 			list.add(new Identifier(String.format("cpp:textures/gui/mob_projector_pictures/%s.png", s)));
 		PICTURES = Collections.unmodifiableList(list);
 	}

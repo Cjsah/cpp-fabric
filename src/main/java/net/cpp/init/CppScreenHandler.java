@@ -15,6 +15,7 @@ public final class CppScreenHandler {
 	public static final ScreenHandlerType<AllInOneMachineScreenHandler> ALL_IN_ONE_MACHINE = register(CppBlocks.ALL_IN_ONE_MACHINE, AllInOneMachineScreenHandler::new);
 	public static final ScreenHandlerType<ItemProcessorScreenHandler> ITEM_PROCESSOR = register(CppBlocks.ITEM_PROCESSER, ItemProcessorScreenHandler::new);
 	public static final ScreenHandlerType<MobProjectorScreenHandler> MOB_PROJECTOR = register(CppBlocks.MOB_PROJECTOR, MobProjectorScreenHandler::new);
+	public static final ScreenHandlerType<BeaconEnhancerScreenHandler> BEACON_ENHANCER = register(CppBlocks.BEACON_ENHANCER, BeaconEnhancerScreenHandler::new);
 	public static final ScreenHandlerType<PortableCraftingTableScreenHandler> PORTABLE_CRAFTING_TABLE_SCREEN_HANDLER = register(CppItems.PORTABLE_CRAFTING_TABLE, PortableCraftingTableScreenHandler::new);
 	public static final ScreenHandlerType<PortableCraftingMachineScreenHandler> PORTABLE_CRAFTING_MACHINE_SCREEN_HANDLER = register(CppItems.PORTABLE_CRAFTING_MACHINE,PortableCraftingMachineScreenHandler::new);
 
