@@ -47,12 +47,14 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.World;
 
-public class ItemProcessorBlockEntity extends AMachineBlockEntity  {
+public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorBlockEntity>  {
 	public static final Set<Item> LEATHERS = new HashSet<>(
 			Arrays.asList(LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS));
 	public static final Map<Item, Map<Item, ItemStackAndCount>> RECIPES = new HashMap<>();
@@ -62,8 +64,13 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity  {
 	private int lastTickCount = -1;
 	public final PropertyDelegate propertyDelegate = new OutputDirectionPropertyDelegate();
 
-	public ItemProcessorBlockEntity() {
-		super(CppBlockEntities.ITEM_PROCESSER);
+	public ItemProcessorBlockEntity(){
+		this(BlockPos.ORIGIN,CppBlocks.ITEM_PROCESSER.getDefaultState());
+	}
+	public ItemProcessorBlockEntity(BlockPos blockPos, BlockState blockState
+) {
+		super(CppBlockEntities.ITEM_PROCESSER,blockPos,blockState
+);
 	}
 
 	@Override
@@ -71,8 +78,8 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity  {
 		return propertyDelegate;
 	}
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
-		super.fromTag(state, tag);
+	public void fromTag(CompoundTag tag) {
+		super.fromTag(tag);
 		Inventories.fromTag(tag, inventory);
 	}
 
@@ -84,7 +91,7 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity  {
 	}
 
 	@Override
-	public void tick() {
+	public void tick(World world, BlockPos pos, BlockState state, ItemProcessorBlockEntity blockEntity) {
 		// XXX 代码结构需要优化
 		if (!world.isClient && !getStack(0).isEmpty() && !getStack(1).isEmpty()) {
 			Item tool = getStack(0).getItem();
@@ -144,7 +151,7 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity  {
 						getStack(0).decrement(1);
 					}
 				}
-			} else if (tool instanceof MiningToolItem && tool.isIn(FabricToolTags.PICKAXES)
+			} else if (tool instanceof MiningToolItem && FabricToolTags.PICKAXES.contains(tool)
 					&& ORES.contains(getStack(1).getItem())) {
 				BlockState blockState = ((BlockItem) getStack(1).getItem()).getBlock().getDefaultState();
 				if (tool.isEffectiveOn(blockState)) {

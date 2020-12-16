@@ -32,7 +32,7 @@ public class CraftingMachineScreenHandler extends AMachineScreenHandler {
 	public final PropertyDelegate propertyDelegate;
 
 	public CraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, new CraftingMachineBlockEntity(), new ArrayPropertyDelegate(1),
+		this(syncId, playerInventory, new CraftingMachineBlockEntity(playerInventory.player.getBlockPos(),playerInventory.player.getBlockState()), new ArrayPropertyDelegate(1),
 				ScreenHandlerContext.EMPTY);
 	}
 

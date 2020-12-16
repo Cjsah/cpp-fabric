@@ -115,6 +115,7 @@ import java.util.Set;
 
 import net.cpp.gui.handler.MobProjectorScreenHandler;
 import net.cpp.init.CppBlockEntities;
+import net.cpp.init.CppBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -132,8 +133,9 @@ import net.minecraft.tag.ItemTags;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 
-public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
+public class MobProjectorBlockEntity extends AExpMachineBlockEntity<MobProjectorBlockEntity> {
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2, 3 };
 	private static final Map<Set<Item>, Recipe> RECIPES = new HashMap<>();
 	public static final int WORK_TIME_TOTAL = 200;
@@ -149,7 +151,7 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 		public void set(int index, int value) {
 			switch (index) {
 			case 4:
-				currentRecipeCode=value;
+				currentRecipeCode = value;
 				break;
 			default:
 				super.set(index, value);
@@ -168,7 +170,11 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 	};
 
 	public MobProjectorBlockEntity() {
-		super(CppBlockEntities.MOB_PROJECTOR);
+		this(BlockPos.ORIGIN, CppBlocks.MOB_PROJECTOR.getDefaultState());
+	}
+
+	public MobProjectorBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(CppBlockEntities.MOB_PROJECTOR, blockPos, blockState);
 		workTimeTotal = WORK_TIME_TOTAL;
 	}
 
@@ -194,8 +200,8 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 	 * 以下是LockableContainerBlockEntity的方法
 	 */
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
-		super.fromTag(state, tag);
+	public void fromTag(CompoundTag tag) {
+		super.fromTag(tag);
 		Inventories.fromTag(tag, inventory);
 	}
 
@@ -215,7 +221,7 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 	 * 以下是Tickable的方法
 	 */
 	@Override
-	public void tick() {
+	public void tick(World world, BlockPos pos, BlockState state, MobProjectorBlockEntity blockEntity) {
 		if (!world.isClient) {
 			expBottle(getStack(0));
 			boolean reciped = true;// 有配方吗？
@@ -234,8 +240,7 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 							else if (getOutputDir().getOffsetY() > 0)
 								dy += 1;
 							int dz = (int) (getOutputDir().getOffsetZ() * (1 + entityType.getWidth())) + pos.getZ();
-							entityType.spawn((ServerWorld) world, null, null, null, new BlockPos(dx, dy, dz),
-									SpawnReason.SPAWNER, false, false);
+							entityType.spawn((ServerWorld) world, null, null, null, new BlockPos(dx, dy, dz), SpawnReason.SPAWNER, false, false);
 							workTime = 0;
 							expStorage -= recipe.experience;
 							for (int i = 0; i < 3; i++)
@@ -265,12 +270,11 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-		if (stack.getItem() == Items.EGG) 
+		if (stack.getItem() == Items.EGG)
 			return slot == 1;
 		if (stack.getItem() == EXPERIENCE_BOTTLE)
 			return slot == 0;
-		return slot == 2 && !ItemStack.areItemsEqual(stack, getStack(3))
-				|| slot == 3 && !ItemStack.areItemsEqual(stack, getStack(2));
+		return slot == 2 && !ItemStack.areItemsEqual(stack, getStack(3)) || slot == 3 && !ItemStack.areItemsEqual(stack, getStack(2));
 	}
 
 	/*
@@ -281,13 +285,11 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 		return currentRecipeCode;
 	}
 
-	public static void addRecipe(Item input1, Item input2, int exp, EntityType<? extends MobEntity> entityType,
-			int code) {
+	public static void addRecipe(Item input1, Item input2, int exp, EntityType<? extends MobEntity> entityType, int code) {
 		addRecipe(input1, input2, exp, of(entityType, 1.), code);
 	}
 
-	public static void addRecipe(Item input1, Item input2, int exp, Map<EntityType<? extends MobEntity>, Double> map,
-			int code) {
+	public static void addRecipe(Item input1, Item input2, int exp, Map<EntityType<? extends MobEntity>, Double> map, int code) {
 		Set<Item> set = setOf(input1, input2);
 		RECIPES.put(set, new Recipe(set, map, exp, code));
 	}
@@ -356,8 +358,7 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 		public final int experience;
 		public final int code;
 
-		public Recipe(Set<Item> inputs, Map<EntityType<? extends MobEntity>, Double> spawnMap, int experience,
-				int code) {
+		public Recipe(Set<Item> inputs, Map<EntityType<? extends MobEntity>, Double> spawnMap, int experience, int code) {
 			this.inputs = inputs;
 			this.spawnMap = spawnMap;
 			this.experience = experience;

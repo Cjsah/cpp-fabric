@@ -12,13 +12,10 @@ import static net.minecraft.entity.effect.StatusEffects.WEAKNESS;
 import static net.minecraft.entity.effect.StatusEffects.WITHER;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
 
 import com.mojang.brigadier.StringReader;
 
@@ -27,16 +24,13 @@ import net.cpp.gui.handler.BeaconEnhancerScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppEffects;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.command.EntitySelector;
+import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.command.EntitySelectorReader;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -47,7 +41,6 @@ import net.minecraft.entity.passive.GolemEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
@@ -58,11 +51,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 
-public class BeaconEnhancerBlockEntity extends BlockEntity implements Tickable, NamedScreenHandlerFactory {
+public class BeaconEnhancerBlockEntity extends BlockEntity implements BlockEntityTicker<BeaconEnhancerBlockEntity>, NamedScreenHandlerFactory {
 	public static final StatusEffect ATTRACTING = new CppEffect(null, 0);
 	public static final List<StatusEffect> AVAILABLE_PLAYER_EFFECTS = Collections.unmodifiableList(Arrays.asList(FIRE_RESISTANCE, NIGHT_VISION, WATER_BREATHING, INVISIBILITY, SATURATION, CppEffects.CHAIN));
 	public static final List<StatusEffect> AVAILABLE_MOB_EFFECTS = Collections.unmodifiableList(Arrays.asList(WEAKNESS, SLOWNESS, GLOWING, POISON, WITHER, ATTRACTING));
@@ -117,8 +111,11 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements Tickable, 
 		}
 	};
 
-	public BeaconEnhancerBlockEntity() {
-		super(CppBlockEntities.BEACON_ENHANCER);
+	public BeaconEnhancerBlockEntity(){
+		this(BlockPos.ORIGIN,CppBlocks.BEACON_ENHANCER.getDefaultState());
+	}
+	public BeaconEnhancerBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(CppBlockEntities.BEACON_ENHANCER,blockPos,blockState);
 	}
 
 	@Override
@@ -130,22 +127,22 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements Tickable, 
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(CompoundTag tag) {
 		playerEffectCode = tag.getInt("playerEffect");
 		mobEffectCode = tag.getInt("mobEffect");
 		onlyAdverse = tag.getBoolean("onlyAdverse");
-		super.fromTag(state, tag);
+		super.fromTag(tag);
 	}
 
 	@Override
-	public void tick() {
+	public void tick(World world, BlockPos pos, BlockState state, BeaconEnhancerBlockEntity blockEntity) {
 		if (!world.isClient) {
 			if (++timeCounter >= 200) {
 				timeCounter = 0;
 				BlockEntity tempBlockEntity = world.getBlockEntity(pos.down());
 				if (tempBlockEntity instanceof BeaconBlockEntity) {
 					BeaconBlockEntity beaconBlockEntity = (BeaconBlockEntity) tempBlockEntity;
-					int level = beaconBlockEntity.getLevel();
+					int level =  beaconBlockEntity.toInitialChunkDataTag().getInt("Levels");
 
 					// 仅当信标激活时才工作
 					if (level >= 0) {

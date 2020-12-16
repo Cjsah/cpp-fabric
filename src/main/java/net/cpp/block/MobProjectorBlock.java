@@ -29,7 +29,9 @@ public class MobProjectorBlock extends AMachineBlock {
 	 * 以下是BlockEntityProvider的方法
 	 */
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new MobProjectorBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos blockPos, BlockState blockState
+) {
+		return new MobProjectorBlockEntity(blockPos,blockState
+);
 	}
 }

@@ -13,7 +13,7 @@ public class ItemProcessorScreenHandler extends AMachineScreenHandler {
 	public final ItemProcessorBlockEntity blockEntity;
 
 	public ItemProcessorScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, new ItemProcessorBlockEntity());
+		this(syncId, playerInventory, new ItemProcessorBlockEntity(playerInventory.player.getBlockPos(),playerInventory.player.getBlockState()));
 	}
 
 	public ItemProcessorScreenHandler(int syncId, PlayerInventory playerInventory,

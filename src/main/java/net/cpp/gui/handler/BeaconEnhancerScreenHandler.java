@@ -19,7 +19,7 @@ public class BeaconEnhancerScreenHandler extends ScreenHandler {
 	public final BeaconEnhancerBlockEntity blockEntity;
 
 	public BeaconEnhancerScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, new BeaconEnhancerBlockEntity());
+		this(syncId, playerInventory, new BeaconEnhancerBlockEntity(playerInventory.player.getBlockPos(),playerInventory.player.getBlockState()));
 	}
 
 	public BeaconEnhancerScreenHandler(int syncId, PlayerInventory playerInventory, BeaconEnhancerBlockEntity blockEntity) {

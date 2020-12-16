@@ -1,14 +1,11 @@
 package net.cpp.init;
 
-import java.util.function.Supplier;
-
 import net.cpp.block.entity.AllInOneMachineBlockEntity;
 import net.cpp.block.entity.BeaconEnhancerBlockEntity;
 import net.cpp.block.entity.CraftingMachineBlockEntity;
 import net.cpp.block.entity.ItemProcessorBlockEntity;
 import net.cpp.block.entity.MobProjectorBlockEntity;
 import net.minecraft.block.Block;
-import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.registry.Registry;
@@ -28,7 +25,7 @@ public final class CppBlockEntities {
 	public static void register() {
 	}
 
-	private static <T extends BlockEntity> BlockEntityType<T> registerBlockEntityType(Supplier<T> supplier, Block block) {
-		return Registry.register(Registry.BLOCK_ENTITY_TYPE, Registry.BLOCK.getId(block).toString(), BlockEntityType.Builder.create(supplier, block).build(null));
+	private static <T extends BlockEntity> BlockEntityType<T> registerBlockEntityType(BlockEntityType.BlockEntityFactory<? extends T> factory, Block block) {
+		return Registry.register(Registry.BLOCK_ENTITY_TYPE, Registry.BLOCK.getId(block).toString(), BlockEntityType.Builder.create(factory, block).build(null));
 	}
 }

@@ -1,13 +1,12 @@
 package net.cpp.block;
 
 import net.cpp.block.entity.BeaconEnhancerBlockEntity;
-import net.cpp.block.entity.MobProjectorBlockEntity;
 import net.cpp.init.CppStats;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.BlockView;
+import net.minecraft.util.math.BlockPos;
 
 public class BeaconEnhancerBlock extends AMachineBlock {
 	public BeaconEnhancerBlock() {
@@ -25,8 +24,9 @@ public class BeaconEnhancerBlock extends AMachineBlock {
 	 * 以下是BlockEntityProvider的方法
 	 */
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new BeaconEnhancerBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos blockPos, BlockState blockState
+) {
+		return new BeaconEnhancerBlockEntity(blockPos,blockState);
 	}
 	@Override
 	public BlockRenderType getRenderType(BlockState state) {

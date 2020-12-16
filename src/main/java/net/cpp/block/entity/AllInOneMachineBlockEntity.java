@@ -19,6 +19,7 @@ import java.util.Set;
 import net.cpp.block.AllInOneMachineBlock;
 import net.cpp.gui.handler.AllInOneMachineScreenHandler;
 import net.cpp.init.CppBlockEntities;
+import net.cpp.init.CppBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -29,9 +30,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 
-public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
+public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity<AllInOneMachineBlockEntity> {
 	public static final Set<Item> UNCONSUMABLE = new HashSet<>(Arrays.asList(LAVA_BUCKET, COBBLESTONE_PLUGIN,
 			STONE_PLUGIN, BLACKSTONE_PLUGIN, NETHERRACK_PLUGIN, END_STONE_PLUGIN, BASALT_PLUGIN, GREEN_FORCE_OF_WATER));
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2 };
@@ -82,8 +85,11 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		}
 	};
 
-	public AllInOneMachineBlockEntity() {
-		super(CppBlockEntities.ALL_IN_ONE_MACHINE);
+	public AllInOneMachineBlockEntity(){
+		this(BlockPos.ORIGIN,CppBlocks.ALL_IN_ONE_MACHINE.getDefaultState());
+	}
+	public AllInOneMachineBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(CppBlockEntities.ALL_IN_ONE_MACHINE,blockPos,blockState);
 		addAvailableTemperature(Degree.HIGH);
 		addAvailableTemperature(Degree.LOW);
 		addAvailablePressure(Degree.HIGH);
@@ -113,8 +119,8 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	 * 以下是LockableContainerBlockEntity的方法
 	 */
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
-		super.fromTag(state, tag);
+	public void fromTag(CompoundTag tag) {
+		super.fromTag(tag);
 		Inventories.fromTag(tag, inventory);
 		propertyDelegate.set(4, tag.getInt("temperaturePressure"));
 		for (int i = 0, a = tag.getInt("availabeTemperature"); a > 0 && i < Degree.values().length; i++) {
@@ -156,7 +162,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	 * 以下是Tickable的方法
 	 */
 	@Override
-	public void tick() {
+	public void tick(World world, BlockPos pos, BlockState state, AllInOneMachineBlockEntity blockEntity) {
 //		System.out.println(temperature + " " + pressure);
 		if (!world.isClient) {
 			expBottle(getStack(0));

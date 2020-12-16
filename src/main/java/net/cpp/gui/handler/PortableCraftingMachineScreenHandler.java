@@ -105,7 +105,7 @@ public class PortableCraftingMachineScreenHandler extends ScreenHandler {
 	public void close(PlayerEntity player) {
 		super.close(player);
 		this.context.run((world, blockPos) -> {
-			this.dropInventory(player, world, this.input);
+			this.dropInventory(player, this.input);
 		});
 	}
 

@@ -5,6 +5,7 @@ import java.util.Optional;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.cpp.gui.handler.CraftingMachineScreenHandler;
 import net.cpp.init.CppBlockEntities;
+import net.cpp.init.CppBlocks;
 import net.cpp.init.CppRecipes;
 import net.cpp.recipe.ICppCraftingRecipe;
 import net.minecraft.block.BlockState;
@@ -22,6 +23,7 @@ import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
@@ -31,7 +33,7 @@ import net.minecraft.world.World;
  * @author Ph-苯
  *
  */
-public class CraftingMachineBlockEntity extends AMachineBlockEntity
+public class CraftingMachineBlockEntity extends AMachineBlockEntity<CraftingMachineBlockEntity>
 		implements RecipeUnlocker, RecipeInputProvider {
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 	private CppCraftingInventory inputInventory = new CppCraftingInventory();
@@ -43,8 +45,13 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity
 	private ItemStack leftover = ItemStack.EMPTY;
 	private final PropertyDelegate propertyDelegate = new OutputDirectionPropertyDelegate();
 
-	public CraftingMachineBlockEntity() {
-		super(CppBlockEntities.CRAFTING_MACHINE);
+	public CraftingMachineBlockEntity(){
+		this(BlockPos.ORIGIN,CppBlocks.CRAFTING_MACHINE.getDefaultState());
+	}
+	public CraftingMachineBlockEntity(BlockPos blockPos, BlockState blockState
+) {
+		super(CppBlockEntities.CRAFTING_MACHINE,blockPos,blockState
+);
 	}
 
 	@Override
@@ -130,8 +137,8 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity
 	 * 以下是LockableContainerBlockEntity的方法
 	 */
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
-		super.fromTag(state, tag);
+	public void fromTag(CompoundTag tag) {
+		super.fromTag(tag);
 		inventoryFromTag(tag, inputInventory);
 		leftover = ItemStack.fromTag(tag.getCompound("leftover"));
 	}
@@ -205,7 +212,7 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity
 	 * 以下是Tickable的方法
 	 */
 	@Override
-	public void tick() {
+	public void tick(World world, BlockPos pos, BlockState state, CraftingMachineBlockEntity blockEntity) {
 		if (!getWorld().isClient) {
 			world.updateComparators(pos, getCachedState().getBlock());
 			if (getOutputInventory() != null) {

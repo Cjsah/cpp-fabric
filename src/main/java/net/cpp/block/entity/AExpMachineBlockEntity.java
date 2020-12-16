@@ -3,25 +3,27 @@ package net.cpp.block.entity;
 import static net.minecraft.item.Items.EXPERIENCE_BOTTLE;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public abstract class AExpMachineBlockEntity extends AMachineBlockEntity implements SidedInventory {
+public abstract class AExpMachineBlockEntity<T extends BlockEntity> extends AMachineBlockEntity<T> implements SidedInventory {
 	public static final int XP_CAPACITY = 1000;
 	protected int workTime;
 	protected int workTimeTotal;
 	protected int expStorage;
 
-	public AExpMachineBlockEntity(BlockEntityType<?> blockEntityType) {
-		super(blockEntityType);
+	protected AExpMachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
+		super(blockEntityType,blockPos,blockState);
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
-		super.fromTag(state, tag);
+	public void fromTag(CompoundTag tag) {
+		super.fromTag( tag);
 		workTime = tag.getInt("workTime");
 		expStorage = tag.getInt("expStorage");
 	}

@@ -9,6 +9,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
@@ -20,25 +21,23 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.text.Text;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
-		implements Tickable, NamedScreenHandlerFactory, IOutputDiractional,SidedInventory {
+public abstract class AMachineBlockEntity<T extends BlockEntity> extends LootableContainerBlockEntity implements BlockEntityTicker<T>, NamedScreenHandlerFactory, IOutputDiractional, SidedInventory {
 	protected Direction outputDir = Direction.EAST;
 
-	protected AMachineBlockEntity(BlockEntityType<?> blockEntityType) {
-		super(blockEntityType);
+	protected AMachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
+		super(blockEntityType,blockPos,blockState);
 	}
 
 	/*
 	 * 以下是LockableContainerBlockEntity的方法
 	 */
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
-		super.fromTag(state, tag);
+	public void fromTag(CompoundTag tag) {
+		super.fromTag( tag);
 		outputDir = IOutputDiractional.byteToDir(tag.getByte("outputDir"));
 	}
 
@@ -76,6 +75,7 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 	public boolean canExtract(int slot, ItemStack stack, Direction dir) {
 		return false;
 	}
+
 	/*
 	 * 以下是自定义方法
 	 */
@@ -133,8 +133,7 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 	 * @return {@code input}能完全容纳{@code getStack(index)}
 	 */
 	protected boolean canInsert(int index, ItemStack input) {
-		return getStack(index).isEmpty() || input.isEmpty() || ItemStack.areItemsEqual(input, getStack(index))
-				&& getStack(index).getCount() + input.getCount() <= getStack(index).getMaxCount();
+		return getStack(index).isEmpty() || input.isEmpty() || ItemStack.areItemsEqual(input, getStack(index)) && getStack(index).getCount() + input.getCount() <= getStack(index).getMaxCount();
 	}
 
 	/**
@@ -166,7 +165,7 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 		Block block = blockState.getBlock();
 		if (block instanceof InventoryProvider) {
 			inventory = ((InventoryProvider) block).getInventory(blockState, world, blockPos);
-		} else if (block.hasBlockEntity()) {
+		} else if (blockState.hasBlockEntity()) {
 			BlockEntity blockEntity = world.getBlockEntity(blockPos);
 			if (blockEntity instanceof Inventory) {
 				inventory = (Inventory) blockEntity;
@@ -187,8 +186,7 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 	 * @return
 	 */
 	public static IntStream getAvailableSlots(Inventory inventory, Direction side) {
-		return inventory instanceof SidedInventory ? IntStream.of(((SidedInventory) inventory).getAvailableSlots(side))
-				: IntStream.range(0, inventory.size());
+		return inventory instanceof SidedInventory ? IntStream.of(((SidedInventory) inventory).getAvailableSlots(side)) : IntStream.range(0, inventory.size());
 	}
 
 	/**
@@ -270,8 +268,7 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 	 * @param side
 	 * @return
 	 */
-	public static ItemStack transfer(@Nullable Inventory from, Inventory to, ItemStack stack,
-			@Nullable Direction side) {
+	public static ItemStack transfer(@Nullable Inventory from, Inventory to, ItemStack stack, @Nullable Direction side) {
 		if (to instanceof SidedInventory && side != null) {
 			SidedInventory sidedInventory = (SidedInventory) to;
 			int[] is = sidedInventory.getAvailableSlots(side);
@@ -300,8 +297,7 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity
 	 * @param direction
 	 * @return
 	 */
-	public static ItemStack transfer(@Nullable Inventory from, Inventory to, ItemStack stack, int slot,
-			@Nullable Direction direction) {
+	public static ItemStack transfer(@Nullable Inventory from, Inventory to, ItemStack stack, int slot, @Nullable Direction direction) {
 		ItemStack itemStack = to.getStack(slot);
 		if (canInsert(to, stack, slot, direction)) {
 			if (itemStack.isEmpty()) {

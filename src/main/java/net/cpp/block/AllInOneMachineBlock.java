@@ -37,20 +37,18 @@ public class AllInOneMachineBlock extends AMachineBlock {
 		builder.add(WORKING);
 	}
 
-	/*
-	 * 以下是BlockEntityProvider的方法
-	 */
-	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new AllInOneMachineBlockEntity();
-	}
-
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		if (!world.isClient())
 			dropExperience((ServerWorld) world, pos,
 					((AllInOneMachineBlockEntity) world.getBlockEntity(pos)).getExpStorage());
 		super.onBreak(world, pos, state, player);
+	}
+
+	@Override
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		// TODO 自动生成的方法存根
+		return new AllInOneMachineBlockEntity(pos,state);
 	}
 
 }
