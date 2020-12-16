@@ -61,7 +61,7 @@ public class CppCraftingResultSlot extends Slot {
 
 		for (int i = 0; i < defaultedList.size(); ++i) {
 			ItemStack itemStack = this.input.getStack(i);
-			ItemStack itemStack2 = (ItemStack) defaultedList.get(i);
+			ItemStack itemStack2 = defaultedList.get(i);
 			if (!itemStack.isEmpty()) {
 				this.input.removeStack(i, 1);
 				itemStack = this.input.getStack(i);
@@ -74,7 +74,7 @@ public class CppCraftingResultSlot extends Slot {
 						&& ItemStack.areTagsEqual(itemStack, itemStack2)) {
 					itemStack2.increment(itemStack.getCount());
 					this.input.setStack(i, itemStack2);
-				} else if (!this.player.getInventory().insertStack(itemStack2)) {
+				} else if (!this.player.giveItemStack(itemStack2)) {
 					this.player.dropItem(itemStack2, false);
 				}
 			}

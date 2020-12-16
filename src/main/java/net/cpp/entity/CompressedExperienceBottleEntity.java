@@ -44,9 +44,7 @@ public class CompressedExperienceBottleEntity extends ExperienceBottleEntity {
 				i -= j;
 				this.world.spawnEntity(new ExperienceOrbEntity(this.world, this.getX(), this.getY(), this.getZ(), j));
 			}
-
-			this.remove(RemovalReason.DISCARDED);
+			this.discard();
 		}
-
 	}
 }
