@@ -23,9 +23,9 @@ public class CompressedExperienceBottleItem extends ExperienceBottleItem {
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack itemStack = user.getStackInHand(hand);
-		world.playSound((PlayerEntity) null, user.getX(), user.getY(), user.getZ(),
+		world.playSound(null, user.getX(), user.getY(), user.getZ(),
 				SoundEvents.ENTITY_EXPERIENCE_BOTTLE_THROW, SoundCategory.NEUTRAL, 0.5F,
-				0.4F / (RANDOM.nextFloat() * 0.4F + 0.8F));
+				0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
 		if (!world.isClient) {
 			CompressedExperienceBottleEntity experienceBottleEntity = new CompressedExperienceBottleEntity(world, user);
 			experienceBottleEntity.setItem(itemStack);
@@ -34,7 +34,7 @@ public class CompressedExperienceBottleItem extends ExperienceBottleItem {
 		}
 
 		user.incrementStat(Stats.USED.getOrCreateStat(this));
-		if (!user.abilities.creativeMode) {
+		if (!user.isCreative()) {
 			itemStack.decrement(1);
 		}
 

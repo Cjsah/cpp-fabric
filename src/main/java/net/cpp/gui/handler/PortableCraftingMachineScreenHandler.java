@@ -5,9 +5,6 @@ import java.util.Optional;
 import net.cpp.init.CppRecipes;
 import net.cpp.init.CppScreenHandler;
 import net.cpp.recipe.ICppCraftingRecipe;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
@@ -15,14 +12,10 @@ import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
-import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeFinder;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.book.RecipeBookCategory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.CraftingResultSlot;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -105,7 +98,7 @@ public class PortableCraftingMachineScreenHandler extends ScreenHandler {
 	public void close(PlayerEntity player) {
 		super.close(player);
 		this.context.run((world, blockPos) -> {
-			this.dropInventory(player, world, this.input);
+			this.dropInventory(player, this.input);
 		});
 	}
 
@@ -116,7 +109,7 @@ public class PortableCraftingMachineScreenHandler extends ScreenHandler {
 	public ItemStack transferSlot(PlayerEntity player, int index) {
 		ItemStack itemStack = ItemStack.EMPTY;
 		Slot slot = (Slot) this.slots.get(index);
-		if (slot != null && slot.hasStack()) {
+		if (slot.hasStack()) {
 			ItemStack itemStack2 = slot.getStack();
 			itemStack = itemStack2.copy();
 			if (index == 0) {
