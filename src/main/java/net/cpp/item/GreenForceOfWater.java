@@ -13,6 +13,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsage;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -33,6 +34,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 
 import static net.cpp.api.CppChat.say;
 
@@ -75,19 +77,47 @@ public class GreenForceOfWater extends Item {
                         BlockState blockState;
                         blockState = world.getBlockState(blockPos);
                         if (blockState.getBlock() instanceof FluidDrainable) {
-                            Fluid fluid = ((FluidDrainable)blockState.getBlock()).tryDrainFluid(world, blockPos, blockState);
-                            if (fluid != Fluids.EMPTY) {
+                            FluidDrainable fluidDrainable = (FluidDrainable)blockState.getBlock();
+                            ItemStack itemStack2 = fluidDrainable.tryDrainFluid(world, blockPos, blockState);
+                            if (!itemStack2.isEmpty()) {
                                 user.incrementStat(Stats.USED.getOrCreateStat(this));
-                                user.playSound(fluid.isIn(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_FILL_LAVA : SoundEvents.ITEM_BUCKET_FILL, 1.0F, 1.0F);
+                                fluidDrainable.getDrainSound().ifPresent((sound) -> {
+                                    user.playSound(sound, 1.0F, 1.0F);
+                                });
+                                world.emitGameEvent(user, GameEvent.FLUID_PICKUP, blockPos);
 
-                                if (fluid == Fluids.LAVA) {
-                                    tag.putInt("lava", tag.getInt("lava") + 1);
-                                    itemStack.setTag(tag);
-                                }
 
-                                return TypedActionResult.success(itemStack);
+
+
+
+                                ItemStack itemStack3 = ItemUsage.exchangeStack(itemStack, user, itemStack2);
+                                System.out.println(itemStack);
+                                System.out.println(itemStack2);
+                                System.out.println(itemStack3);
+                                Criteria.FILLED_BUCKET.trigger((ServerPlayerEntity)user, itemStack2);
+
+                                return TypedActionResult.success(itemStack3, world.isClient());
                             }
                         }
+
+
+//                        BlockState blockState;
+//                        blockState = world.getBlockState(blockPos);
+//                        if (blockState.getBlock() instanceof FluidDrainable) {
+//                            FluidDrainable fluidDrainable = (FluidDrainable)blockState.getBlock();
+//                            ItemStack itemStack2 = ((FluidDrainable)blockState.getBlock()).tryDrainFluid(world, blockPos, blockState);
+//                            if (fluid != Fluids.EMPTY) {
+//                                user.incrementStat(Stats.USED.getOrCreateStat(this));
+//                                user.playSound(fluid.isIn(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_FILL_LAVA : SoundEvents.ITEM_BUCKET_FILL, 1.0F, 1.0F);
+//
+//                                if (fluid == Fluids.LAVA) {
+//                                    tag.putInt("lava", tag.getInt("lava") + 1);
+//                                    itemStack.setTag(tag);
+//                                }
+//
+//                                return TypedActionResult.success(itemStack);
+//                            }
+//                        }
                     }
                 }
                 return TypedActionResult.fail(itemStack);
