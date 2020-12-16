@@ -20,6 +20,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.registry.Registry;
 
@@ -443,15 +444,15 @@ public final class CppItems {
 		BOTTLE_OF_AIR = registerItem("bottle_of_air", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		AMMONIA_REFRIGERANT = registerItem("ammonia_refrigerant", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 
-		BLUE_FORCE_OF_SKY = registerItem("blue_force_of_sky", new BlueForceOfSky(new Item.Settings().group(CPP_GROUP_TOOL)));
-		GREEN_FORCE_OF_WATER = registerItem("green_force_of_water", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-		CYAN_FORCE_OF_MOUNTAIN = registerItem("cyan_force_of_mountain", new CyanForceOfMountain(new Item.Settings().group(CPP_GROUP_TOOL)));
-		ORANGE_FORCE_OF_DIRT = registerItem("orange_force_of_dirt", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-		YELLOW_FORCE_OF_EARTH = registerItem("yellow_force_of_earth", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-		RED_FORCE_OF_FIRE = registerItem("red_force_of_fire", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-		PURPLE_FORCE_OF_LIFE = registerItem("purple_force_of_life", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-		WHITE_FORCE_OF_LIGHTNING = registerItem("white_force_of_lightning", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-		BLACK_FORCE_OF_MOON = registerItem("black_force_of_moon", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+		BLUE_FORCE_OF_SKY = registerItem("blue_force_of_sky", new BlueForceOfSky(new Item.Settings().group(CPP_GROUP_TOOL).rarity(Rarity.UNCOMMON)));
+		GREEN_FORCE_OF_WATER = registerItem("green_force_of_water", new GreenForceOfWater(new Item.Settings().group(CPP_GROUP_TOOL).rarity(Rarity.UNCOMMON)));
+		CYAN_FORCE_OF_MOUNTAIN = registerItem("cyan_force_of_mountain", new CyanForceOfMountain(new Item.Settings().group(CPP_GROUP_TOOL).rarity(Rarity.UNCOMMON)));
+		ORANGE_FORCE_OF_DIRT = registerItem("orange_force_of_dirt", new Item(new Item.Settings().group(CPP_GROUP_TOOL).rarity(Rarity.UNCOMMON)));
+		YELLOW_FORCE_OF_EARTH = registerItem("yellow_force_of_earth", new Item(new Item.Settings().group(CPP_GROUP_TOOL).rarity(Rarity.UNCOMMON)));
+		RED_FORCE_OF_FIRE = registerItem("red_force_of_fire", new Item(new Item.Settings().group(CPP_GROUP_TOOL).rarity(Rarity.UNCOMMON)));
+		PURPLE_FORCE_OF_LIFE = registerItem("purple_force_of_life", new Item(new Item.Settings().group(CPP_GROUP_TOOL).rarity(Rarity.UNCOMMON)));
+		WHITE_FORCE_OF_LIGHTNING = registerItem("white_force_of_lightning", new Item(new Item.Settings().group(CPP_GROUP_TOOL).rarity(Rarity.UNCOMMON)));
+		BLACK_FORCE_OF_MOON = registerItem("black_force_of_moon", new Item(new Item.Settings().group(CPP_GROUP_TOOL).rarity(Rarity.UNCOMMON).rarity(Rarity.UNCOMMON)));
 		PORTABLE_CRAFTING_TABLE = registerItem("portable_crafting_table", new PortableCraftingTable(new Item.Settings().group(CPP_GROUP_TOOL)));
 		PORTABLE_CRAFTING_MACHINE = registerItem("portable_crafting_machine", new PortableCraftingMachine(new Item.Settings().group(CPP_GROUP_TOOL)));
 		MAGNET = registerItem("magnet", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));

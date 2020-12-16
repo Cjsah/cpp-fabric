@@ -6,6 +6,8 @@
   "itemGroup.cpp.food_title": "更多的合成-食物",
   "itemGroup.cpp.plant_title": "更多的合成-植物",
 
+  "misc.cpp": "%s %s",
+
   "item.cpp.empty_plugin": "空白插件",
   "item.cpp.low_temperature_plugin": "低温插件",
   "item.cpp.low_pressure_plugin": "低压插件",
@@ -368,12 +370,19 @@
   "gui.high_pressure": "高压",
   "gui.ordinary_pressure": "常压",
   "gui.low_pressure": "低压",
+
   "container.cpp.crafting_machine": "合成器",
+
+
 
   "effect.cpp.chain": "连环",
 
   "chat.cpp.title": "[Craftingpp]",
-  "chat.cpp.announcement": "%s %s"
+  "chat.cpp.gfow.change": "已切换到 %s",
+  "chat.cpp.exp.less": "经验不足",
 
+  "tooltip.cpp.gfow.water": "水 %s",
+  "tooltip.cpp.gfow.lava": "岩浆 %s",
 
+  "word.infinite": "∞"
 }

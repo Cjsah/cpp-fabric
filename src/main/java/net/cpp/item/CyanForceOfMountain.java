@@ -6,10 +6,14 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stat.Stats;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import static net.cpp.api.CppChat.say;
 
 public class CyanForceOfMountain extends Item {
     public CyanForceOfMountain(Settings settings) {
@@ -24,15 +28,21 @@ public class CyanForceOfMountain extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient) {
+            user.incrementStat(Stats.USED.getOrCreateStat(this));
             if (user.isCreative()) {
                 fill(world, user);
+                return TypedActionResult.success(user.getStackInHand(hand));
             }else if (user.experienceLevel >= 1) {
                 user.addExperience(-9);
                 fill(world, user);
+                return TypedActionResult.success(user.getStackInHand(hand));
+            }else {
+                say(user, new TranslatableText("chat.cpp.exp.less"));
+                return TypedActionResult.pass(user.getStackInHand(hand));
             }
-        }
 
-        return super.use(world, user, hand);
+        }
+        return TypedActionResult.pass(user.getStackInHand(hand));
     }
 
     private static void fill(World world, PlayerEntity user) {
