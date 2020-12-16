@@ -55,13 +55,13 @@ public class CppFoodOrPotion extends Item {
             stack = this.eatFood(world, stack, playerEntity);
         }
 
-        if (this.useAction == UseAction.DRINK && (playerEntity == null || !playerEntity.abilities.creativeMode)) {
+        if (this.useAction == UseAction.DRINK && (playerEntity == null || !playerEntity.isCreative())) {
             if (stack.isEmpty()) {
                 return new ItemStack(Items.GLASS_BOTTLE);
             }
 
             if (playerEntity != null) {
-                playerEntity.inventory.insertStack(new ItemStack(Items.GLASS_BOTTLE));
+                playerEntity.giveItemStack(new ItemStack(Items.GLASS_BOTTLE));
             }
         }
 
@@ -148,7 +148,7 @@ public class CppFoodOrPotion extends Item {
             Criteria.CONSUME_ITEM.trigger((ServerPlayerEntity)player, stack);
         }
         applyFoodEffects(stack.getItem(), world, player);
-        if (!player.abilities.creativeMode) {
+        if (!player.isCreative()) {
             stack.decrement(1);
         }
         return stack;
