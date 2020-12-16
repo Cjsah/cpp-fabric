@@ -31,8 +31,7 @@ public class AllInOneMachineScreen extends AExpMachineScreen<AllInOneMachineScre
 			}) {
 		@Override
 		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-			MinecraftClient minecraftClient = MinecraftClient.getInstance();
-			minecraftClient.getTextureManager().bindTexture(BACKGROUND);
+			MinecraftClient.getInstance().getTextureManager().bindTexture(BACKGROUND);
 			RenderSystem.enableDepthTest();
 			drawTexture(matrices, x, y, handler.blockEntity.getTemperature().ordinal() * 16,
 					isHovered() ? 166 + 16 : 166, 16, 16);
@@ -48,8 +47,7 @@ public class AllInOneMachineScreen extends AExpMachineScreen<AllInOneMachineScre
 			}) {
 		@Override
 		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-			MinecraftClient minecraftClient = MinecraftClient.getInstance();
-			minecraftClient.getTextureManager().bindTexture(BACKGROUND);
+			MinecraftClient.getInstance().getTextureManager().bindTexture(BACKGROUND);
 			RenderSystem.enableDepthTest();
 			drawTexture(matrices, x, y, handler.blockEntity.getPressure().ordinal() * 16, isHovered() ? 198 + 16 : 198,
 					16, 16);

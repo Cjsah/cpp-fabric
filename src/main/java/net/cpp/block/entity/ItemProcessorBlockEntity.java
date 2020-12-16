@@ -136,7 +136,7 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity  {
 				}
 			}else if (tool == BONE_MEAL) {
 				if (input1.getItem() == NETHERRACK) {
-					Block block = world.getBlockState(pos.offset(Direction.UP)).getBlock();
+					Block block = world.getBlockState(pos.up()).getBlock();
 					Set<Block> tmpSet = new HashSet<>(Arrays.asList(Blocks.CRIMSON_NYLIUM,Blocks.WARPED_NYLIUM));
 					if (tmpSet.contains(block) && canInsert(2, new ItemStack(block))) {
 						insert(2, new ItemStack(block));

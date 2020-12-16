@@ -22,15 +22,21 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
 /**
  * 机器模板，子类只需要实现两个方法{@link BlockEntityProvider#createBlockEntity(BlockView)}和{@link #getStatIdentifier()}
+ * 
  * @author Ph-苯
  *
  */
 public abstract class AMachineBlock extends BlockWithEntity {
 
 	public AMachineBlock() {
-		super(Settings.of(Material.WOOD).strength(2.5F).sounds(BlockSoundGroup.WOOD));
+		this(Settings.of(Material.WOOD).strength(2.5F).sounds(BlockSoundGroup.WOOD));
+	}
+
+	public AMachineBlock(Settings settings) {
+		super(settings);
 	}
 
 	/*
@@ -56,8 +62,7 @@ public abstract class AMachineBlock extends BlockWithEntity {
 	 * 以下是AbstractBlock的方法
 	 */
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
-			BlockHitResult hit) {
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (world.isClient) {
 			return ActionResult.SUCCESS;
 		} else {
