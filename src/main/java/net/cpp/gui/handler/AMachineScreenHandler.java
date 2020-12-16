@@ -13,8 +13,7 @@ public abstract class AMachineScreenHandler extends ScreenHandler {
 	protected PlayerInventory playerInventory;
 	public final AMachineBlockEntity blockEntity;
 
-	public AMachineScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory,
-			AMachineBlockEntity blockEntity) {
+	public AMachineScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, AMachineBlockEntity blockEntity) {
 		super(type, syncId);
 		this.playerInventory = playerInventory;
 		this.blockEntity = blockEntity;

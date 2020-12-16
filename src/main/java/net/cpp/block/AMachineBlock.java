@@ -6,6 +6,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,7 +31,7 @@ import net.minecraft.world.World;
  * @author Ph-苯
  *
  */
-public abstract class AMachineBlock extends BlockWithEntity {
+public abstract class AMachineBlock extends BlockWithEntity implements BlockEntityProvider {
 
 	public AMachineBlock() {
 		this(Settings.of(Material.WOOD).strength(2.5F).sounds(BlockSoundGroup.WOOD));

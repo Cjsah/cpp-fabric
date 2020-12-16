@@ -33,8 +33,7 @@ import net.minecraft.world.World;
  * @author Ph-苯
  *
  */
-public class CraftingMachineBlockEntity extends AMachineBlockEntity<CraftingMachineBlockEntity>
-		implements RecipeUnlocker, RecipeInputProvider {
+public class CraftingMachineBlockEntity extends AMachineBlockEntity<CraftingMachineBlockEntity> implements RecipeUnlocker, RecipeInputProvider {
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 	private CppCraftingInventory inputInventory = new CppCraftingInventory();
 	private int viewerCnt = 0;
@@ -45,19 +44,19 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity<CraftingMach
 	private ItemStack leftover = ItemStack.EMPTY;
 	private final PropertyDelegate propertyDelegate = new OutputDirectionPropertyDelegate();
 
-	public CraftingMachineBlockEntity(){
-		this(BlockPos.ORIGIN,CppBlocks.CRAFTING_MACHINE.getDefaultState());
+	public CraftingMachineBlockEntity() {
+		this(BlockPos.ORIGIN, CppBlocks.CRAFTING_MACHINE.getDefaultState());
 	}
-	public CraftingMachineBlockEntity(BlockPos blockPos, BlockState blockState
-) {
-		super(CppBlockEntities.CRAFTING_MACHINE,blockPos,blockState
-);
+
+	public CraftingMachineBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(CppBlockEntities.CRAFTING_MACHINE, blockPos, blockState);
 	}
 
 	@Override
 	public PropertyDelegate getPropertyDelegate() {
 		return propertyDelegate;
 	}
+
 	/*
 	 * 以下是LootableContainerBlockEntity的方法
 	 */
@@ -153,8 +152,7 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity<CraftingMach
 
 	@Override
 	public ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
-		CraftingMachineScreenHandler handler = new CraftingMachineScreenHandler(syncId, playerInventory, this,
-				propertyDelegate, ScreenHandlerContext.create(world, pos));
+		CraftingMachineScreenHandler handler = new CraftingMachineScreenHandler(syncId, playerInventory, this, propertyDelegate, ScreenHandlerContext.create(world, pos));
 		inputInventory.setHandler(handler);
 		return handler;
 	}
@@ -208,31 +206,27 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity<CraftingMach
 		inputInventory.provideRecipeInputs(finder);
 	}
 
-	/*
-	 * 以下是Tickable的方法
-	 */
-	@Override
-	public void tick(World world, BlockPos pos, BlockState state, CraftingMachineBlockEntity blockEntity) {
-		if (!getWorld().isClient) {
-			world.updateComparators(pos, getCachedState().getBlock());
-			if (getOutputInventory() != null) {
-				if (!getLeftover().isEmpty()) {
-					setLeftover(output(getLeftover()));
-				} else if (!isEmpty() && viewerCnt <= 0) {
-					ItemStack outputStack = getResult();
-					if (!getResult().isEmpty()) {
+	public static void tick(World world, BlockPos pos, BlockState state, CraftingMachineBlockEntity blockEntity) {
+		if (!blockEntity.getWorld().isClient) {
+			world.updateComparators(pos, blockEntity.getCachedState().getBlock());
+			if (blockEntity.getOutputInventory() != null) {
+				if (!blockEntity.getLeftover().isEmpty()) {
+					blockEntity.setLeftover(blockEntity.output(blockEntity.getLeftover()));
+				} else if (!blockEntity.isEmpty() && blockEntity.viewerCnt <= 0) {
+					ItemStack outputStack = blockEntity.getResult();
+					if (!blockEntity.getResult().isEmpty()) {
 						boolean everyNotSingle = true;
 						for (int i = 0; i < 9; i++) {
-							if (inputInventory.getStack(i).getCount() == 1) {
+							if (blockEntity.inputInventory.getStack(i).getCount() == 1) {
 								everyNotSingle = false;
 							}
 						}
 						if (everyNotSingle) {
-							ItemStack restStack = output(getResult());
+							ItemStack restStack = blockEntity.output(blockEntity.getResult());
 							if (!outputStack.equals(restStack)) {
-								setLeftover(restStack);
+								blockEntity.setLeftover(restStack);
 								for (int i = 0; i < 9; i++) {
-									inputInventory.removeStack(i, 1);
+									blockEntity.inputInventory.removeStack(i, 1);
 								}
 							}
 						}
@@ -321,8 +315,7 @@ public class CraftingMachineBlockEntity extends AMachineBlockEntity<CraftingMach
 	public ItemStack getResult() {
 		ItemStack itemStack = ItemStack.EMPTY;
 		if (!getWorld().isClient) {
-			Optional<ICppCraftingRecipe> optional = getWorld().getServer().getRecipeManager()
-					.getFirstMatch(CppRecipes.CRAFTING, inputInventory, getWorld());
+			Optional<ICppCraftingRecipe> optional = getWorld().getServer().getRecipeManager().getFirstMatch(CppRecipes.CRAFTING, inputInventory, getWorld());
 			if (optional.isPresent()) {
 				ICppCraftingRecipe craftingRecipe = optional.get();
 				if (shouldCraftRecipe(craftingRecipe)) {

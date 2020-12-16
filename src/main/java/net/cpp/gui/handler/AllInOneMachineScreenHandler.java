@@ -25,8 +25,7 @@ public class AllInOneMachineScreenHandler extends AExpMachineScreenHandler {
 		this(syncId, playerInventory, new AllInOneMachineBlockEntity(playerInventory.player.getBlockPos(), playerInventory.player.getBlockState()));
 	}
 
-	public AllInOneMachineScreenHandler(int syncId, PlayerInventory playerInventory,
-			AllInOneMachineBlockEntity blockEntity) {
+	public AllInOneMachineScreenHandler(int syncId, PlayerInventory playerInventory, AllInOneMachineBlockEntity blockEntity) {
 		super(CppScreenHandler.ALL_IN_ONE_MACHINE, syncId, playerInventory, blockEntity);
 		player = playerInventory.player;
 		this.blockEntity = blockEntity;

@@ -54,9 +54,8 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
-public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorBlockEntity>  {
-	public static final Set<Item> LEATHERS = new HashSet<>(
-			Arrays.asList(LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS));
+public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorBlockEntity> {
+	public static final Set<Item> LEATHERS = new HashSet<>(Arrays.asList(LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS));
 	public static final Map<Item, Map<Item, ItemStackAndCount>> RECIPES = new HashMap<>();
 	public static final Set<BlockItem> ORES;
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1 };
@@ -64,19 +63,19 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 	private int lastTickCount = -1;
 	public final PropertyDelegate propertyDelegate = new OutputDirectionPropertyDelegate();
 
-	public ItemProcessorBlockEntity(){
-		this(BlockPos.ORIGIN,CppBlocks.ITEM_PROCESSER.getDefaultState());
+	public ItemProcessorBlockEntity() {
+		this(BlockPos.ORIGIN, CppBlocks.ITEM_PROCESSER.getDefaultState());
 	}
-	public ItemProcessorBlockEntity(BlockPos blockPos, BlockState blockState
-) {
-		super(CppBlockEntities.ITEM_PROCESSER,blockPos,blockState
-);
+
+	public ItemProcessorBlockEntity(BlockPos blockPos, BlockState blockState) {
+		super(CppBlockEntities.ITEM_PROCESSER, blockPos, blockState);
 	}
 
 	@Override
 	public PropertyDelegate getPropertyDelegate() {
 		return propertyDelegate;
 	}
+
 	@Override
 	public void fromTag(CompoundTag tag) {
 		super.fromTag(tag);
@@ -90,43 +89,34 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 		return tag;
 	}
 
-	@Override
-	public void tick(World world, BlockPos pos, BlockState state, ItemProcessorBlockEntity blockEntity) {
+	public static void tick(World world, BlockPos pos, BlockState state, ItemProcessorBlockEntity blockEntity) {
 		// XXX 代码结构需要优化
-		if (!world.isClient && !getStack(0).isEmpty() && !getStack(1).isEmpty()) {
-			Item tool = getStack(0).getItem();
-			ItemStack input1 = getStack(1), output1 = getStack(2);
+		if (!world.isClient && !blockEntity.getStack(0).isEmpty() && !blockEntity.getStack(1).isEmpty()) {
+			Item tool = blockEntity.getStack(0).getItem();
+			ItemStack input1 = blockEntity.getStack(1), output1 = blockEntity.getStack(2);
 			if (tool == RED_FORCE_OF_FIRE) {
 // 红色火之力
-				SmeltingRecipe recipe = world.getRecipeManager()
-						.getFirstMatch(RecipeType.SMELTING, new SimpleInventory(new ItemStack[] { input1 }), this.world)
-						.orElse(null);
+				SmeltingRecipe recipe = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, new SimpleInventory(new ItemStack[] { input1 }), blockEntity.world).orElse(null);
 				if (recipe != null) {
 					ItemStack result = recipe.getOutput();
 					boolean processed = false;
 					if (processed = output1.isEmpty())
-						setStack(2, result.copy());
-					else if (processed = output1.isItemEqual(result)
-							&& output1.getCount() + result.getCount() <= output1.getMaxCount())
+						blockEntity.setStack(2, result.copy());
+					else if (processed = output1.isItemEqual(result) && output1.getCount() + result.getCount() <= output1.getMaxCount())
 						output1.increment(result.getCount());
 					if (processed)
 						input1.decrement(1);
 				}
 			} else if (tool == CppItems.COMPRESSOR) {
 // 压缩器
-				if (input1.getCount() >= input1.getMaxCount()
-						&& (output1.isEmpty() || output1.getCount() < output1.getMaxCount())) {
+				if (input1.getCount() >= input1.getMaxCount() && (output1.isEmpty() || output1.getCount() < output1.getMaxCount())) {
 					ItemStack output;
-					if (input1.getItem() == CppItems.COMPRESSED_ITEM
-							|| input1.getItem() == CppItems.COMPRESSED_EXPERIENCE_BOTTLE) {
+					if (input1.getItem() == CppItems.COMPRESSED_ITEM || input1.getItem() == CppItems.COMPRESSED_EXPERIENCE_BOTTLE) {
 						output = input1.copy();
 						output.setCount(1);
-						output.getOrCreateTag().putByte("mutiple",
-								(byte) (input1.getOrCreateTag().getByte("mutiple") + 1));
+						output.getOrCreateTag().putByte("mutiple", (byte) (input1.getOrCreateTag().getByte("mutiple") + 1));
 					} else {
-						output = new ItemStack(
-								input1.getItem() == EXPERIENCE_BOTTLE ? CppItems.COMPRESSED_EXPERIENCE_BOTTLE
-										: CppItems.COMPRESSED_ITEM);
+						output = new ItemStack(input1.getItem() == EXPERIENCE_BOTTLE ? CppItems.COMPRESSED_EXPERIENCE_BOTTLE : CppItems.COMPRESSED_ITEM);
 						CompoundTag inputItemNBT = itemStackToTag(input1);
 						inputItemNBT.remove("Slot");
 						inputItemNBT.remove("Count");
@@ -135,97 +125,87 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 					}
 					boolean ed = false;
 					if (ed = output1.isEmpty())
-						setStack(2, output);
+						blockEntity.setStack(2, output);
 					else if (ed = ItemStack.areItemsEqual(output1, output) && ItemStack.areTagsEqual(output1, output))
 						output1.increment(1);
 					if (ed)
 						input1.decrement(input1.getMaxCount());
 				}
-			}else if (tool == BONE_MEAL) {
+			} else if (tool == BONE_MEAL) {
 				if (input1.getItem() == NETHERRACK) {
 					Block block = world.getBlockState(pos.up()).getBlock();
-					Set<Block> tmpSet = new HashSet<>(Arrays.asList(Blocks.CRIMSON_NYLIUM,Blocks.WARPED_NYLIUM));
-					if (tmpSet.contains(block) && canInsert(2, new ItemStack(block))) {
-						insert(2, new ItemStack(block));
-						getStack(1).decrement(1);
-						getStack(0).decrement(1);
+					Set<Block> tmpSet = new HashSet<>(Arrays.asList(Blocks.CRIMSON_NYLIUM, Blocks.WARPED_NYLIUM));
+					if (tmpSet.contains(block) && blockEntity.canInsert(2, new ItemStack(block))) {
+						blockEntity.insert(2, new ItemStack(block));
+						blockEntity.getStack(1).decrement(1);
+						blockEntity.getStack(0).decrement(1);
 					}
 				}
-			} else if (tool instanceof MiningToolItem && FabricToolTags.PICKAXES.contains(tool)
-					&& ORES.contains(getStack(1).getItem())) {
-				BlockState blockState = ((BlockItem) getStack(1).getItem()).getBlock().getDefaultState();
+			} else if (tool instanceof MiningToolItem && FabricToolTags.PICKAXES.contains(tool) && ORES.contains(blockEntity.getStack(1).getItem())) {
+				BlockState blockState = ((BlockItem) blockEntity.getStack(1).getItem()).getBlock().getDefaultState();
 				if (tool.isEffectiveOn(blockState)) {
-					List<ItemStack> list = blockState.getDroppedStacks(new LootContext.Builder((ServerWorld) world)
-							.parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(pos))
-							.parameter(LootContextParameters.TOOL, getStack(0)));
+					List<ItemStack> list = blockState.getDroppedStacks(new LootContext.Builder((ServerWorld) world).parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(pos)).parameter(LootContextParameters.TOOL, blockEntity.getStack(0)));
 					boolean able = true;
 					if (list.size() > 2)
 						able = false;
 					else
 						for (int i = 0; i < list.size(); i++) {
-							if (!getStack(i + 2).isEmpty() && (!ItemStack.areItemsEqual(getStack(i + 2), list.get(i))
-									|| getStack(i + 2).getCount() + list.get(i).getCount() > getStack(i + 2)
-											.getMaxCount())) {
+							if (!blockEntity.getStack(i + 2).isEmpty() && (!ItemStack.areItemsEqual(blockEntity.getStack(i + 2), list.get(i)) || blockEntity.getStack(i + 2).getCount() + list.get(i).getCount() > blockEntity.getStack(i + 2).getMaxCount())) {
 								able = false;
 								break;
 							}
 						}
 					if (able) {
-						getStack(0).damage(1, world.random, null);
-						getStack(1).decrement(1);
+						blockEntity.getStack(0).damage(1, world.random, null);
+						blockEntity.getStack(1).decrement(1);
 						for (int i = 0; i < list.size(); i++) {
-							if (getStack(i + 2).isEmpty())
-								setStack(i + 2, list.get(i));
+							if (blockEntity.getStack(i + 2).isEmpty())
+								blockEntity.setStack(i + 2, list.get(i));
 							else
-								getStack(i + 2).increment(list.get(i).getCount());
+								blockEntity.getStack(i + 2).increment(list.get(i).getCount());
 						}
 					}
 				}
 			} else {
-				ItemStackAndCount itemStackAndCount = RECIPES.getOrDefault(tool, Collections.emptyMap())
-						.get(input1.getItem());
+				ItemStackAndCount itemStackAndCount = RECIPES.getOrDefault(tool, Collections.emptyMap()).get(input1.getItem());
 				if (itemStackAndCount != null && input1.getCount() >= itemStackAndCount.count) {
 					boolean used = false;
 					if (input1.getItem() == GILDED_BLACKSTONE) {
-						if (lastTickCount == -1)
-							lastTickCount = 2 + (int) (4 * Math.random());
-						if ((output1.isEmpty() || output1.getItem() == GOLD_NUGGET
-								&& output1.getCount() + lastTickCount <= output1.getMaxCount())) {
+						if (blockEntity.lastTickCount == -1)
+							blockEntity.lastTickCount = 2 + (int) (4 * Math.random());
+						if ((output1.isEmpty() || output1.getItem() == GOLD_NUGGET && output1.getCount() + blockEntity.lastTickCount <= output1.getMaxCount())) {
 							input1.decrement(1);
 							if (output1.isEmpty())
-								setStack(2, new ItemStack(GOLD_NUGGET, lastTickCount));
+								blockEntity.setStack(2, new ItemStack(GOLD_NUGGET, blockEntity.lastTickCount));
 							else
-								output1.increment(lastTickCount);
+								output1.increment(blockEntity.lastTickCount);
 							used = true;
-							lastTickCount = -1;
+							blockEntity.lastTickCount = -1;
 						}
-					} else if ((output1.isEmpty() || ItemStack.areItemsEqual(itemStackAndCount.itemStack, output1)
-							&& output1.getCount() + itemStackAndCount.itemStack.getCount() <= output1.getMaxCount())) {
+					} else if ((output1.isEmpty() || ItemStack.areItemsEqual(itemStackAndCount.itemStack, output1) && output1.getCount() + itemStackAndCount.itemStack.getCount() <= output1.getMaxCount())) {
 						Item result1 = itemStackAndCount.itemStack.getItem();
-						ItemStack output2 = getStack(3);
+						ItemStack output2 = blockEntity.getStack(3);
 						boolean able = true;
 						if (LEATHERS.contains(input1.getItem())) {
 							if (output1.isEmpty()) {
 								output1 = input1.copy();
 								output1.getOrCreateSubTag("display").remove("color");
-								setStack(2, output1);
+								blockEntity.setStack(2, output1);
 								input1.decrement(1);
 							}
 						} else {
 							if (result1 == CARVED_PUMPKIN) {
-								if (output2.isEmpty() || output2.getItem() == PUMPKIN_SEEDS
-										&& output2.getCount() + 4 <= output2.getMaxCount()) {
+								if (output2.isEmpty() || output2.getItem() == PUMPKIN_SEEDS && output2.getCount() + 4 <= output2.getMaxCount()) {
 									if (output2.isEmpty())
-										setStack(3, new ItemStack(PUMPKIN_SEEDS, 4));
+										blockEntity.setStack(3, new ItemStack(PUMPKIN_SEEDS, 4));
 									else
 										output2.increment(4);
 								} else
 									able = false;
 							} else if (result1 == OBSIDIAN) {
-								if (output2.isEmpty() || output2.getItem() == BUCKET
-										&& output2.getCount() + 1 <= output2.getMaxCount()) {
+								if (output2.isEmpty() || output2.getItem() == BUCKET && output2.getCount() + 1 <= output2.getMaxCount()) {
 									if (output2.isEmpty())
-										setStack(3, new ItemStack(BUCKET, 1));
+										blockEntity.setStack(3, new ItemStack(BUCKET, 1));
 									else
 										output2.increment(1);
 								} else
@@ -234,21 +214,21 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 							if (able) {
 								input1.decrement(itemStackAndCount.count);
 								if (output1.isEmpty())
-									setStack(2, itemStackAndCount.itemStack.copy());
+									blockEntity.setStack(2, itemStackAndCount.itemStack.copy());
 								else
 									output1.increment(itemStackAndCount.itemStack.getCount());
 								used = true;
 							}
 						}
 					}
-					if (used && getStack(0).damage(1, world.random, null)) {
-						getStack(0).decrement(1);
+					if (used && blockEntity.getStack(0).damage(1, world.random, null)) {
+						blockEntity.getStack(0).decrement(1);
 					}
 				}
 			}
 			for (int i : new int[] { 2, 3 })
-				if (!getStack(i).isEmpty()) {
-					setStack(i, output(getStack(i)));
+				if (!blockEntity.getStack(i).isEmpty()) {
+					blockEntity.setStack(i, blockEntity.output(blockEntity.getStack(i)));
 				}
 		}
 	}
@@ -278,11 +258,8 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 		return slot == 0 && stack != null && RECIPES.containsKey(stack.getItem()) || slot == 1;
 	}
 
-
 	public boolean isSmeltable(ItemStack itemStack) {
-		return this.world.getRecipeManager()
-				.getFirstMatch(RecipeType.SMELTING, new SimpleInventory(new ItemStack[] { itemStack }), this.world)
-				.isPresent();
+		return this.world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, new SimpleInventory(new ItemStack[] { itemStack }), this.world).isPresent();
 	}
 
 	public static void put(Map<Item, ItemStackAndCount> map, Item item1, Item item2) {
@@ -415,24 +392,13 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 			RECIPES.put(RED_FORCE_OF_FIRE, new HashMap<>());
 
 			map = new HashMap<>();
-			for (Item item : new Item[] { WHITE_STAINED_GLASS, ORANGE_STAINED_GLASS, MAGENTA_STAINED_GLASS,
-					LIGHT_BLUE_STAINED_GLASS, YELLOW_STAINED_GLASS, LIME_STAINED_GLASS, PINK_STAINED_GLASS,
-					GRAY_STAINED_GLASS, LIGHT_GRAY_STAINED_GLASS, CYAN_STAINED_GLASS, PURPLE_STAINED_GLASS,
-					BLUE_STAINED_GLASS, BROWN_STAINED_GLASS, GREEN_STAINED_GLASS, RED_STAINED_GLASS,
-					BLACK_STAINED_GLASS })
+			for (Item item : new Item[] { WHITE_STAINED_GLASS, ORANGE_STAINED_GLASS, MAGENTA_STAINED_GLASS, LIGHT_BLUE_STAINED_GLASS, YELLOW_STAINED_GLASS, LIME_STAINED_GLASS, PINK_STAINED_GLASS, GRAY_STAINED_GLASS, LIGHT_GRAY_STAINED_GLASS, CYAN_STAINED_GLASS, PURPLE_STAINED_GLASS, BLUE_STAINED_GLASS, BROWN_STAINED_GLASS, GREEN_STAINED_GLASS, RED_STAINED_GLASS, BLACK_STAINED_GLASS })
 				put(map, item, GLASS);
-			for (Item item : new Item[] { WHITE_TERRACOTTA, ORANGE_TERRACOTTA, MAGENTA_TERRACOTTA,
-					LIGHT_BLUE_TERRACOTTA, YELLOW_TERRACOTTA, LIME_TERRACOTTA, PINK_TERRACOTTA, GRAY_TERRACOTTA,
-					LIGHT_GRAY_TERRACOTTA, CYAN_TERRACOTTA, PURPLE_TERRACOTTA, BLUE_TERRACOTTA, BROWN_TERRACOTTA,
-					GREEN_TERRACOTTA, RED_TERRACOTTA, BLACK_TERRACOTTA })
+			for (Item item : new Item[] { WHITE_TERRACOTTA, ORANGE_TERRACOTTA, MAGENTA_TERRACOTTA, LIGHT_BLUE_TERRACOTTA, YELLOW_TERRACOTTA, LIME_TERRACOTTA, PINK_TERRACOTTA, GRAY_TERRACOTTA, LIGHT_GRAY_TERRACOTTA, CYAN_TERRACOTTA, PURPLE_TERRACOTTA, BLUE_TERRACOTTA, BROWN_TERRACOTTA, GREEN_TERRACOTTA, RED_TERRACOTTA, BLACK_TERRACOTTA })
 				put(map, item, TERRACOTTA);
-			for (Item item : new Item[] { WHITE_WOOL, ORANGE_WOOL, MAGENTA_WOOL, LIGHT_BLUE_WOOL, YELLOW_WOOL,
-					LIME_WOOL, PINK_WOOL, GRAY_WOOL, LIGHT_GRAY_WOOL, CYAN_WOOL, PURPLE_WOOL, BLUE_WOOL, BROWN_WOOL,
-					GREEN_WOOL, RED_WOOL, BLACK_WOOL })
+			for (Item item : new Item[] { WHITE_WOOL, ORANGE_WOOL, MAGENTA_WOOL, LIGHT_BLUE_WOOL, YELLOW_WOOL, LIME_WOOL, PINK_WOOL, GRAY_WOOL, LIGHT_GRAY_WOOL, CYAN_WOOL, PURPLE_WOOL, BLUE_WOOL, BROWN_WOOL, GREEN_WOOL, RED_WOOL, BLACK_WOOL })
 				put(map, item, WHITE_WOOL);
-			for (Item item : new Item[] { WHITE_BED, ORANGE_BED, MAGENTA_BED, LIGHT_BLUE_BED, YELLOW_BED, LIME_BED,
-					PINK_BED, GRAY_BED, LIGHT_GRAY_BED, CYAN_BED, PURPLE_BED, BLUE_BED, BROWN_BED, GREEN_BED, RED_BED,
-					BLACK_BED })
+			for (Item item : new Item[] { WHITE_BED, ORANGE_BED, MAGENTA_BED, LIGHT_BLUE_BED, YELLOW_BED, LIME_BED, PINK_BED, GRAY_BED, LIGHT_GRAY_BED, CYAN_BED, PURPLE_BED, BLUE_BED, BROWN_BED, GREEN_BED, RED_BED, BLACK_BED })
 				put(map, item, WHITE_BED);
 			put(map, SPONGE, WET_SPONGE);
 			put(map, LAVA_BUCKET, OBSIDIAN);
@@ -440,23 +406,13 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 			put(map, FILLED_MAP, MAP);
 			put(map, GLASS_BOTTLE, POTION);
 			{
-				Item[] powders = { WHITE_CONCRETE_POWDER, ORANGE_CONCRETE_POWDER, MAGENTA_CONCRETE_POWDER,
-						LIGHT_BLUE_CONCRETE_POWDER, YELLOW_CONCRETE_POWDER, LIME_CONCRETE_POWDER, PINK_CONCRETE_POWDER,
-						GRAY_CONCRETE_POWDER, LIGHT_GRAY_CONCRETE_POWDER, CYAN_CONCRETE_POWDER, PURPLE_CONCRETE_POWDER,
-						BLUE_CONCRETE_POWDER, BROWN_CONCRETE_POWDER, GREEN_CONCRETE_POWDER, RED_CONCRETE_POWDER,
-						BLACK_CONCRETE_POWDER },
-						concretes = { WHITE_CONCRETE, ORANGE_CONCRETE, MAGENTA_CONCRETE, LIGHT_BLUE_CONCRETE,
-								YELLOW_CONCRETE, LIME_CONCRETE, PINK_CONCRETE, GRAY_CONCRETE, LIGHT_GRAY_CONCRETE,
-								CYAN_CONCRETE, PURPLE_CONCRETE, BLUE_CONCRETE, BROWN_CONCRETE, GREEN_CONCRETE,
-								RED_CONCRETE, BLACK_CONCRETE };
+				Item[] powders = { WHITE_CONCRETE_POWDER, ORANGE_CONCRETE_POWDER, MAGENTA_CONCRETE_POWDER, LIGHT_BLUE_CONCRETE_POWDER, YELLOW_CONCRETE_POWDER, LIME_CONCRETE_POWDER, PINK_CONCRETE_POWDER, GRAY_CONCRETE_POWDER, LIGHT_GRAY_CONCRETE_POWDER, CYAN_CONCRETE_POWDER, PURPLE_CONCRETE_POWDER, BLUE_CONCRETE_POWDER, BROWN_CONCRETE_POWDER, GREEN_CONCRETE_POWDER, RED_CONCRETE_POWDER, BLACK_CONCRETE_POWDER }, concretes = { WHITE_CONCRETE, ORANGE_CONCRETE, MAGENTA_CONCRETE, LIGHT_BLUE_CONCRETE, YELLOW_CONCRETE, LIME_CONCRETE, PINK_CONCRETE, GRAY_CONCRETE, LIGHT_GRAY_CONCRETE, CYAN_CONCRETE, PURPLE_CONCRETE, BLUE_CONCRETE, BROWN_CONCRETE, GREEN_CONCRETE, RED_CONCRETE, BLACK_CONCRETE };
 				for (int i = 0; i < powders.length; i++)
 					put(map, powders[i], concretes[i]);
 			}
 			for (Item item : new Item[] { LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS })
 				put(map, item, item);
-			for (Item item : new Item[] { WHITE_BANNER, ORANGE_BANNER, MAGENTA_BANNER, LIGHT_BLUE_BANNER, YELLOW_BANNER,
-					LIME_BANNER, PINK_BANNER, GRAY_BANNER, LIGHT_GRAY_BANNER, CYAN_BANNER, PURPLE_BANNER, BLUE_BANNER,
-					BROWN_BANNER, GREEN_BANNER, RED_BANNER, BLACK_BANNER })
+			for (Item item : new Item[] { WHITE_BANNER, ORANGE_BANNER, MAGENTA_BANNER, LIGHT_BLUE_BANNER, YELLOW_BANNER, LIME_BANNER, PINK_BANNER, GRAY_BANNER, LIGHT_GRAY_BANNER, CYAN_BANNER, PURPLE_BANNER, BLUE_BANNER, BROWN_BANNER, GREEN_BANNER, RED_BANNER, BLACK_BANNER })
 				put(map, item, item);
 			RECIPES.put(WATER_BUCKET, map);
 			// 水桶可被绿色水之力替代，所以绿色水之力拥有水桶全部配方

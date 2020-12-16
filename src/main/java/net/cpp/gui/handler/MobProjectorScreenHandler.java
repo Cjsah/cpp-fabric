@@ -14,7 +14,7 @@ public class MobProjectorScreenHandler extends AExpMachineScreenHandler {
 	public final MobProjectorBlockEntity blockEntity;
 
 	public MobProjectorScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, new MobProjectorBlockEntity(playerInventory.player.getBlockPos(),playerInventory.player.getBlockState()));
+		this(syncId, playerInventory, new MobProjectorBlockEntity(playerInventory.player.getBlockPos(), playerInventory.player.getBlockState()));
 	}
 
 	public MobProjectorScreenHandler(int syncId, PlayerInventory playerInventory, MobProjectorBlockEntity blockEntity) {

@@ -11,6 +11,7 @@ public interface IOutputDiractional {
 	 * @see #shiftOutputDir()
 	 */
 	void setOutputDir(Direction dir);
+
 	/**
 	 * 
 	 * @param b

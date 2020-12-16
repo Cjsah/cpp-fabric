@@ -11,19 +11,19 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public abstract class AExpMachineBlockEntity<T extends BlockEntity> extends AMachineBlockEntity<T> implements SidedInventory {
+public abstract class AExpMachineBlockEntity<T extends BlockEntity> extends AMachineBlockEntity<T> {
 	public static final int XP_CAPACITY = 1000;
 	protected int workTime;
 	protected int workTimeTotal;
 	protected int expStorage;
 
 	protected AExpMachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
-		super(blockEntityType,blockPos,blockState);
+		super(blockEntityType, blockPos, blockState);
 	}
 
 	@Override
 	public void fromTag(CompoundTag tag) {
-		super.fromTag( tag);
+		super.fromTag(tag);
 		workTime = tag.getInt("workTime");
 		expStorage = tag.getInt("expStorage");
 	}
@@ -40,10 +40,11 @@ public abstract class AExpMachineBlockEntity<T extends BlockEntity> extends AMac
 	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
 		return slot == 0 && stack.getItem() == EXPERIENCE_BOTTLE;
 	}
-	
+
 	public boolean isWorking() {
 		return workTime > 0;
 	}
+
 	public int getWorkTime() {
 		return workTime;
 	}
@@ -55,12 +56,14 @@ public abstract class AExpMachineBlockEntity<T extends BlockEntity> extends AMac
 	public int getExpStorage() {
 		return expStorage;
 	}
+
 	protected void expBottle(ItemStack itemStack) {
 		if (itemStack.getItem() == EXPERIENCE_BOTTLE && expStorage + 9 <= XP_CAPACITY) {
 			itemStack.decrement(1);
 			expStorage += 9;
 		}
 	}
+
 	protected class ExpPropertyDelegate extends OutputDirectionPropertyDelegate {
 		@Override
 		public int size() {
