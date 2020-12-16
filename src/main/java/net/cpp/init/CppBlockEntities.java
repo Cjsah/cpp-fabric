@@ -5,6 +5,7 @@ import net.cpp.block.entity.BeaconEnhancerBlockEntity;
 import net.cpp.block.entity.CraftingMachineBlockEntity;
 import net.cpp.block.entity.ItemProcessorBlockEntity;
 import net.cpp.block.entity.MobProjectorBlockEntity;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -25,7 +26,7 @@ public final class CppBlockEntities {
 	public static void register() {
 	}
 
-	private static <T extends BlockEntity> BlockEntityType<T> registerBlockEntityType(BlockEntityType.BlockEntityFactory<? extends T> factory, Block block) {
-		return Registry.register(Registry.BLOCK_ENTITY_TYPE, Registry.BLOCK.getId(block).toString(), BlockEntityType.Builder.create(factory, block).build(null));
+	private static <T extends BlockEntity> BlockEntityType<T> registerBlockEntityType(FabricBlockEntityTypeBuilder.Factory<T> factory, Block block) {
+		return Registry.register(Registry.BLOCK_ENTITY_TYPE, Registry.BLOCK.getId(block).toString(), FabricBlockEntityTypeBuilder.create(factory, block).build());
 	}
 }
