@@ -28,13 +28,12 @@ public class CyanForceOfMountain extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient) {
-            user.incrementStat(Stats.USED.getOrCreateStat(this));
             if (user.isCreative()) {
-                fill(world, user);
+                fill(world, user, this);
                 return TypedActionResult.success(user.getStackInHand(hand));
             }else if (user.experienceLevel >= 1) {
                 user.addExperience(-9);
-                fill(world, user);
+                fill(world, user, this);
                 return TypedActionResult.success(user.getStackInHand(hand));
             }else {
                 say(user, new TranslatableText("chat.cpp.exp.less"));
@@ -45,7 +44,8 @@ public class CyanForceOfMountain extends Item {
         return TypedActionResult.pass(user.getStackInHand(hand));
     }
 
-    private static void fill(World world, PlayerEntity user) {
+    private static void fill(World world, PlayerEntity user, CyanForceOfMountain item) {
+        user.incrementStat(Stats.USED.getOrCreateStat(item));
         for (int i = -2; i <= 2; i++) {
             for (int j = -2; j <= 2; j++) {
                 BlockPos pos = new BlockPos(user.getPos().add(i, -1, j));

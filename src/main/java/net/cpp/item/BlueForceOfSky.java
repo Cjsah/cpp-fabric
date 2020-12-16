@@ -22,11 +22,11 @@ public class BlueForceOfSky extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient) {
             if (user.isCreative()) {
-                changeWeather(world, user, hand);
+                changeWeather(world, user, this);
                 return TypedActionResult.success(user.getStackInHand(hand));
             }else if (user.experienceLevel >= 1) {
-                changeWeather(world, user, hand);
-                user.incrementStat(Stats.USED.getOrCreateStat(this));
+                changeWeather(world, user, this);
+                user.addExperience(-9);
                 return TypedActionResult.success(user.getStackInHand(hand));
             }
             say(user, new TranslatableText("chat.cpp.exp.less"));
@@ -34,10 +34,10 @@ public class BlueForceOfSky extends Item {
         return TypedActionResult.pass(user.getStackInHand(hand));
     }
 
-    private static void changeWeather(World world, PlayerEntity user, Hand hand) {
+    private static void changeWeather(World world, PlayerEntity user, BlueForceOfSky item) {
         boolean raining = world.getLevelProperties().isRaining();
         boolean thundering = world.getLevelProperties().isThundering();
-        user.addExperience(-9);
+        user.incrementStat(Stats.USED.getOrCreateStat(item));
         if (thundering) {
             ((ServerWorld)world).setWeather(6000, 0, false, false);
             say(user, new TranslatableText("commands.weather.set.clear"));
