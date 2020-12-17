@@ -14,7 +14,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 public class ExpTankButton extends TexturedButtonWidget {
-	public static final int SYNCHRONIZED_ID = 1;
+	public static final int SYNC_ID = 1;
 	public static final Identifier XP = new Identifier("cpp:textures/gui/xp.png");
 	public static final Identifier FRAME = new Identifier("cpp:textures/gui/frame.png");
 	public static final TranslatableText CLICK_TO_TAKE_OUT = new TranslatableText("gui.click_to_take_out");

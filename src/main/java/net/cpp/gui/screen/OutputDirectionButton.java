@@ -17,14 +17,13 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 public class OutputDirectionButton extends TexturedButtonWidget {
-	public static final int SYNCHRONIZED_ID = 1010;
+	public static final int SYNC_ID = 1010;
 	public static final Identifier TEXTURE = new Identifier("cpp:textures/gui/output_direction_button.png");
 	public static final TranslatableText[] DIRECTION_TEXT = { new TranslatableText("gui.output_to_east"),
 			new TranslatableText("gui.output_to_west"), new TranslatableText("gui.output_to_up"),
 			new TranslatableText("gui.output_to_down"), new TranslatableText("gui.output_to_south"),
 			new TranslatableText("gui.output_to_west") };
-	public static final TranslatableText CLICK_TO_SHIFT = new TranslatableText("gui.click_to_shift");
-	private final List<Text> tooltipTexts = Arrays.asList(DIRECTION_TEXT[0], CLICK_TO_SHIFT);
+	private final List<Text> tooltipTexts = Arrays.asList(DIRECTION_TEXT[0], AMachineScreen.CLICK_TO_SHIFT);
 	private final AMachineBlockEntity blockEntity;
 
 	public OutputDirectionButton(ButtonWidget.PressAction pressAction, AMachineBlockEntity blockEntity) {
@@ -53,7 +52,7 @@ public class OutputDirectionButton extends TexturedButtonWidget {
 
 	public List<Text> getTooltip() {
 		tooltipTexts.set(0, DIRECTION_TEXT[IOutputDiractional.dirToByte(blockEntity.getOutputDir())]);
-		tooltipTexts.set(1, CLICK_TO_SHIFT);
+		tooltipTexts.set(1, AMachineScreen.CLICK_TO_SHIFT);
 		return tooltipTexts;
 	}
 }

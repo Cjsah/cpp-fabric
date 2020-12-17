@@ -135,7 +135,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-public class MobProjectorBlockEntity extends AExpMachineBlockEntity<MobProjectorBlockEntity> {
+public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2, 3 };
 	private static final Map<Set<Item>, Recipe> RECIPES = new HashMap<>();
 	public static final int WORK_TIME_TOTAL = 200;

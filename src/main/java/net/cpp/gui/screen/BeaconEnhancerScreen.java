@@ -7,7 +7,6 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.cpp.api.CodingTool;
 import net.cpp.gui.handler.BeaconEnhancerScreenHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -15,12 +14,14 @@ import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHandler> {
 	public static final int PLAYER_EFFECT_BUTTON_SYNC_ID = 2, MOB_EFFECT_BUTTON_SYNC_ID = 3, ONLY_ADVERSE_BUTTON_SYNC_ID = 4;
 	public static final Identifier BACKGROUND = new Identifier("cpp:textures/gui/beacon_enhancer.png");
 	public static final List<Identifier> PLAYER_EFFECT_TEXTURES, MOB_EFFECT_TEXTURES;
+	public static final List<Text> ONLY_ADVERSE_TEXTS = ImmutableList.of(new TranslatableText("gui.all_living"), new TranslatableText("gui.only_adverse"));
 	public final TexturedButtonWidget playerEffectButton = new TexturedButtonWidget(0, 0, 24, 24, 0, 0, 0, BACKGROUND, buttonWidget -> {
 //		System.out.println(1);
 		client.interactionManager.clickButton(handler.syncId, PLAYER_EFFECT_BUTTON_SYNC_ID);
@@ -83,13 +84,19 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 		onlyAdverseButton.setPos(x + 150, y + 33);
 		addButton(onlyAdverseButton);
 	}
+
 	@Override
 	protected void drawMouseoverTooltip(MatrixStack matrices, int x, int y) {
-//		if (playerEffectButton.isHovered()) {
-//			renderTooltip(matrices, ImmutableList.of(null, null), x, y);
-//		}
-		super.drawMouseoverTooltip(matrices, x, y);
+		if (playerEffectButton.isHovered()) {
+			renderTooltip(matrices, ImmutableList.of(handler.blockEntity.getPlayerEffect().getName(), AMachineScreen.CLICK_TO_SHIFT), x, y);
+		} else if (mobEffectButton.isHovered()) {
+			renderTooltip(matrices, ImmutableList.of(handler.blockEntity.getMobEffect().getName(), AMachineScreen.CLICK_TO_SHIFT), x, y);
+		} else if (onlyAdverseButton.isHovered()) {
+			renderTooltip(matrices, ImmutableList.of(ONLY_ADVERSE_TEXTS.get(handler.blockEntity.propertyDelegate.get(2)), AMachineScreen.CLICK_TO_SHIFT), x, y);
+		} else
+			super.drawMouseoverTooltip(matrices, x, y);
 	}
+
 	static {
 		{
 			List<Identifier> tempList = new ArrayList<Identifier>();

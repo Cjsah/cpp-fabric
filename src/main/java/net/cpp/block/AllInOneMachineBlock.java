@@ -7,20 +7,16 @@ import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppStats;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class AllInOneMachineBlock extends AMachineBlock {
+public class AllInOneMachineBlock extends AExpMachineBlock {
 	public static final BooleanProperty WORKING = BooleanProperty.of("working");
 
 	public AllInOneMachineBlock() {
@@ -41,13 +37,6 @@ public class AllInOneMachineBlock extends AMachineBlock {
 	@Override
 	protected void appendProperties(Builder<Block, BlockState> builder) {
 		builder.add(WORKING);
-	}
-
-	@Override
-	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		if (!world.isClient())
-			dropExperience((ServerWorld) world, pos, ((AllInOneMachineBlockEntity) world.getBlockEntity(pos)).getExpStorage());
-		super.onBreak(world, pos, state, player);
 	}
 
 	@Override

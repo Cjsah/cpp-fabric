@@ -34,7 +34,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity<AllInOneMachineBlockEntity> {
+public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	public static final Set<Item> UNCONSUMABLE = new HashSet<>(Arrays.asList(LAVA_BUCKET, COBBLESTONE_PLUGIN, STONE_PLUGIN, BLACKSTONE_PLUGIN, NETHERRACK_PLUGIN, END_STONE_PLUGIN, BASALT_PLUGIN, GREEN_FORCE_OF_WATER));
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2 };
 	private static final Map<Item, ItemStack> ORE_RATES = new HashMap<>();
@@ -333,6 +333,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity<AllInOneM
 
 	static {
 		ORE_RATES.put(COAL_ORE, new ItemStack(COAL));
+		ORE_RATES.put(COPPER_ORE, new ItemStack(COPPER_INGOT));
 		ORE_RATES.put(DIAMOND_ORE, new ItemStack(DIAMOND));
 		ORE_RATES.put(EMERALD_ORE, new ItemStack(EMERALD));
 		ORE_RATES.put(GOLD_ORE, new ItemStack(GOLD_INGOT));
@@ -359,26 +360,19 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity<AllInOneM
 		/*
 		 * 高温常压
 		 */
-		addRecipe(Degree.HIGH, Degree.ORDINARY, IRON_DUST, SAND, new ItemStack(IRON_INGOT), new ItemStack(CINDER), 0.2F, 1, 50);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, GOLD_DUST, SAND, new ItemStack(GOLD_INGOT), new ItemStack(CINDER), 0.2F, 1, 50);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, CARBON_DUST, SAND, new ItemStack(COAL), new ItemStack(CINDER), 0.2F, 1, 50);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, DIAMOND_DUST, SAND, new ItemStack(DIAMOND), new ItemStack(CINDER), 0.2F, 1, 50);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, EMERALD_DUST, SAND, new ItemStack(EMERALD), new ItemStack(CINDER), 0.2F, 1, 50);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, QUARTZ_DUST, SAND, new ItemStack(QUARTZ), new ItemStack(CINDER), 0.2F, 1, 50);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, SILICON_DUST, SAND, new ItemStack(SILICON_PLATE), new ItemStack(CINDER), 0.2F, 4, 200);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, RARE_EARTH_DUST, SAND, new ItemStack(RARE_EARTH_GLASS.asItem()), new ItemStack(CINDER), 0.2F, 4, 200);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, STEEL_DUST, SAND, new ItemStack(REINFORCED_GLASS.asItem()), new ItemStack(CINDER), 0.2F, 4, 200);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, GLASS_BOTTLE, SAND, new ItemStack(BOTTLE_OF_SALT), 4, 200);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, IRON_DUST, RED_SAND, new ItemStack(IRON_INGOT), new ItemStack(CINDER), 0.2F, 1, 50);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, GOLD_DUST, RED_SAND, new ItemStack(GOLD_INGOT), new ItemStack(CINDER), 0.2F, 1, 50);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, CARBON_DUST, RED_SAND, new ItemStack(COAL), new ItemStack(CINDER), 0.2F, 1, 50);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, DIAMOND_DUST, RED_SAND, new ItemStack(DIAMOND), new ItemStack(CINDER), 0.2F, 1, 50);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, EMERALD_DUST, RED_SAND, new ItemStack(EMERALD), new ItemStack(CINDER), 0.2F, 1, 50);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, QUARTZ_DUST, RED_SAND, new ItemStack(QUARTZ), new ItemStack(CINDER), 0.2F, 1, 50);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, SILICON_DUST, RED_SAND, new ItemStack(SILICON_PLATE), new ItemStack(CINDER), 0.2F, 4, 200);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, RARE_EARTH_DUST, RED_SAND, new ItemStack(RARE_EARTH_GLASS.asItem()), new ItemStack(CINDER), 0.2F, 4, 200);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, STEEL_DUST, RED_SAND, new ItemStack(REINFORCED_GLASS.asItem()), new ItemStack(CINDER), 0.2F, 4, 200);
-		addRecipe(Degree.HIGH, Degree.ORDINARY, GLASS_BOTTLE, RED_SAND, new ItemStack(BOTTLE_OF_SALT), 4, 200);
+		for (Item sand: new Item[] {SAND,RED_SAND}) {
+			addRecipe(Degree.HIGH, Degree.ORDINARY, COPPER_DUST, sand, new ItemStack(COPPER_INGOT), new ItemStack(CINDER), 0.2F, 1, 50);
+			addRecipe(Degree.HIGH, Degree.ORDINARY, IRON_DUST, sand, new ItemStack(IRON_INGOT), new ItemStack(CINDER), 0.2F, 1, 50);
+			addRecipe(Degree.HIGH, Degree.ORDINARY, GOLD_DUST, sand, new ItemStack(GOLD_INGOT), new ItemStack(CINDER), 0.2F, 1, 50);
+			addRecipe(Degree.HIGH, Degree.ORDINARY, CARBON_DUST, sand, new ItemStack(COAL), new ItemStack(CINDER), 0.2F, 1, 50);
+			addRecipe(Degree.HIGH, Degree.ORDINARY, DIAMOND_DUST, sand, new ItemStack(DIAMOND), new ItemStack(CINDER), 0.2F, 1, 50);
+			addRecipe(Degree.HIGH, Degree.ORDINARY, EMERALD_DUST, sand, new ItemStack(EMERALD), new ItemStack(CINDER), 0.2F, 1, 50);
+			addRecipe(Degree.HIGH, Degree.ORDINARY, QUARTZ_DUST, sand, new ItemStack(QUARTZ), new ItemStack(CINDER), 0.2F, 1, 50);
+			addRecipe(Degree.HIGH, Degree.ORDINARY, SILICON_DUST, sand, new ItemStack(SILICON_PLATE), new ItemStack(CINDER), 0.2F, 4, 200);
+			addRecipe(Degree.HIGH, Degree.ORDINARY, RARE_EARTH_DUST, sand, new ItemStack(RARE_EARTH_GLASS.asItem()), new ItemStack(CINDER), 0.2F, 4, 200);
+			addRecipe(Degree.HIGH, Degree.ORDINARY, STEEL_DUST, sand, new ItemStack(REINFORCED_GLASS.asItem()), new ItemStack(CINDER), 0.2F, 4, 200);
+			addRecipe(Degree.HIGH, Degree.ORDINARY, GLASS_BOTTLE, sand, new ItemStack(BOTTLE_OF_SALT), 4, 200);
+		}
 		/*
 		 * 高温低压
 		 */
@@ -396,6 +390,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity<AllInOneM
 		 * 常温高压
 		 */
 		addRecipe(Degree.ORDINARY, Degree.HIGH, ANCIENT_DEBRIS, FLINT, new ItemStack(NETHERITE_SCRAP, 2), 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.HIGH, COPPER_ORE, FLINT, new ItemStack(COPPER_DUST, 2), new ItemStack(IRON_DUST), 0.1F, 4, 200);
 		addRecipe(Degree.ORDINARY, Degree.HIGH, IRON_ORE, FLINT, new ItemStack(IRON_DUST, 2), new ItemStack(GOLD_DUST), 0.1F, 4, 200);
 		addRecipe(Degree.ORDINARY, Degree.HIGH, GOLD_ORE, FLINT, new ItemStack(GOLD_DUST, 2), new ItemStack(IRON_DUST), 0.1F, 4, 200);
 		addRecipe(Degree.ORDINARY, Degree.HIGH, NETHER_GOLD_ORE, FLINT, new ItemStack(GOLD_DUST, 2), new ItemStack(IRON_DUST), 0.1F, 4, 200);
@@ -405,6 +400,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity<AllInOneM
 		addRecipe(Degree.ORDINARY, Degree.HIGH, NETHER_QUARTZ_ORE, FLINT, new ItemStack(QUARTZ_DUST, 2), new ItemStack(GLOWSTONE_DUST), 0.1F, 4, 200);
 		addRecipe(Degree.ORDINARY, Degree.HIGH, REDSTONE_ORE, FLINT, new ItemStack(REDSTONE_BLOCK), new ItemStack(LAPIS_LAZULI), 2F, 5F, 4, 200);
 		addRecipe(Degree.ORDINARY, Degree.HIGH, LAPIS_ORE, FLINT, new ItemStack(LAPIS_LAZULI), new ItemStack(REDSTONE), 10F, 21F, 2F, 5F, 4, 200);
+		addRecipe(Degree.ORDINARY, Degree.HIGH, COPPER_INGOT, FLINT, new ItemStack(COPPER_DUST), 1, 50);
 		addRecipe(Degree.ORDINARY, Degree.HIGH, IRON_INGOT, FLINT, new ItemStack(IRON_DUST), 1, 50);
 		addRecipe(Degree.ORDINARY, Degree.HIGH, GOLD_INGOT, FLINT, new ItemStack(GOLD_DUST), 1, 50);
 		addRecipe(Degree.ORDINARY, Degree.HIGH, COAL, FLINT, new ItemStack(CARBON_DUST), 1, 50);
@@ -546,6 +542,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity<AllInOneM
 		 */
 		addRecipe(Degree.LOW, Degree.LOW, POTION, AMMONIA_REFRIGERANT, new ItemStack(SNOW_BLOCK), new ItemStack(AMMONIA_REFRIGERANT), 1, 20);
 		addRecipe(Degree.LOW, Degree.LOW, GREEN_FORCE_OF_WATER, AMMONIA_REFRIGERANT, new ItemStack(SNOW_BLOCK), new ItemStack(AMMONIA_REFRIGERANT), 1, 20);
+		addRecipe(Degree.LOW, Degree.LOW, WATER_BUCKET, AMMONIA_REFRIGERANT, new ItemStack(POWDER_SNOW_BUCKET), new ItemStack(AMMONIA_REFRIGERANT), 1, 20);
 
 	}
 

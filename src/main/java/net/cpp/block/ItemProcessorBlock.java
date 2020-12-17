@@ -2,7 +2,6 @@ package net.cpp.block;
 
 import javax.annotation.Nullable;
 
-import net.cpp.block.entity.BeaconEnhancerBlockEntity;
 import net.cpp.block.entity.ItemProcessorBlockEntity;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppStats;

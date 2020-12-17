@@ -54,7 +54,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
-public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorBlockEntity> {
+public class ItemProcessorBlockEntity extends AMachineBlockEntity {
 	public static final Set<Item> LEATHERS = new HashSet<>(Arrays.asList(LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS));
 	public static final Map<Item, Map<Item, ItemStackAndCount>> RECIPES = new HashMap<>();
 	public static final Set<BlockItem> ORES;
@@ -132,6 +132,7 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 						input1.decrement(input1.getMaxCount());
 				}
 			} else if (tool == BONE_MEAL) {
+//骨粉
 				if (input1.getItem() == NETHERRACK) {
 					Block block = world.getBlockState(pos.up()).getBlock();
 					Set<Block> tmpSet = new HashSet<>(Arrays.asList(Blocks.CRIMSON_NYLIUM, Blocks.WARPED_NYLIUM));
@@ -142,6 +143,7 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 					}
 				}
 			} else if (tool instanceof MiningToolItem && FabricToolTags.PICKAXES.contains(tool) && ORES.contains(blockEntity.getStack(1).getItem())) {
+//镐可以挖掘矿石，受附魔影响
 				BlockState blockState = ((BlockItem) blockEntity.getStack(1).getItem()).getBlock().getDefaultState();
 				if (tool.isEffectiveOn(blockState)) {
 					List<ItemStack> list = blockState.getDroppedStacks(new LootContext.Builder((ServerWorld) world).parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(pos)).parameter(LootContextParameters.TOOL, blockEntity.getStack(0)));
@@ -168,7 +170,14 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 				}
 			} else {
 				ItemStackAndCount itemStackAndCount = RECIPES.getOrDefault(tool, Collections.emptyMap()).get(input1.getItem());
-				if (itemStackAndCount != null && input1.getCount() >= itemStackAndCount.count) {
+				boolean greenForceOfWater = true;
+				if (tool == GREEN_FORCE_OF_WATER) {
+					String mode = blockEntity.getStack(0).getOrCreateTag().getString("mode");
+//					System.out.println(mode);
+					greenForceOfWater = "water".equals(mode);
+				}
+				if (greenForceOfWater && itemStackAndCount != null && input1.getCount() >= itemStackAndCount.count) {
+
 					boolean used = false;
 					if (input1.getItem() == GILDED_BLACKSTONE) {
 						if (blockEntity.lastTickCount == -1)
@@ -203,7 +212,9 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 								} else
 									able = false;
 							} else if (result1 == OBSIDIAN) {
-								if (output2.isEmpty() || output2.getItem() == BUCKET && output2.getCount() + 1 <= output2.getMaxCount()) {
+								if (input1.getItem() == GREEN_FORCE_OF_WATER) {
+									able = "lava".equals(input1.getOrCreateTag().getString("mode")) && input1.getTag().getInt("lava") > 0;
+								} else if ((output2.isEmpty() || output2.getItem() == BUCKET && output2.getCount() + 1 <= output2.getMaxCount())) {
 									if (output2.isEmpty())
 										blockEntity.setStack(3, new ItemStack(BUCKET, 1));
 									else
@@ -212,7 +223,10 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 									able = false;
 							}
 							if (able) {
-								input1.decrement(itemStackAndCount.count);
+								if (input1.getItem() == GREEN_FORCE_OF_WATER) {
+									input1.getOrCreateTag().putInt("lava", input1.getOrCreateTag().getInt("lava") - 1);
+								} else
+									input1.decrement(itemStackAndCount.count);
 								if (output1.isEmpty())
 									blockEntity.setStack(2, itemStackAndCount.itemStack.copy());
 								else
@@ -280,11 +294,9 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 
 	static {
 		{
-			Map<Item, ItemStackAndCount> map, marker = Collections.emptyMap();
+			Map<Item, ItemStackAndCount> /* 临时映射 */ map, /* 占位符 */marker = Collections.emptyMap();
 
-			for (Item item : FabricToolTags.SHOVELS.values()) {
-				RECIPES.put(item, marker);
-			}
+			// 锹
 			map = new HashMap<>();
 			put(map, GRASS_BLOCK, DIRT);
 			put(map, MYCELIUM, DIRT);
@@ -293,35 +305,35 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 			put(map, GILDED_BLACKSTONE, GOLD_NUGGET, 2);
 			put(map, CLAY, CLAY_BALL, 4);
 			put(map, SNOW_BLOCK, SNOWBALL, 4);
-			RECIPES.put(STONE_SHOVEL, map);
-
-			for (Item item : FabricToolTags.HOES.values()) {
-				RECIPES.put(item, marker);
+			for (Item item : FabricToolTags.SHOVELS.values()) {
+				RECIPES.put(item, map);
 			}
+
+			// 锄
 			map = new HashMap<>();
 			put(map, COARSE_DIRT, DIRT);
-			RECIPES.put(STONE_HOE, map);
-
-			for (Item item : FabricToolTags.PICKAXES.values()) {
-				RECIPES.put(item, marker);
+			for (Item item : FabricToolTags.HOES.values()) {
+				RECIPES.put(item, map);
 			}
+
+			// 镐
 			map = new HashMap<>();
 			put(map, STONE, COBBLESTONE);
 			put(map, CRIMSON_NYLIUM, NETHERRACK);
 			put(map, WARPED_NYLIUM, NETHERRACK);
 			put(map, GLOWSTONE, GLOWSTONE_DUST, 4);
-			RECIPES.put(STONE_PICKAXE, map);
-
-			for (Item item : FabricToolTags.SHEARS.values()) {
-				RECIPES.put(item, marker);
+			for (Item item : FabricToolTags.PICKAXES.values()) {
+				RECIPES.put(item, map);
 			}
+
+			// 剪刀
 			map = new HashMap<>();
 			put(map, PUMPKIN, CARVED_PUMPKIN);
-			RECIPES.put(SHEARS, map);
-
-			for (Item item : FabricToolTags.AXES.values()) {
-				RECIPES.put(item, marker);
+			for (Item item : FabricToolTags.SHEARS.values()) {
+				RECIPES.put(item, map);
 			}
+
+			// 斧
 			map = new HashMap<>();
 			put(map, MELON, MELON_SLICE, 9);
 			put(map, ACACIA_LOG, STRIPPED_ACACIA_LOG);
@@ -340,8 +352,11 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 			put(map, SPRUCE_WOOD, STRIPPED_SPRUCE_WOOD);
 			put(map, WARPED_STEM, STRIPPED_WARPED_STEM);
 			put(map, WARPED_HYPHAE, STRIPPED_WARPED_HYPHAE);
-			RECIPES.put(STONE_AXE, map);
+			for (Item item : FabricToolTags.AXES.values()) {
+				RECIPES.put(item, map);
+			}
 
+			// 剪枝器
 			map = new HashMap<>();
 			put(map, ACACIA_LEAVES, ACACIA_SAPLING);
 			put(map, BIRCH_LEAVES, BIRCH_SAPLING);
@@ -359,6 +374,7 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 			put(map, RED_MUSHROOM_BLOCK, RED_MUSHROOM);
 			RECIPES.put(GRAFTER, map);
 
+			// 活塞
 			map = new HashMap<>();
 			put(map, WHEAT, 9, HAY_BLOCK);
 			put(map, MELON_SLICE, 9, MELON);
@@ -382,15 +398,19 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 			put(map, GLOWSTONE_DUST, 4, GLOWSTONE);
 			put(map, CLAY_BALL, 4, CLAY);
 			put(map, QUARTZ, 4, QUARTZ_BLOCK);
+			put(map, COPPER_INGOT, 4, COPPER_BLOCK);
 			RECIPES.put(PISTON, map);
 
+			// 合成器
 			map = new HashMap<>();
 			for (Map.Entry<Item, Item> entry : CppItems.SEEDS_TO_FLOWERS.entrySet())
 				put(map, entry.getValue(), entry.getKey(), 3);
 			RECIPES.put(CppBlocks.CRAFTING_MACHINE.asItem(), map);
 
-			RECIPES.put(RED_FORCE_OF_FIRE, new HashMap<>());
+			// 给红色火之力添加占位符
+			RECIPES.put(RED_FORCE_OF_FIRE, marker);
 
+			// 水桶
 			map = new HashMap<>();
 			for (Item item : new Item[] { WHITE_STAINED_GLASS, ORANGE_STAINED_GLASS, MAGENTA_STAINED_GLASS, LIGHT_BLUE_STAINED_GLASS, YELLOW_STAINED_GLASS, LIME_STAINED_GLASS, PINK_STAINED_GLASS, GRAY_STAINED_GLASS, LIGHT_GRAY_STAINED_GLASS, CYAN_STAINED_GLASS, PURPLE_STAINED_GLASS, BLUE_STAINED_GLASS, BROWN_STAINED_GLASS, GREEN_STAINED_GLASS, RED_STAINED_GLASS, BLACK_STAINED_GLASS })
 				put(map, item, GLASS);
@@ -402,6 +422,7 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 				put(map, item, WHITE_BED);
 			put(map, SPONGE, WET_SPONGE);
 			put(map, LAVA_BUCKET, OBSIDIAN);
+			put(map, GREEN_FORCE_OF_WATER, OBSIDIAN);
 			put(map, STICKY_PISTON, PISTON);
 			put(map, FILLED_MAP, MAP);
 			put(map, GLASS_BOTTLE, POTION);
@@ -415,7 +436,8 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity<ItemProcessorB
 			for (Item item : new Item[] { WHITE_BANNER, ORANGE_BANNER, MAGENTA_BANNER, LIGHT_BLUE_BANNER, YELLOW_BANNER, LIME_BANNER, PINK_BANNER, GRAY_BANNER, LIGHT_GRAY_BANNER, CYAN_BANNER, PURPLE_BANNER, BLUE_BANNER, BROWN_BANNER, GREEN_BANNER, RED_BANNER, BLACK_BANNER })
 				put(map, item, item);
 			RECIPES.put(WATER_BUCKET, map);
-			// 水桶可被绿色水之力替代，所以绿色水之力拥有水桶全部配方
+
+			// 绿色水之力可替代水桶，所以拥有水桶全部配方，此外还可以填充水桶
 			put(map, BUCKET, WATER_BUCKET);
 			RECIPES.put(GREEN_FORCE_OF_WATER, map);
 

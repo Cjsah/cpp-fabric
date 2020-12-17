@@ -23,7 +23,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
  */
 public class CraftingMachineScreenHandler extends AMachineScreenHandler {
 //	public CraftingMachineScreen screen;
-	private ScreenHandlerContext context;
+//	private ScreenHandlerContext context;
 	private PlayerEntity player;
 //	private World world;
 	private CraftingMachineBlockEntity blockEntity;
@@ -42,7 +42,7 @@ public class CraftingMachineScreenHandler extends AMachineScreenHandler {
 		this.blockEntity = blockEntity;
 		inputUI = blockEntity.getInputInventory();
 		this.propertyDelegate = propertyDelegate;
-		this.context = context;
+//		this.context = context;
 
 		for (int m = 0; m < 3; ++m) {
 			for (int l = 0; l < 3; ++l) {

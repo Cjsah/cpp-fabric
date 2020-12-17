@@ -5,12 +5,10 @@ import java.util.stream.IntStream;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
@@ -26,7 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-public abstract class AMachineBlockEntity<T extends BlockEntity> extends LootableContainerBlockEntity implements NamedScreenHandlerFactory, IOutputDiractional, SidedInventory {
+public abstract class AMachineBlockEntity extends LootableContainerBlockEntity implements NamedScreenHandlerFactory, IOutputDiractional, SidedInventory {
 	protected Direction outputDir = Direction.EAST;
 
 	protected AMachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {

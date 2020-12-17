@@ -2,8 +2,6 @@ package net.cpp.block;
 
 import javax.annotation.Nullable;
 
-import net.cpp.block.entity.AllInOneMachineBlockEntity;
-import net.cpp.block.entity.BeaconEnhancerBlockEntity;
 import net.cpp.block.entity.MobProjectorBlockEntity;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppStats;
@@ -11,14 +9,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class MobProjectorBlock extends AMachineBlock {
+public class MobProjectorBlock extends AExpMachineBlock {
 
 	public MobProjectorBlock() {
 	}

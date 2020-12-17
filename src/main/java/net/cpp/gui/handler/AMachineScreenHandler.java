@@ -30,7 +30,7 @@ public abstract class AMachineScreenHandler extends ScreenHandler {
 
 	@Override
 	public boolean onButtonClick(PlayerEntity player, int id) {
-		if (blockEntity != null && id == OutputDirectionButton.SYNCHRONIZED_ID) {
+		if (blockEntity != null && id == OutputDirectionButton.SYNC_ID) {
 			blockEntity.shiftOutputDir();
 			return true;
 		}

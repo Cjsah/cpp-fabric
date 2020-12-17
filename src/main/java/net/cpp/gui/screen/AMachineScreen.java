@@ -7,12 +7,14 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 public abstract class AMachineScreen<T extends AMachineScreenHandler> extends HandledScreen<T> {
 	public final OutputDirectionButton oButton = new OutputDirectionButton(buttonWidget -> {
-		client.interactionManager.clickButton(this.handler.syncId, OutputDirectionButton.SYNCHRONIZED_ID);
+		client.interactionManager.clickButton(this.handler.syncId, OutputDirectionButton.SYNC_ID);
 	}, handler.blockEntity);
+	public static final TranslatableText CLICK_TO_SHIFT = new TranslatableText("gui.click_to_shift");
 	public AMachineScreen(T handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
