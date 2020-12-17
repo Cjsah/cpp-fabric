@@ -5,12 +5,12 @@ import net.cpp.block.entity.AExpMachineBlockEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandlerType;
 
-public abstract class AExpMachineScreenHandler extends AMachineScreenHandler{
+public abstract class AExpMachineScreenHandler extends AMachineScreenHandler {
 	public final AExpMachineBlockEntity blockEntity;
-	public AExpMachineScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory,
-			AExpMachineBlockEntity blockEntity) {
+
+	public AExpMachineScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, AExpMachineBlockEntity blockEntity) {
 		super(type, syncId, playerInventory, blockEntity);
-		this.blockEntity=blockEntity;
+		this.blockEntity = blockEntity;
 		addSlot(new ExperienceBottleSlot(blockEntity, 0, CodingTool.x(6), CodingTool.y(0)));
 	}
 

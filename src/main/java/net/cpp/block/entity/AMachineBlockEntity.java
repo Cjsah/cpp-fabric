@@ -5,6 +5,7 @@ import java.util.stream.IntStream;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.InventoryProvider;
@@ -25,11 +26,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-public abstract class AMachineBlockEntity<T extends BlockEntity> extends LootableContainerBlockEntity implements BlockEntityTicker<T>, NamedScreenHandlerFactory, IOutputDiractional, SidedInventory {
+public abstract class AMachineBlockEntity<T extends BlockEntity> extends LootableContainerBlockEntity implements NamedScreenHandlerFactory, IOutputDiractional, SidedInventory {
 	protected Direction outputDir = Direction.EAST;
 
 	protected AMachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
-		super(blockEntityType,blockPos,blockState);
+		super(blockEntityType, blockPos, blockState);
 	}
 
 	/*
@@ -37,7 +38,7 @@ public abstract class AMachineBlockEntity<T extends BlockEntity> extends Lootabl
 	 */
 	@Override
 	public void fromTag(CompoundTag tag) {
-		super.fromTag( tag);
+		super.fromTag(tag);
 		outputDir = IOutputDiractional.byteToDir(tag.getByte("outputDir"));
 	}
 

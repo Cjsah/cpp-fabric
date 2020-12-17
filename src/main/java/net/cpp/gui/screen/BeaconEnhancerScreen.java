@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.cpp.api.CodingTool;
@@ -82,7 +83,13 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 		onlyAdverseButton.setPos(x + 150, y + 33);
 		addButton(onlyAdverseButton);
 	}
-
+	@Override
+	protected void drawMouseoverTooltip(MatrixStack matrices, int x, int y) {
+//		if (playerEffectButton.isHovered()) {
+//			renderTooltip(matrices, ImmutableList.of(null, null), x, y);
+//		}
+		super.drawMouseoverTooltip(matrices, x, y);
+	}
 	static {
 		{
 			List<Identifier> tempList = new ArrayList<Identifier>();

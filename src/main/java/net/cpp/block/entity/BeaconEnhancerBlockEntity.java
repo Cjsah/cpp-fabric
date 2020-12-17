@@ -56,7 +56,7 @@ import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class BeaconEnhancerBlockEntity extends BlockEntity implements BlockEntityTicker<BeaconEnhancerBlockEntity>, NamedScreenHandlerFactory {
+public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScreenHandlerFactory {
 	public static final StatusEffect ATTRACTING = new CppEffect(null, 0);
 	public static final List<StatusEffect> AVAILABLE_PLAYER_EFFECTS = Collections.unmodifiableList(Arrays.asList(FIRE_RESISTANCE, NIGHT_VISION, WATER_BREATHING, INVISIBILITY, SATURATION, CppEffects.CHAIN));
 	public static final List<StatusEffect> AVAILABLE_MOB_EFFECTS = Collections.unmodifiableList(Arrays.asList(WEAKNESS, SLOWNESS, GLOWING, POISON, WITHER, ATTRACTING));
@@ -111,11 +111,12 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements BlockEntit
 		}
 	};
 
-	public BeaconEnhancerBlockEntity(){
-		this(BlockPos.ORIGIN,CppBlocks.BEACON_ENHANCER.getDefaultState());
+	public BeaconEnhancerBlockEntity() {
+		this(BlockPos.ORIGIN, CppBlocks.BEACON_ENHANCER.getDefaultState());
 	}
+
 	public BeaconEnhancerBlockEntity(BlockPos blockPos, BlockState blockState) {
-		super(CppBlockEntities.BEACON_ENHANCER,blockPos,blockState);
+		super(CppBlockEntities.BEACON_ENHANCER, blockPos, blockState);
 	}
 
 	@Override
@@ -134,15 +135,14 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements BlockEntit
 		super.fromTag(tag);
 	}
 
-	@Override
-	public void tick(World world, BlockPos pos, BlockState state, BeaconEnhancerBlockEntity blockEntity) {
+	public static void tick(World world, BlockPos pos, BlockState state, BeaconEnhancerBlockEntity blockEntity) {
 		if (!world.isClient) {
-			if (++timeCounter >= 200) {
-				timeCounter = 0;
+			if (++blockEntity.timeCounter >= 200) {
+				blockEntity.timeCounter = 0;
 				BlockEntity tempBlockEntity = world.getBlockEntity(pos.down());
 				if (tempBlockEntity instanceof BeaconBlockEntity) {
 					BeaconBlockEntity beaconBlockEntity = (BeaconBlockEntity) tempBlockEntity;
-					int level =  beaconBlockEntity.toInitialChunkDataTag().getInt("Levels");
+					int level = beaconBlockEntity.toInitialChunkDataTag().getInt("Levels");
 
 					// 仅当信标激活时才工作
 					if (level >= 0) {
@@ -152,7 +152,7 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements BlockEntit
 						if (sunMoonStone) {
 							for1: for (int i = 0; i < 3; i++) {
 								for (int j = 0; j < 3; j++) {
-									Block block = world.getBlockState(pos.down().east(i - 1).south(j - 1)).getBlock();
+									Block block = world.getBlockState(pos.down(2).east(i - 1).south(j - 1)).getBlock();
 									if (sunMoonStone = (i + j & 1) == 1 ? block != CppBlocks.SUN_STONE : block != CppBlocks.MOON_STONE)
 										break for1;
 								}
@@ -160,26 +160,27 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements BlockEntit
 						}
 						try {
 							// 直接用目标选择器来选取玩家和生物
-							List<ServerPlayerEntity> players = new EntitySelectorReader(new StringReader("@a" + (sunMoonStone ? "" : String.format("[distance=..%d]", 10 * (level + 1))))).read().getPlayers(getServerCommandSource());
-							List<? extends Entity> entities0 = new EntitySelectorReader(new StringReader(String.format("@e[distance=..%d]", sunMoonStone ? 128 : 10 * (level + 1)))).read().getEntities(getServerCommandSource());
+							List<ServerPlayerEntity> players = new EntitySelectorReader(new StringReader("@a" + (sunMoonStone ? "" : String.format("[distance=..%d]", 10 * (level + 1))))).read().getPlayers(blockEntity.getServerCommandSource());
+							List<? extends Entity> entities0 = new EntitySelectorReader(new StringReader(String.format("@e[distance=..%d]", sunMoonStone ? 128 : 10 * (level + 1)))).read().getEntities(blockEntity.getServerCommandSource());
 							List<MobEntity> entities = new LinkedList<MobEntity>();
 							// 把entities里的非生物实体和玩家去除
 							for (Iterator<? extends Entity> iterator = entities0.iterator(); iterator.hasNext();) {
 								Entity e = iterator.next();
 								if (e instanceof MobEntity) {
-									if (!onlyAdverse || !(e instanceof GolemEntity && !(e instanceof ShulkerEntity) || (e instanceof PassiveEntity && !(e instanceof HoglinEntity))))
+									if (!blockEntity.onlyAdverse || !(e instanceof GolemEntity && !(e instanceof ShulkerEntity) || (e instanceof PassiveEntity && !(e instanceof HoglinEntity))))
 										entities.add((MobEntity) e);
 								}
 							}
 							// 施加状态效果
 							for (PlayerEntity e : players) {
-								e.addStatusEffect(new StatusEffectInstance(playerEffect, 400, 0));
+								e.addStatusEffect(new StatusEffectInstance(blockEntity.playerEffect, 400, 0));
 							}
+//							System.out.println(entities);
 							for (MobEntity e : entities) {
-								if (getMobEffect() != ATTRACTING)
-									e.addStatusEffect(new StatusEffectInstance(mobEffect, 200, 0));
+								if (blockEntity.getMobEffect() != ATTRACTING)
+									e.addStatusEffect(new StatusEffectInstance(blockEntity.mobEffect, 200, 0));
 								else {
-									e.teleport(pos.getX(), pos.getY() + 1, pos.getZ(), false);
+									e.teleport(pos.getX()+.5, pos.getY() + 1, pos.getZ()+.5);
 								}
 							}
 						} catch (Throwable e) {

@@ -220,33 +220,33 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity<MobProjector
 	/*
 	 * 以下是Tickable的方法
 	 */
-	@Override
-	public void tick(World world, BlockPos pos, BlockState state, MobProjectorBlockEntity blockEntity) {
+
+	public static void tick(World world, BlockPos pos, BlockState state, MobProjectorBlockEntity blockEntity) {
 		if (!world.isClient) {
-			expBottle(getStack(0));
+			blockEntity.expBottle(blockEntity.getStack(0));
 			boolean reciped = true;// 有配方吗？
-			if (getStack(1).getItem() == Items.EGG) {
-				Recipe recipe = RECIPES.get(setOf(getStack(2).getItem(), getStack(3).getItem()));
+			if (blockEntity.getStack(1).getItem() == Items.EGG) {
+				Recipe recipe = RECIPES.get(setOf(blockEntity.getStack(2).getItem(), blockEntity.getStack(3).getItem()));
 				if (recipe != null) {
 					reciped = false;
-					currentRecipeCode = recipe.code;
-					if (expStorage >= recipe.experience)
-						if (workTime >= WORK_TIME_TOTAL) {
+					blockEntity.currentRecipeCode = recipe.code;
+					if (blockEntity.expStorage >= recipe.experience)
+						if (blockEntity.workTime >= WORK_TIME_TOTAL) {
 							EntityType<? extends MobEntity> entityType = recipe.output();
-							int dx = (int) (getOutputDir().getOffsetX() * (1 + entityType.getWidth())) + pos.getX();
+							int dx = (int) (blockEntity.getOutputDir().getOffsetX() * (1 + entityType.getWidth())) + pos.getX();
 							int dy = pos.getY();
-							if (getOutputDir().getOffsetY() < 0)
+							if (blockEntity.getOutputDir().getOffsetY() < 0)
 								dy -= entityType.getHeight();
-							else if (getOutputDir().getOffsetY() > 0)
+							else if (blockEntity.getOutputDir().getOffsetY() > 0)
 								dy += 1;
-							int dz = (int) (getOutputDir().getOffsetZ() * (1 + entityType.getWidth())) + pos.getZ();
+							int dz = (int) (blockEntity.getOutputDir().getOffsetZ() * (1 + entityType.getWidth())) + pos.getZ();
 							entityType.spawn((ServerWorld) world, null, null, null, new BlockPos(dx, dy, dz), SpawnReason.SPAWNER, false, false);
-							workTime = 0;
-							expStorage -= recipe.experience;
+							blockEntity.workTime = 0;
+							blockEntity.expStorage -= recipe.experience;
 							for (int i = 0; i < 3; i++)
-								getStack(i + 1).decrement(1);
+								blockEntity.getStack(i + 1).decrement(1);
 						} else {
-							workTime++;
+							blockEntity.workTime++;
 //							workTime += 9;
 						}
 				} else {
@@ -254,8 +254,8 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity<MobProjector
 				}
 			}
 			if (reciped) {
-				currentRecipeCode = -1;
-				workTime = 0;
+				blockEntity.currentRecipeCode = -1;
+				blockEntity.workTime = 0;
 			}
 		}
 	}

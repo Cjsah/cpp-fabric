@@ -13,11 +13,10 @@ public class ItemProcessorScreenHandler extends AMachineScreenHandler {
 	public final ItemProcessorBlockEntity blockEntity;
 
 	public ItemProcessorScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, new ItemProcessorBlockEntity(playerInventory.player.getBlockPos(),playerInventory.player.getBlockState()));
+		this(syncId, playerInventory, new ItemProcessorBlockEntity(playerInventory.player.getBlockPos(), playerInventory.player.getBlockState()));
 	}
 
-	public ItemProcessorScreenHandler(int syncId, PlayerInventory playerInventory,
-			ItemProcessorBlockEntity blockEntity) {
+	public ItemProcessorScreenHandler(int syncId, PlayerInventory playerInventory, ItemProcessorBlockEntity blockEntity) {
 		super(CppScreenHandler.ITEM_PROCESSOR, syncId, playerInventory, blockEntity);
 		this.blockEntity = blockEntity;
 
@@ -42,8 +41,7 @@ public class ItemProcessorScreenHandler extends AMachineScreenHandler {
 				this.insertItem(itemStack2, 0, 36, true);
 //				slot.onStackChanged(itemStack2, itemStack);
 			} else {
-				if (!(ItemProcessorBlockEntity.RECIPES.containsKey(itemStack2.getItem())
-						&& insertItem(itemStack2, 36, 37, false) || insertItem(itemStack2, 37, 38, false))) {
+				if (!(ItemProcessorBlockEntity.RECIPES.containsKey(itemStack2.getItem()) && insertItem(itemStack2, 36, 37, false) || insertItem(itemStack2, 37, 38, false))) {
 					super.transferSlot(player, index);
 				}
 			}

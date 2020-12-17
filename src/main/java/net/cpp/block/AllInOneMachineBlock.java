@@ -1,10 +1,16 @@
 package net.cpp.block;
 
+import javax.annotation.Nullable;
+
 import net.cpp.block.entity.AllInOneMachineBlockEntity;
+import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppStats;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager.Builder;
@@ -40,15 +46,22 @@ public class AllInOneMachineBlock extends AMachineBlock {
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		if (!world.isClient())
-			dropExperience((ServerWorld) world, pos,
-					((AllInOneMachineBlockEntity) world.getBlockEntity(pos)).getExpStorage());
+			dropExperience((ServerWorld) world, pos, ((AllInOneMachineBlockEntity) world.getBlockEntity(pos)).getExpStorage());
 		super.onBreak(world, pos, state, player);
 	}
 
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-		// TODO 自动生成的方法存根
-		return new AllInOneMachineBlockEntity(pos,state);
+		return new AllInOneMachineBlockEntity(pos, state);
 	}
 
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return checkType(world, type, CppBlockEntities.ALL_IN_ONE_MACHINE);
+	}
+
+	@Nullable
+	protected static <T extends BlockEntity> BlockEntityTicker<T> checkType(World world, BlockEntityType<T> givenType, BlockEntityType<? extends AllInOneMachineBlockEntity> expectedType) {
+		return world.isClient ? null : checkType(givenType, expectedType, AllInOneMachineBlockEntity::tick);
+	}
 }
