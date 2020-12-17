@@ -1,5 +1,7 @@
 package net.cpp.init;
 
+import static net.cpp.Craftingpp.CPP_GROUP_MACHINE;
+
 import net.cpp.block.AllInOneMachineBlock;
 import net.cpp.block.BeaconEnhancerBlock;
 import net.cpp.block.CraftingMachineBlock;
@@ -7,7 +9,6 @@ import net.cpp.block.ItemProcessorBlock;
 import net.cpp.block.MobProjectorBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
-import net.minecraft.block.BeaconBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
@@ -15,8 +16,6 @@ import net.minecraft.item.Item;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
-import static net.cpp.Craftingpp.CPP_GROUP_MACHINE;
 
 public final class CppBlocks {
 	public static final Block CRAFTING_MACHINE = Registry.register(Registry.BLOCK,

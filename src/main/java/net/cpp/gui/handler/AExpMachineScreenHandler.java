@@ -2,8 +2,12 @@ package net.cpp.gui.handler;
 
 import net.cpp.api.CodingTool;
 import net.cpp.block.entity.AExpMachineBlockEntity;
+import net.cpp.gui.screen.ExpTankButton;
+import net.minecraft.entity.ExperienceOrbEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.server.world.ServerWorld;
 
 public abstract class AExpMachineScreenHandler extends AMachineScreenHandler {
 	public final AExpMachineBlockEntity blockEntity;
@@ -14,20 +18,14 @@ public abstract class AExpMachineScreenHandler extends AMachineScreenHandler {
 		addSlot(new ExperienceBottleSlot(blockEntity, 0, CodingTool.x(6), CodingTool.y(0)));
 	}
 
-//	@Override
-//	public ItemStack transferSlot(PlayerEntity player, int index) {
-////		Slot slot = (Slot) this.slots.get(index);
-////		if (slot != null && slot.hasStack()) {
-////			ItemStack itemStack2 = slot.getStack();
-////			if (index == 36) {
-////				this.insertItem(itemStack2, 0, 36, true);
-////			} else {
-////				if (itemStack2.getItem() == Items.EXPERIENCE_BOTTLE && !insertItem(itemStack2, 36, 37, false)) {
-////					super.transferSlot(player, index);
-////				}
-////			}
-////		}
-//		return super.transferSlot(player, index);
-//	}
+	@Override
+	public boolean onButtonClick(PlayerEntity player, int id) {
+		boolean clicked = false;
+		if (id == ExpTankButton.SYNC_ID && !blockEntity.getWorld().isClient) {
+			ExperienceOrbEntity.spawn((ServerWorld) blockEntity.getWorld(), player.getPos(), blockEntity.getExpStorage());
+			blockEntity.setExpStorage(0);
+		}
+		return clicked || super.onButtonClick(player, id);
+	}
 
 }

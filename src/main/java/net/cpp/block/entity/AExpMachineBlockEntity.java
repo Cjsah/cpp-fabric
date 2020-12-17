@@ -3,15 +3,13 @@ package net.cpp.block.entity;
 import static net.minecraft.item.Items.EXPERIENCE_BOTTLE;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public abstract class AExpMachineBlockEntity<T extends BlockEntity> extends AMachineBlockEntity<T> {
+public abstract class AExpMachineBlockEntity extends AMachineBlockEntity {
 	public static final int XP_CAPACITY = 1000;
 	protected int workTime;
 	protected int workTimeTotal;
@@ -52,7 +50,9 @@ public abstract class AExpMachineBlockEntity<T extends BlockEntity> extends AMac
 	public int getWorkTimeTotal() {
 		return workTimeTotal;
 	}
-
+	public void setExpStorage(int expStorage) {
+		this.expStorage = expStorage;
+	}
 	public int getExpStorage() {
 		return expStorage;
 	}
