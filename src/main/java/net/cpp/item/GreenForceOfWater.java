@@ -55,9 +55,9 @@ public class GreenForceOfWater extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        ItemStack itemStack = user.getStackInHand(hand);
         if (!world.isClient) {
             user.incrementStat(Stats.USED.getOrCreateStat(this));
-            ItemStack itemStack = user.getStackInHand(hand);
             CompoundTag tag = itemStack.getTag();
             if (tag == null) {
                 itemStack.getOrCreateTag();
@@ -157,7 +157,7 @@ public class GreenForceOfWater extends Item {
 ////                    }else if (this.placeFluid(user, world, targetBlockPos, hitResult, fluid)) {
 //                    if (this.placeFluid(user, world, targetBlockPos, hitResult, fluid)) {
         }
-        return TypedActionResult.pass(user.getStackInHand(hand));
+        return TypedActionResult.pass(itemStack);
     }
 
     private boolean placeFluid(@Nullable PlayerEntity player, World world, BlockPos pos, @Nullable BlockHitResult blockHitResult, Fluid fluid) {
