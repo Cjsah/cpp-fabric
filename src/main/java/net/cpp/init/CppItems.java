@@ -49,6 +49,11 @@ public final class CppItems {
 	public static final Item NETHERRACK_PLUGIN;
 	public static final Item END_STONE_PLUGIN;
 	public static final Item BASALT_PLUGIN;
+	public static final Item MENDING_PLUGIN;
+	public static final Item WIFI_PLUGIN;
+	public static final Item EMERALD_TRADE_PLUGIN;
+	public static final Item GOLD_TRADE_PLUGIN;
+	public static final Item MOON_TRADE_PLUGIN;
 	// 上古卷轴
 	public static final Item ANCIENT_SCROLL;
 	// 附魔金属
@@ -403,6 +408,11 @@ public final class CppItems {
 		NETHERRACK_PLUGIN = registerItem("netherrack_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
 		END_STONE_PLUGIN = registerItem("end_stone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
 		BASALT_PLUGIN = registerItem("basalt_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+		MENDING_PLUGIN = registerItem("mending_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+		WIFI_PLUGIN = registerItem("wifi_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+		EMERALD_TRADE_PLUGIN = registerItem("emerald_trade_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+		GOLD_TRADE_PLUGIN = registerItem("gold_trade_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+		MOON_TRADE_PLUGIN = registerItem("moon_trade_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
 
 		ANCIENT_SCROLL = registerItem("ancient_scroll", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 
