@@ -1,15 +1,16 @@
 package net.cpp.api;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.IntArrayTag;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 
 public class CodingTool {
 	private CodingTool() {
@@ -68,6 +69,36 @@ public class CodingTool {
 	 */
 	public static int getExperience(PlayerEntity player) {
 		return Math.round(player.experienceProgress * player.getNextLevelExperience());
+	}
+
+	/**
+	 * 获取玩家指向的物品实体
+	 *
+	 * @author Cjsah
+	 * @param world world
+	 * @param player 玩家
+	 * @return 物品实体
+	 */
+	public static ItemEntity rayItem(World world, PlayerEntity player) {
+		Vec3d playerPos = new Vec3d(player.getX(), player.getEyeY(), player.getZ());
+		Vec3d pos = playerPos;
+		float yaw = player.yaw;
+		float pitch = player.pitch;
+		float x = -MathHelper.sin(yaw * (float) (Math.PI) / 180F) * 0.2F;
+		float y = -MathHelper.sin(pitch * (float) (Math.PI) / 180F) * 0.2F;
+		float z = MathHelper.cos(yaw * (float) (Math.PI) / 180F) * 0.2F;
+		while (Math.sqrt(Math.pow(pos.x - playerPos.x, 2) + Math.pow(pos.y - playerPos.y, 2) + Math.pow(pos.z - playerPos.z, 2)) < 5) {
+			pos = pos.add(x, y, z);
+			if (world.getBlockState(new BlockPos(pos)).getBlock() != Blocks.AIR) {
+				return null;
+			}
+			Box box = new Box(pos.x - 0.05, pos.y - 0.35, pos.z - 0.05, pos.x + 0.05, pos.y, pos.z + 0.05);
+			List<ItemEntity> list = world.getEntitiesByClass(ItemEntity.class, box, (entity) -> entity != null && entity.isAlive());
+			if (!list.isEmpty()) {
+				return list.get(0);
+			}
+		}
+		return null;
 	}
 
 	@SafeVarargs
