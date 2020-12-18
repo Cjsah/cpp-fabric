@@ -18,14 +18,12 @@ import java.util.Random;
 
 public class CppChain {
     public static void chain(World world, ServerPlayerEntity player, BlockPos pos, Block block) {
-        BlockPos tmpPos;
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
                 for (int k = -1; k < 2; k++) {
-                    tmpPos = pos;
-                    if (world.getBlockState(tmpPos.add(i,j,k)).getBlock() == block) {
+                    if (world.getBlockState(pos.add(i,j,k)).getBlock() == block) {
                         if (player.interactionManager.getGameMode().isCreative()) {
-                            world.breakBlock(tmpPos.add(i,j,k), false, player);
+                            world.breakBlock(pos.add(i,j,k), false, player);
                         }else {
                             ListTag enchant = player.getMainHandStack().getEnchantments();
                             boolean silk_torch = false;
@@ -40,14 +38,14 @@ public class CppChain {
                                 }
                             }
                             if (silk_torch) {
-                                world.breakBlock(tmpPos.add(i,j,k), false, player);
+                                world.breakBlock(pos.add(i,j,k), false, player);
                                 spawn(world, pos, block, 1);
                             }else if (fortune && fortune_level > 0) {
                                 int value = new Random().nextInt(fortune_level+1) + 1;
-                                world.breakBlock(tmpPos.add(i,j,k), true, player);
+                                world.breakBlock(pos.add(i,j,k), true, player);
                                 spawn(world, pos, Items.EMERALD, value > 2 ? value - 2 : 0);
                             }else {
-                                world.breakBlock(tmpPos.add(i,j,k), true, player);
+                                world.breakBlock(pos.add(i,j,k), true, player);
                             }
                         }
                         chain(world, player, pos.add(i,j,k), block);
