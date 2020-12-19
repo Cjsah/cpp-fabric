@@ -21,6 +21,7 @@ public class MobProjectorScreenHandler extends AExpMachineScreenHandler {
 		super(CppScreenHandler.MOB_PROJECTOR, syncId, playerInventory, blockEntity);
 		player = playerInventory.player;
 		this.blockEntity = blockEntity;
+		addSlot(new ExperienceBottleSlot(blockEntity, 0, CodingTool.x(6), CodingTool.y(0)));
 		addSlot(new Slot(blockEntity, 1, CodingTool.x(4), CodingTool.y(0)));
 		addSlot(new Slot(blockEntity, 2, CodingTool.x(4), CodingTool.y(1)));
 		addSlot(new Slot(blockEntity, 3, CodingTool.x(4), CodingTool.y(2)));
@@ -36,7 +37,7 @@ public class MobProjectorScreenHandler extends AExpMachineScreenHandler {
 		Slot slot = (Slot) this.slots.get(index);
 		if (slot != null && slot.hasStack()) {
 			ItemStack itemStack = slot.getStack();
-			if (index >= 36 && index < 42)
+			if (index >= 36 && index < blockEntity.size())
 				insertItem(itemStack, 0, 36, true);
 			else if (index < 36) {
 				if (itemStack.getItem() == Items.EXPERIENCE_BOTTLE)

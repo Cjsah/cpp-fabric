@@ -103,27 +103,39 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity i
 			return itemStack.getCount() >= itemStack.getMaxCount();
 		});
 	}
-
-	/**
-	 * 输出一叠物品
-	 * 
-	 * @param outputStack 要被输出的物品
-	 * @return 因输出不下而剩下的物品
-	 */
-	protected ItemStack output(ItemStack outputStack) {
+	protected ItemStack output(int index) {
 		Inventory inventory = getOutputInventory();
-		ItemStack restStack = outputStack;
 		if (inventory != null) {
 			Direction direction = getOutputDir();
 			if (!this.isInventoryFull(inventory, direction)) {
-				restStack = transfer(this, inventory, outputStack.copy(), direction);
-				if (restStack.isEmpty()) {
+				setStack(index, transfer(this, inventory, getStack(index), direction));
+				if (getStack(index).isEmpty()) {
 					inventory.markDirty();
 				}
 
 			}
 		}
-		return restStack;
+		return getStack(index);
+	}
+	/**
+	 * 输出一叠物品
+	 * 
+	 * @param outputStack 要被输出的物品
+	 * @return 剩余的物品
+	 */
+	protected ItemStack output(ItemStack outputStack) {
+		Inventory inventory = getOutputInventory();
+		if (inventory != null) {
+			Direction direction = getOutputDir();
+			if (!this.isInventoryFull(inventory, direction)) {
+				transfer(this, inventory, outputStack, direction);
+				if (outputStack.isEmpty()) {
+					inventory.markDirty();
+				}
+
+			}
+		}
+		return outputStack;
 	}
 
 	/**
@@ -147,6 +159,14 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity i
 				setStack(index, input);
 			else
 				getStack(index).increment(input.getCount());
+	}
+
+	protected boolean tryInsert(int index, ItemStack target) {
+		if (canInsert(index, target)) {
+			insert(index, target);
+			return true;
+		}
+		return false;
 	}
 
 	/**

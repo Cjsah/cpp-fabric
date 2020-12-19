@@ -112,7 +112,6 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	@Override
 	protected void setInvStackList(DefaultedList<ItemStack> list) {
 		inventory = list;
-
 	}
 
 	/*
@@ -222,11 +221,14 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 				blockEntity.lastTickRecipeCode = 0;
 				blockEntity.lastTickOutputs = null;
 			}
-			for (int i = 0; i < 2; i++) {// 输出成品栏的物品
-				if (!blockEntity.getStack(i + 3).isEmpty()) {
-					blockEntity.setStack(i + 3, blockEntity.output(blockEntity.getStack(i + 3)));
-				}
-			}
+//			for (int i = 0; i < 2; i++) {// 输出成品栏的物品
+//				if (!blockEntity.getStack(i + 3).isEmpty()) {
+//					blockEntity.setStack(i + 3, blockEntity.output(blockEntity.getStack(i + 3)));
+//				}
+//			}
+			// 输出成品栏的物品
+			blockEntity.output(3);
+			blockEntity.output(4);
 			world.setBlockState(pos, blockEntity.getCachedState().with(AllInOneMachineBlock.WORKING, blockEntity.isWorking()));// 更新方块状态
 		}
 	}

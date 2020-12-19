@@ -112,7 +112,7 @@ public class CraftingMachineScreenHandler extends AMachineScreenHandler {
 		if (slot != null && slot.hasStack()) {
 			ItemStack itemStack2 = slot.getStack();
 			itemStack = itemStack2.copy();
-			if (index >= 36 && index < 46) {
+			if (index >= 36 && index < 36+blockEntity.size()) {
 				if (index == 45)
 //					this.context.run((world, blockPos) -> {
 					itemStack2.getItem().onCraft(itemStack2, blockEntity.getWorld(), player);

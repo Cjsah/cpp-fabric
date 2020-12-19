@@ -240,10 +240,8 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity {
 					}
 				}
 			}
-			for (int i : new int[] { 2, 3 })
-				if (!blockEntity.getStack(i).isEmpty()) {
-					blockEntity.setStack(i, blockEntity.output(blockEntity.getStack(i)));
-				}
+			blockEntity.output(2);
+			blockEntity.output(3);
 		}
 	}
 

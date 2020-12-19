@@ -12,7 +12,7 @@ public class BeaconEnhancerScreenHandler extends ScreenHandler {
 	public final BeaconEnhancerBlockEntity blockEntity;
 
 	public BeaconEnhancerScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, new BeaconEnhancerBlockEntity(playerInventory.player.getBlockPos(),playerInventory.player.getBlockState()));
+		this(syncId, playerInventory, new BeaconEnhancerBlockEntity(playerInventory.player.getBlockPos(), playerInventory.player.getBlockState()));
 	}
 
 	public BeaconEnhancerScreenHandler(int syncId, PlayerInventory playerInventory, BeaconEnhancerBlockEntity blockEntity) {
@@ -37,21 +37,15 @@ public class BeaconEnhancerScreenHandler extends ScreenHandler {
 	@Override
 	public boolean onButtonClick(PlayerEntity player, int id) {
 		boolean clicked = false;
-		switch (id) {
-		case BeaconEnhancerScreen.PLAYER_EFFECT_BUTTON_SYNC_ID:
+		if (id == BeaconEnhancerScreen.PLAYER_EFFECT_BUTTON_SYNC_ID) {
 			blockEntity.shiftPlayerEffect();
 			clicked = true;
-			break;
-		case BeaconEnhancerScreen.MOB_EFFECT_BUTTON_SYNC_ID:
+		} else if (id == BeaconEnhancerScreen.MOB_EFFECT_BUTTON_SYNC_ID) {
 			blockEntity.shiftMobEffect();
 			clicked = true;
-			break;
-		case BeaconEnhancerScreen.ONLY_ADVERSE_BUTTON_SYNC_ID:
+		} else if (id == BeaconEnhancerScreen.ONLY_ADVERSE_BUTTON_SYNC_ID) {
 			blockEntity.shiftOnlyAdverse();
 			clicked = true;
-			break;
-		default:
-			break;
 		}
 		return clicked || super.onButtonClick(player, id);
 	}

@@ -6,6 +6,7 @@ import net.cpp.gui.screen.CraftingMachineScreen;
 import net.cpp.gui.screen.ItemProcessorScreen;
 import net.cpp.gui.screen.MobProjectorScreen;
 import net.cpp.gui.screen.PortableCraftingMachineScreen;
+import net.cpp.gui.screen.TradeMachineScreen;
 import net.cpp.init.CppScreenHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -23,8 +24,9 @@ public class CraftingppClient implements ClientModInitializer {
 		ScreenRegistry.register(CppScreenHandler.ITEM_PROCESSOR, ItemProcessorScreen::new);
 		ScreenRegistry.register(CppScreenHandler.MOB_PROJECTOR, MobProjectorScreen::new);
 		ScreenRegistry.register(CppScreenHandler.BEACON_ENHANCER, BeaconEnhancerScreen::new);
-		ScreenRegistry.register(CppScreenHandler.PORTABLE_CRAFTING_TABLE_SCREEN_HANDLER, CraftingScreen::new);
-		ScreenRegistry.register(CppScreenHandler.PORTABLE_CRAFTING_MACHINE_SCREEN_HANDLER, PortableCraftingMachineScreen::new);
+		ScreenRegistry.register(CppScreenHandler.TRADE_MACHINE, TradeMachineScreen::new);
+		ScreenRegistry.register(CppScreenHandler.PORTABLE_CRAFTING_TABLE, CraftingScreen::new);
+		ScreenRegistry.register(CppScreenHandler.PORTABLE_CRAFTING_MACHINE, PortableCraftingMachineScreen::new);
 	}
 
 }

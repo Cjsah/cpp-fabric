@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.cpp.api.CodingTool;
 import net.cpp.block.entity.AMachineBlockEntity;
 import net.cpp.block.entity.IOutputDiractional;
 import net.minecraft.client.MinecraftClient;
@@ -17,7 +18,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 public class OutputDirectionButton extends TexturedButtonWidget {
-	public static final int SYNC_ID = 1010;
+	public static final int SYNC_ID = CodingTool.nextSyncId();
 	public static final Identifier TEXTURE = new Identifier("cpp:textures/gui/output_direction_button.png");
 	public static final TranslatableText[] DIRECTION_TEXT = { new TranslatableText("gui.output_to_east"),
 			new TranslatableText("gui.output_to_west"), new TranslatableText("gui.output_to_up"),

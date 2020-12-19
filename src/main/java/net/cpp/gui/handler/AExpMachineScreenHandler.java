@@ -15,7 +15,6 @@ public abstract class AExpMachineScreenHandler extends AMachineScreenHandler {
 	public AExpMachineScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, AExpMachineBlockEntity blockEntity) {
 		super(type, syncId, playerInventory, blockEntity);
 		this.blockEntity = blockEntity;
-		addSlot(new ExperienceBottleSlot(blockEntity, 0, CodingTool.x(6), CodingTool.y(0)));
 	}
 
 	@Override

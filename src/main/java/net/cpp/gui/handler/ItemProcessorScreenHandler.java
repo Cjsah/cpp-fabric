@@ -37,7 +37,7 @@ public class ItemProcessorScreenHandler extends AMachineScreenHandler {
 		if (slot != null && slot.hasStack()) {
 			ItemStack itemStack2 = slot.getStack();
 //			itemStack = itemStack2.copy();
-			if (index >= 36 && index < 41) {
+			if (index >= 36 && index < blockEntity.size()) {
 				this.insertItem(itemStack2, 0, 36, true);
 //				slot.onStackChanged(itemStack2, itemStack);
 			} else {

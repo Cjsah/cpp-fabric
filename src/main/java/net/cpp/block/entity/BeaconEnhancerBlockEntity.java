@@ -129,7 +129,9 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 	@Override
 	public void fromTag(CompoundTag tag) {
 		playerEffectCode = tag.getInt("playerEffect");
+		playerEffect=AVAILABLE_PLAYER_EFFECTS.get(playerEffectCode);
 		mobEffectCode = tag.getInt("mobEffect");
+		mobEffect=AVAILABLE_MOB_EFFECTS.get(mobEffectCode);
 		onlyAdverse = tag.getBoolean("onlyAdverse");
 		super.fromTag(tag);
 	}

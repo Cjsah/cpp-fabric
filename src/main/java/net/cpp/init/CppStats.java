@@ -10,6 +10,7 @@ public final class CppStats {
 	public static final Identifier INTERACT_WITH_ITEM_PROCESSOR = registerStats("interact_with_item_processor");
 	public static final Identifier INTERACT_WITH_MOB_PROJECTOR = registerStats("interact_with_mob_projector");
 	public static final Identifier INTERACT_WITH_BEACON_ENHANCER = registerStats("interact_with_beacon_enhancer");
+	public static final Identifier INTERACT_WITH_TRADE_MACHINE = registerStats("interact_with_trade_machine");
 
 	public static void register() {
 	}

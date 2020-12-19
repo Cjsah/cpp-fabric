@@ -2,6 +2,7 @@ package net.cpp.gui.handler;
 
 import net.cpp.api.CodingTool;
 import net.cpp.block.entity.AllInOneMachineBlockEntity;
+import net.cpp.gui.screen.AllInOneMachineScreen;
 import net.cpp.init.CppScreenHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -29,6 +30,7 @@ public class AllInOneMachineScreenHandler extends AExpMachineScreenHandler {
 		super(CppScreenHandler.ALL_IN_ONE_MACHINE, syncId, playerInventory, blockEntity);
 		player = playerInventory.player;
 		this.blockEntity = blockEntity;
+		addSlot(new ExperienceBottleSlot(blockEntity, 0, CodingTool.x(6), CodingTool.y(0)));
 		addSlot(new Slot(blockEntity, 1, CodingTool.x(3), CodingTool.y(0)));
 		addSlot(new Slot(blockEntity, 2, CodingTool.x(4), CodingTool.y(0)));
 		addSlot(new ResultSlot(blockEntity, 3, CodingTool.x(3), CodingTool.y(2)));
@@ -42,17 +44,16 @@ public class AllInOneMachineScreenHandler extends AExpMachineScreenHandler {
 	@Override
 	public boolean onButtonClick(PlayerEntity player, int id) {
 		boolean clicked = false;
-		switch (id) {
-		case 1011:
+		if (id == AllInOneMachineScreen.TEMPERATURE_BUTTON_SYNC_ID) {
 			blockEntity.shiftTemperature();
 			clicked = true;
-			break;
-		case 1012:
+
+		} else if (id == AllInOneMachineScreen.PRESSURE_BUTTON_SYNC_ID) {
 			blockEntity.shiftPressure();
 			clicked = true;
-			break;
 		}
 		return super.onButtonClick(player, id) || clicked;
+
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class AllInOneMachineScreenHandler extends AExpMachineScreenHandler {
 		Slot slot = (Slot) this.slots.get(index);
 		if (slot != null && slot.hasStack()) {
 			ItemStack itemStack = slot.getStack();
-			if (index >= 36 && index < 42) {
+			if (index >= 36 && index < 36 + blockEntity.size()) {
 				this.insertItem(itemStack, 0, 36, true);
 			} else if (index < 36) {
 				if (itemStack.getItem() == Items.EXPERIENCE_BOTTLE)

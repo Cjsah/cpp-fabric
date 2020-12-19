@@ -5,6 +5,7 @@ import net.cpp.block.entity.BeaconEnhancerBlockEntity;
 import net.cpp.block.entity.CraftingMachineBlockEntity;
 import net.cpp.block.entity.ItemProcessorBlockEntity;
 import net.cpp.block.entity.MobProjectorBlockEntity;
+import net.cpp.block.entity.TradeMachineBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
@@ -17,6 +18,7 @@ public final class CppBlockEntities {
 	public static final BlockEntityType<ItemProcessorBlockEntity> ITEM_PROCESSER = registerBlockEntityType(ItemProcessorBlockEntity::new, CppBlocks.ITEM_PROCESSER);
 	public static final BlockEntityType<MobProjectorBlockEntity> MOB_PROJECTOR = registerBlockEntityType(MobProjectorBlockEntity::new, CppBlocks.MOB_PROJECTOR);
 	public static final BlockEntityType<BeaconEnhancerBlockEntity> BEACON_ENHANCER = registerBlockEntityType(BeaconEnhancerBlockEntity::new, CppBlocks.BEACON_ENHANCER);
+	public static final BlockEntityType<TradeMachineBlockEntity> TRADE_MACHINE = registerBlockEntityType(TradeMachineBlockEntity::new, CppBlocks.TRADE_MACHINE);
 
 	public static void register() {
 	}

@@ -32,7 +32,7 @@ public class PortableCraftingMachineScreenHandler extends ScreenHandler {
 	}
 
 	public PortableCraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
-		super(CppScreenHandler.PORTABLE_CRAFTING_MACHINE_SCREEN_HANDLER, syncId);
+		super(CppScreenHandler.PORTABLE_CRAFTING_MACHINE, syncId);
 		this.input = new CraftingInventory(this, 3, 3);
 		this.result = new CraftingResultInventory();
 		this.context = context;

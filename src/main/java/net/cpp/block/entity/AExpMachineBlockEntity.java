@@ -56,7 +56,12 @@ public abstract class AExpMachineBlockEntity extends AMachineBlockEntity {
 	public int getExpStorage() {
 		return expStorage;
 	}
-
+	protected void expBottle() {
+		if (getStack(0).getItem() == EXPERIENCE_BOTTLE && expStorage + 9 <= XP_CAPACITY) {
+			getStack(0).decrement(1);
+			expStorage += 9;
+		}
+	}
 	protected void expBottle(ItemStack itemStack) {
 		if (itemStack.getItem() == EXPERIENCE_BOTTLE && expStorage + 9 <= XP_CAPACITY) {
 			itemStack.decrement(1);

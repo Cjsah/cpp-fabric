@@ -21,13 +21,14 @@ public class AllInOneMachineScreen extends AExpMachineScreen<AllInOneMachineScre
 			new TranslatableText("gui.low_temperature"), new TranslatableText("gui.high_temperature") };
 	public static final TranslatableText[] PRESSURE_TEXTS = { new TranslatableText("gui.ordinary_pressure"),
 			new TranslatableText("gui.low_pressure"), new TranslatableText("gui.high_pressure") };
+	public static final int TEMPERATURE_BUTTON_SYNC_ID = CodingTool.nextSyncId(), PRESSURE_BUTTON_SYNC_ID = CodingTool.nextSyncId();
 	public final List<Text> temperatureTooltip = Arrays.asList(TEMPERATURE_TEXTS[0],
 			AMachineScreen.CLICK_TO_SHIFT);
 	public final List<Text> pressureTooltip = Arrays.asList(PRESSURE_TEXTS[0], AMachineScreen.CLICK_TO_SHIFT);
 	public final TexturedButtonWidget temperatureButton = new TexturedButtonWidget(0, 0, 16, 16, 0, 0, 0, BACKGROUND,
 			buttonWidget -> {
 				handler.blockEntity.shiftTemperature();
-				this.client.interactionManager.clickButton(this.handler.syncId, 1011);
+				this.client.interactionManager.clickButton(this.handler.syncId, TEMPERATURE_BUTTON_SYNC_ID);
 			}) {
 		@Override
 		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
@@ -43,7 +44,7 @@ public class AllInOneMachineScreen extends AExpMachineScreen<AllInOneMachineScre
 	public final TexturedButtonWidget pressureButton = new TexturedButtonWidget(0, 0, 16, 16, 0, 0, 0, BACKGROUND,
 			buttonWidget -> {
 				handler.blockEntity.shiftPressure();
-				this.client.interactionManager.clickButton(this.handler.syncId, 1012);
+				this.client.interactionManager.clickButton(this.handler.syncId, PRESSURE_BUTTON_SYNC_ID);
 			}) {
 		@Override
 		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {

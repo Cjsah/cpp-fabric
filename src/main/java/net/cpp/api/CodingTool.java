@@ -8,12 +8,23 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 
 public class CodingTool {
 	private CodingTool() {
-		
+
+	}
+
+	private static int syncId;
+
+	public static int nextSyncId() {
+		return syncId++;
 	}
 
 	public static int x(int m) {
@@ -103,5 +114,13 @@ public class CodingTool {
 		rst.put(k3, v3);
 		rst.put(k4, v4);
 		return Collections.unmodifiableMap(rst);
+	}
+
+	public static ItemStack newItemStack(Item item, int count, @Nullable CompoundTag nbt) {
+		ItemStack rst = new ItemStack(item, count);
+		if (nbt != null) {
+			rst.setTag(nbt);
+		}
+		return rst;
 	}
 }

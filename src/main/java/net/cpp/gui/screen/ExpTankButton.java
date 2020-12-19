@@ -3,6 +3,7 @@ package net.cpp.gui.screen;
 import java.util.Arrays;
 import java.util.List;
 
+import net.cpp.api.CodingTool;
 import net.cpp.block.entity.AExpMachineBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -14,7 +15,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 public class ExpTankButton extends TexturedButtonWidget {
-	public static final int SYNC_ID = 1;
+	public static final int SYNC_ID = CodingTool.nextSyncId();
 	public static final Identifier XP = new Identifier("cpp:textures/gui/xp.png");
 	public static final Identifier FRAME = new Identifier("cpp:textures/gui/frame.png");
 	public static final TranslatableText CLICK_TO_TAKE_OUT = new TranslatableText("gui.click_to_take_out");
