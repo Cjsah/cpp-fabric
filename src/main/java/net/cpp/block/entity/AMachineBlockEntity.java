@@ -1,5 +1,6 @@
 package net.cpp.block.entity;
 
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
@@ -144,7 +145,7 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity i
 	 * @return {@code input}能完全容纳{@code getStack(index)}
 	 */
 	protected boolean canInsert(int index, ItemStack input) {
-		return getStack(index).isEmpty() || input.isEmpty() || ItemStack.areItemsEqual(input, getStack(index)) && getStack(index).getCount() + input.getCount() <= getStack(index).getMaxCount();
+		return getStack(index).isEmpty() || input.isEmpty() || ItemStack.areItemsEqual(input, getStack(index)) && Objects.equals(input.getTag(), getStack(index).getTag()) && getStack(index).getCount() + input.getCount() <= getStack(index).getMaxCount();
 	}
 
 	/**

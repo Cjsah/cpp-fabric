@@ -5,17 +5,18 @@ import static net.cpp.init.CppItems.GOLD_TRADE_PLUGIN;
 import static net.cpp.init.CppItems.MOON_TRADE_PLUGIN;
 import static net.minecraft.item.Items.*;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Function;
-
-import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableSet;
 import com.ibm.icu.impl.Pair;
@@ -30,19 +31,26 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SuspiciousStewItem;
+import net.minecraft.item.map.MapIcon;
+import net.minecraft.item.map.MapState;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextTypes;
-import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.BaseText;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -50,6 +58,9 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.source.BiomeSource;
+import net.minecraft.world.gen.chunk.ChunkGenerator;
+import net.minecraft.world.gen.feature.StructureFeature;
 
 public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 	public static final Set<Item> PLUGIN = ImmutableSet.of(EMERALD_TRADE_PLUGIN, GOLD_TRADE_PLUGIN, MOON_TRADE_PLUGIN);
@@ -248,7 +259,6 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 					Pair<Integer, Integer> pair = BUY_MAP.get(blockEntity.getStack(1).getItem());
 					if (pair != null) {// 购买并转换成价值点
 						blockEntity.tradeValue += pair.first;
-//						System.out.println(blockEntity.cooldown);
 						blockEntity.cooldown += pair.second;
 						blockEntity.getStack(1).decrement(1);
 					}
@@ -269,13 +279,16 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 					blockEntity.output(3);
 				} else {// 交易机向玩家售卖
 					if (PLUGIN.contains(blockEntity.getStack(2).getItem())) {
-						Recipe recipe = SELL_TABLE.get(blockEntity.getStack(2).getOrCreateTag().getInt("code"));
-						if (recipe != null) {
-							if (blockEntity.getStack(3).getItem() == recipe.currency && blockEntity.getStack(3).getCount() >= recipe.currencyCount && blockEntity.expStorage >= recipe.experience) {
-								if (blockEntity.tryInsert(1, recipe.output(blockEntity).copy())) {
-									blockEntity.getStack(3).decrement(recipe.currencyCount);
-									blockEntity.cooldown += recipe.cooldown;
-									blockEntity.expStorage -= recipe.experience;
+						int code = blockEntity.getStack(2).getOrCreateTag().getInt("code");
+						if (code != 98 || blockEntity.getStack(1).isEmpty()) {
+							Recipe recipe = SELL_TABLE.get(code);
+							if (recipe != null) {
+								if (blockEntity.getStack(3).getItem() == recipe.currency && blockEntity.getStack(3).getCount() >= recipe.currencyCount && blockEntity.expStorage >= recipe.experience) {
+									if (blockEntity.tryInsert(1, recipe.output(blockEntity).copy())) {
+										blockEntity.getStack(3).decrement(recipe.currencyCount);
+										blockEntity.cooldown += recipe.cooldown;
+										blockEntity.expStorage -= recipe.experience;
+									}
 								}
 							}
 						}
@@ -505,7 +518,26 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		addSell(96, CppItems.MOON_SHARD, 1, SHULKER_BOX, 1, 64, 40);
 		addSell(97, CppItems.MOON_SHARD, 1, CppItems.SANTA_GIFT, 1, 64, 40);
 		SELL_TABLE.add(new Recipe(CppItems.MOON_SHARD, 1, 64, 40, blockEntity -> {
-			
+			try {
+				ServerWorld serverWorld = (ServerWorld) blockEntity.getWorld();
+				BiomeSource biomeSource = serverWorld.getChunkManager().getChunkGenerator().getBiomeSource();
+				List<StructureFeature<?>> structureFeatures = new ArrayList<>();
+				for (Entry<RegistryKey<StructureFeature<?>>, StructureFeature<?>> entry : Registry.STRUCTURE_FEATURE.getEntries()) {
+					if (biomeSource.hasStructureFeature(entry.getValue()))
+						structureFeatures.add(entry.getValue());
+				}
+				StructureFeature<?> structureFeature = structureFeatures.get((int) (serverWorld.random.nextDouble() * structureFeatures.size()));
+				BlockPos blockPos = serverWorld.locateStructure(structureFeature, blockEntity.getPos(), 50, true);
+				if (blockPos != null) {
+					ItemStack itemStack = FilledMapItem.createMap(serverWorld, blockPos.getX(), blockPos.getZ(), (byte) 1, true, true);
+					FilledMapItem.fillExplorationMap(serverWorld, itemStack);
+					MapState.addDecorationsTag(itemStack, blockPos, "X", MapIcon.Type.RED_X);
+					itemStack.setCustomName(new TranslatableText("structure_feature." + structureFeature.getName()).append(new TranslatableText("item.explorer_map")));
+					return itemStack;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			return ItemStack.EMPTY;
 		}));
 
@@ -526,7 +558,7 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		}
 	}
 
-	public static class Recipe {
+	public static class Recipe implements Function<BlockEntity, ItemStack> {
 		public final Item currency;
 		public final int currencyCount, experience, cooldown;
 		public final Function<BlockEntity, ItemStack> outputer;
@@ -562,6 +594,11 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		}
 
 		public ItemStack output(BlockEntity blockEntity) {
+			return apply(blockEntity);
+		}
+
+		@Override
+		public ItemStack apply(BlockEntity blockEntity) {
 			return outputer.apply(blockEntity);
 		}
 	}

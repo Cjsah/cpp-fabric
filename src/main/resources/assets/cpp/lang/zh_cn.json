@@ -341,6 +341,7 @@
   "item.cpp.red_sign": "红色告示牌",
   "item.cpp.black_sign": "黑色告示牌",
   "item.cpp.glass_sign": "玻璃告示牌",
+  "item.explorer_map": "探险家地图",
 
   "block.cpp.crafting_machine": "合成器",
   "block.cpp.all_in_one_machine": "多功能一体机",
@@ -384,5 +385,25 @@
   "tooltip.cpp.gfow.water": "水 %s",
   "tooltip.cpp.gfow.lava": "岩浆 %s",
 
-  "word.infinite": "∞"
+  "word.infinite": "∞",
+  
+  "structure_feature.buried_treasure": "埋藏的宝藏",
+  "structure_feature.endcity": "末地城",
+  "structure_feature.fortress": "下界要塞",
+  "structure_feature.mansion": "林地府邸",
+  "structure_feature.mineshaft": "废弃矿井",
+  "structure_feature.monument": "海底神殿",
+  "structure_feature.ocean_ruin": "水下遗迹",
+  "structure_feature.shipwreck": "沉船",
+  "structure_feature.stronghold": "要塞",
+  "structure_feature.desert_pyramid": "沙漠神殿",
+  "structure_feature.igloo": "雪屋",
+  "structure_feature.jungle_pyramid": "丛林神庙",
+  "structure_feature.swamp_hut": "女巫小屋",
+  "structure_feature.village": "村庄",
+  "structure_feature.pillager_outpost": "掠夺者前哨站",
+  "structure_feature.nether_fossil": "下界化石",
+  "structure_feature.bastion_remnant": "堡垒遗迹",
+  "structure_feature.ruined_portal": "废弃传送门"
+
 }
