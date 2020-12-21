@@ -90,14 +90,14 @@ public class CodingTool {
 	 * @param player 玩家
 	 * @return 物品实体
 	 */
-	public static ItemEntity rayItem(World world, PlayerEntity player) {
+	public static ItemEntity rayItem(World world, PlayerEntity player, float length) {
 		Vec3d playerPos = new Vec3d(player.getX(), player.getEyeY(), player.getZ());
 		Vec3d pos = playerPos;
 		float yaw = player.yaw;
 		float pitch = player.pitch;
-		float x = -MathHelper.sin(yaw * (float) (Math.PI) / 180F) * 0.2F;
-		float y = -MathHelper.sin(pitch * (float) (Math.PI) / 180F) * 0.2F;
-		float z = MathHelper.cos(yaw * (float) (Math.PI) / 180F) * 0.2F;
+		float x = -MathHelper.sin(yaw * (float) (Math.PI) / 180F) * length;
+		float y = -MathHelper.sin(pitch * (float) (Math.PI) / 180F) * length;
+		float z = MathHelper.cos(yaw * (float) (Math.PI) / 180F) * length;
 		while (Math.sqrt(Math.pow(pos.x - playerPos.x, 2) + Math.pow(pos.y - playerPos.y, 2) + Math.pow(pos.z - playerPos.z, 2)) < 5) {
 			pos = pos.add(x, y, z);
 			if (world.getBlockState(new BlockPos(pos)).getBlock() != Blocks.AIR) {
@@ -110,6 +110,21 @@ public class CodingTool {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * 使某坐标向玩家的前方移动一段距离
+	 *
+	 * @author Cjsah
+	 * @param pos 位移前坐标
+	 * @param length 位移长度
+	 * @return 位移后的坐标
+	 */
+	public static Vec3d move(PlayerEntity player, Vec3d pos, float length) {
+		float yaw = player.yaw;
+		float x = -MathHelper.sin(yaw * (float) (Math.PI) / 180F) * length;
+		float z = MathHelper.cos(yaw * (float) (Math.PI) / 180F) * length;
+		return pos.add(x, 0, z);
 	}
 
 	@SafeVarargs
