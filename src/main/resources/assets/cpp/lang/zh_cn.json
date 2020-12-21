@@ -1,10 +1,11 @@
 {
   "itemGroup.cpp.title": "更多的合成",
-  "itemGroup.cpp.machine_title": "更多的合成-机器",
-  "itemGroup.cpp.misc_title": "更多的合成-杂项",
-  "itemGroup.cpp.tool_title": "更多的合成-工具",
-  "itemGroup.cpp.food_title": "更多的合成-食物",
-  "itemGroup.cpp.plant_title": "更多的合成-植物",
+  "itemGroup.cpp.title.machine": "更多的合成-机器",
+  "itemGroup.cpp.title.misc": "更多的合成-杂项",
+  "itemGroup.cpp.title.tool": "更多的合成-工具",
+  "itemGroup.cpp.title.food": "更多的合成-食物",
+  "itemGroup.cpp.title.plant": "更多的合成-植物",
+  "itemGroup.cpp.title.decorate": "更多的合成-装饰",
 
   "misc.cpp": "%s %s",
 
