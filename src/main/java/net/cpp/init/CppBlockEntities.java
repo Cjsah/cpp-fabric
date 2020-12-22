@@ -3,6 +3,7 @@ package net.cpp.init;
 import net.cpp.block.entity.AllInOneMachineBlockEntity;
 import net.cpp.block.entity.BeaconEnhancerBlockEntity;
 import net.cpp.block.entity.CraftingMachineBlockEntity;
+import net.cpp.block.entity.DustbinBlockEntity;
 import net.cpp.block.entity.GoldenAnvilBlockEntity;
 import net.cpp.block.entity.ItemProcessorBlockEntity;
 import net.cpp.block.entity.MobProjectorBlockEntity;
@@ -21,6 +22,7 @@ public final class CppBlockEntities {
 	public static final BlockEntityType<BeaconEnhancerBlockEntity> BEACON_ENHANCER = registerBlockEntityType(BeaconEnhancerBlockEntity::new, CppBlocks.BEACON_ENHANCER);
 	public static final BlockEntityType<TradeMachineBlockEntity> TRADE_MACHINE = registerBlockEntityType(TradeMachineBlockEntity::new, CppBlocks.TRADE_MACHINE);
 	public static final BlockEntityType<GoldenAnvilBlockEntity> GOLDEN_ANVIL = registerBlockEntityType(GoldenAnvilBlockEntity::new, CppBlocks.GOLDEN_ANVIL);
+	public static final BlockEntityType<DustbinBlockEntity> DUSTBIN = registerBlockEntityType(DustbinBlockEntity::new, CppBlocks.DUSTBIN);
 
 	public static void register() {
 	}
