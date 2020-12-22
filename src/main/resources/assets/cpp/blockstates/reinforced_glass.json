@@ -1,9 +1,7 @@
 {
   "variants": {
-    "": [
-      {
-        "model": "cpp:block/reinforced_glass"
-      }
-    ]
+    "": {
+      "model": "cpp:block/reinforced_glass"
+    }
   }
 }

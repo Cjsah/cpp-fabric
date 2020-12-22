@@ -1,6 +1,8 @@
 package net.cpp.item;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FluidDrainable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,9 +34,7 @@ public class BlackForceOfMoon extends Item {
                 fill(world, user);
                 user.addExperience(-40);
                 value++;
-            }else {
-                say(user, new TranslatableText("chat.cpp.exp.less"));
-            }
+            }else say(user, new TranslatableText("chat.cpp.exp.less"));
 
             if (value > 0) {
                 user.incrementStat(Stats.USED.getOrCreateStat(this));
@@ -51,7 +51,14 @@ public class BlackForceOfMoon extends Item {
             for (int j = -1; j <= 1; j++) {
                 for (int k = -1; k <= 1; k++) {
                     BlockPos setPos = new BlockPos(pos).add(j, 0, k);
-                    if (world.getBlockState(setPos).getBlock() == Blocks.AIR) world.setBlockState(setPos, Blocks.DIRT.getDefaultState());
+                    Block block = world.getBlockState(setPos).getBlock();
+                    if (block == Blocks.AIR)
+                        world.setBlockState(setPos, Blocks.DIRT.getDefaultState());
+                    else if (block instanceof FluidDrainable)
+                        if ((((FluidDrainable) block).tryDrainFluid(world, setPos, world.getBlockState(setPos))).isEmpty())
+                            world.setBlockState(setPos, Blocks.DIRT.getDefaultState());
+                        else
+                            world.setBlockState(setPos, block.getDefaultState());
                 }
             }
         }

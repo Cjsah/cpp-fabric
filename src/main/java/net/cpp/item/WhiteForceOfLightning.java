@@ -41,7 +41,6 @@ public class WhiteForceOfLightning extends Item {
                         if (world.getBlockState(tmpPos).getBlock() == blockState.getBlock()) {
                             if (world.getBlockState(tmpPos).getBlock() instanceof FluidDrainable) {
                                 ItemStack itemStack2 = ((FluidDrainable) blockState.getBlock()).tryDrainFluid(world, tmpPos, world.getBlockState(tmpPos));
-                                System.out.println(itemStack2);
                                 if (!itemStack2.isEmpty()) {
                                     world.setBlockState(tmpPos, block.getDefaultState());
                                     value++;

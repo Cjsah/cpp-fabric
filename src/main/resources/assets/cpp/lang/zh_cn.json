@@ -375,8 +375,6 @@
 
   "container.cpp.crafting_machine": "合成器",
 
-
-
   "effect.cpp.chain": "连环",
 
   "chat.cpp.title": "[Craftingpp]",
@@ -385,6 +383,11 @@
 
   "tooltip.cpp.gfow.water": "水 %s",
   "tooltip.cpp.gfow.lava": "岩浆 %s",
+  "tooltip.cpp.cfom.direction": "方向：%s",
+  "tooltip.cpp.cfom.horizontal": "横向",
+  "tooltip.cpp.cfom.vertical": "纵向",
+  "tooltip.cpp.cfom.level": "等级：%s",
+  "tooltip.cpp.cfom.xp": "经验：%s",
 
   "word.infinite": "∞",
   

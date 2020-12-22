@@ -1,9 +1,7 @@
 {
   "variants": {
-    "": [
-      {
-        "model": "cpp:block/rare_earth_glass"
-      }
-    ]
+    "": {
+      "model": "cpp:block/rare_earth_glass"
+    }
   }
 }

@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
@@ -35,8 +36,6 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
-
-import static net.cpp.api.CppChat.say;
 
 public class GreenForceOfWater extends Item {
 
@@ -86,13 +85,7 @@ public class GreenForceOfWater extends Item {
                             FluidDrainable fluidDrainable = (FluidDrainable) blockState.getBlock();
                             ItemStack itemStack2 = fluidDrainable.tryDrainFluid(world, blockPos, blockState);
                             if (!itemStack2.isEmpty()) {
-//                                fluidDrainable.getDrainSound().ifPresent((sound) -> {
-//                                    System.out.println(sound.getId());
-//                                    user.playSound(sound, 1.0F, 1.0F);
-//                                });
-//                                user.playSound(SoundEvents.BLOCK_POINTED_DRIPSTONE_DRIP_WATER, 1.0F, 1.0F);
-//                                world.playSound(user, new BlockPos(user.getPos()), SoundEvents.ITEM_BUCKET_FILL_LAVA, SoundCategory.BLOCKS, 1.0F, 1.0F);
-
+                                fluidDrainable.getDrainSound().ifPresent((sound) -> user.playSound(sound, 1.0F, 1.0F));
                                 world.emitGameEvent(user, GameEvent.FLUID_PICKUP, blockPos);
                                 Fluid fluid = itemStack2.getItem() == Items.WATER_BUCKET ? Fluids.WATER : Fluids.LAVA;
                                 Criteria.FILLED_BUCKET.trigger((ServerPlayerEntity) user, itemStack2);
@@ -103,17 +96,15 @@ public class GreenForceOfWater extends Item {
                         }
                     }
                 }
-                return TypedActionResult.fail(itemStack);
+                return TypedActionResult.pass(itemStack);
 
             // 切换模式
             } else if (hitResult.getType() == HitResult.Type.MISS) {
-                if (Objects.equals(tag.getString("mode"), "water")) {
-                    tag.putString("mode", "lava");
-                    say(user, new TranslatableText("chat.cpp.gfow.change", new TranslatableText("block.minecraft.lava").formatted(Formatting.RED)));
-                } else {
-                    tag.putString("mode", "water");
-                    say(user, new TranslatableText("chat.cpp.gfow.change", new TranslatableText("block.minecraft.water").formatted(Formatting.GREEN)));
-                }
+                boolean waterMode = Objects.equals(tag.getString("mode"), "water");
+                tag.putString("mode", waterMode ? "lava" : "water");
+                ((ServerPlayerEntity)user).networkHandler.sendPacket(new TitleS2CPacket(TitleS2CPacket.Action.ACTIONBAR,
+                        new TranslatableText("chat.cpp.gfow.change", new TranslatableText("block.minecraft." + tag.getString("mode")).formatted(waterMode ? Formatting.RED : Formatting.GREEN)).formatted(Formatting.GOLD)
+                ));
                 itemStack.setTag(tag);
                 return TypedActionResult.success(itemStack);
 
@@ -122,14 +113,14 @@ public class GreenForceOfWater extends Item {
                 Fluid fluid = Objects.equals(tag.getString("mode"), "water") ? Fluids.WATER : Fluids.LAVA;
                 BlockPos blockPos3 = blockState.getBlock() instanceof FluidFillable && fluid == Fluids.WATER ? blockPos : blockPos.offset(hitResult.getSide());
 
-                if ((fluid == Fluids.LAVA && tag.getInt("lava") > 0) || fluid == Fluids.WATER) {
+                if ((fluid == Fluids.LAVA && (user.isCreative() || tag.getInt("lava") > 0)) || fluid == Fluids.WATER) {
                     if (blockState.getBlock() == Blocks.CAULDRON) {
                         world.setBlockState(blockPos, fluid == Fluids.WATER ? Blocks.WATER_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, 3) : Blocks.LAVA_CAULDRON.getDefaultState());
-                        user.incrementStat(Stats.USED.getOrCreateStat(this));
-                        if (fluid == Fluids.LAVA) {
+                        if (fluid == Fluids.LAVA && !user.isCreative()) {
                             tag.putInt("lava", tag.getInt("lava") - 1);
                             itemStack.setTag(tag);
                         }
+                        user.incrementStat(Stats.USED.getOrCreateStat(this));
                         return TypedActionResult.success(itemStack);
                     }else if (blockState.getBlock() == Blocks.WATER_CAULDRON && !((LeveledCauldronBlock)blockState.getBlock()).isFull(blockState)){
                         user.incrementStat(Stats.USED.getOrCreateStat(this));
@@ -139,7 +130,7 @@ public class GreenForceOfWater extends Item {
                         if (user instanceof ServerPlayerEntity) {
                             Criteria.PLACED_BLOCK.trigger((ServerPlayerEntity) user, blockPos3, itemStack);
                         }
-                        if (fluid == Fluids.LAVA) {
+                        if (fluid == Fluids.LAVA && !user.isCreative()) {
                             tag.putInt("lava", tag.getInt("lava") - 1);
                             itemStack.setTag(tag);
                         }
@@ -148,14 +139,6 @@ public class GreenForceOfWater extends Item {
                     }
                 }
             }
-
-//
-////                    if (fluid == Fluids.WATER && targetBlock == Blocks.CAULDRON) {
-////                        world.setBlockState(blockPos, world.getBlockState(blockPos).with(Properties.LEVEL_3, MathHelper.clamp(3, 0, 3)), 2);
-////                        world.updateComparators(blockPos, targetBlock);
-////                        return TypedActionResult.success(itemStack);
-////                    }else if (this.placeFluid(user, world, targetBlockPos, hitResult, fluid)) {
-//                    if (this.placeFluid(user, world, targetBlockPos, hitResult, fluid)) {
         }
         return TypedActionResult.pass(itemStack);
     }
