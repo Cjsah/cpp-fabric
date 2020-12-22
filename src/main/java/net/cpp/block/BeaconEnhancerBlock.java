@@ -7,16 +7,19 @@ import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppStats;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 public class BeaconEnhancerBlock extends AMachineBlock {
 	public BeaconEnhancerBlock() {
-
+		super(Settings.of(Material.WOOD).blockVision((state, world, pos) -> false));
 	}
 
 	/*
@@ -48,5 +51,9 @@ public class BeaconEnhancerBlock extends AMachineBlock {
 	@Nullable
 	protected static <T extends BlockEntity> BlockEntityTicker<T> checkType(World world, BlockEntityType<T> givenType, BlockEntityType<? extends BeaconEnhancerBlockEntity> expectedType) {
 		return world.isClient ? null : checkType(givenType, expectedType, BeaconEnhancerBlockEntity::tick);
+	}
+	@Override
+	public int getOpacity(BlockState state, BlockView world, BlockPos pos) {
+		return 14;
 	}
 }
