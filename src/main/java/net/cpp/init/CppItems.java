@@ -15,6 +15,7 @@ import java.util.Set;
 
 import net.cpp.api.CppFoodOrPotion;
 import net.cpp.item.*;
+import net.cpp.item.Character;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.BlockItem;
@@ -705,7 +706,7 @@ public final class CppItems {
 		CLASSICAL_PAINTING = registerItem("classical_painting", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 		SPRING_FESTIVAL_DECORATIONS = registerItem("spring_festival_decorations", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 
-		CHARACTER = registerItem("character", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
+		CHARACTER = registerItem("character", new Character(new Item.Settings().group(CPP_GROUP_DECORATE)));
 
 		CHINA_FLAG = registerItem("china_flag", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 		USA_FLAG = registerItem("usa_flag", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
