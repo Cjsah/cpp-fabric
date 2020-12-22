@@ -393,6 +393,7 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 
 	}
 
+	public abstract PropertyDelegate getPropertyDelegate();
 	protected class OutputDirectionPropertyDelegate implements PropertyDelegate {
 		@Override
 		public int size() {
@@ -413,4 +414,5 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 				return -1;
 		}
 	}
+	
 }

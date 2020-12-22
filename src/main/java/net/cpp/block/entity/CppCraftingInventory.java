@@ -46,4 +46,5 @@ public class CppCraftingInventory extends CraftingInventory {
 		super.setStack(slot, stack);
 		getHandler().onContentChanged(this);
 	}
+	
 }

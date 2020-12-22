@@ -43,11 +43,12 @@ import net.minecraft.world.World;
 public class GoldenAnvilBlockEntity extends AExpMachineBlockEntity {
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1 };
 	public static final Set<Item> RIGHT_SLOT_INSERTABLE = ImmutableSet.of(CppItems.WIFI_PLUGIN, Items.BOOK, CppItems.MOON_SHARD, Items.ENCHANTED_GOLDEN_APPLE, CppItems.ANCIENT_SCROLL);
-	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4, ItemStack.EMPTY);
+//	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4, ItemStack.EMPTY);
 	public final PropertyDelegate propertyDelegate = new ExpPropertyDelegate();
 
 	public GoldenAnvilBlockEntity() {
 		this(BlockPos.ORIGIN, CppBlocks.GOLDEN_ANVIL.getDefaultState());
+		setCapacity(4);
 	}
 
 	public GoldenAnvilBlockEntity(BlockPos blockPos, BlockState blockState) {

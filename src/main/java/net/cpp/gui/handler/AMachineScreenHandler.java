@@ -27,7 +27,6 @@ public class AMachineScreenHandler extends ScreenHandler {
 		for (int m = 0; m < 9; ++m) {
 			this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 142));
 		}
-		addProperties(blockEntity.getPropertyDelegate());
 	}
 
 	@Override

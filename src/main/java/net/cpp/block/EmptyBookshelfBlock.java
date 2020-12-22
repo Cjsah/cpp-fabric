@@ -19,7 +19,7 @@ public class EmptyBookshelfBlock extends AMachineBlock {
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new EmptyBookshelfBlockEntity(pos, state);
 	}
-
+ 
 	@Override
 	public Identifier getStatIdentifier() {
 		return CppStats.INTERACT_WITH_CHEST_DROPPER;

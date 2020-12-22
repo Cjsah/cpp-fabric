@@ -11,7 +11,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
-public abstract class AOutputMachineScreen<T extends AOutputMachineScreenHandler> extends HandledScreen<T> {
+public abstract class AOutputMachineScreen<T extends AOutputMachineScreenHandler> extends AMachineScreen<T> {
 	public final OutputDirectionButton oButton = new OutputDirectionButton(buttonWidget -> {
 		client.interactionManager.clickButton(this.handler.syncId, OutputDirectionButton.SYNC_ID);
 	}, handler.blockEntity);
@@ -31,14 +31,6 @@ public abstract class AOutputMachineScreen<T extends AOutputMachineScreenHandler
 		super.init();
 		addButton(oButton);
 	}
-	@Override
-	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.client.getTextureManager().bindTexture(getBackground());
-		int i = this.x;
-		int j = (this.height - this.backgroundHeight) / 2;
-		this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
-	}
 
 	@Override
 	protected void drawMouseoverTooltip(MatrixStack matrices, int x, int y) {
@@ -46,5 +38,4 @@ public abstract class AOutputMachineScreen<T extends AOutputMachineScreenHandler
 			renderTooltip(matrices, oButton.getTooltip(), x, y);
 		super.drawMouseoverTooltip(matrices, x, y);
 	}
-	protected abstract Identifier getBackground();
 }
