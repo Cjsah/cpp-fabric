@@ -1,9 +1,0 @@
-.\gradlew cleanEclipse
-.\gradlew cleanEclipseRuns
-.\gradlew cleanLoom
-.\gradlew cleanLoomBinaries
-.\gradlew cleanLoomMappings
-.\gradlew downloadAssets
-.\gradlew genSources
-.\gradlew eclipse
-.\gradlew genEclipseRuns

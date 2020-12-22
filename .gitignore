@@ -38,9 +38,9 @@ mylib/
 
 /run.bat
 /ps.bat
+/update.bat
 /copy resources to bin.bat
 
 # cpp
 
 cpp_resourcepack/
-update.bat
