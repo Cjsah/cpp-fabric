@@ -6,7 +6,7 @@ import java.util.List;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.cpp.api.CodingTool;
-import net.cpp.block.entity.AMachineBlockEntity;
+import net.cpp.block.entity.AOutputMachineBlockEntity;
 import net.cpp.block.entity.IOutputDiractional;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -25,9 +25,9 @@ public class OutputDirectionButton extends TexturedButtonWidget {
 			new TranslatableText("gui.output_to_down"), new TranslatableText("gui.output_to_south"),
 			new TranslatableText("gui.output_to_west") };
 	private final List<Text> tooltipTexts = Arrays.asList(DIRECTION_TEXT[0], AMachineScreen.CLICK_TO_SHIFT);
-	private final AMachineBlockEntity blockEntity;
+	private final AOutputMachineBlockEntity blockEntity;
 
-	public OutputDirectionButton(ButtonWidget.PressAction pressAction, AMachineBlockEntity blockEntity) {
+	public OutputDirectionButton(ButtonWidget.PressAction pressAction, AOutputMachineBlockEntity blockEntity) {
 		super(0, 0, 16, 16, 0, 0, 0, TEXTURE, 16, 16, pressAction, (button, matrices, mouseX, mouseY) -> {
 			
 		}, LiteralText.EMPTY);

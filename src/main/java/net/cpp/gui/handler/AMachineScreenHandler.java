@@ -1,6 +1,6 @@
 package net.cpp.gui.handler;
 
-import net.cpp.block.entity.AMachineBlockEntity;
+import net.cpp.block.entity.AOutputMachineBlockEntity;
 import net.cpp.gui.screen.OutputDirectionButton;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -11,9 +11,9 @@ import net.minecraft.screen.slot.Slot;
 
 public abstract class AMachineScreenHandler extends ScreenHandler {
 	protected PlayerInventory playerInventory;
-	public final AMachineBlockEntity blockEntity;
+	public final AOutputMachineBlockEntity blockEntity;
 
-	public AMachineScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, AMachineBlockEntity blockEntity) {
+	public AMachineScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, AOutputMachineBlockEntity blockEntity) {
 		super(type, syncId);
 		this.playerInventory = playerInventory;
 		this.blockEntity = blockEntity;

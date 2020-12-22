@@ -16,13 +16,12 @@ import net.minecraft.world.World;
 public class ItemProcessorBlock extends AOutputMachineBlock {
 
 	@Override
-	public BlockEntity createBlockEntity(BlockPos blockPos, BlockState blockState) {
-		return new ItemProcessorBlockEntity(blockPos, blockState);
-	}
-
-	@Override
 	public Identifier getStatIdentifier() {
 		return CppStats.INTERACT_WITH_ITEM_PROCESSOR;
+	}
+	@Override
+	public BlockEntity createBlockEntity(BlockPos blockPos, BlockState blockState) {
+		return new ItemProcessorBlockEntity(blockPos, blockState);
 	}
 
 	@Override

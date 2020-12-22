@@ -9,7 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public abstract class AExpMachineBlockEntity extends AMachineBlockEntity {
+public abstract class AExpMachineBlockEntity extends AOutputMachineBlockEntity {
 	public static final int XP_CAPACITY = 1000;
 	protected int workTime;
 	protected int workTimeTotal;

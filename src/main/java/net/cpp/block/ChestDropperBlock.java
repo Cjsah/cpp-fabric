@@ -19,32 +19,21 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ChestDropperBlock extends BarrelBlock {
+public class ChestDropperBlock extends AMachineBlock {
 
-	public ChestDropperBlock() {
-		super(Settings.of(Material.WOOD).strength(2.5F).sounds(BlockSoundGroup.WOOD));
-	}
 	@Nullable
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new ChestDropperBlockEntity(pos, state);
 	}
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (world.isClient) {
-			return ActionResult.SUCCESS;
-		} else {
-			BlockEntity blockEntity = world.getBlockEntity(pos);
-			if (blockEntity instanceof ChestDropperBlockEntity) {
-				player.openHandledScreen((ChestDropperBlockEntity) blockEntity);
-				player.incrementStat(CppStats.INTERACT_WITH_CHEST_DROPPER);
-				PiglinBrain.onGuardedBlockInteracted(player, true);
-			}
 
-			return ActionResult.CONSUME;
-		}
+	@Override
+	public Identifier getStatIdentifier() {
+		return CppStats.INTERACT_WITH_CHEST_DROPPER;
 	}
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {

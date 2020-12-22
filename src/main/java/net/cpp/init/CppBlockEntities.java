@@ -5,6 +5,7 @@ import net.cpp.block.entity.BeaconEnhancerBlockEntity;
 import net.cpp.block.entity.ChestDropperBlockEntity;
 import net.cpp.block.entity.CraftingMachineBlockEntity;
 import net.cpp.block.entity.DustbinBlockEntity;
+import net.cpp.block.entity.EmptyBookshelfBlockEntity;
 import net.cpp.block.entity.GoldenAnvilBlockEntity;
 import net.cpp.block.entity.ItemProcessorBlockEntity;
 import net.cpp.block.entity.MobProjectorBlockEntity;
@@ -25,6 +26,7 @@ public final class CppBlockEntities {
 	public static final BlockEntityType<GoldenAnvilBlockEntity> GOLDEN_ANVIL = registerBlockEntityType(GoldenAnvilBlockEntity::new, CppBlocks.GOLDEN_ANVIL);
 	public static final BlockEntityType<DustbinBlockEntity> DUSTBIN = registerBlockEntityType(DustbinBlockEntity::new, CppBlocks.DUSTBIN);
 	public static final BlockEntityType<ChestDropperBlockEntity> CHEST_DROPPER = registerBlockEntityType(ChestDropperBlockEntity::new, CppBlocks.CHEST_DROPPER);
+	public static final BlockEntityType<EmptyBookshelfBlockEntity> EMPTY_BOOKSHELF = registerBlockEntityType(EmptyBookshelfBlockEntity::new, CppBlocks.EMPTY_BOOKSHELF);
 
 	public static void register() {
 	}

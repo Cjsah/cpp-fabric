@@ -54,7 +54,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
-public class ItemProcessorBlockEntity extends AMachineBlockEntity {
+public class ItemProcessorBlockEntity extends AOutputMachineBlockEntity {
 	public static final Set<Item> LEATHERS = new HashSet<>(Arrays.asList(LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS));
 	public static final Map<Item, Map<Item, ItemStackAndCount>> RECIPES = new HashMap<>();
 	public static final Set<BlockItem> ORES;

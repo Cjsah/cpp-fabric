@@ -2,7 +2,7 @@ package net.cpp.block;
 
 import javax.annotation.Nullable;
 
-import net.cpp.block.entity.AMachineBlockEntity;
+import net.cpp.block.entity.AOutputMachineBlockEntity;
 import net.cpp.block.entity.ItemProcessorBlockEntity;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockRenderType;

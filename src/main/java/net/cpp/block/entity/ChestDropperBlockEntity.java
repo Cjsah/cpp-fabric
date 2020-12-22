@@ -11,10 +11,11 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ChestDropperBlockEntity extends ABarrelLikeBlockEntity {
+public class ChestDropperBlockEntity extends AMachineBlockEntity {
 
 	public ChestDropperBlockEntity(BlockPos pos, BlockState state) {
 		super(CppBlockEntities.CHEST_DROPPER, pos, state);
+		setCapacity(27);
 	}
 
 	public ItemStack getFirstStack() {
@@ -32,7 +33,7 @@ public class ChestDropperBlockEntity extends ABarrelLikeBlockEntity {
 			ItemStack stack = blockEntity.getFirstStack(), stack2 = stack.copy();
 			stack2.setCount(1);
 			stack.decrement(1);
-			ItemEntity itemEntity = new ItemEntity(world, pos.getX() + .5, pos.getY()-EntityType.ITEM.getHeight(), pos.getZ() + .5, stack2);
+			ItemEntity itemEntity = new ItemEntity(world, pos.getX() + .5, pos.getY() - EntityType.ITEM.getHeight(), pos.getZ() + .5, stack2);
 			itemEntity.setVelocity(0, 0, 0);
 			world.spawnEntity(itemEntity);
 		}
