@@ -1,12 +1,14 @@
 package net.cpp.block.entity;
 
-import static net.cpp.init.CppItems.MENDING_PLUGIN;
+import static net.cpp.init.CppItems.*;
 import static net.cpp.init.CppItems.MOON_SHARD;
 import static net.cpp.init.CppItems.WIFI_PLUGIN;
-import static net.minecraft.item.Items.BOOK;
+import static net.minecraft.item.Items.*;
 import static net.minecraft.item.Items.ENCHANTED_BOOK;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
@@ -31,9 +33,11 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 public class GoldenAnvilBlockEntity extends AExpMachineBlockEntity {
@@ -85,35 +89,56 @@ public class GoldenAnvilBlockEntity extends AExpMachineBlockEntity {
 						}
 					}
 				} catch (CommandSyntaxException e) {
-					// TODO 自动生成的 catch 块
 					e.printStackTrace();
 				}
 			}
 			if (empty) {
-				if (leftStack.getItem() == MENDING_PLUGIN && rightStack.isDamaged()) {
+				if (leftStack.getItem() == MENDING_PLUGIN && rightStack.isDamageable()) {
 					tryMend(rightStack, blockEntity);
-					blockEntity.transferResult(2);
+					if (!rightStack.isDamaged())
+						blockEntity.transferResult(2);
 				} else if (rightStack.isOf(BOOK) && blockEntity.expStorage >= 128 && leftStack.hasEnchantments()) {
 					ItemStack enchentedBook = ENCHANTED_BOOK.getDefaultStack();
 					EnchantmentHelper.set(EnchantmentHelper.get(leftStack), enchentedBook);
 					blockEntity.setStack(3, enchentedBook);
-					leftStack.removeSubTag("StoredEnchantments");
 					leftStack.removeSubTag("Enchantments");
 					rightStack.decrement(1);
 					blockEntity.expStorage -= 128;
 					blockEntity.output(1);
-				} else if (rightStack.isOf(MOON_SHARD) && blockEntity.expStorage >= 256 && leftStack.hasEnchantments()) {
+				} else if (rightStack.isOf(MOON_SHARD) && blockEntity.expStorage >= 256 && leftStack.getRepairCost() > 0) {
+					leftStack.setRepairCost(0);
+					rightStack.decrement(1);
+					blockEntity.expStorage -= 256;
+					blockEntity.transferResult(1);
+				} else if (rightStack.isOf(ENCHANTED_GOLDEN_APPLE) && blockEntity.expStorage >= 256 && leftStack.isEnchantable()) {
 					boolean hasCursed = false;
-					for (Tag tag: leftStack.getEnchantments()) {
+					Iterator<Tag> iterator = leftStack.getEnchantments().iterator();
+					while (iterator.hasNext()) {
+						Tag tag = iterator.next();
 						if (tag instanceof CompoundTag) {
-							CompoundTag compoundTag = (CompoundTag)tag;
+							CompoundTag compoundTag = (CompoundTag) tag;
 							String name = compoundTag.getString("id");
-							Enchantment enchantment;
+							Enchantment enchantment = Registry.ENCHANTMENT.get(new Identifier(name));
+							if (enchantment.isCursed()) {
+								hasCursed = true;
+								iterator.remove();
+							}
 						}
 					}
 					if (hasCursed) {
 						rightStack.decrement(1);
 						blockEntity.expStorage -= 256;
+					}
+					blockEntity.transferResult(1);
+				} else if (rightStack.isOf(ANCIENT_SCROLL) && blockEntity.expStorage >= 512 && leftStack.hasEnchantments()) {
+					Enchantment enchantment = Registry.ENCHANTMENT.get(new Identifier(rightStack.getOrCreateTag().getString("enchantment")));
+					if (EnchantmentHelper.getLevel(enchantment, leftStack) == enchantment.getMaxLevel()) {
+						Map<Enchantment, Integer> map = EnchantmentHelper.get(leftStack);
+						map.compute(enchantment, (e, o)->o+1);
+						EnchantmentHelper.set(map, leftStack);
+						rightStack.decrement(1);
+						blockEntity.expStorage -= 512;
+						blockEntity.transferResult(1);
 					}
 				}
 			}

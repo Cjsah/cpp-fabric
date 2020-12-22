@@ -1,5 +1,7 @@
 package net.cpp.gui.handler;
 
+import static net.cpp.init.CppItems.*;
+import static net.minecraft.item.Items.*;
 import net.cpp.api.CodingTool;
 import net.cpp.block.entity.AExpMachineBlockEntity;
 import net.cpp.block.entity.GoldenAnvilBlockEntity;
@@ -26,7 +28,7 @@ public class GoldenAnvilScreenHandler extends AExpMachineScreenHandler {
 		this.blockEntity = blockEntity;
 
 		addSlot(new Slot(blockEntity, 1, CodingTool.x(1), CodingTool.y(0)));
-		addSlot(new ResultSlot(blockEntity, 2, CodingTool.x(3), CodingTool.y(0)));
+		addSlot(new Slot(blockEntity, 2, CodingTool.x(3), CodingTool.y(0)));
 		addSlot(new ResultSlot(blockEntity, 3, CodingTool.x(2), CodingTool.y(2)));
 	}
 
@@ -35,14 +37,19 @@ public class GoldenAnvilScreenHandler extends AExpMachineScreenHandler {
 		Slot slot = (Slot) this.slots.get(index);
 		if (slot != null && slot.hasStack()) {
 			ItemStack itemStack = slot.getStack();
-			if (index >= 36 && index < 36 + blockEntity.getInvStackList().size()) {
+			if (index >= 36) {
 				this.insertItem(itemStack, 0, 36, true);
 			} else if (index < 36) {
-				if (itemStack.getItem() == Items.EXPERIENCE_BOTTLE)
-					insertItem(itemStack, 36, 37, false);
-				else {
-					
-				}
+				if (itemStack.isOf(EXPERIENCE_BOTTLE))
+					insertItem(itemStack, 36);
+				else if (itemStack.isOf(MENDING_PLUGIN))
+					insertItem(itemStack, 37);
+				else if (itemStack.isOf(WIFI_PLUGIN) || itemStack.isOf(BOOK) || itemStack.isOf(ENCHANTED_GOLDEN_APPLE) || itemStack.isOf(MOON_SHARD) || itemStack.isOf(ANCIENT_SCROLL))
+					insertItem(itemStack, 38);
+				else if (itemStack.isDamaged())
+					insertItem(itemStack, 38);
+				else if (itemStack.hasEnchantments())
+					insertItem(itemStack, 37);
 			}
 		}
 		return ItemStack.EMPTY;

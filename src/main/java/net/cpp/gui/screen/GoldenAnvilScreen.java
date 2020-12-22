@@ -35,7 +35,7 @@ public class GoldenAnvilScreen extends AExpMachineScreen<GoldenAnvilScreenHandle
 	@Override
 	protected void init() {
 		super.init();
-		oButton.setPos(x + x(3), y + y(2));
+		oButton.setPos(x + x(5), y + y(2));
 	}
 
 	@Override

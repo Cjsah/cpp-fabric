@@ -56,4 +56,8 @@ public abstract class AMachineScreenHandler extends ScreenHandler {
 		}
 		return ItemStack.EMPTY;
 	}
+
+	protected boolean insertItem(ItemStack itemStack, int index) {
+		return insertItem(itemStack, index, index + 1, false);
+	}
 }

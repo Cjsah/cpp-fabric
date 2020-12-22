@@ -36,10 +36,8 @@ public class ItemProcessorScreenHandler extends AMachineScreenHandler {
 		Slot slot = (Slot) this.slots.get(index);
 		if (slot != null && slot.hasStack()) {
 			ItemStack itemStack2 = slot.getStack();
-//			itemStack = itemStack2.copy();
-			if (index >= 36 && index < blockEntity.size()) {
+			if (index >= 36 && index < 36+ blockEntity.size()) {
 				this.insertItem(itemStack2, 0, 36, true);
-//				slot.onStackChanged(itemStack2, itemStack);
 			} else {
 				if (!(ItemProcessorBlockEntity.RECIPES.containsKey(itemStack2.getItem()) && insertItem(itemStack2, 36, 37, false) || insertItem(itemStack2, 37, 38, false))) {
 					super.transferSlot(player, index);

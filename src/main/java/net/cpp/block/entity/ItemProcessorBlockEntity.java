@@ -145,7 +145,7 @@ public class ItemProcessorBlockEntity extends AMachineBlockEntity {
 			} else if (tool instanceof MiningToolItem && FabricToolTags.PICKAXES.contains(tool) && ORES.contains(blockEntity.getStack(1).getItem())) {
 //镐可以挖掘矿石，受附魔影响
 				BlockState blockState = ((BlockItem) blockEntity.getStack(1).getItem()).getBlock().getDefaultState();
-				if (tool.isEffectiveOn(blockState)) {
+				if (tool.isSuitableFor(blockState)) {
 					List<ItemStack> list = blockState.getDroppedStacks(new LootContext.Builder((ServerWorld) world).parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(pos)).parameter(LootContextParameters.TOOL, blockEntity.getStack(0)));
 					boolean able = true;
 					if (list.size() > 2)
