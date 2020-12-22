@@ -702,8 +702,8 @@ public final class CppItems {
 		BLUE_JEANS = registerItem("blue_jeans", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		SNOW_BOOTS = registerItem("snow_boots", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 
-		CLASSICAL_PAINTING = registerItem("classical_painting", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-		SPRING_FESTIVAL_DECORATIONS = registerItem("spring_festival_decorations", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
+		CLASSICAL_PAINTING = registerItem("classical_painting", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
+		SPRING_FESTIVAL_DECORATIONS = registerItem("spring_festival_decorations", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 
 		CHARACTER = registerItem("character", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 
