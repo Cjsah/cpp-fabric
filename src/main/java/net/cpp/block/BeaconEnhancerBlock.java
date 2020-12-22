@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class BeaconEnhancerBlock extends AMachineBlock {
+public class BeaconEnhancerBlock extends AOutputMachineBlock {
 	public BeaconEnhancerBlock() {
 		super(Settings.of(Material.WOOD).blockVision((state, world, pos) -> false));
 	}

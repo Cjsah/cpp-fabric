@@ -13,7 +13,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class CraftingMachineBlock extends AMachineBlock {
+public class CraftingMachineBlock extends AOutputMachineBlock {
 	/*
 	 * 以下是AMachineBlock的方法
 	 */

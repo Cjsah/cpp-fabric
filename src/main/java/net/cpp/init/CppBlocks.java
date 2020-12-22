@@ -4,6 +4,7 @@ import static net.cpp.Craftingpp.CPP_GROUP_MACHINE;
 
 import net.cpp.block.AllInOneMachineBlock;
 import net.cpp.block.BeaconEnhancerBlock;
+import net.cpp.block.ChestDropperBlock;
 import net.cpp.block.CraftingMachineBlock;
 import net.cpp.block.DustbinBlock;
 import net.cpp.block.GoldenAnvilBlock;
@@ -30,7 +31,7 @@ public final class CppBlocks {
 	public static final Block BEACON_ENHANCER = Registry.register(Registry.BLOCK, new Identifier("cpp:beacon_enhancer"), new BeaconEnhancerBlock());
 	public static final Block GOLDEN_ANVIL = Registry.register(Registry.BLOCK, new Identifier("cpp:golden_anvil"), new GoldenAnvilBlock());
 	public static final Block DUSTBIN = Registry.register(Registry.BLOCK, new Identifier("cpp:dustbin"), new DustbinBlock());
-	public static final Block CHEST_DROPPER = Registry.register(Registry.BLOCK, new Identifier("cpp:chest_dropper"), new AllInOneMachineBlock());
+	public static final Block CHEST_DROPPER = Registry.register(Registry.BLOCK, new Identifier("cpp:chest_dropper"), new ChestDropperBlock());
 	public static final Block EMPTY_BOOKSHELF = Registry.register(Registry.BLOCK, new Identifier("cpp:empty_bookshelf"), new AllInOneMachineBlock());
 	public static final Block RARE_EARTH_GLASS = Registry.register(Registry.BLOCK, new Identifier("cpp:rare_earth_glass"), new GlassBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5.0F, 6.0F).sounds(BlockSoundGroup.METAL).nonOpaque()));
 	public static final Block REINFORCED_GLASS = Registry.register(Registry.BLOCK, new Identifier("cpp:reinforced_glass"), new GlassBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(50.0F, 3600000.0F).sounds(BlockSoundGroup.METAL).nonOpaque()));

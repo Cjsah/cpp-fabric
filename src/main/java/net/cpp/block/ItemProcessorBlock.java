@@ -13,7 +13,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemProcessorBlock extends AMachineBlock {
+public class ItemProcessorBlock extends AOutputMachineBlock {
 
 	@Override
 	public BlockEntity createBlockEntity(BlockPos blockPos, BlockState blockState) {

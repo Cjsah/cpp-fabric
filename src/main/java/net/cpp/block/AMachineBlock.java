@@ -1,17 +1,10 @@
 package net.cpp.block;
 
-import javax.annotation.Nullable;
-
-import net.cpp.block.entity.AMachineBlockEntity;
-import net.cpp.block.entity.ItemProcessorBlockEntity;
-import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,17 +19,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-/**
- * 机器模板，子类只需要实现两个方法{@link BlockEntityProvider#createBlockEntity(BlockView)}和{@link #getStatIdentifier()}
- * 
- * @author Ph-苯
- *
- */
-public abstract class AMachineBlock extends BlockWithEntity implements BlockEntityProvider {
-
+public abstract class AMachineBlock extends BlockWithEntity {
 	public AMachineBlock() {
 		this(Settings.of(Material.WOOD).strength(2.5F).sounds(BlockSoundGroup.WOOD));
 	}
@@ -44,7 +29,6 @@ public abstract class AMachineBlock extends BlockWithEntity implements BlockEnti
 	public AMachineBlock(Settings settings) {
 		super(settings);
 	}
-
 	/*
 	 * 以下是BlockWithEntity的方法
 	 */
@@ -97,10 +81,7 @@ public abstract class AMachineBlock extends BlockWithEntity implements BlockEnti
 	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
 		return ScreenHandler.calculateComparatorOutput(world.getBlockEntity(pos));
 	}
-//	@Nullable
-//	protected static <T extends BlockEntity> BlockEntityTicker<T> checkType(World world, BlockEntityType<T> givenType, BlockEntityType<? extends AMachineBlockEntity> expectedType) {
-//		return world.isClient ? null : checkType(givenType, expectedType, ItemProcessorBlockEntity::tick);
-//	}
+
 	/*
 	 * 以下是自定义的方法
 	 */
