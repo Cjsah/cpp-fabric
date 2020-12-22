@@ -5,7 +5,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-public class CraftingMachineScreen extends AMachineScreen<CraftingMachineScreenHandler> {
+public class CraftingMachineScreen extends AOutputMachineScreen<CraftingMachineScreenHandler> {
 	public static final Identifier BACKGROUND = new Identifier("cpp:textures/gui/crafting_machine.png");
 
 	public CraftingMachineScreen(CraftingMachineScreenHandler handler, PlayerInventory inventory, Text title) {

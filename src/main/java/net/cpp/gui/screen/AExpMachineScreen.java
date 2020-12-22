@@ -6,7 +6,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
-public abstract class AExpMachineScreen<T extends AExpMachineScreenHandler> extends AMachineScreen<T> {
+public abstract class AExpMachineScreen<T extends AExpMachineScreenHandler> extends AOutputMachineScreen<T> {
 	public final ExpTankButton expTankButton = new ExpTankButton(buttonWidget -> {
 		client.interactionManager.clickButton(handler.syncId, ExpTankButton.SYNC_ID);
 	}, handler.blockEntity);

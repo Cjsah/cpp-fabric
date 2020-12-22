@@ -1,7 +1,5 @@
 package net.cpp.gui.handler;
 
-import net.cpp.block.AMachineBlock;
-import net.cpp.block.entity.AMachineBlockEntity;
 import net.cpp.block.entity.AOutputMachineBlockEntity;
 import net.cpp.gui.screen.OutputDirectionButton;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,11 +9,11 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 
-public class AMachineScreenHandler extends ScreenHandler {
+public abstract class AOutputMachineScreenHandler extends ScreenHandler {
 	protected PlayerInventory playerInventory;
-	public final AMachineBlockEntity blockEntity;
+	public final AOutputMachineBlockEntity blockEntity;
 
-	public AMachineScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, AMachineBlockEntity blockEntity) {
+	public AOutputMachineScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, AOutputMachineBlockEntity blockEntity) {
 		super(type, syncId);
 		this.playerInventory = playerInventory;
 		this.blockEntity = blockEntity;
@@ -32,7 +30,11 @@ public class AMachineScreenHandler extends ScreenHandler {
 
 	@Override
 	public boolean onButtonClick(PlayerEntity player, int id) {
-		return super.onButtonClick(player, id);
+		if (blockEntity != null && id == OutputDirectionButton.SYNC_ID) {
+			blockEntity.shiftOutputDir();
+			return true;
+		}
+		return false;
 	}
 
 	@Override

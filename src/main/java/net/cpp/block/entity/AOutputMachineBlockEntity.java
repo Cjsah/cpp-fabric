@@ -31,7 +31,7 @@ import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public abstract class AOutputMachineBlockEntity extends LootableContainerBlockEntity implements NamedScreenHandlerFactory, IOutputDiractional, SidedInventory {
+public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity implements NamedScreenHandlerFactory, IOutputDiractional, SidedInventory {
 	protected Direction outputDir = Direction.EAST;
 	protected ServerCommandSource serverCommandSource;
 
@@ -86,7 +86,6 @@ public abstract class AOutputMachineBlockEntity extends LootableContainerBlockEn
 	/*
 	 * 以下是自定义方法
 	 */
-	public abstract PropertyDelegate getPropertyDelegate();
 
 	/**
 	 * 改编自漏斗的代码，获取输出方向的物品栏

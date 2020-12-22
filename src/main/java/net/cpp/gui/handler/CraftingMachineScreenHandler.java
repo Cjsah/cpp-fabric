@@ -21,7 +21,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
  * @author Ph-苯
  *
  */
-public class CraftingMachineScreenHandler extends AMachineScreenHandler {
+public class CraftingMachineScreenHandler extends AOutputMachineScreenHandler {
 //	public CraftingMachineScreen screen;
 //	private ScreenHandlerContext context;
 	private PlayerEntity player;

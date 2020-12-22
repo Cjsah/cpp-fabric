@@ -9,7 +9,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
 
-public class ItemProcessorScreenHandler extends AMachineScreenHandler {
+public class ItemProcessorScreenHandler extends AOutputMachineScreenHandler {
 	public final ItemProcessorBlockEntity blockEntity;
 
 	public ItemProcessorScreenHandler(int syncId, PlayerInventory playerInventory) {

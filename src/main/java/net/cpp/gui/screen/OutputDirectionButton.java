@@ -24,7 +24,7 @@ public class OutputDirectionButton extends TexturedButtonWidget {
 			new TranslatableText("gui.output_to_west"), new TranslatableText("gui.output_to_up"),
 			new TranslatableText("gui.output_to_down"), new TranslatableText("gui.output_to_south"),
 			new TranslatableText("gui.output_to_west") };
-	private final List<Text> tooltipTexts = Arrays.asList(DIRECTION_TEXT[0], AMachineScreen.CLICK_TO_SHIFT);
+	private final List<Text> tooltipTexts = Arrays.asList(DIRECTION_TEXT[0], AOutputMachineScreen.CLICK_TO_SHIFT);
 	private final AOutputMachineBlockEntity blockEntity;
 
 	public OutputDirectionButton(ButtonWidget.PressAction pressAction, AOutputMachineBlockEntity blockEntity) {
@@ -53,7 +53,7 @@ public class OutputDirectionButton extends TexturedButtonWidget {
 
 	public List<Text> getTooltip() {
 		tooltipTexts.set(0, DIRECTION_TEXT[IOutputDiractional.dirToByte(blockEntity.getOutputDir())]);
-		tooltipTexts.set(1, AMachineScreen.CLICK_TO_SHIFT);
+		tooltipTexts.set(1, AOutputMachineScreen.CLICK_TO_SHIFT);
 		return tooltipTexts;
 	}
 }

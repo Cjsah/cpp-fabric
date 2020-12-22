@@ -23,8 +23,8 @@ public class AllInOneMachineScreen extends AExpMachineScreen<AllInOneMachineScre
 			new TranslatableText("gui.low_pressure"), new TranslatableText("gui.high_pressure") };
 	public static final int TEMPERATURE_BUTTON_SYNC_ID = CodingTool.nextSyncId(), PRESSURE_BUTTON_SYNC_ID = CodingTool.nextSyncId();
 	public final List<Text> temperatureTooltip = Arrays.asList(TEMPERATURE_TEXTS[0],
-			AMachineScreen.CLICK_TO_SHIFT);
-	public final List<Text> pressureTooltip = Arrays.asList(PRESSURE_TEXTS[0], AMachineScreen.CLICK_TO_SHIFT);
+			AOutputMachineScreen.CLICK_TO_SHIFT);
+	public final List<Text> pressureTooltip = Arrays.asList(PRESSURE_TEXTS[0], AOutputMachineScreen.CLICK_TO_SHIFT);
 	public final TexturedButtonWidget temperatureButton = new TexturedButtonWidget(0, 0, 16, 16, 0, 0, 0, BACKGROUND,
 			buttonWidget -> {
 				handler.blockEntity.shiftTemperature();
@@ -60,8 +60,8 @@ public class AllInOneMachineScreen extends AExpMachineScreen<AllInOneMachineScre
 
 	public AllInOneMachineScreen(AllInOneMachineScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
-		temperatureTooltip.set(1, AMachineScreen.CLICK_TO_SHIFT);
-		pressureTooltip.set(1, AMachineScreen.CLICK_TO_SHIFT);
+		temperatureTooltip.set(1, AOutputMachineScreen.CLICK_TO_SHIFT);
+		pressureTooltip.set(1, AOutputMachineScreen.CLICK_TO_SHIFT);
 	}
 
 	@Override

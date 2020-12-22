@@ -6,7 +6,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-public class ItemProcessorScreen extends AMachineScreen<ItemProcessorScreenHandler> {
+public class ItemProcessorScreen extends AOutputMachineScreen<ItemProcessorScreenHandler> {
 	public static final Identifier BACKGROUND = new Identifier("cpp:textures/gui/item_processor.png");
 
 	public ItemProcessorScreen(ItemProcessorScreenHandler handler, PlayerInventory inventory, Text title) {

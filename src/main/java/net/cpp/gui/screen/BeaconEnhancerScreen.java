@@ -89,11 +89,11 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 	@Override
 	protected void drawMouseoverTooltip(MatrixStack matrices, int x, int y) {
 		if (playerEffectButton.isHovered()) {
-			renderTooltip(matrices, ImmutableList.of(handler.blockEntity.getPlayerEffect().getName(), AMachineScreen.CLICK_TO_SHIFT), x, y);
+			renderTooltip(matrices, ImmutableList.of(handler.blockEntity.getPlayerEffect().getName(), AOutputMachineScreen.CLICK_TO_SHIFT), x, y);
 		} else if (mobEffectButton.isHovered()) {
-			renderTooltip(matrices, ImmutableList.of(handler.blockEntity.getMobEffect().getName(), AMachineScreen.CLICK_TO_SHIFT), x, y);
+			renderTooltip(matrices, ImmutableList.of(handler.blockEntity.getMobEffect().getName(), AOutputMachineScreen.CLICK_TO_SHIFT), x, y);
 		} else if (onlyAdverseButton.isHovered()) {
-			renderTooltip(matrices, ImmutableList.of(ONLY_ADVERSE_TEXTS.get(handler.blockEntity.propertyDelegate.get(2)), AMachineScreen.CLICK_TO_SHIFT), x, y);
+			renderTooltip(matrices, ImmutableList.of(ONLY_ADVERSE_TEXTS.get(handler.blockEntity.propertyDelegate.get(2)), AOutputMachineScreen.CLICK_TO_SHIFT), x, y);
 		} else
 			super.drawMouseoverTooltip(matrices, x, y);
 	}
