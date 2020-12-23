@@ -1,0 +1,6 @@
+{
+	"parent": "cpp:item/character",
+	"textures": {
+		"layer0": "cpp:character/54"
+	}
+}

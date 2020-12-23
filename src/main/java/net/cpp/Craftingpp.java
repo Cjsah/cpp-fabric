@@ -31,6 +31,7 @@ public class Craftingpp implements ModInitializer {
 		CppStats.register();
 		CppEffects.register();
 		CppChainMap.register();
+		CppPredicates.register();
 
 		// 连环药水效果
 		PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, entity) -> {

@@ -1,7 +1,6 @@
 package net.cpp.item;
 
 import net.cpp.init.CppItems;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;

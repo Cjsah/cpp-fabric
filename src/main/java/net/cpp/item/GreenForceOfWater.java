@@ -126,7 +126,8 @@ public class GreenForceOfWater extends Item {
                         user.incrementStat(Stats.USED.getOrCreateStat(this));
                         world.setBlockState(blockPos, Blocks.WATER_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, 3));
                         return TypedActionResult.success(itemStack);
-                    }else if (!(blockState.getBlock() instanceof FluidBlock) && this.placeFluid(user, world, blockPos3, hitResult, fluid)) {
+//                    }else if (!(blockState.getBlock() instanceof FluidBlock) && this.placeFluid(user, world, blockPos3, hitResult, fluid)) {
+                    }else if (!(blockState.getBlock() instanceof FluidBlock) && world.setBlockState(blockPos3, fluid.getDefaultState().getBlockState())) {
                         if (user instanceof ServerPlayerEntity) {
                             Criteria.PLACED_BLOCK.trigger((ServerPlayerEntity) user, blockPos3, itemStack);
                         }
