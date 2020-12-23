@@ -139,7 +139,6 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2, 3 };
 	private static final Map<Set<Item>, Recipe> RECIPES = new HashMap<>();
 	public static final int WORK_TIME_TOTAL = 200;
-	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4, ItemStack.EMPTY);
 	private int currentRecipeCode;
 	public final PropertyDelegate propertyDelegate = new ExpPropertyDelegate() {
 		@Override
@@ -175,6 +174,7 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 
 	public MobProjectorBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(CppBlockEntities.MOB_PROJECTOR, blockPos, blockState);
+		setCapacity(4);
 		workTimeTotal = WORK_TIME_TOTAL;
 	}
 

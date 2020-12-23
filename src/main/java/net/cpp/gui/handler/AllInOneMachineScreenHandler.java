@@ -17,9 +17,7 @@ import net.minecraft.screen.slot.Slot;
  *
  */
 public class AllInOneMachineScreenHandler extends AExpMachineScreenHandler {
-//	public AllInOneMachineScreen screen;
 	private PlayerEntity player;
-//	private World world;
 	public final AllInOneMachineBlockEntity blockEntity;
 
 	public AllInOneMachineScreenHandler(int syncId, PlayerInventory playerInventory) {

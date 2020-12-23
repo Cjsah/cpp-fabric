@@ -42,7 +42,6 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	private static final Map<Integer, List<Recipe>> RANDOM_RECIPES = new HashMap<>();
 	private int lastTickRecipeCode;
 	private ItemStack[] lastTickOutputs;
-	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(5, ItemStack.EMPTY);
 	private Degree temperature = Degree.ORDINARY;
 	private Degree pressure = Degree.ORDINARY;
 	/**
@@ -90,6 +89,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 
 	public AllInOneMachineBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(CppBlockEntities.ALL_IN_ONE_MACHINE, blockPos, blockState);
+		setCapacity(5);
 		addAvailableTemperature(Degree.HIGH);
 		addAvailableTemperature(Degree.LOW);
 		addAvailablePressure(Degree.HIGH);

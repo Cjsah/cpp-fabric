@@ -17,22 +17,23 @@ import net.minecraft.world.World;
 
 public class GoldenAnvilBlock extends AExpMachineBlock {
 
-	@Override
-	public BlockEntity createBlockEntity(BlockPos blockPos, BlockState blockState) {
-		return new GoldenAnvilBlockEntity(blockPos, blockState);
-	}
+    @Override
+    public BlockEntity createBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new GoldenAnvilBlockEntity(blockPos, blockState);
+    }
 
-	@Override
-	public Identifier getStatIdentifier() {
-		return CppStats.INTERACT_WITH_GOLD_ANVIL;
-	}
-	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return checkType(world, type, CppBlockEntities.GOLDEN_ANVIL);
-	}
+    @Override
+    public Identifier getStatIdentifier() {
+        return CppStats.INTERACT_WITH_GOLD_ANVIL;
+    }
 
-	@Nullable
-	protected static <T extends BlockEntity> BlockEntityTicker<T> checkType(World world, BlockEntityType<T> givenType, BlockEntityType<? extends GoldenAnvilBlockEntity> expectedType) {
-		return world.isClient ? null : checkType(givenType, expectedType, GoldenAnvilBlockEntity::tick);
-	}
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return checkType(world, type, CppBlockEntities.GOLDEN_ANVIL);
+    }
+
+    @Nullable
+    protected static <T extends BlockEntity> BlockEntityTicker<T> checkType(World world, BlockEntityType<T> givenType, BlockEntityType<? extends GoldenAnvilBlockEntity> expectedType) {
+        return world.isClient ? null : checkType(givenType, expectedType, GoldenAnvilBlockEntity::tick);
+    }
 }

@@ -20,6 +20,7 @@ public final class CppScreenHandler {
 	public static final ScreenHandlerType<PortableCraftingMachineScreenHandler> PORTABLE_CRAFTING_MACHINE = register(CppItems.PORTABLE_CRAFTING_MACHINE,PortableCraftingMachineScreenHandler::new);
 	public static final ScreenHandlerType<TradeMachineScreenHandler> TRADE_MACHINE = register(CppBlocks.TRADE_MACHINE,TradeMachineScreenHandler::new);
 	public static final ScreenHandlerType<GoldenAnvilScreenHandler> GOLDEN_ANVIL = register(CppBlocks.GOLDEN_ANVIL,GoldenAnvilScreenHandler::new);
+	public static final ScreenHandlerType<EmptyBookshelfScreenHandler> EMPTY_BOOKSHELF = register(CppBlocks.EMPTY_BOOKSHELF,EmptyBookshelfScreenHandler::new);
 
 	public static void register() {
 	}

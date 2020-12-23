@@ -19,7 +19,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 
 public abstract class AMachineBlockEntity extends LootableContainerBlockEntity {
-	protected DefaultedList<ItemStack> inventory;
+	protected DefaultedList<ItemStack> inventory = DefaultedList.of();
 
 	public AMachineBlockEntity(BlockEntityType<?> blockEntityType,BlockPos pos, BlockState state) {
 		super(blockEntityType, pos, state);
@@ -72,9 +72,4 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity {
 	protected DefaultedList<ItemStack> setCapacity(int capacity){
 		return inventory = DefaultedList.ofSize(capacity, ItemStack.EMPTY);
 	}
-	@Nullable
-	public PropertyDelegate getPropertyDelegate() {
-		return null;
-	}
-
 }

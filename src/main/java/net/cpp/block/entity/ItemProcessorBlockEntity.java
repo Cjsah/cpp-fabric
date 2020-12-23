@@ -59,7 +59,6 @@ public class ItemProcessorBlockEntity extends AOutputMachineBlockEntity {
 	public static final Map<Item, Map<Item, ItemStackAndCount>> RECIPES = new HashMap<>();
 	public static final Set<BlockItem> ORES;
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1 };
-	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4, ItemStack.EMPTY);
 	private int lastTickCount = -1;
 	public final PropertyDelegate propertyDelegate = new OutputDirectionPropertyDelegate();
 
@@ -69,6 +68,7 @@ public class ItemProcessorBlockEntity extends AOutputMachineBlockEntity {
 
 	public ItemProcessorBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(CppBlockEntities.ITEM_PROCESSER, blockPos, blockState);
+		setCapacity(4);
 	}
 
 	@Override
@@ -91,152 +91,154 @@ public class ItemProcessorBlockEntity extends AOutputMachineBlockEntity {
 
 	public static void tick(World world, BlockPos pos, BlockState state, ItemProcessorBlockEntity blockEntity) {
 		// XXX 代码结构需要优化
-		if (!world.isClient && !blockEntity.getStack(0).isEmpty() && !blockEntity.getStack(1).isEmpty()) {
-			Item tool = blockEntity.getStack(0).getItem();
-			ItemStack input1 = blockEntity.getStack(1), output1 = blockEntity.getStack(2);
-			if (tool == RED_FORCE_OF_FIRE) {
+		if (!world.isClient) {
+			if (!blockEntity.getStack(0).isEmpty() && !blockEntity.getStack(1).isEmpty()) {
+				Item tool = blockEntity.getStack(0).getItem();
+				ItemStack input1 = blockEntity.getStack(1), output1 = blockEntity.getStack(2);
+				if (tool == RED_FORCE_OF_FIRE) {
 // 红色火之力
-				SmeltingRecipe recipe = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, new SimpleInventory(new ItemStack[] { input1 }), blockEntity.world).orElse(null);
-				if (recipe != null) {
-					ItemStack result = recipe.getOutput();
-					boolean processed = false;
-					if (processed = output1.isEmpty())
-						blockEntity.setStack(2, result.copy());
-					else if (processed = output1.isItemEqual(result) && output1.getCount() + result.getCount() <= output1.getMaxCount())
-						output1.increment(result.getCount());
-					if (processed)
-						input1.decrement(1);
-				}
-			} else if (tool == CppItems.COMPRESSOR) {
-// 压缩器
-				if (input1.getCount() >= input1.getMaxCount() && (output1.isEmpty() || output1.getCount() < output1.getMaxCount())) {
-					ItemStack output;
-					if (input1.getItem() == CppItems.COMPRESSED_ITEM || input1.getItem() == CppItems.COMPRESSED_EXPERIENCE_BOTTLE) {
-						output = input1.copy();
-						output.setCount(1);
-						output.getOrCreateTag().putByte("mutiple", (byte) (input1.getOrCreateTag().getByte("mutiple") + 1));
-					} else {
-						output = new ItemStack(input1.getItem() == EXPERIENCE_BOTTLE ? CppItems.COMPRESSED_EXPERIENCE_BOTTLE : CppItems.COMPRESSED_ITEM);
-						CompoundTag inputItemNBT = itemStackToTag(input1);
-						inputItemNBT.remove("Slot");
-						inputItemNBT.remove("Count");
-						output.putSubTag("item", inputItemNBT);
-						output.getTag().putByte("mutiple", (byte) 1);
-					}
-					boolean ed = false;
-					if (ed = output1.isEmpty())
-						blockEntity.setStack(2, output);
-					else if (ed = ItemStack.areItemsEqual(output1, output) && ItemStack.areTagsEqual(output1, output))
-						output1.increment(1);
-					if (ed)
-						input1.decrement(input1.getMaxCount());
-				}
-			} else if (tool == BONE_MEAL) {
-//骨粉
-				if (input1.getItem() == NETHERRACK) {
-					Block block = world.getBlockState(pos.up()).getBlock();
-					Set<Block> tmpSet = new HashSet<>(Arrays.asList(Blocks.CRIMSON_NYLIUM, Blocks.WARPED_NYLIUM));
-					if (tmpSet.contains(block) && blockEntity.canInsert(2, new ItemStack(block))) {
-						blockEntity.insert(2, new ItemStack(block));
-						blockEntity.getStack(1).decrement(1);
-						blockEntity.getStack(0).decrement(1);
-					}
-				}
-			} else if (tool instanceof MiningToolItem && FabricToolTags.PICKAXES.contains(tool) && ORES.contains(blockEntity.getStack(1).getItem())) {
-//镐可以挖掘矿石，受附魔影响
-				BlockState blockState = ((BlockItem) blockEntity.getStack(1).getItem()).getBlock().getDefaultState();
-				if (tool.isSuitableFor(blockState)) {
-					List<ItemStack> list = blockState.getDroppedStacks(new LootContext.Builder((ServerWorld) world).parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(pos)).parameter(LootContextParameters.TOOL, blockEntity.getStack(0)));
-					boolean able = true;
-					if (list.size() > 2)
-						able = false;
-					else
-						for (int i = 0; i < list.size(); i++) {
-							if (!blockEntity.getStack(i + 2).isEmpty() && (!ItemStack.areItemsEqual(blockEntity.getStack(i + 2), list.get(i)) || blockEntity.getStack(i + 2).getCount() + list.get(i).getCount() > blockEntity.getStack(i + 2).getMaxCount())) {
-								able = false;
-								break;
-							}
-						}
-					if (able) {
-						blockEntity.getStack(0).damage(1, world.random, null);
-						blockEntity.getStack(1).decrement(1);
-						for (int i = 0; i < list.size(); i++) {
-							if (blockEntity.getStack(i + 2).isEmpty())
-								blockEntity.setStack(i + 2, list.get(i));
-							else
-								blockEntity.getStack(i + 2).increment(list.get(i).getCount());
-						}
-					}
-				}
-			} else {
-				ItemStackAndCount itemStackAndCount = RECIPES.getOrDefault(tool, Collections.emptyMap()).get(input1.getItem());
-				boolean greenForceOfWater = true;
-				if (tool == GREEN_FORCE_OF_WATER) {
-					String mode = blockEntity.getStack(0).getOrCreateTag().getString("mode");
-//					System.out.println(mode);
-					greenForceOfWater = "water".equals(mode);
-				}
-				if (greenForceOfWater && itemStackAndCount != null && input1.getCount() >= itemStackAndCount.count) {
-
-					boolean used = false;
-					if (input1.getItem() == GILDED_BLACKSTONE) {
-						if (blockEntity.lastTickCount == -1)
-							blockEntity.lastTickCount = 2 + (int) (4 * Math.random());
-						if ((output1.isEmpty() || output1.getItem() == GOLD_NUGGET && output1.getCount() + blockEntity.lastTickCount <= output1.getMaxCount())) {
+					SmeltingRecipe recipe = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, new SimpleInventory(new ItemStack[] { input1 }), blockEntity.world).orElse(null);
+					if (recipe != null) {
+						ItemStack result = recipe.getOutput();
+						boolean processed = false;
+						if (processed = output1.isEmpty())
+							blockEntity.setStack(2, result.copy());
+						else if (processed = output1.isItemEqual(result) && output1.getCount() + result.getCount() <= output1.getMaxCount())
+							output1.increment(result.getCount());
+						if (processed)
 							input1.decrement(1);
-							if (output1.isEmpty())
-								blockEntity.setStack(2, new ItemStack(GOLD_NUGGET, blockEntity.lastTickCount));
-							else
-								output1.increment(blockEntity.lastTickCount);
-							used = true;
-							blockEntity.lastTickCount = -1;
-						}
-					} else if ((output1.isEmpty() || ItemStack.areItemsEqual(itemStackAndCount.itemStack, output1) && output1.getCount() + itemStackAndCount.itemStack.getCount() <= output1.getMaxCount())) {
-						Item result1 = itemStackAndCount.itemStack.getItem();
-						ItemStack output2 = blockEntity.getStack(3);
-						boolean able = true;
-						if (LEATHERS.contains(input1.getItem())) {
-							if (output1.isEmpty()) {
-								output1 = input1.copy();
-								output1.getOrCreateSubTag("display").remove("color");
-								blockEntity.setStack(2, output1);
-								input1.decrement(1);
-							}
+					}
+				} else if (tool == CppItems.COMPRESSOR) {
+// 压缩器
+					if (input1.getCount() >= input1.getMaxCount() && (output1.isEmpty() || output1.getCount() < output1.getMaxCount())) {
+						ItemStack output;
+						if (input1.getItem() == CppItems.COMPRESSED_ITEM || input1.getItem() == CppItems.COMPRESSED_EXPERIENCE_BOTTLE) {
+							output = input1.copy();
+							output.setCount(1);
+							output.getOrCreateTag().putByte("mutiple", (byte) (input1.getOrCreateTag().getByte("mutiple") + 1));
 						} else {
-							if (result1 == CARVED_PUMPKIN) {
-								if (output2.isEmpty() || output2.getItem() == PUMPKIN_SEEDS && output2.getCount() + 4 <= output2.getMaxCount()) {
-									if (output2.isEmpty())
-										blockEntity.setStack(3, new ItemStack(PUMPKIN_SEEDS, 4));
-									else
-										output2.increment(4);
-								} else
+							output = new ItemStack(input1.getItem() == EXPERIENCE_BOTTLE ? CppItems.COMPRESSED_EXPERIENCE_BOTTLE : CppItems.COMPRESSED_ITEM);
+							CompoundTag inputItemNBT = itemStackToTag(input1);
+							inputItemNBT.remove("Slot");
+							inputItemNBT.remove("Count");
+							output.putSubTag("item", inputItemNBT);
+							output.getTag().putByte("mutiple", (byte) 1);
+						}
+						boolean ed = false;
+						if (ed = output1.isEmpty())
+							blockEntity.setStack(2, output);
+						else if (ed = ItemStack.areItemsEqual(output1, output) && ItemStack.areTagsEqual(output1, output))
+							output1.increment(1);
+						if (ed)
+							input1.decrement(input1.getMaxCount());
+					}
+				} else if (tool == BONE_MEAL) {
+//骨粉
+					if (input1.getItem() == NETHERRACK) {
+						Block block = world.getBlockState(pos.up()).getBlock();
+						Set<Block> tmpSet = new HashSet<>(Arrays.asList(Blocks.CRIMSON_NYLIUM, Blocks.WARPED_NYLIUM));
+						if (tmpSet.contains(block) && blockEntity.canInsert(2, new ItemStack(block))) {
+							blockEntity.insert(2, new ItemStack(block));
+							blockEntity.getStack(1).decrement(1);
+							blockEntity.getStack(0).decrement(1);
+						}
+					}
+				} else if (tool instanceof MiningToolItem && FabricToolTags.PICKAXES.contains(tool) && ORES.contains(blockEntity.getStack(1).getItem())) {
+//镐可以挖掘矿石，受附魔影响
+					BlockState blockState = ((BlockItem) blockEntity.getStack(1).getItem()).getBlock().getDefaultState();
+					if (tool.isSuitableFor(blockState)) {
+						List<ItemStack> list = blockState.getDroppedStacks(new LootContext.Builder((ServerWorld) world).parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(pos)).parameter(LootContextParameters.TOOL, blockEntity.getStack(0)));
+						boolean able = true;
+						if (list.size() > 2)
+							able = false;
+						else
+							for (int i = 0; i < list.size(); i++) {
+								if (!blockEntity.getStack(i + 2).isEmpty() && (!ItemStack.areItemsEqual(blockEntity.getStack(i + 2), list.get(i)) || blockEntity.getStack(i + 2).getCount() + list.get(i).getCount() > blockEntity.getStack(i + 2).getMaxCount())) {
 									able = false;
-							} else if (result1 == OBSIDIAN) {
-								if (input1.getItem() == GREEN_FORCE_OF_WATER) {
-									able = "lava".equals(input1.getOrCreateTag().getString("mode")) && input1.getTag().getInt("lava") > 0;
-								} else if ((output2.isEmpty() || output2.getItem() == BUCKET && output2.getCount() + 1 <= output2.getMaxCount())) {
-									if (output2.isEmpty())
-										blockEntity.setStack(3, new ItemStack(BUCKET, 1));
-									else
-										output2.increment(1);
-								} else
-									able = false;
+									break;
+								}
 							}
-							if (able) {
-								if (input1.getItem() == GREEN_FORCE_OF_WATER) {
-									input1.getOrCreateTag().putInt("lava", input1.getOrCreateTag().getInt("lava") - 1);
-								} else
-									input1.decrement(itemStackAndCount.count);
-								if (output1.isEmpty())
-									blockEntity.setStack(2, itemStackAndCount.itemStack.copy());
+						if (able) {
+							blockEntity.getStack(0).damage(1, world.random, null);
+							blockEntity.getStack(1).decrement(1);
+							for (int i = 0; i < list.size(); i++) {
+								if (blockEntity.getStack(i + 2).isEmpty())
+									blockEntity.setStack(i + 2, list.get(i));
 								else
-									output1.increment(itemStackAndCount.itemStack.getCount());
-								used = true;
+									blockEntity.getStack(i + 2).increment(list.get(i).getCount());
 							}
 						}
 					}
-					if (used && blockEntity.getStack(0).damage(1, world.random, null)) {
-						blockEntity.getStack(0).decrement(1);
+				} else {
+					ItemStackAndCount itemStackAndCount = RECIPES.getOrDefault(tool, Collections.emptyMap()).get(input1.getItem());
+					boolean greenForceOfWater = true;
+					if (tool == GREEN_FORCE_OF_WATER) {
+						String mode = blockEntity.getStack(0).getOrCreateTag().getString("mode");
+//					System.out.println(mode);
+						greenForceOfWater = "water".equals(mode);
+					}
+					if (greenForceOfWater && itemStackAndCount != null && input1.getCount() >= itemStackAndCount.count) {
+
+						boolean used = false;
+						if (input1.getItem() == GILDED_BLACKSTONE) {
+							if (blockEntity.lastTickCount == -1)
+								blockEntity.lastTickCount = 2 + (int) (4 * Math.random());
+							if ((output1.isEmpty() || output1.getItem() == GOLD_NUGGET && output1.getCount() + blockEntity.lastTickCount <= output1.getMaxCount())) {
+								input1.decrement(1);
+								if (output1.isEmpty())
+									blockEntity.setStack(2, new ItemStack(GOLD_NUGGET, blockEntity.lastTickCount));
+								else
+									output1.increment(blockEntity.lastTickCount);
+								used = true;
+								blockEntity.lastTickCount = -1;
+							}
+						} else if ((output1.isEmpty() || ItemStack.areItemsEqual(itemStackAndCount.itemStack, output1) && output1.getCount() + itemStackAndCount.itemStack.getCount() <= output1.getMaxCount())) {
+							Item result1 = itemStackAndCount.itemStack.getItem();
+							ItemStack output2 = blockEntity.getStack(3);
+							boolean able = true;
+							if (LEATHERS.contains(input1.getItem())) {
+								if (output1.isEmpty()) {
+									output1 = input1.copy();
+									output1.getOrCreateSubTag("display").remove("color");
+									blockEntity.setStack(2, output1);
+									input1.decrement(1);
+								}
+							} else {
+								if (result1 == CARVED_PUMPKIN) {
+									if (output2.isEmpty() || output2.getItem() == PUMPKIN_SEEDS && output2.getCount() + 4 <= output2.getMaxCount()) {
+										if (output2.isEmpty())
+											blockEntity.setStack(3, new ItemStack(PUMPKIN_SEEDS, 4));
+										else
+											output2.increment(4);
+									} else
+										able = false;
+								} else if (result1 == OBSIDIAN) {
+									if (input1.getItem() == GREEN_FORCE_OF_WATER) {
+										able = "lava".equals(input1.getOrCreateTag().getString("mode")) && input1.getTag().getInt("lava") > 0;
+									} else if ((output2.isEmpty() || output2.getItem() == BUCKET && output2.getCount() + 1 <= output2.getMaxCount())) {
+										if (output2.isEmpty())
+											blockEntity.setStack(3, new ItemStack(BUCKET, 1));
+										else
+											output2.increment(1);
+									} else
+										able = false;
+								}
+								if (able) {
+									if (input1.getItem() == GREEN_FORCE_OF_WATER) {
+										input1.getOrCreateTag().putInt("lava", input1.getOrCreateTag().getInt("lava") - 1);
+									} else
+										input1.decrement(itemStackAndCount.count);
+									if (output1.isEmpty())
+										blockEntity.setStack(2, itemStackAndCount.itemStack.copy());
+									else
+										output1.increment(itemStackAndCount.itemStack.getCount());
+									used = true;
+								}
+							}
+						}
+						if (used && blockEntity.getStack(0).damage(1, world.random, null)) {
+							blockEntity.getStack(0).decrement(1);
+						}
 					}
 				}
 			}

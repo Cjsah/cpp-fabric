@@ -69,7 +69,6 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 	 */
 	public static final List<Recipe> SELL_TABLE = new ArrayList<>();
 	public static final List<ItemStack> PLUGINS = new ArrayList<>();
-	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4, ItemStack.EMPTY);
 	private int tradeValue, emeraldCount, cooldown,
 			/**
 			 * 0：售卖模式，1：购买模式
@@ -120,6 +119,7 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 
 	public TradeMachineBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(CppBlockEntities.TRADE_MACHINE, blockPos, blockState);
+		setCapacity(4);
 	}
 
 	@Override
