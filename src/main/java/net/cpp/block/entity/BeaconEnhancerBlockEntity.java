@@ -79,7 +79,6 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 		public void set(int index, int value) {
 			switch (index) {
 			case 0:
-//				System.out.println(value);
 				playerEffectCode = value % AVAILABLE_PLAYER_EFFECTS.size();
 				playerEffect = AVAILABLE_PLAYER_EFFECTS.get(playerEffectCode);
 				break;
@@ -180,12 +179,12 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 							}
 							// 施加状态效果
 							for (PlayerEntity e : players) {
-								e.addStatusEffect(new StatusEffectInstance(blockEntity.playerEffect, 400, 0));
+								e.addStatusEffect(new StatusEffectInstance(blockEntity.playerEffect, 400, 0, true, true));
 							}
 //							System.out.println(entities);
 							for (MobEntity e : entities) {
 								if (blockEntity.getMobEffect() != ATTRACTING)
-									e.addStatusEffect(new StatusEffectInstance(blockEntity.mobEffect, 200, 0));
+									e.addStatusEffect(new StatusEffectInstance(blockEntity.mobEffect, 200, 0, true, true));
 								else {
 									e.teleport(pos.getX() + .5, pos.getY() + 1, pos.getZ() + .5);
 								}

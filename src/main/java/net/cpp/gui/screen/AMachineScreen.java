@@ -14,6 +14,12 @@ public abstract class AMachineScreen<T extends AMachineScreenHandler> extends Ha
 		super(handler, inventory, title);
 	}
 	@Override
+	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		this.renderBackground(matrices);
+		super.render(matrices, mouseX, mouseY, delta);
+		this.drawMouseoverTooltip(matrices, mouseX, mouseY);
+	}
+	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.client.getTextureManager().bindTexture(getBackground());

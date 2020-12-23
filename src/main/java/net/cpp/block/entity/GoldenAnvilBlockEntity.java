@@ -48,11 +48,11 @@ public class GoldenAnvilBlockEntity extends AExpMachineBlockEntity {
 
 	public GoldenAnvilBlockEntity() {
 		this(BlockPos.ORIGIN, CppBlocks.GOLDEN_ANVIL.getDefaultState());
-		setCapacity(4);
 	}
 
 	public GoldenAnvilBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(CppBlockEntities.GOLDEN_ANVIL, blockPos, blockState);
+		setCapacity(4);
 	}
 
 	@Override

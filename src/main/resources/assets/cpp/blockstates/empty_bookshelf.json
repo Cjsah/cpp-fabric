@@ -1,7 +1,28 @@
 {
   "variants": {
-    "": {
-      "model": "cpp:block/bookshelf0"
+    "book_state=0": {
+      "model": "cpp:block/empty_bookshelf_0"
+    },
+    "book_state=1": {
+      "model": "cpp:block/empty_bookshelf_1"
+    },
+    "book_state=2": {
+      "model": "cpp:block/empty_bookshelf_2"
+    },
+    "book_state=3": {
+      "model": "cpp:block/empty_bookshelf_3"
+    },
+    "book_state=4": {
+      "model": "cpp:block/empty_bookshelf_4"
+    },
+    "book_state=5": {
+      "model": "cpp:block/empty_bookshelf_5"
+    },
+    "book_state=6": {
+      "model": "cpp:block/empty_bookshelf_6"
+    },
+    "book_state=7": {
+      "model": "cpp:block/empty_bookshelf_7"
     }
   }
 }

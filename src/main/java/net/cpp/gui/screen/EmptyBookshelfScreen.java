@@ -15,4 +15,8 @@ public class EmptyBookshelfScreen extends AMachineScreen<EmptyBookshelfScreenHan
 	protected Identifier getBackground() {
 		return BACKGROUND;
 	}
+	@Override
+	public void onClose() {
+		super.onClose();
+	}
 }

@@ -21,12 +21,6 @@ public abstract class AOutputMachineScreen<T extends AOutputMachineScreenHandler
 	}
 
 	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		this.renderBackground(matrices);
-		super.render(matrices, mouseX, mouseY, delta);
-		this.drawMouseoverTooltip(matrices, mouseX, mouseY);
-	}
-	@Override
 	protected void init() {
 		super.init();
 		addButton(oButton);
