@@ -66,9 +66,14 @@ public final class CppItems {
 	public static final Item COAL_NUGGET;
 	public static final Item CINDER;
 	public static final Item SPLINT;
+	public static final Item RARE_EARTH_GLASS;
+	public static final Item REINFORCED_GLASS;
 	public static final Item SILICON_PLATE;
 	public static final Item MOON_SHARD;
 	public static final Item SUN_SHARD;
+	public static final Item MOON_STONE;
+	public static final Item SUN_STONE;
+
 	public static final Item CLAY_BUCKET;
 	// 粉末和瓶装物
 	public static final Item COPPER_DUST;
@@ -416,7 +421,7 @@ public final class CppItems {
 		GOLD_TRADE_PLUGIN = registerItem("gold_trade_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
 		MOON_TRADE_PLUGIN = registerItem("moon_trade_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
 
-		ANCIENT_SCROLL = registerItem("ancient_scroll", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
+		ANCIENT_SCROLL = registerItem("ancient_scroll", new AncientScroll(new Item.Settings().group(CPP_GROUP_MISC).rarity(Rarity.UNCOMMON)));
 
 		ENCHANTED_IRON = registerItem("enchanted_iron", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		ENCHANTED_GOLD = registerItem("enchanted_gold", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
@@ -425,13 +430,13 @@ public final class CppItems {
 		COAL_NUGGET = registerItem("coal_nugget", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		CINDER = registerItem("cinder", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		SPLINT = registerItem("splint", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-		Registry.register(Registry.ITEM, new Identifier("cpp:rare_earth_glass"), new BlockItem(CppBlocks.RARE_EARTH_GLASS, new Item.Settings().group(CPP_GROUP_MISC)));
-		Registry.register(Registry.ITEM, new Identifier("cpp:reinforced_glass"), new BlockItem(CppBlocks.REINFORCED_GLASS, new Item.Settings().group(CPP_GROUP_MISC)));
+		RARE_EARTH_GLASS = registerBlockItem("rare_earth_glass", new BlockItem(CppBlocks.RARE_EARTH_GLASS, new Item.Settings().group(CPP_GROUP_MISC)));
+		REINFORCED_GLASS = registerBlockItem("reinforced_glass", new BlockItem(CppBlocks.REINFORCED_GLASS, new Item.Settings().group(CPP_GROUP_MISC)));
 		SILICON_PLATE = registerItem("silicon_plate", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		MOON_SHARD = registerItem("moon_shard", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		SUN_SHARD = registerItem("sun_shard", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-		Registry.register(Registry.ITEM, new Identifier("cpp:moon_stone"), new BlockItem(CppBlocks.MOON_STONE, new Item.Settings().group(CPP_GROUP_MISC)));
-		Registry.register(Registry.ITEM, new Identifier("cpp:sun_stone"), new BlockItem(CppBlocks.SUN_STONE, new Item.Settings().group(CPP_GROUP_MISC)));
+		MOON_STONE = registerBlockItem("moon_stone", new BlockItem(CppBlocks.MOON_STONE, new Item.Settings().group(CPP_GROUP_MISC)));
+		SUN_STONE = registerBlockItem("sun_stone", new BlockItem(CppBlocks.SUN_STONE, new Item.Settings().group(CPP_GROUP_MISC)));
 		CLAY_BUCKET = registerItem("clay_bucket", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 
 		COPPER_DUST = registerItem("copper_dust", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
@@ -769,6 +774,11 @@ public final class CppItems {
 	}
 
 	private static Item registerItem(String id, Item item) {
+		return Registry.register(Registry.ITEM, new Identifier(MODID, id), item);
+	}
+
+	private static Item registerBlockItem(String id, Item item) {
+		((BlockItem)item).appendBlocks(Item.BLOCK_ITEMS, item);
 		return Registry.register(Registry.ITEM, new Identifier(MODID, id), item);
 	}
 
