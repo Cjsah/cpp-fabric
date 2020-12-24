@@ -51,4 +51,14 @@ public class Character extends Item {
         item.setTag(tag);
         return item;
     }
+
+    public static ItemStack get(int id) {
+        if (id >= 1 && id <= 117) {
+            ItemStack item = new ItemStack(CppItems.CHARACTER);
+            CompoundTag tag = new CompoundTag();
+            tag.putInt("character", id);
+            item.setTag(tag);
+            return item;
+        }else return null;
+    }
 }
