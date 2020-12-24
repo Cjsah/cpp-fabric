@@ -1,6 +1,5 @@
 package net.cpp.item;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,7 +7,6 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.*;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
@@ -16,13 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
-import net.minecraft.tag.FluidTags;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -34,7 +27,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
 
 public class GreenForceOfWater extends Item {
@@ -58,13 +50,7 @@ public class GreenForceOfWater extends Item {
         if (!world.isClient) {
             user.incrementStat(Stats.USED.getOrCreateStat(this));
             CompoundTag tag = itemStack.getTag();
-            if (tag == null) {
-                itemStack.getOrCreateTag();
-                tag = itemStack.getTag();
-                tag.putString("mode", "water");
-                tag.putInt("lava", 0);
-                itemStack.setTag(tag);
-            }
+            assert tag != null; // 没用, 只为去除警告
             BlockHitResult hitResult = raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
             BlockPos blockPos = hitResult.getBlockPos();
             BlockState blockState = world.getBlockState(blockPos);
@@ -144,43 +130,6 @@ public class GreenForceOfWater extends Item {
         return TypedActionResult.pass(itemStack);
     }
 
-    private boolean placeFluid(@Nullable PlayerEntity player, World world, BlockPos pos, @Nullable BlockHitResult blockHitResult, Fluid fluid) {
-        BlockState blockState = world.getBlockState(pos);
-        Block block = blockState.getBlock();
-        Material material = blockState.getMaterial();
-        boolean bl = blockState.canBucketPlace(fluid);
-        boolean bl2 = blockState.isAir() || bl || block instanceof FluidFillable && ((FluidFillable)block).canFillWithFluid(world, pos, blockState, fluid);
-        if (!bl2) {
-            return blockHitResult != null && this.placeFluid(player, world, blockHitResult.getBlockPos().offset(blockHitResult.getSide()), null, fluid);
-        } else if (world.getDimension().isUltrawarm() && fluid.isIn(FluidTags.WATER)) {
-            int i = pos.getX();
-            int j = pos.getY();
-            int k = pos.getZ();
-            world.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
-
-            for(int l = 0; l < 8; ++l) {
-                world.addParticle(ParticleTypes.LARGE_SMOKE, (double)i + Math.random(), (double)j + Math.random(), (double)k + Math.random(), 0.0D, 0.0D, 0.0D);
-            }
-
-            return true;
-        } else if (block instanceof FluidFillable && fluid == Fluids.WATER) {
-            ((FluidFillable)block).tryFillWithFluid(world, pos, blockState, ((FlowableFluid)fluid).getStill(false));
-            this.playEmptyingSound(player, world, pos, fluid);
-            return true;
-        } else {
-            if (!world.isClient && bl && !material.isLiquid()) {
-                world.breakBlock(pos, true);
-            }
-
-            if (!world.setBlockState(pos, fluid.getDefaultState().getBlockState(), 11) && !blockState.getFluidState().isStill()) {
-                return false;
-            } else {
-                this.playEmptyingSound(player, world, pos, fluid);
-                return true;
-            }
-        }
-    }
-
     private TypedActionResult<ItemStack> changeTag(PlayerEntity player, ItemStack item, Fluid fluid, CompoundTag tag) {
         player.incrementStat(Stats.USED.getOrCreateStat(this));
         if (fluid == Fluids.LAVA) {
@@ -188,14 +137,5 @@ public class GreenForceOfWater extends Item {
             item.setTag(tag);
         }
         return TypedActionResult.success(item);
-
     }
-
-    private void playEmptyingSound(@Nullable PlayerEntity player, WorldAccess world, BlockPos pos, Fluid fluid) {
-        SoundEvent soundEvent = fluid.isIn(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_EMPTY_LAVA : SoundEvents.ITEM_BUCKET_EMPTY;
-        world.playSound(player, pos, soundEvent, SoundCategory.BLOCKS, 1.0F, 1.0F);
-        world.emitGameEvent(player, GameEvent.FLUID_PLACE, pos);
-    }
-
-
 }
