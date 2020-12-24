@@ -66,15 +66,8 @@ public class CyanForceOfMountain extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack item = user.getStackInHand(hand);
         if (!world.isClient) {
-             CompoundTag tag = item.getTag();
-            if (tag == null) {
-                item.getOrCreateTag();
-                tag = item.getTag();
-                tag.putBoolean("horizontal", true);
-                tag.putInt("level", 2);
-                tag.putInt("xp", 0);
-                item.setTag(tag);
-            }
+            CompoundTag tag = item.getTag();
+            assert tag != null; // 没用, 只为去除警告
             BlockHitResult hitResult = raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
             BlockPos blockPos = hitResult.getBlockPos();
             if (user.isSneaking() && hitResult.getType() == HitResult.Type.MISS) {

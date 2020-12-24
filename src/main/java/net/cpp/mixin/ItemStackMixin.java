@@ -10,10 +10,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Objects;
-
 @Mixin(ItemStack.class)
-public abstract class ItemStackMixin {
+public class ItemStackMixin {
 
     @Shadow
     private Item item;
@@ -25,18 +23,32 @@ public abstract class ItemStackMixin {
     private void updateEmptyState(CallbackInfo info) {
         if (this.item != null) {
             if (this.item == CppItems.GREEN_FORCE_OF_WATER) {
-                CompoundTag tag;
-                if (this.tag == null) {
-                    tag = new CompoundTag();
-                }else {
-                    tag = this.tag;
-                }
-                if (!tag.contains("mode"))
-                    tag.putString("mode", "water");
-                if (!tag.contains("lava"))
-                    tag.putInt("lava", 0);
-                this.tag = tag;
+                CompoundTag tag = new CompoundTag();
+                tag.putString("mode", "water");
+                tag.putInt("lava", 0);
+                appendTag(tag);
+            }else if (this.item == CppItems.CYAN_FORCE_OF_MOUNTAIN) {
+                CompoundTag tag = new CompoundTag();
+                tag.putBoolean("horizontal", true);
+                tag.putInt("level", 2);
+                tag.putInt("xp", 0);
+                appendTag(tag);
             }
         }
+    }
+
+    private void appendTag(CompoundTag tag) {
+        CompoundTag newTag;
+        if (this.tag == null) {
+            newTag = new CompoundTag();
+        }else {
+            newTag = this.tag;
+        }
+        for (String name : tag.getKeys()) {
+            if (!newTag.contains(name)) {
+                newTag.put(name, tag.get(name));
+            }
+        }
+        this.tag = newTag;
     }
 }
