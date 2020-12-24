@@ -1,17 +1,13 @@
 package net.cpp.item;
 
 import net.cpp.init.CppItems;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.world.World;
 
 import java.util.Random;
 
