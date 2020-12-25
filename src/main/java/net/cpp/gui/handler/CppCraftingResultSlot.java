@@ -14,8 +14,7 @@ public class CppCraftingResultSlot extends Slot {
 	private final PlayerEntity player;
 	private int amount;
 
-	public CppCraftingResultSlot(PlayerEntity player, CraftingInventory input, Inventory inventory, int index, int x,
-			int y) {
+	public CppCraftingResultSlot(PlayerEntity player, CraftingInventory input, Inventory inventory, int index, int x, int y) {
 		super(inventory, index, x, y);
 		this.player = player;
 		this.input = input;
@@ -56,8 +55,7 @@ public class CppCraftingResultSlot extends Slot {
 
 	public ItemStack onTakeItem(PlayerEntity player, ItemStack stack) {
 		this.onCrafted(stack);
-		DefaultedList<ItemStack> defaultedList = player.world.getRecipeManager().getRemainingStacks(CppRecipes.CRAFTING,
-				this.input, player.world);
+		DefaultedList<ItemStack> defaultedList = player.world.getRecipeManager().getRemainingStacks(CppRecipes.CRAFTING, this.input, player.world);
 
 		for (int i = 0; i < defaultedList.size(); ++i) {
 			ItemStack itemStack = this.input.getStack(i);
@@ -70,8 +68,7 @@ public class CppCraftingResultSlot extends Slot {
 			if (!itemStack2.isEmpty()) {
 				if (itemStack.isEmpty()) {
 					this.input.setStack(i, itemStack2);
-				} else if (ItemStack.areItemsEqualIgnoreDamage(itemStack, itemStack2)
-						&& ItemStack.areTagsEqual(itemStack, itemStack2)) {
+				} else if (ItemStack.areItemsEqualIgnoreDamage(itemStack, itemStack2) && ItemStack.areTagsEqual(itemStack, itemStack2)) {
 					itemStack2.increment(itemStack.getCount());
 					this.input.setStack(i, itemStack2);
 				} else if (!this.player.giveItemStack(itemStack2)) {
