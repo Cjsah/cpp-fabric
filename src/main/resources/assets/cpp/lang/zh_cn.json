@@ -8,6 +8,7 @@
   "itemGroup.cpp.title.decorate": "更多的合成-装饰",
 
   "misc.cpp": "%s %s",
+  "misc.cpp1": "%s%s",
 
   "item.cpp.empty_plugin": "空白插件",
   "item.cpp.low_temperature_plugin": "低温插件",
@@ -499,7 +500,9 @@
 
   "effect.cpp.chain": "连环",
 
-  "chat.cpp.title": "[Craftingpp]",
+  "chat.cpp.title": "[Crafting++]",
+  "chat.cpp.load1": "模组《更多的合成》已成功加载，更多内容请",
+  "chat.cpp.load2": "点击此处进入wiki",
   "chat.cpp.gfow.change": "已切换到 %s",
   "chat.cpp.exp.less": "经验不足",
 

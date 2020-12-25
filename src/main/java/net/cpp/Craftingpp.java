@@ -1,17 +1,23 @@
 package net.cpp;
 
-import net.cpp.api.CppChain;
+import net.cpp.api.PlayerJoinCallback;
 import net.cpp.init.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import static net.cpp.api.CppChat.say;
 
 public class Craftingpp implements ModInitializer {
+
+	public static final Logger logger = LogManager.getLogger("Craftingpp");
 
 	public static final ItemGroup CPP_GROUP_MACHINE = FabricItemGroupBuilder.create(new Identifier("cpp:title.machine")).icon(() -> new ItemStack(CppBlocks.CRAFTING_MACHINE)).build();
 	public static final ItemGroup CPP_GROUP_MISC = FabricItemGroupBuilder.create(new Identifier("cpp:title.misc")).icon(() -> new ItemStack(CppItems.ENCHANTED_IRON)).build();
@@ -22,6 +28,9 @@ public class Craftingpp implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+
+		logger.info("welcome to use cpp");
+
 		CppBlocks.register();
 		CppItems.register();
 		CppBlockEntities.register();
@@ -32,12 +41,10 @@ public class Craftingpp implements ModInitializer {
 		CppChainMap.register();
 		CppPredicates.register();
 
-		// 连环药水效果
-		PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, entity) -> {
-			StatusEffectInstance effect = player.getStatusEffect(CppEffects.CHAIN);
-			if (effect != null && CppChainMap.ChainBlocks.contains(state.getBlock()) && CppChainMap.ChainTools.contains(player.getMainHandStack().getItem())) {
-				CppChain.chain(world, (ServerPlayerEntity) player, pos, state.getBlock());
-			}
+		PlayerJoinCallback.EVENT.register((player, server) -> {
+			if (!player.world.isClient)
+				say(player, new TranslatableText("misc.cpp1", new TranslatableText("chat.cpp.load1"), new TranslatableText("chat.cpp.load2").setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.cjsah.net/ruhuasiyu/"))).formatted(Formatting.GOLD)));
+			return ActionResult.PASS;
 		});
 	}
 }
