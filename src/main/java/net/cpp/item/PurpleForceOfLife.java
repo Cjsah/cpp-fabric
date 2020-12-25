@@ -1,6 +1,5 @@
 package net.cpp.item;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
