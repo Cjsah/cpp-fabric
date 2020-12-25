@@ -41,16 +41,9 @@ public class CyanForceOfMountain extends Item {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         CompoundTag tag = stack.getTag();
-        String direction = "horizontal";
-        int level = 2;
-        int xp = 0;
-        if (tag != null) {
-            direction = tag.getBoolean("horizontal") ? "horizontal" : "vertical";
-            level = tag.getInt("level");
-            xp = tag.getInt("xp");
-        }
-        tooltip.add(new TranslatableText("tooltip.cpp.cfom.direction", new TranslatableText("tooltip.cpp.cfom." + direction)).formatted(Formatting.GREEN));
-        tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("tooltip.cpp.cfom.level", level), new TranslatableText("tooltip.cpp.cfom.xp", xp)).formatted(Formatting.GREEN));
+        assert tag != null; // 没用, 只为去除警告
+        tooltip.add(new TranslatableText("tooltip.cpp.cfom.direction", new TranslatableText("tooltip.cpp.cfom." + (tag.getBoolean("horizontal") ? "horizontal" : "vertical"))).formatted(Formatting.GREEN));
+        tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("tooltip.cpp.cfom.level", tag.getInt("level")), new TranslatableText("tooltip.cpp.cfom.xp", tag.getInt("xp"))).formatted(Formatting.GREEN));
     }
 
     @Override

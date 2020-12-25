@@ -27,8 +27,10 @@ public class AncientScroll extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (stack.hasTag())
+        if (stack.hasTag()) {
+            assert stack.getTag() != null; // 没用, 只为去除警告
             tooltip.add(new TranslatableText("enchantment.minecraft."+ stack.getTag().getString("enchantment")).formatted(Formatting.DARK_PURPLE));
+        }
     }
 
     @Override

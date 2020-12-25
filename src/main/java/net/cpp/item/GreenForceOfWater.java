@@ -39,9 +39,9 @@ public class GreenForceOfWater extends Item {
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         // MJSB
 //        tooltip.set(0, tooltip.get(0).shallowCopy().formatted(Formatting.GOLD));
+        assert stack.getTag() != null; // 没用, 只为去除警告
         tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("block.minecraft.water"), new TranslatableText("word.infinite")).formatted(Formatting.GREEN));
-        int lavaCount = stack.getTag() == null ? 0 : stack.getTag().getInt("lava");
-        tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("block.minecraft.lava"), lavaCount).formatted(Formatting.RED));
+        tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("block.minecraft.lava"), stack.getTag().getInt("lava")).formatted(Formatting.RED));
     }
 
     @Override
