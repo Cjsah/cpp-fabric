@@ -136,6 +136,7 @@ public final class CppItems {
 	public static final Item WARRIOR_GOLEM;
 	public static final Item HERDER_GOLEM;
 	public static final Item SANTA_GIFT;
+	public static final Item COLOR_PALETTE;
 	// 食物
 	public static final Item KETCHUP;
 	public static final Item STRAWBERRY_JAM;
@@ -499,6 +500,7 @@ public final class CppItems {
 		WARRIOR_GOLEM = registerItem("warrior_golem", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		HERDER_GOLEM = registerItem("herder_golem", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		SANTA_GIFT = registerItem("santa_gift", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+		COLOR_PALETTE = registerItem("color_palette", new ColorPaletteItem());
 
 		KETCHUP = registerItem("ketchup", new CppFoodOrPotion(UseAction.EAT, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
 		STRAWBERRY_JAM = registerItem("strawberry_jam", new CppFoodOrPotion(UseAction.EAT, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));

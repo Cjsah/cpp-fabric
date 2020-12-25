@@ -40,9 +40,6 @@ public class OutputDirectionButton extends TexturedButtonWidget {
 		RenderSystem.enableDepthTest();
 		drawTexture(matrices, x, y, IOutputDiractional.dirToByte(blockEntity.getOutputDir()) * 16, isHovered() ? 16 : 0,
 				16, 16, 96, 32);
-		if (this.isHovered()) {
-			this.renderToolTip(matrices, mouseX, mouseY);
-		}
 	}
 
 	@Override

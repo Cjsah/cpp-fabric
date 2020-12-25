@@ -2,6 +2,7 @@ package net.cpp;
 
 import net.cpp.gui.screen.AllInOneMachineScreen;
 import net.cpp.gui.screen.BeaconEnhancerScreen;
+import net.cpp.gui.screen.ColorPaletteScreen;
 import net.cpp.gui.screen.CraftingMachineScreen;
 import net.cpp.gui.screen.EmptyBookshelfScreen;
 import net.cpp.gui.screen.GoldenAnvilScreen;
@@ -31,6 +32,7 @@ public class CraftingppClient implements ClientModInitializer {
 		ScreenRegistry.register(CppScreenHandler.PORTABLE_CRAFTING_MACHINE, PortableCraftingMachineScreen::new);
 		ScreenRegistry.register(CppScreenHandler.GOLDEN_ANVIL, GoldenAnvilScreen::new);
 		ScreenRegistry.register(CppScreenHandler.EMPTY_BOOKSHELF, EmptyBookshelfScreen::new);
+		ScreenRegistry.register(CppScreenHandler.COLOR_PALETTE, ColorPaletteScreen::new);
 	}
 
 }
