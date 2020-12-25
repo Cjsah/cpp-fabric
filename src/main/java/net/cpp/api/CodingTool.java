@@ -86,7 +86,6 @@ public class CodingTool {
 	 * 获取玩家指向的物品实体
 	 *
 	 * @author Cjsah
-	 * @param world world
 	 * @param player 玩家
 	 * @return 物品实体
 	 */

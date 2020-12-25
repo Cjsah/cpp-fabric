@@ -473,8 +473,8 @@ public final class CppItems {
 		BLACK_FORCE_OF_MOON = registerItem("black_force_of_moon", new BlackForceOfMoon(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1).rarity(Rarity.UNCOMMON).rarity(Rarity.UNCOMMON)));
 		PORTABLE_CRAFTING_TABLE = registerItem("portable_crafting_table", new PortableCraftingTable(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		PORTABLE_CRAFTING_MACHINE = registerItem("portable_crafting_machine", new PortableCraftingMachine(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-		MAGNET = registerItem("magnet", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-		TIME_CHECKER = registerItem("time_checker", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		MAGNET = registerItem("magnet", new Magnet(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		TIME_CHECKER = registerItem("time_checker", new TimeChecker(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		TIME_CONDITIONER = registerItem("time_conditioner", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		ORIGIN_OF_THE_WORLD = registerItem("origin_of_the_world", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		COMPRESSOR = registerItem("compressor", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));

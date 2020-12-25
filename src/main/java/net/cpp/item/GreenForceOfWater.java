@@ -4,7 +4,12 @@ import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.block.*;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FluidDrainable;
+import net.minecraft.block.LeveledCauldronBlock;
+import net.minecraft.block.FluidBlock;
+import net.minecraft.block.FluidFillable;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
@@ -48,7 +53,6 @@ public class GreenForceOfWater extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         if (!world.isClient) {
-            user.incrementStat(Stats.USED.getOrCreateStat(this));
             CompoundTag tag = itemStack.getTag();
             assert tag != null; // 没用, 只为去除警告
             BlockHitResult hitResult = raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
@@ -63,9 +67,11 @@ public class GreenForceOfWater extends Item {
                     if (world.canPlayerModifyAt(user, blockPos) && user.canPlaceOn(blockPos.offset(direction), direction, itemStack)) {
                         if (blockState.getBlock() == Blocks.WATER_CAULDRON && ((LeveledCauldronBlock)blockState.getBlock()).isFull(blockState)) {
                             world.setBlockState(blockPos, Blocks.CAULDRON.getDefaultState());
+                            user.incrementStat(Stats.USED.getOrCreateStat(this));
                             return this.changeTag(user, itemStack, Fluids.WATER, tag);
                         }else if (blockState.getBlock() == Blocks.LAVA_CAULDRON) {
                             world.setBlockState(blockPos, Blocks.CAULDRON.getDefaultState());
+                            user.incrementStat(Stats.USED.getOrCreateStat(this));
                             return this.changeTag(user, itemStack, Fluids.LAVA, tag);
                         }else if (blockState.getBlock() instanceof FluidDrainable) {
                             FluidDrainable fluidDrainable = (FluidDrainable) blockState.getBlock();
@@ -75,7 +81,7 @@ public class GreenForceOfWater extends Item {
                                 world.emitGameEvent(user, GameEvent.FLUID_PICKUP, blockPos);
                                 Fluid fluid = itemStack2.getItem() == Items.WATER_BUCKET ? Fluids.WATER : Fluids.LAVA;
                                 Criteria.FILLED_BUCKET.trigger((ServerPlayerEntity) user, itemStack2);
-
+                                user.incrementStat(Stats.USED.getOrCreateStat(this));
                                 return this.changeTag(user, itemStack, fluid, tag);
 
                             }
@@ -92,6 +98,7 @@ public class GreenForceOfWater extends Item {
                         new TranslatableText("chat.cpp.gfow.change", new TranslatableText("block.minecraft." + tag.getString("mode")).formatted(waterMode ? Formatting.RED : Formatting.GREEN)).formatted(Formatting.GOLD)
                 ));
                 itemStack.setTag(tag);
+                user.incrementStat(Stats.USED.getOrCreateStat(this));
                 return TypedActionResult.success(itemStack);
 
             // 放水/岩浆
@@ -109,8 +116,8 @@ public class GreenForceOfWater extends Item {
                         user.incrementStat(Stats.USED.getOrCreateStat(this));
                         return TypedActionResult.success(itemStack);
                     }else if (blockState.getBlock() == Blocks.WATER_CAULDRON && !((LeveledCauldronBlock)blockState.getBlock()).isFull(blockState)){
-                        user.incrementStat(Stats.USED.getOrCreateStat(this));
                         world.setBlockState(blockPos, Blocks.WATER_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, 3));
+                        user.incrementStat(Stats.USED.getOrCreateStat(this));
                         return TypedActionResult.success(itemStack);
 //                    }else if (!(blockState.getBlock() instanceof FluidBlock) && this.placeFluid(user, world, blockPos3, hitResult, fluid)) {
                     }else if (!(blockState.getBlock() instanceof FluidBlock) && world.setBlockState(blockPos3, fluid.getDefaultState().getBlockState())) {
