@@ -5,6 +5,7 @@ import java.util.*;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -167,5 +168,16 @@ public class CodingTool {
 			rst.setTag(nbt);
 		}
 		return rst;
+	}
+	public static void attractItems(Vec3d pos, World world) {
+		for (ItemEntity itemEntity : world.getEntitiesByType(EntityType.ITEM, new Box(pos, pos).expand(16), itemEntity -> pos.isInRange(itemEntity.getPos(), 16) && !itemEntity.cannotPickup())) {
+			Vec3d v = pos.subtract(itemEntity.getPos());
+			double d = pos.distanceTo(itemEntity.getPos());
+			if (d < 1)
+				v.multiply(d);
+			else
+				v = v.multiply(1 / v.length());
+			itemEntity.setVelocity(v);
+		}
 	}
 }

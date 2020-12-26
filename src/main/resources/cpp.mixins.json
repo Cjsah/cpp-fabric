@@ -4,6 +4,8 @@
     "package": "net.cpp.mixin",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
+		"PlayerEntityMixin",
+		"ItemFrameMixin"
     ],
     "client": [
         "ItemStackMixin",

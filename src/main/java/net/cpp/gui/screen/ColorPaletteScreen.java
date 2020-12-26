@@ -4,15 +4,21 @@ import java.awt.Color;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import io.netty.buffer.Unpooled;
 import net.cpp.gui.handler.ColorPaletteScreenHandler;
+import net.cpp.init.CppChannels;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.DyeItem;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
@@ -181,6 +187,9 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 	public int updateRGB() {
 		if (rgb != (rgb = Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]))) {
 			handler.update(rgb);
+//			PacketByteBuf packetByteBuf = new PacketByteBuf(Unpooled.buffer());
+//			packetByteBuf.writeInt(rgb);
+//			ClientPlayNetworking.send(CppChannels.COLOR_PALETTE, packetByteBuf);
 			client.interactionManager.clickButton(handler.syncId, rgb << 2);
 		}
 		return rgb;
