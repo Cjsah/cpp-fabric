@@ -33,6 +33,10 @@ public class ItemStackMixin {
                 tag.putInt("level", 2);
                 tag.putInt("xp", 0);
                 appendTag(tag);
+            }else if (this.item == CppItems.MAGNET) {
+                CompoundTag tag = new CompoundTag();
+                tag.putBoolean("enabled", true);
+                appendTag(tag);
             }
         }
     }

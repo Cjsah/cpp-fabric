@@ -779,8 +779,8 @@ public final class CppItems {
 		return Registry.register(Registry.ITEM, new Identifier(MODID, id), item);
 	}
 
-	private static Item registerBlockItem(String id, Item item) {
-		((BlockItem)item).appendBlocks(Item.BLOCK_ITEMS, item);
+	private static Item registerBlockItem(String id, BlockItem item) {
+		item.appendBlocks(Item.BLOCK_ITEMS, item);
 		return Registry.register(Registry.ITEM, new Identifier(MODID, id), item);
 	}
 

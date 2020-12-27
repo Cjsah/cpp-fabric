@@ -18,8 +18,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -44,17 +46,16 @@ public class GreenForceOfWater extends Item {
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         // MJSB
 //        tooltip.set(0, tooltip.get(0).shallowCopy().formatted(Formatting.GOLD));
-        assert stack.getTag() != null; // 没用, 只为去除警告
+        CompoundTag tag = stack.getOrCreateTag();
         tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("block.minecraft.water"), new TranslatableText("word.infinite")).formatted(Formatting.GREEN));
-        tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("block.minecraft.lava"), stack.getTag().getInt("lava")).formatted(Formatting.RED));
+        tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("block.minecraft.lava"), tag.getInt("lava")).formatted(Formatting.RED));
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         if (!world.isClient) {
-            CompoundTag tag = itemStack.getTag();
-            assert tag != null; // 没用, 只为去除警告
+            CompoundTag tag = itemStack.getOrCreateTag();
             BlockHitResult hitResult = raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
             BlockPos blockPos = hitResult.getBlockPos();
             BlockState blockState = world.getBlockState(blockPos);
@@ -77,7 +78,7 @@ public class GreenForceOfWater extends Item {
                             FluidDrainable fluidDrainable = (FluidDrainable) blockState.getBlock();
                             ItemStack itemStack2 = fluidDrainable.tryDrainFluid(world, blockPos, blockState);
                             if (!itemStack2.isEmpty()) {
-                                fluidDrainable.getDrainSound().ifPresent((sound) -> user.playSound(sound, 1.0F, 1.0F));
+                                fluidDrainable.getDrainSound().ifPresent((sound) -> ((ServerPlayerEntity)user).networkHandler.sendPacket(new PlaySoundS2CPacket(sound, SoundCategory.PLAYERS, user.getX(), user.getY(), user.getZ(), 1.0F, 1.0F)));
                                 world.emitGameEvent(user, GameEvent.FLUID_PICKUP, blockPos);
                                 Fluid fluid = itemStack2.getItem() == Items.WATER_BUCKET ? Fluids.WATER : Fluids.LAVA;
                                 Criteria.FILLED_BUCKET.trigger((ServerPlayerEntity) user, itemStack2);
@@ -95,7 +96,7 @@ public class GreenForceOfWater extends Item {
                 boolean waterMode = Objects.equals(tag.getString("mode"), "water");
                 tag.putString("mode", waterMode ? "lava" : "water");
                 ((ServerPlayerEntity)user).networkHandler.sendPacket(new TitleS2CPacket(TitleS2CPacket.Action.ACTIONBAR,
-                        new TranslatableText("chat.cpp.gfow.change", new TranslatableText("block.minecraft." + tag.getString("mode")).formatted(waterMode ? Formatting.RED : Formatting.GREEN)).formatted(Formatting.GOLD)
+                        new TranslatableText("chat.cpp.change", new TranslatableText("block.minecraft." + tag.getString("mode")).formatted(waterMode ? Formatting.RED : Formatting.GREEN)).formatted(Formatting.GOLD)
                 ));
                 itemStack.setTag(tag);
                 user.incrementStat(Stats.USED.getOrCreateStat(this));
