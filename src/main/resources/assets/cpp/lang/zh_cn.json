@@ -503,7 +503,7 @@
   "chat.cpp.title": "[Crafting++]",
   "chat.cpp.load1": "模组《更多的合成》已成功加载，更多内容请",
   "chat.cpp.load2": "点击此处进入wiki",
-  "chat.cpp.gfow.change": "已切换到 %s",
+  "chat.cpp.change": "已切换到 %s",
   "chat.cpp.exp.less": "经验不足",
 
   "tooltip.cpp.gfow.water": "水 %s",

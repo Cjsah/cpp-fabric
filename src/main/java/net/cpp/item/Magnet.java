@@ -23,7 +23,6 @@ public class Magnet extends Item implements IDefaultTagItem {
 
 	@Override
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-		super.appendTooltip(stack, world, tooltip, context);
 		boolean enabled = stack.getOrCreateTag().getBoolean("enabled");
 		tooltip.add(new TranslatableText(enabled ? "addServer.resourcePack.enabled" : "addServer.resourcePack.disabled").formatted(enabled ? Formatting.GREEN : Formatting.GRAY));
 	}
@@ -34,7 +33,7 @@ public class Magnet extends Item implements IDefaultTagItem {
 		if (!world.isClient) {
 			boolean enabled;
 			itemStack.getOrCreateTag().putBoolean("enabled", enabled = !itemStack.getOrCreateTag().getBoolean("enabled"));
-			((ServerPlayerEntity) user).networkHandler.sendPacket(new TitleS2CPacket(TitleS2CPacket.Action.ACTIONBAR, new TranslatableText("chat.cpp.gfow.change", new TranslatableText(enabled ? "addServer.resourcePack.enabled" : "addServer.resourcePack.disabled").formatted(enabled ? Formatting.GREEN : Formatting.GRAY))));
+			((ServerPlayerEntity) user).networkHandler.sendPacket(new TitleS2CPacket(TitleS2CPacket.Action.ACTIONBAR, new TranslatableText("chat.cpp.change", new TranslatableText(enabled ? "addServer.resourcePack.enabled" : "addServer.resourcePack.disabled").formatted(enabled ? Formatting.GREEN : Formatting.GRAY))));
 		}
 		return TypedActionResult.pass(itemStack);
 	}
