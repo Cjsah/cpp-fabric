@@ -112,9 +112,11 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem{
         }
         return false;
     }
-    public void getDefaultTag(CompoundTag tag) {
+
+    public CompoundTag getDefaultTag(CompoundTag tag) {
 		tag.putBoolean("horizontal", true);
         tag.putInt("level", 2);
         tag.putInt("xp", 0);
+        return tag;
 	}
 }

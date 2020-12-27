@@ -22,7 +22,13 @@ public abstract class ItemStackMixin {
 	@Inject(at = @At("HEAD"), method = "updateEmptyState()V")
 	private void updateEmptyState(CallbackInfo info) {
 		if (item != null && item instanceof IDefaultTagItem) {
-			((IDefaultTagItem)item).getDefaultTag(this.getOrCreateTag());
+			CompoundTag tag = this.getOrCreateTag();
+			CompoundTag newTag = ((IDefaultTagItem)item).getDefaultTag(new CompoundTag());
+			for (String i : newTag.getKeys()){
+				if (!tag.contains(i)) {
+					tag.put(i, newTag.get(i));
+				}
+			}
 		}
 	}
 }
