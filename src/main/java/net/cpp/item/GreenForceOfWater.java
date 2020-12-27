@@ -22,6 +22,7 @@ import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -123,6 +124,10 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
                         if (user instanceof ServerPlayerEntity) {
                             Criteria.PLACED_BLOCK.trigger((ServerPlayerEntity) user, blockPos3, itemStack);
                         }
+
+                        ((ServerPlayerEntity)user).networkHandler.sendPacket(new PlaySoundS2CPacket(fluid == Fluids.WATER ? SoundEvents.ITEM_BUCKET_EMPTY : SoundEvents.ITEM_BUCKET_EMPTY_LAVA, SoundCategory.PLAYERS, user.getX(), user.getY(), user.getZ(), 1.0F, 1.0F));
+
+
                         if (fluid == Fluids.LAVA && !user.isCreative()) {
                             tag.putInt("lava", tag.getInt("lava") - 1);
                         }
