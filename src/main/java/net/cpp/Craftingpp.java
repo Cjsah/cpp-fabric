@@ -1,6 +1,6 @@
 package net.cpp;
 
-import net.cpp.api.PlayerJoinCallback;
+import net.cpp.api.IPlayerJoinCallback;
 import net.cpp.init.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
@@ -43,7 +43,7 @@ public class Craftingpp implements ModInitializer {
 		CppChainMap.register();
 		CppPredicates.register();
 
-		PlayerJoinCallback.EVENT.register((player, server) -> {
+		IPlayerJoinCallback.EVENT.register((player, server) -> {
 			if (!player.world.isClient)
 				say(player, new TranslatableText("misc.cpp1", new TranslatableText("chat.cpp.load1"), new TranslatableText("chat.cpp.load2").setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.cjsah.net/ruhuasiyu/"))).formatted(Formatting.GOLD)));
 			return ActionResult.PASS;
