@@ -53,7 +53,7 @@ public class RedForceOfFire extends Item {
 			BlockState blockState = world.getBlockState(pos);
 			List<ItemStack> list = blockState.getDroppedStacks(new LootContext.Builder((ServerWorld) world).parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(pos)).parameter(LootContextParameters.TOOL, SILK_TOUCH_PICKAXE));
 			for (ItemStack itemStack : list) {
-				SmeltingRecipe recipe = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, new SimpleInventory(new ItemStack[] { itemStack }), world).orElse(null);
+				SmeltingRecipe recipe = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, new SimpleInventory(itemStack), world).orElse(null);
 				if (recipe != null) {
 					ItemStack output = recipe.getOutput().copy();
 					output.setCount(itemStack.getCount());
