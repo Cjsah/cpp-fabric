@@ -5,7 +5,6 @@ import java.util.*;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.AreaEffectCloudEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -108,7 +107,7 @@ public class CodingTool {
 			if (player.world.getBlockState(new BlockPos(pos)).getBlock() != Blocks.AIR) {
 				return null;
 			}
-			Box box = new Box(pos.x - 0.005, pos.y-0.2, pos.z - 0.005, pos.x + 0.005, pos.y + 0.005, pos.z + 0.005);
+			Box box = new Box(pos.x - 0.005, pos.y - 0.2, pos.z - 0.005, pos.x + 0.005, pos.y + 0.005, pos.z + 0.005);
 			List<ItemEntity> list = player.world.getEntitiesByClass(ItemEntity.class, box, (entity) -> entity != null && entity.isAlive());
 			if (!list.isEmpty()) {
 				return list.get(0);
