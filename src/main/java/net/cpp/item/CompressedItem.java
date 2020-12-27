@@ -1,10 +1,17 @@
 package net.cpp.item;
 
+import java.util.List;
+
 import net.cpp.init.CppItems;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Pair;
 import net.minecraft.util.TypedActionResult;
@@ -15,12 +22,17 @@ public class CompressedItem extends Item {
 		super(settings);
 	}
 
+	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+		CompoundTag tag = stack.getOrCreateTag();
+		tooltip.add(new TranslatableText(ItemStack.fromTag(tag.getCompound("item")).getTranslationKey()).formatted(Formatting.YELLOW));
+		tooltip.add(new TranslatableText("tooltip.cpp.multiple", tag.getByte("multiple")).formatted(Formatting.DARK_AQUA));
+	}
+
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack itemStack = user.getStackInHand(hand);
 		if (!world.isClient) {
 			Pair<ItemStack, Integer> uncompressed = uncompress(itemStack);
-//			System.out.println(uncompressed.getRight());
 			if (user.isSneaking()) {
 				int i = uncompressed.getRight();
 				while (i-- > 0)
@@ -30,7 +42,6 @@ public class CompressedItem extends Item {
 				user.dropStack(uncompressed.getLeft());
 				itemStack.decrement(1);
 			}
-//			user.setStackInHand(hand, itemStack);
 			return TypedActionResult.success(itemStack);
 		}
 		return TypedActionResult.pass(itemStack);
@@ -51,5 +62,5 @@ public class CompressedItem extends Item {
 		}
 		return new Pair<>(result, count);
 	}
-
+	
 }

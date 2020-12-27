@@ -144,7 +144,7 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
     }
 
 	@Override
-	public CompoundTag getDefaultTag(CompoundTag tag) {
+	public CompoundTag modifyDefaultTag(CompoundTag tag) {
 		tag.putString("mode", "water");
         tag.putInt("lava", 0);
         return tag;

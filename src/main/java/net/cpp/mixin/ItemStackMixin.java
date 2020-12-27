@@ -23,7 +23,7 @@ public abstract class ItemStackMixin {
 	private void updateEmptyState(CallbackInfo info) {
 		if (item != null && item instanceof IDefaultTagItem) {
 			CompoundTag tag = this.getOrCreateTag();
-			CompoundTag newTag = ((IDefaultTagItem)item).getDefaultTag(new CompoundTag());
+			CompoundTag newTag = ((IDefaultTagItem)item).modifyDefaultTag(new CompoundTag());
 			for (String i : newTag.getKeys()){
 				if (!tag.contains(i)) {
 					tag.put(i, newTag.get(i));

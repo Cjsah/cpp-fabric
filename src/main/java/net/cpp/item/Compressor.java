@@ -15,6 +15,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
@@ -37,6 +38,7 @@ public class Compressor extends Item {
 					itemEntity.setStack(itemStack);
 					((ServerPlayerEntity) user).networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_PISTON_EXTEND, SoundCategory.PLAYERS, pos.getX(), pos.getY(), pos.getZ(), 1, 1));
 					((ServerPlayerEntity) user).networkHandler.sendPacket(new ParticleS2CPacket(ParticleTypes.CRIT, false, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, .2f, .2f, .2f, .02f, 3));
+					user.incrementStat(Stats.USED.getOrCreateStat(this));
 					return TypedActionResult.success(item);
 				}
 			}
@@ -48,12 +50,14 @@ public class Compressor extends Item {
 		ItemStack result = itemStack;
 		if (itemStack.getCount() == itemStack.getMaxCount()) {
 			if (itemStack.isOf(CppItems.COMPRESSED_ITEM) || itemStack.isOf(Items.EXPERIENCE_BOTTLE)) {
-				(result = itemStack.copy()).getOrCreateTag().putByte("multiple", (byte) (itemStack.getOrCreateTag().getByte("multiple") + 1));
-				result.setCount(1);
+				int multiple = itemStack.getOrCreateTag().getByte("multiple");
+				if (multiple < 8) {
+					(result = itemStack.copy()).getOrCreateTag().putByte("multiple", (byte) (multiple + 1));
+					result.setCount(1);
+				}
 			} else {
 				CompoundTag tag = new CompoundTag();
 				itemStack.toTag(tag);
-				tag.remove("Count");
 				result = new ItemStack(CppItems.COMPRESSED_ITEM);
 				result.getOrCreateTag().put("item", tag);
 				result.getOrCreateTag().putByte("multiple", (byte) 1);
