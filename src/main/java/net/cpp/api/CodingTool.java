@@ -12,11 +12,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
+import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import static net.cpp.api.CppChat.say;
 
 public class CodingTool {
 	private CodingTool() {
@@ -173,6 +181,7 @@ public class CodingTool {
 		}
 		return rst;
 	}
+
 	public static void attractItems(Vec3d pos, World world) {
 		for (ItemEntity itemEntity : world.getEntitiesByType(EntityType.ITEM, new Box(pos, pos).expand(16), itemEntity -> pos.isInRange(itemEntity.getPos(), 16) && !itemEntity.cannotPickup())) {
 			Vec3d v = pos.subtract(itemEntity.getPos());
@@ -182,6 +191,39 @@ public class CodingTool {
 			else
 				v = v.multiply(1 / v.length());
 			itemEntity.setVelocity(v);
+		}
+	}
+
+	public static void timeChecker(World world) {
+		if (!world.isClient) {
+			long time = world.getTimeOfDay();
+			int todayTime = (int)(time - time / 24000 * 24000);
+			switch (todayTime) {
+				case 0: {
+					sendMessage(world, "morning", true);
+					break;
+				}
+				case 6000: {
+					sendMessage(world, "noon", false);
+					break;
+				}
+				case 12000: {
+					sendMessage(world, "night", true);
+					break;
+				}
+				case 18000: {
+					sendMessage(world, "midnight", false);
+					break;
+				}
+			}
+		}
+	}
+
+	private static void sendMessage(World world, String name, boolean playSound) {
+		for (PlayerEntity player : world.getPlayers()) {
+			say(player, new TranslatableText("chat.cpp.time." + name));
+			if (playSound)
+				((ServerPlayerEntity)player).networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, player.getX(), player.getY(), player.getZ(), 20.0F, 1.5F));
 		}
 	}
 }

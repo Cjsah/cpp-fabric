@@ -505,6 +505,10 @@
   "chat.cpp.load2": "点击此处进入wiki",
   "chat.cpp.change": "已切换到 %s",
   "chat.cpp.exp.less": "经验不足",
+  "chat.cpp.time.morning": "现在时间 06:00, 早上好",
+  "chat.cpp.time.noon": "现在时间 12:00",
+  "chat.cpp.time.night": "现在时间 18:00, 太阳下山了",
+  "chat.cpp.time.midnight": "现在时间 00:00",
 
   "tooltip.cpp.gfow.water": "水 %s",
   "tooltip.cpp.gfow.lava": "岩浆 %s",
