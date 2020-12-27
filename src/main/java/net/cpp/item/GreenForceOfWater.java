@@ -34,7 +34,7 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
-public class GreenForceOfWater extends Item {
+public class GreenForceOfWater extends Item implements IDefaultTagItem {
 
     public GreenForceOfWater(Settings settings) {
         super(settings);
@@ -145,4 +145,12 @@ public class GreenForceOfWater extends Item {
         }
         return TypedActionResult.success(item);
     }
+
+	@Override
+	public CompoundTag getDefaultTag() {
+		CompoundTag tag = new CompoundTag();
+		tag.putString("mode", "water");
+        tag.putInt("lava", 0);
+		return tag;
+	}
 }

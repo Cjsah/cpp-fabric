@@ -66,7 +66,7 @@ public class RedForceOfFire extends Item {
 				}
 			}
 			if (success) {
-				((ServerPlayerEntity) user).networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, pos.getX(), pos.getY(), pos.getZ(), 1, 1));
+				((ServerPlayerEntity) user).networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.PLAYERS, pos.getX(), pos.getY(), pos.getZ(), 1, 1));
 				((ServerPlayerEntity) user).networkHandler.sendPacket(new ParticleS2CPacket(ParticleTypes.FLAME, false, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, .2f, .2f, .2f, .02f, 3));
 				return TypedActionResult.success(item);
 			}

@@ -28,7 +28,7 @@ import java.util.List;
 import static net.cpp.api.CppChat.say;
 import static net.cpp.api.CodingTool.getExperience;
 
-public class CyanForceOfMountain extends Item {
+public class CyanForceOfMountain extends Item implements IDefaultTagItem{
     public CyanForceOfMountain(Settings settings) {
         super(settings);
     }
@@ -116,4 +116,11 @@ public class CyanForceOfMountain extends Item {
         }
         return false;
     }
+    public CompoundTag getDefaultTag() {
+		CompoundTag tag = new CompoundTag();
+		tag.putBoolean("horizontal", true);
+        tag.putInt("level", 2);
+        tag.putInt("xp", 0);
+		return tag;
+	}
 }
