@@ -68,6 +68,7 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 	/** 用于目标选择器的命令源 */
 	private int timeCounter;
 	protected ServerCommandSource serverCommandSource;
+	private int cooldown = 160;
 	public final PropertyDelegate propertyDelegate = new PropertyDelegate() {
 
 		@Override
@@ -143,13 +144,13 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 
 	public static void tick(World world, BlockPos pos, BlockState state, BeaconEnhancerBlockEntity blockEntity) {
 		if (!world.isClient) {
-			if (++blockEntity.timeCounter >= 200) {
+			if (++blockEntity.timeCounter >= blockEntity.cooldown) {
 				blockEntity.timeCounter = 0;
 				BlockEntity tempBlockEntity = world.getBlockEntity(pos.down());
 				if (tempBlockEntity instanceof BeaconBlockEntity) {
 					BeaconBlockEntity beaconBlockEntity = (BeaconBlockEntity) tempBlockEntity;
 					int level = beaconBlockEntity.toInitialChunkDataTag().getInt("Levels");
-
+					blockEntity.cooldown = 160 - level * 20;
 					// 仅当信标激活时才工作
 					if (level >= 0) {
 
@@ -179,12 +180,11 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 							}
 							// 施加状态效果
 							for (PlayerEntity e : players) {
-								e.addStatusEffect(new StatusEffectInstance(blockEntity.playerEffect, 400, 0, true, true));
+								e.addStatusEffect(new StatusEffectInstance(blockEntity.playerEffect, blockEntity.playerEffect == StatusEffects.NIGHT_VISION ? 400 : 200, 0, true, true));
 							}
-//							System.out.println(entities);
 							for (MobEntity e : entities) {
 								if (blockEntity.getMobEffect() != ATTRACTING)
-									e.addStatusEffect(new StatusEffectInstance(blockEntity.mobEffect, 200, 0, true, true));
+									e.addStatusEffect(new StatusEffectInstance(blockEntity.mobEffect, 400, 0, true, true));
 								else {
 									e.teleport(pos.getX() + .5, pos.getY() + 1, pos.getZ() + .5);
 								}

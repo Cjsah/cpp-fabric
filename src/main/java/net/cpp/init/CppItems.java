@@ -477,7 +477,7 @@ public final class CppItems {
 		TIME_CHECKER = registerItem("time_checker", new TimeChecker(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		TIME_CONDITIONER = registerItem("time_conditioner", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		ORIGIN_OF_THE_WORLD = registerItem("origin_of_the_world", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-		COMPRESSOR = registerItem("compressor", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+		COMPRESSOR = registerItem("compressor", new Compressor(new Item.Settings().group(CPP_GROUP_TOOL)));
 		ELDER_S_WORDS = registerItem("elder_s_words", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		COORDINATE_RECORDER = registerItem("coordinate_recorder", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		MUFFLER = registerItem("muffler", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
@@ -755,7 +755,7 @@ public final class CppItems {
 		RED_SIGN = registerItem("red_sign", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 		BLACK_SIGN = registerItem("black_sign", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 		GLASS_SIGN = registerItem("glass_sign", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
-		COMPRESSED_ITEM = registerItem("compressed_item", new CompressedItem());
+		COMPRESSED_ITEM = registerItem("compressed_item", new CompressedItem(new Item.Settings()));
 		COMPRESSED_EXPERIENCE_BOTTLE = registerItem("compressed_experience_bottle", new CompressedExperienceBottleItem());
 		{
 			Item[] flowers = { LYCORIS_RADIATA, TRIFOLIUM, BLACKTHORN, CATTAIL, MARIGOLD, HIBISCUS, HYACINTH, CALAMUS,

@@ -27,6 +27,7 @@ import net.cpp.gui.handler.ItemProcessorScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppItems;
+import net.cpp.item.Compressor;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -111,19 +112,7 @@ public class ItemProcessorBlockEntity extends AOutputMachineBlockEntity {
 				} else if (tool == CppItems.COMPRESSOR) {
 // 压缩器
 					if (input1.getCount() >= input1.getMaxCount() && (output1.isEmpty() || output1.getCount() < output1.getMaxCount())) {
-						ItemStack output;
-						if (input1.getItem() == CppItems.COMPRESSED_ITEM || input1.getItem() == CppItems.COMPRESSED_EXPERIENCE_BOTTLE) {
-							output = input1.copy();
-							output.setCount(1);
-							output.getOrCreateTag().putByte("mutiple", (byte) (input1.getOrCreateTag().getByte("mutiple") + 1));
-						} else {
-							output = new ItemStack(input1.getItem() == EXPERIENCE_BOTTLE ? CppItems.COMPRESSED_EXPERIENCE_BOTTLE : CppItems.COMPRESSED_ITEM);
-							CompoundTag inputItemNBT = itemStackToTag(input1);
-							inputItemNBT.remove("Slot");
-							inputItemNBT.remove("Count");
-							output.putSubTag("item", inputItemNBT);
-							output.getTag().putByte("mutiple", (byte) 1);
-						}
+						ItemStack output = Compressor.compress(input1);
 						boolean ed = false;
 						if (ed = output1.isEmpty())
 							blockEntity.setStack(2, output);
