@@ -4,111 +4,77 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SeaPickleBlock;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.ToolItem;
+import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.SmeltingRecipe;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RedForceOfFire extends Item {
+	public static final ItemStack SILK_TOUCH_PICKAXE = new ItemStack(Items.NETHERITE_PICKAXE);
 
-    private static final Map<Block, Item> furnaceResult = new HashMap<>();
+	public RedForceOfFire(Settings settings) {
+		super(settings);
+	}
 
-    public RedForceOfFire(Settings settings) {
-        super(settings);
-        this.register();
-    }
+	@Override
+	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+		ItemStack item = user.getStackInHand(hand);
+		if (!world.isClient) {
+			boolean success = false;
+			BlockPos pos = raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY).getBlockPos();
+			BlockState blockState = world.getBlockState(pos);
+			List<ItemStack> list = blockState.getDroppedStacks(new LootContext.Builder((ServerWorld) world).parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(pos)).parameter(LootContextParameters.TOOL, SILK_TOUCH_PICKAXE));
+			for (ItemStack itemStack : list) {
+				SmeltingRecipe recipe = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, new SimpleInventory(new ItemStack[] { itemStack }), world).orElse(null);
+				if (recipe != null) {
+					ItemStack output = recipe.getOutput().copy();
+					output.setCount(itemStack.getCount());
+					ItemEntity spawnItem = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), output);
+					spawnItem.setToDefaultPickupDelay();
+					world.setBlockState(pos, Blocks.AIR.getDefaultState());
+					world.spawnEntity(spawnItem);
+					user.incrementStat(Stats.USED.getOrCreateStat(this));
+					success = true;
+				}
+			}
+			if (success) {
+				((ServerPlayerEntity) user).networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, pos.getX(), pos.getY(), pos.getZ(), 1, 1));
+				((ServerPlayerEntity) user).networkHandler.sendPacket(new ParticleS2CPacket(ParticleTypes.FLAME, false, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, .2f, .2f, .2f, .02f, 3));
+				return TypedActionResult.success(item);
+			}
+		}
+		return TypedActionResult.pass(item);
+	}
 
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack item = user.getStackInHand(hand);
-        if (!world.isClient) {
-            BlockPos pos = raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY).getBlockPos();
-            BlockState blockState = world.getBlockState(pos);
-            Block block = blockState.getBlock();
-            if (furnaceResult.get(block) != null) {
-                ItemEntity spawnItem = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(furnaceResult.get(block), block != Blocks.SEA_PICKLE ? 1 : blockState.get(SeaPickleBlock.PICKLES)));
-                spawnItem.setToDefaultPickupDelay();
-                world.setBlockState(pos, Blocks.AIR.getDefaultState());
-                world.spawnEntity(spawnItem);
-                user.incrementStat(Stats.USED.getOrCreateStat(this));
-                return TypedActionResult.success(item);
-            }
-        }
-        return TypedActionResult.pass(item);
-    }
-
-    private void register() {
-        furnaceResult.put(Blocks.COBBLESTONE, Items.STONE);
-        furnaceResult.put(Blocks.STONE, Items.SMOOTH_STONE);
-        furnaceResult.put(Blocks.SAND, Items.GLASS);
-        furnaceResult.put(Blocks.WET_SPONGE, Items.SPONGE);
-        furnaceResult.put(Blocks.STONE_BRICKS, Items.CRACKED_STONE_BRICKS);
-        furnaceResult.put(Blocks.DARK_OAK_LOG, Items.CHARCOAL);
-        furnaceResult.put(Blocks.DARK_OAK_WOOD, Items.CHARCOAL);
-        furnaceResult.put(Blocks.STRIPPED_DARK_OAK_LOG, Items.CHARCOAL);
-        furnaceResult.put(Blocks.STRIPPED_DARK_OAK_WOOD, Items.CHARCOAL);
-        furnaceResult.put(Blocks.OAK_LOG, Items.CHARCOAL);
-        furnaceResult.put(Blocks.OAK_WOOD, Items.CHARCOAL);
-        furnaceResult.put(Blocks.STRIPPED_OAK_LOG, Items.CHARCOAL);
-        furnaceResult.put(Blocks.STRIPPED_OAK_WOOD, Items.CHARCOAL);
-        furnaceResult.put(Blocks.ACACIA_LOG, Items.CHARCOAL);
-        furnaceResult.put(Blocks.ACACIA_WOOD, Items.CHARCOAL);
-        furnaceResult.put(Blocks.STRIPPED_ACACIA_LOG, Items.CHARCOAL);
-        furnaceResult.put(Blocks.STRIPPED_ACACIA_WOOD, Items.CHARCOAL);
-        furnaceResult.put(Blocks.BIRCH_LOG, Items.CHARCOAL);
-        furnaceResult.put(Blocks.BIRCH_WOOD, Items.CHARCOAL);
-        furnaceResult.put(Blocks.STRIPPED_BIRCH_LOG, Items.CHARCOAL);
-        furnaceResult.put(Blocks.STRIPPED_BIRCH_WOOD, Items.CHARCOAL);
-        furnaceResult.put(Blocks.JUNGLE_LOG, Items.CHARCOAL);
-        furnaceResult.put(Blocks.JUNGLE_WOOD, Items.CHARCOAL);
-        furnaceResult.put(Blocks.STRIPPED_JUNGLE_LOG, Items.CHARCOAL);
-        furnaceResult.put(Blocks.STRIPPED_JUNGLE_WOOD, Items.CHARCOAL);
-        furnaceResult.put(Blocks.SPRUCE_LOG, Items.CHARCOAL);
-        furnaceResult.put(Blocks.SPRUCE_WOOD, Items.CHARCOAL);
-        furnaceResult.put(Blocks.STRIPPED_SPRUCE_LOG, Items.CHARCOAL);
-        furnaceResult.put(Blocks.STRIPPED_SPRUCE_WOOD, Items.CHARCOAL);
-        furnaceResult.put(Blocks.COAL_ORE, Items.COAL);
-        furnaceResult.put(Blocks.IRON_ORE, Items.IRON_INGOT);
-        furnaceResult.put(Blocks.GOLD_ORE, Items.GOLD_INGOT);
-        furnaceResult.put(Blocks.DIAMOND_ORE, Items.DIAMOND);
-        furnaceResult.put(Blocks.LAPIS_ORE, Items.LAPIS_LAZULI);
-        furnaceResult.put(Blocks.EMERALD_ORE, Items.EMERALD);
-        furnaceResult.put(Blocks.REDSTONE_ORE, Items.REDSTONE);
-        furnaceResult.put(Blocks.COPPER_ORE, Items.COPPER_INGOT);
-        furnaceResult.put(Blocks.ANCIENT_DEBRIS, Items.NETHERITE_SCRAP);
-        furnaceResult.put(Blocks.NETHER_QUARTZ_ORE, Items.QUARTZ);
-        furnaceResult.put(Blocks.CLAY, Items.BRICK);
-        furnaceResult.put(Blocks.CACTUS, Items.GREEN_DYE);
-        furnaceResult.put(Blocks.SEA_PICKLE, Items.LIME_DYE);
-        furnaceResult.put(Blocks.WHITE_TERRACOTTA, Items.WHITE_GLAZED_TERRACOTTA);
-        furnaceResult.put(Blocks.ORANGE_TERRACOTTA, Items.ORANGE_GLAZED_TERRACOTTA);
-        furnaceResult.put(Blocks.MAGENTA_TERRACOTTA, Items.MAGENTA_GLAZED_TERRACOTTA);
-        furnaceResult.put(Blocks.LIGHT_BLUE_TERRACOTTA, Items.LIGHT_BLUE_GLAZED_TERRACOTTA);
-        furnaceResult.put(Blocks.YELLOW_TERRACOTTA, Items.YELLOW_GLAZED_TERRACOTTA);
-        furnaceResult.put(Blocks.LIME_TERRACOTTA, Items.LIME_GLAZED_TERRACOTTA);
-        furnaceResult.put(Blocks.PINK_TERRACOTTA, Items.PINK_GLAZED_TERRACOTTA);
-        furnaceResult.put(Blocks.GRAY_TERRACOTTA, Items.GRAY_GLAZED_TERRACOTTA);
-        furnaceResult.put(Blocks.LIGHT_GRAY_TERRACOTTA, Items.LIGHT_GRAY_GLAZED_TERRACOTTA);
-        furnaceResult.put(Blocks.CYAN_TERRACOTTA, Items.CYAN_GLAZED_TERRACOTTA);
-        furnaceResult.put(Blocks.PURPLE_TERRACOTTA, Items.PURPLE_GLAZED_TERRACOTTA);
-        furnaceResult.put(Blocks.BLUE_TERRACOTTA, Items.BLUE_GLAZED_TERRACOTTA);
-        furnaceResult.put(Blocks.BROWN_TERRACOTTA, Items.BROWN_GLAZED_TERRACOTTA);
-        furnaceResult.put(Blocks.GREEN_TERRACOTTA, Items.GREEN_GLAZED_TERRACOTTA);
-        furnaceResult.put(Blocks.RED_TERRACOTTA, Items.RED_GLAZED_TERRACOTTA);
-        furnaceResult.put(Blocks.BLACK_TERRACOTTA, Items.BLACK_GLAZED_TERRACOTTA);
-        furnaceResult.put(Blocks.QUARTZ_BLOCK, Items.SMOOTH_QUARTZ);
-        furnaceResult.put(Blocks.NETHERRACK, Items.NETHER_BRICK);
-        furnaceResult.put(Blocks.NETHER_BRICKS, Items.CRACKED_NETHER_BRICKS);
-        furnaceResult.put(Blocks.POLISHED_BLACKSTONE_BRICKS, Items.CRACKED_POLISHED_BLACKSTONE_BRICKS);
-    }
+	static {
+		SILK_TOUCH_PICKAXE.addEnchantment(Enchantments.SILK_TOUCH, 1);
+	}
 }

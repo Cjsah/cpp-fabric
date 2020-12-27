@@ -507,7 +507,7 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		addSell(93, EMERALD, 12, enchantOf(Enchantments.MULTISHOT), 1, 40);
 
 		SELL_TABLE.add(new Recipe(GOLD_INGOT, 1, 4, 120, LootTables.PIGLIN_BARTERING_GAMEPLAY));
-		addSell(95, CppItems.MOON_SHARD, 1, CppItems.CHARACTER, 1, 64, 40);
+		SELL_TABLE.add(new Recipe(CppItems.MOON_SHARD, 1, 64, 40, blockEntity -> net.cpp.item.Character.randomGetOne()));
 		addSell(96, CppItems.MOON_SHARD, 1, SHULKER_BOX, 1, 64, 40);
 		addSell(97, CppItems.MOON_SHARD, 1, CppItems.SANTA_GIFT, 1, 64, 40);
 		SELL_TABLE.add(new Recipe(CppItems.MOON_SHARD, 1, 64, 40, blockEntity -> {
