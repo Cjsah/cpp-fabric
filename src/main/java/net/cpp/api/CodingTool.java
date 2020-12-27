@@ -5,6 +5,7 @@ import java.util.*;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.AreaEffectCloudEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -91,19 +92,22 @@ public class CodingTool {
 	 * @return 物品实体
 	 */
 	public static ItemEntity rayItem(World world, PlayerEntity player, float length) {
-		Vec3d playerPos = new Vec3d(player.getX(), player.getEyeY(), player.getZ());
+		Vec3d playerPos = player.getCameraPosVec(1.0F);
 		Vec3d pos = playerPos;
 		float yaw = player.yaw;
 		float pitch = player.pitch;
-		float x = -MathHelper.sin(yaw * (float) (Math.PI) / 180F) * length;
 		float y = -MathHelper.sin(pitch * (float) (Math.PI) / 180F) * length;
-		float z = MathHelper.cos(yaw * (float) (Math.PI) / 180F) * length;
+		float x = -MathHelper.sin(yaw * (float) (Math.PI) / 180F);
+		float z = MathHelper.cos(yaw * (float) (Math.PI) / 180F);
+		float proportion = MathHelper.sqrt((((length * length) - (y * y)) / ((x * x) + (z * z))));
+		x *= proportion;
+		z *= proportion;
 		while (Math.sqrt(Math.pow(pos.x - playerPos.x, 2) + Math.pow(pos.y - playerPos.y, 2) + Math.pow(pos.z - playerPos.z, 2)) < 5) {
 			pos = pos.add(x, y, z);
 			if (world.getBlockState(new BlockPos(pos)).getBlock() != Blocks.AIR) {
 				return null;
 			}
-			Box box = new Box(pos.x - 0.05, pos.y - 0.35, pos.z - 0.05, pos.x + 0.05, pos.y, pos.z + 0.05);
+			Box box = new Box(pos.x - 0.005, pos.y-0.2, pos.z - 0.005, pos.x + 0.005, pos.y + 0.005, pos.z + 0.005);
 			List<ItemEntity> list = world.getEntitiesByClass(ItemEntity.class, box, (entity) -> entity != null && entity.isAlive());
 			if (!list.isEmpty()) {
 				return list.get(0);
