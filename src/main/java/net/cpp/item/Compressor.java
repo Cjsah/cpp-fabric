@@ -16,7 +16,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Pair;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -30,7 +29,7 @@ public class Compressor extends Item {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack item = user.getStackInHand(hand);
 		if (!world.isClient) {
-			ItemEntity itemEntity = rayItem(world, user, 0.2F);
+			ItemEntity itemEntity = rayItem(user);
 			if (itemEntity != null) {
 				Vec3d pos = itemEntity.getPos();
 				ItemStack itemStack = itemEntity.getStack();

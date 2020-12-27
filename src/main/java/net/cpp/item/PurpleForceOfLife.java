@@ -30,7 +30,7 @@ public class PurpleForceOfLife extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack item = user.getStackInHand(hand);
         if (!world.isClient) {
-            ItemEntity itemEntity = rayItem(world, user, 0.05F);
+            ItemEntity itemEntity = rayItem(user);
             if (itemEntity != null && exchange.get(itemEntity.getStack().getItem()) != null && itemEntity.getStack().getCount() == 2) {
                 ItemEntity spawnItem = new ItemEntity(world, itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), new ItemStack(exchange.get(itemEntity.getStack().getItem())));
                 spawnItem.setToDefaultPickupDelay();

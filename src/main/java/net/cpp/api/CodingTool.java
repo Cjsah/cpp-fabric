@@ -91,7 +91,8 @@ public class CodingTool {
 	 * @param player 玩家
 	 * @return 物品实体
 	 */
-	public static ItemEntity rayItem(World world, PlayerEntity player, float length) {
+	public static ItemEntity rayItem(PlayerEntity player) {
+		float length = 0.05F;
 		Vec3d playerPos = player.getCameraPosVec(1.0F);
 		Vec3d pos = playerPos;
 		float yaw = player.yaw;
@@ -104,11 +105,11 @@ public class CodingTool {
 		z *= proportion;
 		while (Math.sqrt(Math.pow(pos.x - playerPos.x, 2) + Math.pow(pos.y - playerPos.y, 2) + Math.pow(pos.z - playerPos.z, 2)) < 5) {
 			pos = pos.add(x, y, z);
-			if (world.getBlockState(new BlockPos(pos)).getBlock() != Blocks.AIR) {
+			if (player.world.getBlockState(new BlockPos(pos)).getBlock() != Blocks.AIR) {
 				return null;
 			}
 			Box box = new Box(pos.x - 0.005, pos.y-0.2, pos.z - 0.005, pos.x + 0.005, pos.y + 0.005, pos.z + 0.005);
-			List<ItemEntity> list = world.getEntitiesByClass(ItemEntity.class, box, (entity) -> entity != null && entity.isAlive());
+			List<ItemEntity> list = player.world.getEntitiesByClass(ItemEntity.class, box, (entity) -> entity != null && entity.isAlive());
 			if (!list.isEmpty()) {
 				return list.get(0);
 			}
