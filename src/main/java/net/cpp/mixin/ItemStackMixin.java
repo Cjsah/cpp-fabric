@@ -17,27 +17,12 @@ public abstract class ItemStackMixin {
 	private Item item;
 
 	@Shadow
-	private CompoundTag tag;
+	public abstract CompoundTag getOrCreateTag();
 
 	@Inject(at = @At("HEAD"), method = "updateEmptyState()V")
 	private void updateEmptyState(CallbackInfo info) {
 		if (item != null && item instanceof IDefaultTagItem) {
-			appendTag(((IDefaultTagItem)item).getDefaultTag());
+			((IDefaultTagItem)item).getDefaultTag(this.getOrCreateTag());
 		}
-	}
-
-	private void appendTag(CompoundTag tag) {
-		CompoundTag newTag;
-		if (this.tag == null) {
-			newTag = new CompoundTag();
-		} else {
-			newTag = this.tag;
-		}
-		for (String name : tag.getKeys()) {
-			if (!newTag.contains(name)) {
-				newTag.put(name, tag.get(name));
-			}
-		}
-		this.tag = newTag;
 	}
 }

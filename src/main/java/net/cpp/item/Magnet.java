@@ -39,9 +39,7 @@ public class Magnet extends Item implements IDefaultTagItem {
 	}
 
 	@Override
-	public CompoundTag getDefaultTag() {
-		CompoundTag tag = new CompoundTag();
+	public void getDefaultTag(CompoundTag tag) {
 		tag.putBoolean("enabled", true);
-		return tag;
 	}
 }

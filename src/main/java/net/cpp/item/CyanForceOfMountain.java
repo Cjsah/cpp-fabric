@@ -54,7 +54,6 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem{
             BlockPos blockPos = hitResult.getBlockPos();
             if (user.isSneaking() && hitResult.getType() == HitResult.Type.MISS) {
                 tag.putBoolean("horizontal", !tag.getBoolean("horizontal"));
-                item.setTag(tag);
                 ((ServerPlayerEntity)user).networkHandler.sendPacket(new TitleS2CPacket(TitleS2CPacket.Action.ACTIONBAR,
                         new TranslatableText("misc.cpp",
                                 new TranslatableText("tooltip.cpp.cfom.direction",
@@ -109,16 +108,13 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem{
             }
             tag.putInt("level", level);
             tag.putInt("xp", xp);
-            item.setTag(tag);
             return true;
         }
         return false;
     }
-    public CompoundTag getDefaultTag() {
-		CompoundTag tag = new CompoundTag();
+    public void getDefaultTag(CompoundTag tag) {
 		tag.putBoolean("horizontal", true);
         tag.putInt("level", 2);
         tag.putInt("xp", 0);
-		return tag;
 	}
 }

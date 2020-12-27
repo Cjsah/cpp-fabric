@@ -98,7 +98,6 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
                 ((ServerPlayerEntity)user).networkHandler.sendPacket(new TitleS2CPacket(TitleS2CPacket.Action.ACTIONBAR,
                         new TranslatableText("chat.cpp.change", new TranslatableText("block.minecraft." + tag.getString("mode")).formatted(waterMode ? Formatting.RED : Formatting.GREEN)).formatted(Formatting.GOLD)
                 ));
-                itemStack.setTag(tag);
                 user.incrementStat(Stats.USED.getOrCreateStat(this));
                 return TypedActionResult.success(itemStack);
 
@@ -112,7 +111,6 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
                         world.setBlockState(blockPos, fluid == Fluids.WATER ? Blocks.WATER_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, 3) : Blocks.LAVA_CAULDRON.getDefaultState());
                         if (fluid == Fluids.LAVA && !user.isCreative()) {
                             tag.putInt("lava", tag.getInt("lava") - 1);
-                            itemStack.setTag(tag);
                         }
                         user.incrementStat(Stats.USED.getOrCreateStat(this));
                         return TypedActionResult.success(itemStack);
@@ -127,7 +125,6 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
                         }
                         if (fluid == Fluids.LAVA && !user.isCreative()) {
                             tag.putInt("lava", tag.getInt("lava") - 1);
-                            itemStack.setTag(tag);
                         }
                         user.incrementStat(Stats.USED.getOrCreateStat(this));
                         return TypedActionResult.success(itemStack);
@@ -142,16 +139,13 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
         player.incrementStat(Stats.USED.getOrCreateStat(this));
         if (fluid == Fluids.LAVA) {
             tag.putInt("lava", tag.getInt("lava") + 1);
-            item.setTag(tag);
         }
         return TypedActionResult.success(item);
     }
 
 	@Override
-	public CompoundTag getDefaultTag() {
-		CompoundTag tag = new CompoundTag();
+	public void getDefaultTag(CompoundTag tag) {
 		tag.putString("mode", "water");
         tag.putInt("lava", 0);
-		return tag;
 	}
 }
