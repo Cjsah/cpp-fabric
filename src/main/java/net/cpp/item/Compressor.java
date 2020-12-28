@@ -45,7 +45,11 @@ public class Compressor extends Item {
 		}
 		return TypedActionResult.pass(item);
 	}
-
+	/**
+	 * 压缩物品 
+	 * @param itemStack 要被压缩的物品叠
+	 * @return 压缩之后的物品，如果物品叠不可压缩，则原样返回（同一个对象）
+	 */
 	public static ItemStack compress(ItemStack itemStack) {
 		ItemStack result = itemStack;
 		if (itemStack.getCount() == itemStack.getMaxCount()) {

@@ -38,6 +38,9 @@ import java.util.List;
 import java.util.Map;
 
 public class RedForceOfFire extends Item {
+	/**
+	 * 公用精准镐，用于获取方块的原样掉落物
+	 */
 	public static final ItemStack SILK_TOUCH_PICKAXE = new ItemStack(Items.NETHERITE_PICKAXE);
 
 	public RedForceOfFire(Settings settings) {
@@ -57,7 +60,7 @@ public class RedForceOfFire extends Item {
 				if (recipe != null) {
 					ItemStack output = recipe.getOutput().copy();
 					output.setCount(itemStack.getCount());
-					ItemEntity spawnItem = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), output);
+					ItemEntity spawnItem = new ItemEntity(world, pos.getX()+.5, pos.getY()+.5, pos.getZ()+.5, output);
 					spawnItem.setToDefaultPickupDelay();
 					world.setBlockState(pos, Blocks.AIR.getDefaultState());
 					world.spawnEntity(spawnItem);

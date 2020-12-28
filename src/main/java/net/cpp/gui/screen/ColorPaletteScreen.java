@@ -15,10 +15,12 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.DyeItem;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
@@ -77,7 +79,7 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 			}
 		}
 		updateRGB();
-		setText();
+		updateText();
 	}
 
 	@Override
@@ -120,7 +122,7 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 			clicked = true;
 		}
 		updateRGB();
-		setText();
+		updateText();
 		return super.mouseClicked(mouseX, mouseY, button) || clicked;
 	}
 
@@ -129,15 +131,15 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 		boolean scrolled = false;
 		int i = locateScroll(mouseX, mouseY);
 		if (i != -1) {
-			hsb[i] -= (float) (amount / barLength / (hasShiftDown() ? 15 : 1));
-			while (hsb[i] < 0)
-				hsb[i] += 1;
-			while (hsb[i] > 1)
-				hsb[i] -= 1;
+			hsb[i] -= (float) (amount * 3 / barLength / (hasShiftDown() ? 15 : 1));
+			if (hsb[i] < 0)
+				hsb[i] = 0;
+			if (hsb[i] > 1)
+				hsb[i] = 1;
 			scrolled = true;
 		}
 		updateRGB();
-		setText();
+		updateText();
 		return super.mouseScrolled(mouseX, mouseY, amount) || scrolled;
 	}
 
@@ -160,13 +162,19 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 		}
 		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
-
-	private void setText() {
+/**
+ * 更新RGB文本
+ */
+	private void updateText() {
 		for (int i = 0; i < 3; i++) {
 			colorFields[i].setText(String.format("%02X", (rgb >> ((2 - i) * 8)) & 0xff));
 		}
 	}
-
+/**
+ * 左右方向按钮
+ * @author Ph-苯
+ *
+ */
 	public static class DirectionButton extends TexturedButtonWidget {
 		public final boolean left;
 
@@ -183,14 +191,16 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 			drawTexture(matrices, x, y, 181 + (left ? 0 : 7), isHovered() ? 12 : 0, 7, 12);
 		}
 	}
-
+/**
+ * 通过HSB更新RGB
+ * @return
+ */
 	public int updateRGB() {
 		if (rgb != (rgb = Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]))) {
 			handler.update(rgb);
-//			PacketByteBuf packetByteBuf = new PacketByteBuf(Unpooled.buffer());
-//			packetByteBuf.writeInt(rgb);
-//			ClientPlayNetworking.send(CppChannels.COLOR_PALETTE, packetByteBuf);
-			client.interactionManager.clickButton(handler.syncId, rgb << 2);
+			PacketByteBuf packetByteBuf = new PacketByteBuf(Unpooled.buffer());
+			packetByteBuf.writeInt(rgb);
+			ClientPlayNetworking.send(handler.channel, packetByteBuf);
 		}
 		return rgb;
 	}

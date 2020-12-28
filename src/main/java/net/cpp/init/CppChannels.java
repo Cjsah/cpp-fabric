@@ -13,16 +13,15 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 public final class CppChannels {
-	public static final Identifier COLOR_PALETTE = new Identifier("cpp", "color_palette");
+//	public static final Identifier COLOR_PALETTE = new Identifier("cpp", "color_palette");
 
-	static Identifier register(String name, PlayChannelHandler playChannelHandler) {
-		Identifier identifier = new Identifier("cpp", name);
-		ClientPlayNetworking.registerReceiver(identifier, playChannelHandler);
-		return identifier;
-	}
+//	static Identifier register(String name, PlayChannelHandler playChannelHandler) {
+//		Identifier identifier = new Identifier("cpp", name);
+//		ClientPlayNetworking.registerReceiver(identifier, playChannelHandler);
+//		return identifier;
+//	}
 
 	static {
-		ServerPlayNetworking.registerReceiver(null, COLOR_PALETTE, (MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) -> {
-		});
+		
 	}
 }

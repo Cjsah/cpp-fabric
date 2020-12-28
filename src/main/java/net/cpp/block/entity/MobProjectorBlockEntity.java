@@ -1,7 +1,5 @@
 package net.cpp.block.entity;
 
-import static net.cpp.api.CodingTool.of;
-import static net.cpp.api.CodingTool.setOf;
 import static net.minecraft.entity.EntityType.BAT;
 import static net.minecraft.entity.EntityType.BEE;
 import static net.minecraft.entity.EntityType.BLAZE;
@@ -112,6 +110,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 import net.cpp.gui.handler.MobProjectorScreenHandler;
 import net.cpp.init.CppBlockEntities;
@@ -226,7 +227,7 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 			blockEntity.expBottle(blockEntity.getStack(0));
 			boolean reciped = true;// 有配方吗？
 			if (blockEntity.getStack(1).getItem() == Items.EGG) {
-				Recipe recipe = RECIPES.get(setOf(blockEntity.getStack(2).getItem(), blockEntity.getStack(3).getItem()));
+				Recipe recipe = RECIPES.get(ImmutableSet.of(blockEntity.getStack(2).getItem(), blockEntity.getStack(3).getItem()));
 				if (recipe != null) {
 					reciped = false;
 					blockEntity.currentRecipeCode = recipe.code;
@@ -286,18 +287,18 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 	}
 
 	public static void addRecipe(Item input1, Item input2, int exp, EntityType<? extends MobEntity> entityType, int code) {
-		addRecipe(input1, input2, exp, of(entityType, 1.), code);
+		addRecipe(input1, input2, exp, ImmutableMap.of(entityType, 1.), code);
 	}
 
 	public static void addRecipe(Item input1, Item input2, int exp, Map<EntityType<? extends MobEntity>, Double> map, int code) {
-		Set<Item> set = setOf(input1, input2);
+		Set<Item> set = ImmutableSet.of(input1, input2);
 		RECIPES.put(set, new Recipe(set, map, exp, code));
 	}
 
 	static {
 		for (Item item : ItemTags.WOOL.values())
 			addRecipe(item, WHEAT, 4, SHEEP, 1);
-		addRecipe(LEATHER, WHEAT, 4, of(COW, .9, MOOSHROOM, .1), 2);
+		addRecipe(LEATHER, WHEAT, 4, ImmutableMap.of(COW, .9, MOOSHROOM, .1), 2);
 		addRecipe(PORKCHOP, CARROT, 4, PIG, 3);
 		addRecipe(PORKCHOP, POTATO, 4, PIG, 4);
 		addRecipe(FEATHER, WHEAT_SEEDS, 4, EntityType.CHICKEN, 4);
@@ -311,34 +312,34 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 		addRecipe(INK_SAC, Items.SALMON, 4, SQUID, 8);
 		addRecipe(GUNPOWDER, SAND, 4, CREEPER, 8);
 		addRecipe(GUNPOWDER, RED_SAND, 4, CREEPER, 9);
-		addRecipe(ROTTEN_FLESH, IRON_NUGGET, 4, of(ZOMBIE, .5, ZOMBIE_VILLAGER, .2, HUSK, .2, DROWNED, .1), 9);
-		addRecipe(BONE, Items.ARROW, 4, of(SKELETON, .9, STRAY, .1), 10);
-		addRecipe(STRING, SPIDER_EYE, 4, of(SPIDER, .9, CAVE_SPIDER, .1), 11);
+		addRecipe(ROTTEN_FLESH, IRON_NUGGET, 4, ImmutableMap.of(ZOMBIE, .5, ZOMBIE_VILLAGER, .2, HUSK, .2, DROWNED, .1), 9);
+		addRecipe(BONE, Items.ARROW, 4, ImmutableMap.of(SKELETON, .9, STRAY, .1), 10);
+		addRecipe(STRING, SPIDER_EYE, 4, ImmutableMap.of(SPIDER, .9, CAVE_SPIDER, .1), 11);
 		addRecipe(STONE_BRICKS, IRON_NUGGET, 4, SILVERFISH, 12);
 		addRecipe(ICE, Items.COD, 4, POLAR_BEAR, 13);
 		addRecipe(ICE, Items.SALMON, 4, POLAR_BEAR, 14);
 		addRecipe(REDSTONE, GLOWSTONE_DUST, 8, WITCH, 14);
 		addRecipe(SLIME_BALL, CLAY_BALL, 8, SLIME, 15);
 		addRecipe(PHANTOM_MEMBRANE, FEATHER, 8, PHANTOM, 16);
-		addRecipe(GOLD_NUGGET, ROTTEN_FLESH, 8, of(PIGLIN, .8, PIGLIN_BRUTE, .1, HOGLIN, .1), 17);
+		addRecipe(GOLD_NUGGET, ROTTEN_FLESH, 8, ImmutableMap.of(PIGLIN, .8, PIGLIN_BRUTE, .1, HOGLIN, .1), 17);
 		addRecipe(GHAST_TEAR, GUNPOWDER, 8, GHAST, 18);
 		addRecipe(MAGMA_CREAM, NETHER_BRICK, 8, MAGMA_CUBE, 19);
 		addRecipe(BLAZE_POWDER, NETHER_BRICK, 8, BLAZE, 20);
 		addRecipe(Items.ENDER_PEARL, END_STONE, 8, ENDERMAN, 21);
 		addRecipe(END_STONE, GOLD_NUGGET, 8, ENDERMITE, 22);
 		addRecipe(WARPED_FUNGUS, STRING, 8, STRIDER, 23);
-		addRecipe(EMERALD, BOOK, 8, of(VILLAGER, .9, WANDERING_TRADER, .1), 24);
-		addRecipe(EMERALD, GOLD_BLOCK, 32, of(VINDICATOR, .4, PILLAGER, .4, EVOKER, .1, RAVAGER, .4), 25);
-		addRecipe(Items.POTION, Items.COD, 32, of(GUARDIAN, .9, ELDER_GUARDIAN, .1), 26);
-		addRecipe(Items.POTION, Items.SALMON, 32, of(GUARDIAN, .9, ELDER_GUARDIAN, .1), 27);
+		addRecipe(EMERALD, BOOK, 8, ImmutableMap.of(VILLAGER, .9, WANDERING_TRADER, .1), 24);
+		addRecipe(EMERALD, GOLD_BLOCK, 32, ImmutableMap.of(VINDICATOR, .4, PILLAGER, .4, EVOKER, .1, RAVAGER, .4), 25);
+		addRecipe(Items.POTION, Items.COD, 32, ImmutableMap.of(GUARDIAN, .9, ELDER_GUARDIAN, .1), 26);
+		addRecipe(Items.POTION, Items.SALMON, 32, ImmutableMap.of(GUARDIAN, .9, ELDER_GUARDIAN, .1), 27);
 		addRecipe(CHORUS_FRUIT, Items.ENDER_PEARL, 32, SHULKER, 27);
 		addRecipe(BONE, COAL_BLOCK, 32, WITHER_SKELETON, 28);
 		addRecipe(BONE, SKELETON_SKULL, 32, WOLF, 29);
-		addRecipe(Items.COD, SKELETON_SKULL, 32, of(CAT, .9, OCELOT, .1), 30);
-		addRecipe(Items.SALMON, SKELETON_SKULL, 32, of(CAT, .9, OCELOT, .1), 31);
-		addRecipe(LEATHER, SKELETON_SKULL, 32, of(HORSE, .8, ZOMBIE_HORSE, .1, SKELETON_HORSE, .1), 31);
+		addRecipe(Items.COD, SKELETON_SKULL, 32, ImmutableMap.of(CAT, .9, OCELOT, .1), 30);
+		addRecipe(Items.SALMON, SKELETON_SKULL, 32, ImmutableMap.of(CAT, .9, OCELOT, .1), 31);
+		addRecipe(LEATHER, SKELETON_SKULL, 32, ImmutableMap.of(HORSE, .8, ZOMBIE_HORSE, .1, SKELETON_HORSE, .1), 31);
 		addRecipe(CHEST, SKELETON_SKULL, 32, DONKEY, 32);
-		addRecipe(WHITE_CARPET, SKELETON_SKULL, 32, of(LLAMA, .9, TRADER_LLAMA, .1), 33);
+		addRecipe(WHITE_CARPET, SKELETON_SKULL, 32, ImmutableMap.of(LLAMA, .9, TRADER_LLAMA, .1), 33);
 		addRecipe(FEATHER, SKELETON_SKULL, 32, PARROT, 34);
 		addRecipe(SEAGRASS, SKELETON_SKULL, 32, TURTLE, 35);
 		addRecipe(SWEET_BERRIES, SKELETON_SKULL, 32, FOX, 36);

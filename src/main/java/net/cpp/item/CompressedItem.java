@@ -47,6 +47,12 @@ public class CompressedItem extends Item {
 		return TypedActionResult.pass(itemStack);
 	}
 
+	/**
+	 * 解压缩物品
+	 * 
+	 * @param itemStack 要被解压的物品
+	 * @return Pair<ItemStack, Integer>，左对象是解压后的物品叠，右对象时解压后的物品叠的数量；如果不可解压，则左边是原来的物品叠，右边是1
+	 */
 	public static Pair<ItemStack, Integer> uncompress(ItemStack itemStack) {
 		ItemStack result = itemStack;
 		int count = 1;
@@ -62,5 +68,5 @@ public class CompressedItem extends Item {
 		}
 		return new Pair<>(result, count);
 	}
-	
+
 }

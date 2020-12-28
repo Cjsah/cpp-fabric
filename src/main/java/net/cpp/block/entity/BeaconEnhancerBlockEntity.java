@@ -33,6 +33,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.AmbientEntity;
 import net.minecraft.entity.mob.HoglinEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.ShulkerEntity;
@@ -174,7 +175,7 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 							for (Iterator<? extends Entity> iterator = entities0.iterator(); iterator.hasNext();) {
 								Entity e = iterator.next();
 								if (e instanceof MobEntity) {
-									if (!blockEntity.onlyAdverse || !(e instanceof GolemEntity && !(e instanceof ShulkerEntity) || (e instanceof PassiveEntity && !(e instanceof HoglinEntity))))
+									if (!blockEntity.onlyAdverse || !(e instanceof GolemEntity && !(e instanceof ShulkerEntity) || (e instanceof PassiveEntity && !(e instanceof HoglinEntity))||e instanceof AmbientEntity))
 										entities.add((MobEntity) e);
 								}
 							}

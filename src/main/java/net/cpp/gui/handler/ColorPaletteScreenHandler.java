@@ -7,7 +7,6 @@ import static net.minecraft.item.Items.LEATHER_HORSE_ARMOR;
 import static net.minecraft.item.Items.LEATHER_LEGGINGS;
 import static net.minecraft.item.Items.WHITE_DYE;
 
-import java.awt.Color;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
@@ -15,6 +14,8 @@ import com.google.common.collect.ImmutableSet;
 
 import net.cpp.api.CodingTool;
 import net.cpp.init.CppScreenHandler;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -22,19 +23,27 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.DyeableItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.Settings;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
-import net.minecraft.recipe.RecipeUnlocker;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 
 public class ColorPaletteScreenHandler extends ScreenHandler {
+	public static final DyeableItem DYER = new DyeableItem() {
+	};
+	public final Identifier channel = new Identifier("cpp", "color_palette");
 	private int rgb;
-	public SimpleInventory items = new SimpleInventory(3) {
+	public SimpleInventory items = new SimpleInventory(3)
+	/**
+	 * 为调色盘量身定做的物品栏，考虑到了结果槽的特殊性，避免无限递归
+	 */
+	{
 		public ItemStack addStack(ItemStack stack) {
 			ItemStack r = super.addStack(stack);
 			onContentChanged(items);
@@ -67,6 +76,14 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 	public ColorPaletteScreenHandler(int syncId, PlayerInventory playerInventory) {
 		super(CppScreenHandler.COLOR_PALETTE, syncId);
 		player = playerInventory.player;
+		if (player instanceof ServerPlayerEntity)
+			ServerPlayNetworking.registerReceiver(((ServerPlayerEntity) player).networkHandler, channel, (MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) -> {
+				if (player.currentScreenHandler instanceof ColorPaletteScreenHandler) {
+					ColorPaletteScreenHandler screenHandler = (ColorPaletteScreenHandler) player.currentScreenHandler;
+					screenHandler.update(buf.readInt());
+				}
+
+			});
 		int m;
 		int l;
 
@@ -79,50 +96,68 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 		for (m = 0; m < 9; ++m) {
 			this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 142));
 		}
-		for (int i = 0; i < 2; i++) {
-			addSlot(new Slot(items, i, CodingTool.x(8), CodingTool.y(i)));
-		}
-		addSlot(new ResultSlot(items, 2, CodingTool.x(8), CodingTool.y(2)) {
-			private int amount;
-
+		addSlot(new Slot(items, 0, CodingTool.x(8), CodingTool.y(0)) {
+			/**
+			 * 仅可染色物品可以放入
+			 */
 			@Override
-			public boolean canTakeItems(PlayerEntity playerEntity) {
-//				System.out.println(neededDye);
-				return items.getStack(1).isOf(neededDye);
-			}
-
-			@Override
-			public ItemStack onTakeItem(PlayerEntity player, ItemStack stack) {
-				onCrafted(stack);
-				items.getStack(0).decrement(1);
-				items.getStack(1).decrement(1);
-				return stack;
-			}
-
-			public ItemStack takeStack(int amount) {
-				if (this.hasStack()) {
-					this.amount += Math.min(amount, this.getStack().getCount());
-				}
-
-				return super.takeStack(amount);
-			}
-
-			protected void onCrafted(ItemStack stack, int amount) {
-				this.amount += amount;
-				this.onCrafted(stack);
-			}
-
-			protected void onTake(int amount) {
-				this.amount += amount;
-			}
-
-			protected void onCrafted(ItemStack stack) {
-				if (this.amount > 0) {
-					stack.onCraft(player.world, player, this.amount);
-				}
-				this.amount = 0;
+			public boolean canInsert(ItemStack stack) {
+				return stack.getItem() instanceof DyeableItem;
 			}
 		});
+		addSlot(new Slot(items, 1, CodingTool.x(8), CodingTool.y(1)) {
+			/**
+			 * 仅染料可以放入
+			 */
+			@Override
+			public boolean canInsert(ItemStack stack) {
+				return stack.getItem() instanceof DyeItem;
+			}
+		});
+		addSlot(
+				/**
+				 * 根据调色盘量身定做的结果槽，拿出物品时会做出相应反应
+				 */
+				new ResultSlot(items, 2, CodingTool.x(8), CodingTool.y(2)) {
+					private int amount;
+
+					@Override
+					public boolean canTakeItems(PlayerEntity playerEntity) {
+						return items.getStack(1).isOf(neededDye);
+					}
+
+					@Override
+					public ItemStack onTakeItem(PlayerEntity player, ItemStack stack) {
+						onCrafted(stack);
+						items.getStack(0).decrement(1);
+						items.getStack(1).decrement(1);
+						return stack;
+					}
+
+					public ItemStack takeStack(int amount) {
+						if (this.hasStack()) {
+							this.amount += Math.min(amount, this.getStack().getCount());
+						}
+
+						return super.takeStack(amount);
+					}
+
+					protected void onCrafted(ItemStack stack, int amount) {
+						this.amount += amount;
+						this.onCrafted(stack);
+					}
+
+					protected void onTake(int amount) {
+						this.amount += amount;
+					}
+
+					protected void onCrafted(ItemStack stack) {
+						if (this.amount > 0) {
+							stack.onCraft(player.world, player, this.amount);
+						}
+						this.amount = 0;
+					}
+				});
 	}
 
 	@Override
@@ -153,26 +188,14 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 		dropInventory(player, items);
 	}
 
-	public Item getNeededDye() {
-		return neededDye;
-	}
-
-	public void setNeededDye(DyeItem neededDye) {
-		this.neededDye = neededDye;
-	}
-
 	@Override
 	public void onContentChanged(Inventory inventory) {
 		if (items.getStack(0).getItem() instanceof DyeableItem) {
-			ItemStack resultStack = items.getStack(0).copy();
-			resultStack = DyeableItem.blendAndSetColor(resultStack, ImmutableList.of(neededDye));
-			items.setStack(2, resultStack);
-			if (player instanceof ServerPlayerEntity)
-				((ServerPlayerEntity) player).networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(syncId, 38, items.getStack(2)));
+			items.setStack(2, items.getStack(0).copy());
+			DYER.setColor(items.getStack(2), rgb & 0x00ffffff);
 		} else {
 			items.removeStack(2);
 		}
-//		System.out.println(player.world.isClient);
 		super.onContentChanged(inventory);
 	}
 
@@ -194,13 +217,24 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 		return ItemStack.EMPTY;
 	}
 
+	/**
+	 * 通过RGB更新状态
+	 * 
+	 * @param rgb RGB色彩
+	 */
 	public void update(int rgb) {
 		this.rgb = rgb;
-		neededDye=getNearestDye(rgb);
+		neededDye = getNearestDye(rgb);
 		onContentChanged(items);
-		
+
 	}
 
+	/**
+	 * 通过RGB获取最接近该颜色的染料
+	 * 
+	 * @param rgb RGB色彩
+	 * @return 最接近的染料物品
+	 */
 	public static DyeItem getNearestDye(int rgb) {
 		float[] frgb = new float[3];
 		for (int i = 0; i < 3; i++)
@@ -219,9 +253,9 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 		}
 		return DyeItem.byColor(DyeColor.byId(ix));
 	}
+
 	@Override
 	public boolean onButtonClick(PlayerEntity player, int id) {
-		update(id>>2);
 		return super.onButtonClick(player, id);
 	}
 }

@@ -28,13 +28,15 @@ public abstract class ItemFrameMixin extends AbstractDecorationEntity {
 	@Shadow
 	public abstract ItemStack getHeldItemStack();
 
+	/**
+	 * 当放置了启用的磁铁时，吸引16米以内的物品
+	 */
 	public void tick() {
 		{
-//			System.out.println(1);
 			if (getHeldItemStack().isOf(CppItems.MAGNET) && getHeldItemStack().getOrCreateTag().getBoolean("enabled")) {
-				CodingTool.attractItems(getPos(), world);
-			}
-			if (getHeldItemStack().isOf(CppItems.TIME_CHECKER)) {
+				CodingTool.attractItems(getPos(), world, false,true);
+				
+			} else if (getHeldItemStack().isOf(CppItems.TIME_CHECKER)) {
 				CodingTool.timeChecker(world);
 			}
 		}

@@ -33,14 +33,31 @@ public class CodingTool {
 
 	private static int syncId;
 
+	/**
+	 * 获取当前同步ID，并让其+1
+	 * 
+	 * @return 当前同步ID
+	 */
 	public static int nextSyncId() {
 		return syncId++;
 	}
 
+	/**
+	 * 按照小箱子的GUI排布来获取格子的X坐标
+	 * 
+	 * @param m 格子所在的列数-1
+	 * @return 格子的X坐标
+	 */
 	public static int x(int m) {
 		return 8 + m * 18;
 	}
 
+	/**
+	 * 按照小箱子的GUI排布来获取格子的Y坐标
+	 * 
+	 * @param m 格子所在的行数-1
+	 * @return 格子的Y坐标
+	 */
 	public static int y(int n) {
 		return 18 + n * 18;
 	}
@@ -128,7 +145,7 @@ public class CodingTool {
 	 * 使某坐标向玩家的前方移动一段距离
 	 *
 	 * @author Cjsah
-	 * @param pos 位移前坐标
+	 * @param pos    位移前坐标
 	 * @param length 位移长度
 	 * @return 位移后的坐标
 	 */
@@ -139,41 +156,6 @@ public class CodingTool {
 		return pos.add(x, 0, z);
 	}
 
-	@SafeVarargs
-	public static <E> Set<E> setOf(E... es) {
-		return Collections.unmodifiableSet(new HashSet<>(Arrays.asList(es)));
-	}
-
-	public static <K, V> Map<K, V> of(K k1, V v1) {
-		Map<K, V> rst = new HashMap<>();
-		rst.put(k1, v1);
-		return Collections.unmodifiableMap(rst);
-	}
-
-	public static <K, V> Map<K, V> of(K k1, V v1, K k2, V v2) {
-		Map<K, V> rst = new HashMap<>();
-		rst.put(k1, v1);
-		rst.put(k2, v2);
-		return Collections.unmodifiableMap(rst);
-	}
-
-	public static <K, V> Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3) {
-		Map<K, V> rst = new HashMap<>();
-		rst.put(k1, v1);
-		rst.put(k2, v2);
-		rst.put(k3, v3);
-		return Collections.unmodifiableMap(rst);
-	}
-
-	public static <K, V> Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4) {
-		Map<K, V> rst = new HashMap<>();
-		rst.put(k1, v1);
-		rst.put(k2, v2);
-		rst.put(k3, v3);
-		rst.put(k4, v4);
-		return Collections.unmodifiableMap(rst);
-	}
-
 	public static ItemStack newItemStack(Item item, int count, @Nullable CompoundTag nbt) {
 		ItemStack rst = new ItemStack(item, count);
 		if (nbt != null) {
@@ -182,39 +164,51 @@ public class CodingTool {
 		return rst;
 	}
 
-	public static void attractItems(Vec3d pos, World world) {
-		for (ItemEntity itemEntity : world.getEntitiesByType(EntityType.ITEM, new Box(pos, pos).expand(16), itemEntity -> pos.isInRange(itemEntity.getPos(), 16) && !itemEntity.cannotPickup())) {
-			Vec3d v = pos.subtract(itemEntity.getPos());
-			double d = pos.distanceTo(itemEntity.getPos());
-			if (d < 1)
-				v.multiply(d);
-			else
-				v = v.multiply(1 / v.length());
-			itemEntity.setVelocity(v);
+	/**
+	 * 吸引物品
+	 * 
+	 * @param pos        物品需要被吸引到的地方
+	 * @param world      需要吸引物品的世界
+	 * @param needPickup 拾取延迟需要为0
+	 * @param tp         直接传送
+	 */
+	public static void attractItems(Vec3d pos, World world, boolean needPickup, boolean tp) {
+		for (ItemEntity itemEntity : world.getEntitiesByType(EntityType.ITEM, new Box(pos, pos).expand(16), itemEntity -> pos.isInRange(itemEntity.getPos(), 16) && (!needPickup || !itemEntity.cannotPickup()))) {
+			if (tp) {
+				itemEntity.teleport(pos.x, pos.y, pos.z);
+			} else {
+				Vec3d v = pos.subtract(itemEntity.getPos());
+				double d = pos.distanceTo(itemEntity.getPos());
+				if (d < 1)
+					v.multiply(d);
+				else
+					v = v.multiply(1 / v.length());
+				itemEntity.setVelocity(v);
+			}
 		}
 	}
 
 	public static void timeChecker(World world) {
 		if (!world.isClient) {
 			long time = world.getTimeOfDay();
-			int todayTime = (int)(time - time / 24000 * 24000);
+			int todayTime = (int) (time - time / 24000 * 24000);
 			switch (todayTime) {
-				case 0: {
-					sendMessage(world, "morning", true);
-					break;
-				}
-				case 6000: {
-					sendMessage(world, "noon", false);
-					break;
-				}
-				case 12000: {
-					sendMessage(world, "night", true);
-					break;
-				}
-				case 18000: {
-					sendMessage(world, "midnight", false);
-					break;
-				}
+			case 0: {
+				sendMessage(world, "morning", true);
+				break;
+			}
+			case 6000: {
+				sendMessage(world, "noon", false);
+				break;
+			}
+			case 12000: {
+				sendMessage(world, "night", true);
+				break;
+			}
+			case 18000: {
+				sendMessage(world, "midnight", false);
+				break;
+			}
 			}
 		}
 	}
@@ -223,7 +217,7 @@ public class CodingTool {
 		for (PlayerEntity player : world.getPlayers()) {
 			say(player, new TranslatableText("chat.cpp.time." + name));
 			if (playSound)
-				((ServerPlayerEntity)player).networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, player.getX(), player.getY(), player.getZ(), 20.0F, 1.5F));
+				((ServerPlayerEntity) player).networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, player.getX(), player.getY(), player.getZ(), 20.0F, 1.5F));
 		}
 	}
 }

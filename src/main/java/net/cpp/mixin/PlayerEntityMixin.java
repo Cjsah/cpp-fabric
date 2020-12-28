@@ -24,6 +24,10 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 	@Shadow
 	public abstract PlayerInventory getInventory();
 
+	/**
+	 * 当玩家携带启用的磁铁时，吸引16米内的物品
+	 * @param callbackInfo
+	 */
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	public void tick(CallbackInfo callbackInfo) {
 		{
@@ -36,7 +40,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 				}
 			}
 			if (enabled) {
-				CodingTool.attractItems(getPos().add(0, 1, 0), world);
+				CodingTool.attractItems(getPos().add(0, 1, 0), world, true, false);
 			}
 		}
 	}
