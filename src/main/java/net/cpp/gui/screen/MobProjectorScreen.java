@@ -33,7 +33,6 @@ public class MobProjectorScreen extends AExpMachineScreen<MobProjectorScreenHand
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
 		super.drawBackground(matrices, delta, mouseX, mouseY);
 
-//		System.out.println(handler.blockEntity.getCurrentRecipeCode());
 		if (handler.blockEntity.getCurrentRecipeCode() > 0) {
 			client.getTextureManager().bindTexture(PICTURES.get(handler.blockEntity.getCurrentRecipeCode()));
 			drawTexture(matrices, x + 19, y + 18, 0, 0, 52, 52, 52, 52);

@@ -54,10 +54,23 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
-
+/**
+ * 物品处理机方块实体
+ * @author Ph-苯
+ *
+ */
 public class ItemProcessorBlockEntity extends AOutputMachineBlockEntity {
+	/**
+	 * 皮革制品
+	 */
 	public static final Set<Item> LEATHERS = new HashSet<>(Arrays.asList(LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS));
+	/**
+	 * 配方
+	 */
 	public static final Map<Item, Map<Item, ItemStackAndCount>> RECIPES = new HashMap<>();
+	/**
+	 * 所有矿石
+	 */
 	public static final Set<BlockItem> ORES;
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1 };
 	private int lastTickCount = -1;
@@ -262,6 +275,12 @@ public class ItemProcessorBlockEntity extends AOutputMachineBlockEntity {
 		return slot == 0 && stack != null && RECIPES.containsKey(stack.getItem()) || slot == 1;
 	}
 
+	/**
+	 * 查询物品是否可烧炼
+	 * 
+	 * @param itemStack 要被查询的物品叠
+	 * @return 可烧炼
+	 */
 	public boolean isSmeltable(ItemStack itemStack) {
 		return this.world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, new SimpleInventory(new ItemStack[] { itemStack }), this.world).isPresent();
 	}

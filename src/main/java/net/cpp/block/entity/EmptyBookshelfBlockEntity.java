@@ -22,8 +22,15 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-
+/**
+ * 空书架方块实体
+ * @author Ph-苯
+ *
+ */
 public class EmptyBookshelfBlockEntity extends AMachineBlockEntity implements SidedInventory {
+	/**
+	 * 可储存的物品
+	 */
 	public static final Set<Item> STORABLE = ImmutableSet.of(BOOK, PAPER, ANCIENT_SCROLL, COMPASS, ENCHANTED_BOOK, MAP, FILLED_MAP, WRITTEN_BOOK, WRITABLE_BOOK);
 	private int viewerCount = 0;
 
@@ -34,8 +41,6 @@ public class EmptyBookshelfBlockEntity extends AMachineBlockEntity implements Si
 
 	public static void tick(World world, BlockPos pos, BlockState state, EmptyBookshelfBlockEntity blockEntity) {
 		if (!world.isClient) {
-//			System.out.println(1);
-//			System.out.println(blockEntity.viewerCount);
 			boolean bookshelf = true;
 			int bookState = 0;
 			for (int i = 0; i < 3; i++) {

@@ -136,9 +136,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
+/**
+ * 生物投影仪方块实体
+ * 
+ * @author Ph-苯
+ *
+ */
 public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2, 3 };
 	private static final Map<Set<Item>, Recipe> RECIPES = new HashMap<>();
+	/**
+	 * 生成每个生物需要的游戏刻数
+	 */
 	public static final int WORK_TIME_TOTAL = 200;
 	private int currentRecipeCode;
 	public final PropertyDelegate propertyDelegate = new ExpPropertyDelegate() {
@@ -224,7 +233,7 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 
 	public static void tick(World world, BlockPos pos, BlockState state, MobProjectorBlockEntity blockEntity) {
 		if (!world.isClient) {
-			blockEntity.expBottle(blockEntity.getStack(0));
+			blockEntity.transferExpBottle();
 			boolean reciped = true;// 有配方吗？
 			if (blockEntity.getStack(1).getItem() == Items.EGG) {
 				Recipe recipe = RECIPES.get(ImmutableSet.of(blockEntity.getStack(2).getItem(), blockEntity.getStack(3).getItem()));
@@ -281,7 +290,12 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 	/*
 	 * 以下是自定义方法
 	 */
-
+	/**
+	 * 获取当前的配方代码，用于渲染GUI里的生物
+	 * 
+	 * @return 当前的配方代码
+	 * @see net.cpp.gui.screen.MobProjectorScreen#FLASH
+	 */
 	public int getCurrentRecipeCode() {
 		return currentRecipeCode;
 	}

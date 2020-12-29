@@ -21,6 +21,8 @@ import com.ibm.icu.impl.Pair;
 import net.cpp.gui.handler.TradeMachineScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppItems;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantment;
@@ -54,9 +56,25 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.gen.feature.StructureFeature;
 
+/**
+ * 交易机方块实体
+ * 
+ * @author Ph-苯
+ *
+ */
 public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
+	/**
+	 * 插件物品<br>
+	 * 仅作为查询使用，要想获得插件，请用{@link #PLUGINS}
+	 */
 	public static final Set<Item> PLUGIN = ImmutableSet.of(EMERALD_TRADE_PLUGIN, GOLD_TRADE_PLUGIN, MOON_TRADE_PLUGIN);
+	/**
+	 * 货币
+	 */
 	public static final Set<Item> CURRENCY = ImmutableSet.of(EMERALD, GOLD_INGOT, CppItems.MOON_SHARD);
+	/**
+	 * 虽然可堆叠，但是是随机输出，为了防止刷配方，规定这些物品必须要原料栏为空才能输出
+	 */
 	public static final Set<Item> PLACE_TAKERS = ImmutableSet.of(FILLED_MAP, CppItems.CHARACTER, TIPPED_ARROW);
 	private static final int[] AVAILABLE_SLOTS_1 = new int[] { 0, 1 };
 	private static final int[] AVAILABLE_SLOTS_2 = new int[] { 0, 2, 3 };
@@ -68,12 +86,12 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 	 * 模式2配方 键为交易配方代号，存在NBT的"code"里
 	 */
 	public static final List<Recipe> SELL_TABLE = new ArrayList<>();
+	/**
+	 * 所有的交易插件，用来随机获取插件<br>
+	 * 如果只是想判断一个物品是否是插件，请用{@link #PLUGIN}
+	 */
 	public static final List<ItemStack> PLUGINS = new ArrayList<>();
-	private int tradeValue, emeraldCount, cooldown,
-			/**
-			 * 0：售卖模式，1：购买模式
-			 */
-			mode;
+	private int tradeValue, emeraldCount, cooldown, mode;
 	public final PropertyDelegate propertyDelegate = new ExpPropertyDelegate() {
 
 		@Override
@@ -176,10 +194,21 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		return new TradeMachineScreenHandler(syncId, playerInventory, this);
 	}
 
+	/**
+	 * 获取当前交易模式，0：售卖模式，1：购买模式
+	 * 
+	 * @return 当前交易模式
+	 * @see #shiftMode()
+	 */
 	public int getMode() {
 		return mode;
 	}
 
+	/**
+	 * 切换交易模式
+	 * 
+	 * @see #getMode()
+	 */
 	public void shiftMode() {
 		mode ^= 1;
 	}
