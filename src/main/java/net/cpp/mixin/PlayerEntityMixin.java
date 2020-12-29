@@ -27,8 +27,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
 	/**
 	 * 当玩家携带启用的磁铁时，吸引16米内的物品
-	 * 
-	 * @param callbackInfo
 	 */
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	public void tick(CallbackInfo callbackInfo) {
