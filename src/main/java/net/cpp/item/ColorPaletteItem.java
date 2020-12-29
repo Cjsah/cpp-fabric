@@ -21,10 +21,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ColorPaletteItem extends Item {
-	public ColorPaletteItem() {
-		super(new Item.Settings().group(CPP_GROUP_TOOL));
-	}
-
 	public ColorPaletteItem(Settings settings) {
 		super(settings);
 	}

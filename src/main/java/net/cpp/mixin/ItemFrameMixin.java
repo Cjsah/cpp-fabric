@@ -35,7 +35,7 @@ public abstract class ItemFrameMixin extends AbstractDecorationEntity {
 	public void tick() {
 		{
 			if (!world.isClient&& getHeldItemStack().isOf(CppItems.MAGNET) && getHeldItemStack().getOrCreateTag().getBoolean("enabled")) {
-				CodingTool.attractItems(getPos(), (ServerWorld) world, false, true);
+				CodingTool.attractItems(getPos(), (ServerWorld) world, true, true);
 
 			} else if (getHeldItemStack().isOf(CppItems.TIME_CHECKER)) {
 				CodingTool.timeChecker(world);

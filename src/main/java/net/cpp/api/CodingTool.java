@@ -4,6 +4,8 @@ import java.util.*;
 
 import javax.annotation.Nullable;
 
+import com.mojang.datafixers.optics.Lens;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
@@ -57,7 +59,7 @@ public class CodingTool {
 	/**
 	 * 按照小箱子的GUI排布来获取格子的Y坐标
 	 * 
-	 * @param m 格子所在的行数-1
+	 * @param n 格子所在的行数-1
 	 * @return 格子的Y坐标
 	 */
 	public static int y(int n) {
