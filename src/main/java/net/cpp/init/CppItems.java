@@ -476,7 +476,7 @@ public final class CppItems {
 		MAGNET = registerItem("magnet", new Magnet(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		TIME_CHECKER = registerItem("time_checker", new TimeChecker(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		TIME_CONDITIONER = registerItem("time_conditioner", new TimeConditioner(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-		ORIGIN_OF_THE_WORLD = registerItem("origin_of_the_world", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		ORIGIN_OF_THE_WORLD = registerItem("origin_of_the_world", new OriginOfTheWorld(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		COMPRESSOR = registerItem("compressor", new Compressor(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		ELDER_S_WORDS = registerItem("elder_s_words", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		COORDINATE_RECORDER = registerItem("coordinate_recorder", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
