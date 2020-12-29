@@ -1,5 +1,6 @@
 package net.cpp.mixin;
 
+import net.minecraft.item.Item;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,6 +17,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 
+import java.util.Collections;
+import java.util.Set;
+
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity {
 	protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
@@ -31,15 +35,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	public void tick(CallbackInfo callbackInfo) {
 		if (!world.isClient) {
-			boolean enabled = false;
-			for (int i = 0; i < getInventory().size(); i++) {
-				ItemStack itemStack = getInventory().getStack(i);
-				if (itemStack.isOf(CppItems.MAGNET) && itemStack.getOrCreateTag().getBoolean("enabled")) {
-					enabled = true;
-					break;
-				}
-			}
-			if (enabled) {
+			if (getInventory().containsAny(Collections.singleton(CppItems.MAGNET))) {
 				CodingTool.attractItems(getPos().add(0, 1, 0), (ServerWorld) world, true, false);
 			}
 		}
