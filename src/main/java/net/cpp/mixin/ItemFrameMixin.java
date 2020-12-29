@@ -15,6 +15,7 @@ import net.minecraft.entity.decoration.AbstractDecorationEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.PlayerManager;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -33,9 +34,9 @@ public abstract class ItemFrameMixin extends AbstractDecorationEntity {
 	 */
 	public void tick() {
 		{
-			if (getHeldItemStack().isOf(CppItems.MAGNET) && getHeldItemStack().getOrCreateTag().getBoolean("enabled")) {
-				CodingTool.attractItems(getPos(), world, false,true);
-				
+			if (!world.isClient&& getHeldItemStack().isOf(CppItems.MAGNET) && getHeldItemStack().getOrCreateTag().getBoolean("enabled")) {
+				CodingTool.attractItems(getPos(), (ServerWorld) world, false, true);
+
 			} else if (getHeldItemStack().isOf(CppItems.TIME_CHECKER)) {
 				CodingTool.timeChecker(world);
 			}

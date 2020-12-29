@@ -12,6 +12,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
+import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
+import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -167,15 +169,16 @@ public class CodingTool {
 	/**
 	 * 吸引物品
 	 * 
-	 * @param pos        物品需要被吸引到的地方
-	 * @param world      需要吸引物品的世界
-	 * @param needPickup 拾取延迟需要为0
-	 * @param tp         直接传送
+	 * @param pos         物品需要被吸引到的地方
+	 * @param serverWorld 需要吸引物品的世界
+	 * @param needPickup  拾取延迟需要为0
+	 * @param tp          直接传送
 	 */
-	public static void attractItems(Vec3d pos, World world, boolean needPickup, boolean tp) {
-		for (ItemEntity itemEntity : world.getEntitiesByType(EntityType.ITEM, new Box(pos, pos).expand(16), itemEntity -> pos.isInRange(itemEntity.getPos(), 16) && (!needPickup || !itemEntity.cannotPickup()))) {
+	public static void attractItems(Vec3d pos, ServerWorld serverWorld, boolean needPickup, boolean tp) {
+		for (ItemEntity itemEntity : serverWorld.getEntitiesByType(EntityType.ITEM, new Box(pos, pos).expand(16), itemEntity -> pos.isInRange(itemEntity.getPos(), 16) && (!needPickup || !itemEntity.cannotPickup()))) {
 			if (tp) {
 				itemEntity.teleport(pos.x, pos.y, pos.z);
+//				serverWorld.sendPacket(new EntityPositionS2CPacket(itemEntity));
 			} else {
 				Vec3d v = pos.subtract(itemEntity.getPos());
 				double d = pos.distanceTo(itemEntity.getPos());
@@ -184,6 +187,7 @@ public class CodingTool {
 				else
 					v = v.multiply(1 / v.length());
 				itemEntity.setVelocity(v);
+//				serverWorld.sendPacket(new EntityVelocityUpdateS2CPacket(itemEntity));
 			}
 		}
 	}
