@@ -72,5 +72,7 @@ public class CompressedItem extends Item {
 		}
 		return new Pair<>(result, count);
 	}
-
+	public static int getCompressedExp(ItemStack compressedExpBottle) {
+		return 9 << (6*compressedExpBottle.getOrCreateTag().getByte("multiple"));
+	}
 }
