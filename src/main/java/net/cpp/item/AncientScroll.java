@@ -2,6 +2,8 @@ package net.cpp.item;
 
 import com.google.common.collect.ImmutableList;
 import net.cpp.init.CppItems;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -26,6 +28,7 @@ public class AncientScroll extends Item {
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (stack.hasTag()) {
             assert stack.getTag() != null; // 没用, 只为去除警告
@@ -37,17 +40,9 @@ public class AncientScroll extends Item {
     public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
         if (this.isIn(group)) {
             for (String i : list) {
-                stacks.add(newItem(i));
+                stacks.add(get(i));
             }
         }
-    }
-
-    private ItemStack newItem(String name) {
-        CompoundTag tag = new CompoundTag();
-        ItemStack item = new ItemStack(this);
-        tag.putString("enchantment", name);
-        item.setTag(tag);
-        return item;
     }
 
     public static ItemStack randomGetOne() {
@@ -58,7 +53,7 @@ public class AncientScroll extends Item {
         return item;
     }
 
-    public static ItemStack getter(String name) {
+    public static ItemStack get(String name) {
         if (list.contains(name)) {
             ItemStack item = new ItemStack(CppItems.ANCIENT_SCROLL);
             CompoundTag tag = new CompoundTag();
@@ -67,6 +62,4 @@ public class AncientScroll extends Item {
             return item;
         }else return null;
     }
-
-
 }

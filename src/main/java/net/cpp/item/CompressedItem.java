@@ -3,6 +3,8 @@ package net.cpp.item;
 import java.util.List;
 
 import net.cpp.init.CppItems;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -22,6 +24,8 @@ public class CompressedItem extends Item {
 		super(settings);
 	}
 
+	@Override
+	@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
 		CompoundTag tag = stack.getOrCreateTag();
 		tooltip.add(new TranslatableText(ItemStack.fromTag(tag.getCompound("item")).getTranslationKey()).formatted(Formatting.YELLOW));

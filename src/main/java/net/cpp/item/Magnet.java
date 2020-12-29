@@ -2,6 +2,8 @@ package net.cpp.item;
 
 import java.util.List;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -22,6 +24,7 @@ public class Magnet extends Item implements IDefaultTagItem {
 	}
 
 	@Override
+	@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
 		boolean enabled = stack.getOrCreateTag().getBoolean("enabled");
 		tooltip.add(new TranslatableText(enabled ? "addServer.resourcePack.enabled" : "addServer.resourcePack.disabled").formatted(enabled ? Formatting.GREEN : Formatting.GRAY));
