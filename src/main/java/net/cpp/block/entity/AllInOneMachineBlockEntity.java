@@ -33,11 +33,17 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-
+/**
+ * 多功能一体机
+ * @author Ph-苯
+ *
+ */
 public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
+	/**
+	 * 不被消耗的原料
+	 */
 	public static final Set<Item> UNCONSUMABLE = new HashSet<>(Arrays.asList(LAVA_BUCKET, COBBLESTONE_PLUGIN, STONE_PLUGIN, BLACKSTONE_PLUGIN, NETHERRACK_PLUGIN, END_STONE_PLUGIN, BASALT_PLUGIN, GREEN_FORCE_OF_WATER));
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2 };
-	private static final Map<Item, ItemStack> ORE_RATES = new HashMap<>();
 	private static final Map<Integer, Recipe> RECIPES = new HashMap<>();
 	private static final Map<Integer, List<Recipe>> RANDOM_RECIPES = new HashMap<>();
 	private int lastTickRecipeCode;
@@ -52,7 +58,6 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	 * 可用的压强
 	 */
 	private Set<Degree> availabePressure = EnumSet.of(Degree.ORDINARY);
-//	private final Object2IntOpenHashMap<Identifier> recipesUsed = new Object2IntOpenHashMap<Identifier>();
 	public final PropertyDelegate propertyDelegate = new ExpPropertyDelegate() {
 
 		@Override
@@ -90,10 +95,6 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	public AllInOneMachineBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(CppBlockEntities.ALL_IN_ONE_MACHINE, blockPos, blockState);
 		setCapacity(5);
-		addAvailableTemperature(Degree.HIGH);
-		addAvailableTemperature(Degree.LOW);
-		addAvailablePressure(Degree.HIGH);
-		addAvailablePressure(Degree.LOW);
 	}
 
 	@Override
@@ -158,14 +159,12 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	}
 
 	public static void tick(World world, BlockPos pos, BlockState state, AllInOneMachineBlockEntity blockEntity) {
-//		System.out.println(temperature + " " + pressure);
 		if (!world.isClient) {
-			blockEntity.expBottle(blockEntity.getStack(0));
+			blockEntity.transferExpBottle();
 			boolean reciped = false;// 有配方吗？
 			if (!blockEntity.getStack(1 + 0).isEmpty() && !blockEntity.getStack(1 + 1).isEmpty()) {
 				int code = getHashCode(blockEntity.temperature, blockEntity.pressure, blockEntity.getStack(1 + 0).getItem(), blockEntity.getStack(1 + 1).getItem());
 				Recipe recipe = RECIPES.get(code);
-//				System.out.println(recipe);
 				if (recipe != null) {
 
 					// 防止哈希码出错，再检查一遍
@@ -262,11 +261,18 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	/*
 	 * 以下是自定义方法
 	 */
-
+/**
+ * 获取当前温度
+ * @return
+ */
 	public Degree getTemperature() {
 		return temperature;
 	}
-
+/**
+ * 设置温度
+ * @param t 温度
+ * @return
+ */
 	public boolean setTemperature(Degree t) {
 		boolean set = false;
 		if (availabeTemperature.contains(t)) {
@@ -275,21 +281,34 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		}
 		return set;
 	}
-
+/**
+ * 切换温度
+ */
 	public void shiftTemperature() {
 		int i = temperature.ordinal();
 		while (!setTemperature(Degree.values()[++i % Degree.values().length]))
 			;
 	}
-
+/**
+ * 添加可用温度
+ * @param degree
+ * @return
+ */
 	public boolean addAvailableTemperature(Degree degree) {
 		return availabeTemperature.add(degree);
 	}
-
+/**
+ * 获取当前压强
+ * @return
+ */
 	public Degree getPressure() {
 		return pressure;
 	}
-
+/**
+ * 设置压强
+ * @param p 压强
+ * @return
+ */
 	public boolean setPressure(Degree p) {
 		boolean set = false;
 		if (availabePressure.contains(p)) {
@@ -298,17 +317,30 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		}
 		return set;
 	}
-
+	/**
+	 * 切换压强
+	 */
 	public void shiftPressure() {
 		int i = pressure.ordinal();
 		while (!setPressure(Degree.values()[++i % Degree.values().length]))
 			;
 	}
-
+	/**
+	 * 添加可用压强
+	 * @param degree 压强
+	 * @return
+	 */
 	public boolean addAvailablePressure(Degree degree) {
 		return availabePressure.add(degree);
 	}
-
+/**
+ * 根据原料和温度压强计算哈希码，便于查找配方
+ * @param temperature 温度
+ * @param pressure 压强
+ * @param input1 原料1
+ * @param input2 原料2
+ * @return 哈希码
+ */
 	public static int getHashCode(Degree temperature, Degree pressure, Item input1, Item input2) {
 		return (input1.hashCode() ^ input2.hashCode()) * 256 + temperature.ordinal() * 16 + pressure.ordinal();
 	}
@@ -334,23 +366,24 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	}
 
 	static {
-		ORE_RATES.put(COAL_ORE, new ItemStack(COAL));
-		ORE_RATES.put(COPPER_ORE, new ItemStack(COPPER_INGOT));
-		ORE_RATES.put(DIAMOND_ORE, new ItemStack(DIAMOND));
-		ORE_RATES.put(EMERALD_ORE, new ItemStack(EMERALD));
-		ORE_RATES.put(GOLD_ORE, new ItemStack(GOLD_INGOT));
-		ORE_RATES.put(IRON_ORE, new ItemStack(IRON_INGOT));
-		ORE_RATES.put(LAPIS_ORE, new ItemStack(LAPIS_LAZULI, 6));
-		ORE_RATES.put(NETHER_GOLD_ORE, new ItemStack(GOLD_INGOT));
-		ORE_RATES.put(NETHER_QUARTZ_ORE, new ItemStack(QUARTZ));
-		ORE_RATES.put(REDSTONE_ORE, new ItemStack(REDSTONE, 5));
-		ORE_RATES.put(ANCIENT_DEBRIS, new ItemStack(NETHERITE_SCRAP));
+		Map<Item, ItemStack> oreRateMap = new HashMap<>();
+		oreRateMap.put(COAL_ORE, new ItemStack(COAL));
+		oreRateMap.put(COPPER_ORE, new ItemStack(COPPER_INGOT));
+		oreRateMap.put(DIAMOND_ORE, new ItemStack(DIAMOND));
+		oreRateMap.put(EMERALD_ORE, new ItemStack(EMERALD));
+		oreRateMap.put(GOLD_ORE, new ItemStack(GOLD_INGOT));
+		oreRateMap.put(IRON_ORE, new ItemStack(IRON_INGOT));
+		oreRateMap.put(LAPIS_ORE, new ItemStack(LAPIS_LAZULI, 6));
+		oreRateMap.put(NETHER_GOLD_ORE, new ItemStack(GOLD_INGOT));
+		oreRateMap.put(NETHER_QUARTZ_ORE, new ItemStack(QUARTZ));
+		oreRateMap.put(REDSTONE_ORE, new ItemStack(REDSTONE, 5));
+		oreRateMap.put(ANCIENT_DEBRIS, new ItemStack(NETHERITE_SCRAP));
 		/*
 		 * 高温高压
 		 */
 		int rand = new Random(new File(".").getAbsolutePath().hashCode()).nextInt();
-		for (Map.Entry<Item, ItemStack> entry1 : ORE_RATES.entrySet()) {
-			for (Map.Entry<Item, ItemStack> entry2 : ORE_RATES.entrySet()) {
+		for (Map.Entry<Item, ItemStack> entry1 : oreRateMap.entrySet()) {
+			for (Map.Entry<Item, ItemStack> entry2 : oreRateMap.entrySet()) {
 				if (entry1.equals(entry2))
 					break;
 				float randf = (entry1.getValue().hashCode() ^ entry2.getValue().hashCode() ^ rand >>> 1) % 90 / 30f + 1;
@@ -479,7 +512,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, ORE_SAPLING, FERTILIZER);
 			RECIPES.put(c, Recipe.PLACE_TAKER);
 			List<Recipe> list = new ArrayList<>();
-			for (Item item : ORE_RATES.keySet())
+			for (Item item : oreRateMap.keySet())
 				list.add(new Recipe(Degree.ORDINARY, Degree.ORDINARY, ORE_SAPLING, FERTILIZER, new ItemStack(item, 2), new ItemStack(ORE_SAPLING), 0F, 4F, 2, 40));
 			RANDOM_RECIPES.put(c, list);
 		}

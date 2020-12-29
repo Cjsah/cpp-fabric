@@ -31,8 +31,20 @@ import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+/**
+ * 拥有方向输出的机器
+ * 
+ * @author Ph-苯
+ *
+ */
 public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity implements NamedScreenHandlerFactory, IOutputDiractional, SidedInventory {
+	/**
+	 * 输出方向
+	 */
 	protected Direction outputDir = Direction.EAST;
+	/**
+	 * 命令源
+	 */
 	protected ServerCommandSource serverCommandSource;
 
 	protected AOutputMachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
@@ -90,7 +102,7 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 	/**
 	 * 改编自漏斗的代码，获取输出方向的物品栏
 	 * 
-	 * @return
+	 * @return 输出方向的物品栏
 	 */
 	@Nullable
 	public Inventory getOutputInventory() {
@@ -98,11 +110,11 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 	}
 
 	/**
-	 * 从漏斗抄来的代码，判断指定方向的物品栏是否已满
+	 * 从漏斗抄来的代码，判断指定的物品栏在指定方向上是否已满
 	 * 
-	 * @param inv
-	 * @param direction
-	 * @return
+	 * @param inv       物品栏
+	 * @param direction 方向
+	 * @return 已满
 	 */
 	public boolean isInventoryFull(Inventory inv, Direction direction) {
 		return getAvailableSlots(inv, direction).allMatch((i) -> {
@@ -154,8 +166,8 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 	}
 
 	/**
-	 * @param index
-	 * @param input
+	 * @param index 此机器要被输入的物品栏序号
+	 * @param input 输入物品叠
 	 * @return {@code input}能完全容纳{@code getStack(index)}
 	 */
 	protected boolean canInsert(int index, ItemStack input) {
@@ -165,8 +177,8 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 	/**
 	 * 将{@code input}全部放入{@code getStack(index)}中
 	 * 
-	 * @param index
-	 * @param input
+	 * @param index 此机器要被输入的物品栏序号
+	 * @param input 输入物品叠
 	 */
 	protected void insert(int index, ItemStack input) {
 		if (!input.isEmpty())
@@ -176,14 +188,28 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 				getStack(index).increment(input.getCount());
 	}
 
-	protected boolean tryInsert(int index, ItemStack target) {
-		if (canInsert(index, target)) {
-			insert(index, target);
+	/**
+	 * 当且仅当{@code input}能完全容纳{@code getStack(index)}时，才会放入
+	 * 
+	 * @param index 此机器要被输入的物品栏序号
+	 * @param input 输入物品叠
+	 * @return 成功放入
+	 * @see #canInsert(int, ItemStack)
+	 * @see #insert(int, ItemStack)
+	 */
+	protected boolean tryInsert(int index, ItemStack input) {
+		if (canInsert(index, input)) {
+			insert(index, input);
 			return true;
 		}
 		return false;
 	}
 
+	/**
+	 * 获得命令源，用于执行命令或目标选择器
+	 * 
+	 * @return 服务端命令源
+	 */
 	protected ServerCommandSource getServerCommandSource() {
 		if (!world.isClient && serverCommandSource == null)
 			serverCommandSource = new ServerCommandSource(CommandOutput.DUMMY, Vec3d.of(pos), Vec2f.ZERO, (ServerWorld) world, 4, "", LiteralText.EMPTY, world.getServer(), null);
@@ -394,6 +420,7 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 	}
 
 	public abstract PropertyDelegate getPropertyDelegate();
+
 	protected class OutputDirectionPropertyDelegate implements PropertyDelegate {
 		@Override
 		public int size() {
@@ -414,5 +441,5 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 				return -1;
 		}
 	}
-	
+
 }

@@ -4,7 +4,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
-
+/**
+ * 合成器的原料栏
+ * @author Ph-苯
+ *
+ */
 public class CppCraftingInventory extends CraftingInventory {
 	private ScreenHandler handler = new ScreenHandler(null, -1) {
 		@Override

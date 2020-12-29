@@ -7,7 +7,11 @@ import net.minecraft.block.entity.BarrelBlockEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
+/**
+ * 垃圾桶方块实体
+ * @author Ph-苯
+ *
+ */
 public class DustbinBlockEntity extends AMachineBlockEntity {
 
 	public DustbinBlockEntity(BlockPos pos, BlockState state) {

@@ -40,10 +40,18 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
+/**
+ * 金砧方块实体
+ * 
+ * @author Ph-苯
+ *
+ */
 public class GoldenAnvilBlockEntity extends AExpMachineBlockEntity {
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1 };
+	/**
+	 * 右原料槽可放入的物品
+	 */
 	public static final Set<Item> RIGHT_SLOT_INSERTABLE = ImmutableSet.of(CppItems.WIFI_PLUGIN, Items.BOOK, CppItems.MOON_SHARD, Items.ENCHANTED_GOLDEN_APPLE, CppItems.ANCIENT_SCROLL);
-//	private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4, ItemStack.EMPTY);
 	public final PropertyDelegate propertyDelegate = new ExpPropertyDelegate();
 
 	public GoldenAnvilBlockEntity() {
@@ -135,7 +143,7 @@ public class GoldenAnvilBlockEntity extends AExpMachineBlockEntity {
 					Enchantment enchantment = Registry.ENCHANTMENT.get(new Identifier(rightStack.getOrCreateTag().getString("enchantment")));
 					if (EnchantmentHelper.getLevel(enchantment, leftStack) == enchantment.getMaxLevel()) {
 						Map<Enchantment, Integer> map = EnchantmentHelper.get(leftStack);
-						map.compute(enchantment, (e, o)->o+1);
+						map.compute(enchantment, (e, o) -> o + 1);
 						EnchantmentHelper.set(map, leftStack);
 						rightStack.decrement(1);
 						blockEntity.expStorage -= 512;
@@ -146,7 +154,10 @@ public class GoldenAnvilBlockEntity extends AExpMachineBlockEntity {
 			blockEntity.output(3);
 		}
 	}
-
+/**
+ * 将{@code getStack(index)}的物品转移到成品槽
+ * @param index
+ */
 	public void transferResult(int index) {
 		setStack(3, getStack(index));
 		setStack(index, ItemStack.EMPTY);
