@@ -178,16 +178,18 @@ public class CodingTool {
 		for (ItemEntity itemEntity : serverWorld.getEntitiesByType(EntityType.ITEM, new Box(pos, pos).expand(16), itemEntity -> pos.isInRange(itemEntity.getPos(), 16) && (!needPickup || !itemEntity.cannotPickup()))) {
 			if (tp) {
 				itemEntity.teleport(pos.x, pos.y, pos.z);
-//				serverWorld.sendPacket(new EntityPositionS2CPacket(itemEntity));
+				for (ServerPlayerEntity serverPlayerEntity : serverWorld.getPlayers(player -> pos.distanceTo(player.getPos()) < 32)) {
+					serverPlayerEntity.networkHandler.sendPacket(new EntityPositionS2CPacket(itemEntity));
+				}
 			} else {
 				Vec3d v = pos.subtract(itemEntity.getPos());
 				double d = pos.distanceTo(itemEntity.getPos());
-				if (d < 1)
-					v.multiply(d);
-				else
+				if (d > 1)
 					v = v.multiply(1 / v.length());
 				itemEntity.setVelocity(v);
-//				serverWorld.sendPacket(new EntityVelocityUpdateS2CPacket(itemEntity));
+				for (ServerPlayerEntity serverPlayerEntity : serverWorld.getPlayers(player -> pos.distanceTo(player.getPos()) < 32)) {
+					serverPlayerEntity.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(itemEntity));
+				}
 			}
 		}
 	}
