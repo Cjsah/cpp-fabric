@@ -31,10 +31,8 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 	 */
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	public void tick(CallbackInfo callbackInfo) {
-		if (!world.isClient) {
-			if (getInventory().containsAny(Collections.singleton(CppItems.MAGNET))) {
-				CodingTool.attractItems(getPos().add(0, 1, 0), (ServerWorld) world, true, false);
-			}
+		if (!world.isClient && getInventory().containsAny(Collections.singleton(CppItems.MAGNET))) {
+			CodingTool.attractItems(getPos().add(0, 1, 0), (ServerWorld) world, true, false);
 		}
 	}
 
