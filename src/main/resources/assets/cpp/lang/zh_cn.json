@@ -510,6 +510,10 @@
   "chat.cpp.time.noon": "现在时间 12:00",
   "chat.cpp.time.night": "现在时间 18:00, 太阳下山了",
   "chat.cpp.time.midnight": "现在时间 00:00",
+  "chat.cpp.time.accelerate": "设置作物生长速度翻倍",
+  "chat.cpp.time.normal": "设置作物生长速度为默认值",
+  "chat.cpp.time.uncycle": "停止了日月循环",
+  "chat.cpp.time.cycle": "开启了日月循环",
 
   "tooltip.cpp.gfow.water": "水 %s",
   "tooltip.cpp.gfow.lava": "岩浆 %s",

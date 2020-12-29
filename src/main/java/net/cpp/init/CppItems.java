@@ -475,7 +475,7 @@ public final class CppItems {
 		PORTABLE_CRAFTING_MACHINE = registerItem("portable_crafting_machine", new PortableCraftingMachine(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		MAGNET = registerItem("magnet", new Magnet(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		TIME_CHECKER = registerItem("time_checker", new TimeChecker(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-		TIME_CONDITIONER = registerItem("time_conditioner", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		TIME_CONDITIONER = registerItem("time_conditioner", new TimeConditioner(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		ORIGIN_OF_THE_WORLD = registerItem("origin_of_the_world", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		COMPRESSOR = registerItem("compressor", new Compressor(new Item.Settings().group(CPP_GROUP_TOOL)));
 		ELDER_S_WORDS = registerItem("elder_s_words", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));

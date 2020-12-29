@@ -10,6 +10,7 @@ import net.cpp.gui.screen.ItemProcessorScreen;
 import net.cpp.gui.screen.MobProjectorScreen;
 import net.cpp.gui.screen.PortableCraftingMachineScreen;
 import net.cpp.gui.screen.TradeMachineScreen;
+import net.cpp.init.CppPredicates;
 import net.cpp.init.CppScreenHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -22,6 +23,8 @@ public class CraftingppClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		CppPredicates.register();
+
 		ScreenRegistry.register(CppScreenHandler.CRAFTING_MACHINE, CraftingMachineScreen::new);
 		ScreenRegistry.register(CppScreenHandler.ALL_IN_ONE_MACHINE, AllInOneMachineScreen::new);
 		ScreenRegistry.register(CppScreenHandler.ITEM_PROCESSOR, ItemProcessorScreen::new);
