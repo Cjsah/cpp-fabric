@@ -154,10 +154,12 @@ public class GoldenAnvilBlockEntity extends AExpMachineBlockEntity {
 			blockEntity.output(3);
 		}
 	}
-/**
- * 将{@code getStack(index)}的物品转移到成品槽
- * @param index
- */
+
+	/**
+	 * 将{@code getStack(index)}的物品转移到成品槽
+	 * 
+	 * @param index
+	 */
 	public void transferResult(int index) {
 		setStack(3, getStack(index));
 		setStack(index, ItemStack.EMPTY);

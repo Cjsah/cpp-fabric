@@ -23,8 +23,10 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 	public static final Identifier BACKGROUND = new Identifier("cpp:textures/gui/beacon_enhancer.png");
 	public static final List<Identifier> PLAYER_EFFECT_TEXTURES, MOB_EFFECT_TEXTURES;
 	public static final List<Text> ONLY_ADVERSE_TEXTS = ImmutableList.of(new TranslatableText("gui.all_living"), new TranslatableText("gui.only_adverse"));
+	/**
+	 * 施加于玩家的状态效果的按钮，点击切换
+	 */
 	public final TexturedButtonWidget playerEffectButton = new TexturedButtonWidget(0, 0, 24, 24, 0, 0, 0, BACKGROUND, buttonWidget -> {
-//		System.out.println(1);
 		client.interactionManager.clickButton(handler.syncId, PLAYER_EFFECT_BUTTON_SYNC_ID);
 	}) {
 		@Override
@@ -34,6 +36,9 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 			drawTexture(matrices, x, y, 0, 0, 24, 24, 24, 24);
 		}
 	};
+	/**
+	 * 施加于生物的状态效果的按钮，点击切换
+	 */
 	public final TexturedButtonWidget mobEffectButton = new TexturedButtonWidget(0, 0, 24, 24, 0, 0, 0, BACKGROUND, buttonWidget -> {
 		client.interactionManager.clickButton(handler.syncId, MOB_EFFECT_BUTTON_SYNC_ID);
 	}) {
@@ -44,6 +49,9 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 			drawTexture(matrices, x, y, 0, 0, 24, 24, 24, 24);
 		}
 	};
+	/**
+	 * 施加于生物的状态效果是否仅施加于敌对生物的按钮，点击切换
+	 */
 	public final TexturedButtonWidget onlyAdverseButton = new TexturedButtonWidget(0, 0, 20, 20, 0, 0, 0, BACKGROUND, buttonWidget -> {
 		client.interactionManager.clickButton(handler.syncId, ONLY_ADVERSE_BUTTON_SYNC_ID);
 	}) {

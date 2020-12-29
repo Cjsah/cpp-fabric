@@ -55,8 +55,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
 /**
  * 信标增强器方块实体
+ * 
  * @author Ph-苯
  *
  */
@@ -130,10 +132,12 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 		tag.putBoolean("onlyAdverse", onlyAdverse);
 		return super.toTag(tag);
 	}
-/**
- * 获取服务端命令源，用于构建目标选择器
- * @return 服务端命令源
- */
+
+	/**
+	 * 获取服务端命令源，用于构建目标选择器
+	 * 
+	 * @return 服务端命令源
+	 */
 	protected ServerCommandSource getServerCommandSource() {
 		if (!world.isClient && serverCommandSource == null)
 			serverCommandSource = new ServerCommandSource(CommandOutput.DUMMY, Vec3d.of(pos), Vec2f.ZERO, (ServerWorld) world, 4, "", LiteralText.EMPTY, world.getServer(), null);

@@ -14,6 +14,9 @@ import net.minecraft.util.Identifier;
 public class MobProjectorScreen extends AExpMachineScreen<MobProjectorScreenHandler> {
 	public static final Identifier BACKGROUND = new Identifier("cpp:textures/gui/mob_projector.png");
 	public static final Identifier FLASH = new Identifier("cpp:textures/gui/mob_projector_flash.png");
+	/**
+	 * 生成过程中显示的图片
+	 */
 	public static final List<Identifier> PICTURES;
 
 	public MobProjectorScreen(MobProjectorScreenHandler handler, PlayerInventory inventory, Text title) {

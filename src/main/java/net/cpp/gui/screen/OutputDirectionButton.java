@@ -20,6 +20,9 @@ import net.minecraft.util.Identifier;
 public class OutputDirectionButton extends TexturedButtonWidget {
 	public static final int SYNC_ID = CodingTool.nextSyncId();
 	public static final Identifier TEXTURE = new Identifier("cpp:textures/gui/output_direction_button.png");
+	/**
+	 * 悬浮文本
+	 */
 	public static final TranslatableText[] DIRECTION_TEXT = { new TranslatableText("gui.output_to_east"),
 			new TranslatableText("gui.output_to_west"), new TranslatableText("gui.output_to_up"),
 			new TranslatableText("gui.output_to_down"), new TranslatableText("gui.output_to_south"),

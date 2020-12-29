@@ -33,8 +33,10 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+
 /**
  * 多功能一体机
+ * 
  * @author Ph-苯
  *
  */
@@ -261,18 +263,21 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	/*
 	 * 以下是自定义方法
 	 */
-/**
- * 获取当前温度
- * @return
- */
+	/**
+	 * 获取当前温度
+	 * 
+	 * @return
+	 */
 	public Degree getTemperature() {
 		return temperature;
 	}
-/**
- * 设置温度
- * @param t 温度
- * @return
- */
+
+	/**
+	 * 设置温度
+	 * 
+	 * @param t 温度
+	 * @return
+	 */
 	public boolean setTemperature(Degree t) {
 		boolean set = false;
 		if (availabeTemperature.contains(t)) {
@@ -281,34 +286,41 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		}
 		return set;
 	}
-/**
- * 切换温度
- */
+
+	/**
+	 * 切换温度
+	 */
 	public void shiftTemperature() {
 		int i = temperature.ordinal();
 		while (!setTemperature(Degree.values()[++i % Degree.values().length]))
 			;
 	}
-/**
- * 添加可用温度
- * @param degree
- * @return
- */
+
+	/**
+	 * 添加可用温度
+	 * 
+	 * @param degree
+	 * @return
+	 */
 	public boolean addAvailableTemperature(Degree degree) {
 		return availabeTemperature.add(degree);
 	}
-/**
- * 获取当前压强
- * @return
- */
+
+	/**
+	 * 获取当前压强
+	 * 
+	 * @return
+	 */
 	public Degree getPressure() {
 		return pressure;
 	}
-/**
- * 设置压强
- * @param p 压强
- * @return
- */
+
+	/**
+	 * 设置压强
+	 * 
+	 * @param p 压强
+	 * @return
+	 */
 	public boolean setPressure(Degree p) {
 		boolean set = false;
 		if (availabePressure.contains(p)) {
@@ -317,6 +329,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		}
 		return set;
 	}
+
 	/**
 	 * 切换压强
 	 */
@@ -325,22 +338,26 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		while (!setPressure(Degree.values()[++i % Degree.values().length]))
 			;
 	}
+
 	/**
 	 * 添加可用压强
+	 * 
 	 * @param degree 压强
 	 * @return
 	 */
 	public boolean addAvailablePressure(Degree degree) {
 		return availabePressure.add(degree);
 	}
-/**
- * 根据原料和温度压强计算哈希码，便于查找配方
- * @param temperature 温度
- * @param pressure 压强
- * @param input1 原料1
- * @param input2 原料2
- * @return 哈希码
- */
+
+	/**
+	 * 根据原料和温度压强计算哈希码，便于查找配方
+	 * 
+	 * @param temperature 温度
+	 * @param pressure    压强
+	 * @param input1      原料1
+	 * @param input2      原料2
+	 * @return 哈希码
+	 */
 	public static int getHashCode(Degree temperature, Degree pressure, Item input1, Item input2) {
 		return (input1.hashCode() ^ input2.hashCode()) * 256 + temperature.ordinal() * 16 + pressure.ordinal();
 	}
@@ -395,7 +412,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		/*
 		 * 高温常压
 		 */
-		for (Item sand: new Item[] {SAND,RED_SAND}) {
+		for (Item sand : new Item[] { SAND, RED_SAND }) {
 			addRecipe(Degree.HIGH, Degree.ORDINARY, COPPER_DUST, sand, new ItemStack(COPPER_INGOT), new ItemStack(CINDER), 0.2F, 1, 50);
 			addRecipe(Degree.HIGH, Degree.ORDINARY, IRON_DUST, sand, new ItemStack(IRON_INGOT), new ItemStack(CINDER), 0.2F, 1, 50);
 			addRecipe(Degree.HIGH, Degree.ORDINARY, GOLD_DUST, sand, new ItemStack(GOLD_INGOT), new ItemStack(CINDER), 0.2F, 1, 50);

@@ -245,6 +245,12 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		}));
 	}
 
+	/**
+	 * 对于每个物品，生成默认的物品叠
+	 * 
+	 * @param items 物品
+	 * @return 对应的物品叠
+	 */
 	public static List<ItemStack> stacksOf(Item... items) {
 		List<ItemStack> rst = new LinkedList<>();
 		for (Item item : items) {
@@ -253,16 +259,38 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		return Collections.unmodifiableList(rst);
 	}
 
+	/**
+	 * 搜索所有注册的物品，拿出其中含有关键词的，生成物品叠，设置数量为1<br>
+	 * 等同于调用{@code stacksOf(1, keyWord)}
+	 * 
+	 * @param keyWord 关键词
+	 * @return 物品叠
+	 * @see #stacksOf(int, String)
+	 */
 	public static List<ItemStack> stacksOf(String keyWord) {
 		return stacksOf(1, keyWord);
 	}
 
+	/**
+	 * 获取附魔书
+	 * 
+	 * @param enchantment 附魔
+	 * @return 如果不是宝藏附魔，则获取最高等级，否则1级
+	 */
 	public static ItemStack enchantOf(Enchantment enchantment) {
 		ItemStack itemStack = ENCHANTED_BOOK.getDefaultStack();
 		itemStack.addEnchantment(enchantment, enchantment.isTreasure() ? 1 : enchantment.getMaxLevel());
 		return itemStack;
 	}
 
+	/**
+	 * 搜索所有注册的物品，拿出其中含有关键词的，生成物品叠，并设置好数量
+	 * 
+	 * @param count   每个物品叠的数量
+	 * @param keyWord 关键词
+	 * @return 物品叠
+	 * @see #stacksOf(String)
+	 */
 	public static List<ItemStack> stacksOf(int count, String keyWord) {
 		List<ItemStack> rst = new LinkedList<>();
 		for (Entry<RegistryKey<Item>, Item> entry : Registry.ITEM.getEntries())

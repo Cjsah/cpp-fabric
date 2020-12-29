@@ -294,7 +294,7 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 	 * 获取当前的配方代码，用于渲染GUI里的生物
 	 * 
 	 * @return 当前的配方代码
-	 * @see net.cpp.gui.screen.MobProjectorScreen#FLASH
+	 * @see net.cpp.gui.screen.MobProjectorScreen#PICTURES
 	 */
 	public int getCurrentRecipeCode() {
 		return currentRecipeCode;
