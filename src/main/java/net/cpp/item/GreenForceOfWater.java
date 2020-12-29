@@ -47,6 +47,12 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
 
     @Override
     @Environment(EnvType.CLIENT)
+    public Text getName(ItemStack stack) {
+        return new TranslatableText(this.getTranslationKey()).formatted(Formatting.GOLD);
+    }
+
+    @Override
+    @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         // MJSB
 //        tooltip.set(0, tooltip.get(0).shallowCopy().formatted(Formatting.GOLD));

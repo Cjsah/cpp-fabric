@@ -2,16 +2,7 @@ package net.cpp.init;
 
 import static net.cpp.Craftingpp.CPP_GROUP_MACHINE;
 
-import net.cpp.block.AllInOneMachineBlock;
-import net.cpp.block.BeaconEnhancerBlock;
-import net.cpp.block.ChestDropperBlock;
-import net.cpp.block.CraftingMachineBlock;
-import net.cpp.block.DustbinBlock;
-import net.cpp.block.EmptyBookshelfBlock;
-import net.cpp.block.GoldenAnvilBlock;
-import net.cpp.block.ItemProcessorBlock;
-import net.cpp.block.MobProjectorBlock;
-import net.cpp.block.TradeMachineBlock;
+import net.cpp.block.*;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;

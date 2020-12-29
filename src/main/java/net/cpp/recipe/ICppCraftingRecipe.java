@@ -13,7 +13,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.registry.Registry;
 
-
 public interface ICppCraftingRecipe extends Recipe<CraftingInventory> {
 	default RecipeType<?> getType() {
 		return CppRecipes.CRAFTING;

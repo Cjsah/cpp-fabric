@@ -462,15 +462,15 @@ public final class CppItems {
 		BOTTLE_OF_AIR = registerItem("bottle_of_air", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		AMMONIA_REFRIGERANT = registerItem("ammonia_refrigerant", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 
-		BLUE_FORCE_OF_SKY = registerItem("blue_force_of_sky", new BlueForceOfSky(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1).rarity(Rarity.UNCOMMON)));
-		GREEN_FORCE_OF_WATER = registerItem("green_force_of_water", new GreenForceOfWater(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1).rarity(Rarity.UNCOMMON)));
-		CYAN_FORCE_OF_MOUNTAIN = registerItem("cyan_force_of_mountain", new CyanForceOfMountain(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1).rarity(Rarity.UNCOMMON)));
-		ORANGE_FORCE_OF_DIRT = registerItem("orange_force_of_dirt", new OrangeForceOfDirt(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1).rarity(Rarity.UNCOMMON)));
-		YELLOW_FORCE_OF_EARTH = registerItem("yellow_force_of_earth", new YellowForceOfEarth(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1).rarity(Rarity.UNCOMMON)));
-		RED_FORCE_OF_FIRE = registerItem("red_force_of_fire", new RedForceOfFire(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1).rarity(Rarity.UNCOMMON)));
-		PURPLE_FORCE_OF_LIFE = registerItem("purple_force_of_life", new PurpleForceOfLife(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1).rarity(Rarity.UNCOMMON)));
-		WHITE_FORCE_OF_LIGHTNING = registerItem("white_force_of_lightning", new WhiteForceOfLightning(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1).rarity(Rarity.UNCOMMON)));
-		BLACK_FORCE_OF_MOON = registerItem("black_force_of_moon", new BlackForceOfMoon(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1).rarity(Rarity.UNCOMMON).rarity(Rarity.UNCOMMON)));
+		BLUE_FORCE_OF_SKY = registerItem("blue_force_of_sky", new BlueForceOfSky(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		GREEN_FORCE_OF_WATER = registerItem("green_force_of_water", new GreenForceOfWater(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		CYAN_FORCE_OF_MOUNTAIN = registerItem("cyan_force_of_mountain", new CyanForceOfMountain(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		ORANGE_FORCE_OF_DIRT = registerItem("orange_force_of_dirt", new OrangeForceOfDirt(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		YELLOW_FORCE_OF_EARTH = registerItem("yellow_force_of_earth", new YellowForceOfEarth(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		RED_FORCE_OF_FIRE = registerItem("red_force_of_fire", new RedForceOfFire(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		PURPLE_FORCE_OF_LIFE = registerItem("purple_force_of_life", new PurpleForceOfLife(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		WHITE_FORCE_OF_LIGHTNING = registerItem("white_force_of_lightning", new WhiteForceOfLightning(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		BLACK_FORCE_OF_MOON = registerItem("black_force_of_moon", new BlackForceOfMoon(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		PORTABLE_CRAFTING_TABLE = registerItem("portable_crafting_table", new PortableCraftingTable(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		PORTABLE_CRAFTING_MACHINE = registerItem("portable_crafting_machine", new PortableCraftingMachine(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		MAGNET = registerItem("magnet", new Magnet(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));

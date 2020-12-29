@@ -15,8 +15,6 @@ import net.minecraft.entity.projectile.thrown.ExperienceBottleEntity;
 import net.minecraft.item.ExperienceBottleItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Item.Settings;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;

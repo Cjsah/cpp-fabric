@@ -1,15 +1,18 @@
 package net.cpp.item;
 
-import net.cpp.init.CppItems;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -24,6 +27,12 @@ public class PurpleForceOfLife extends Item {
 
     public PurpleForceOfLife(Settings settings) {
         super(settings);
+    }
+
+    @Override
+    @Environment(EnvType.CLIENT)
+    public Text getName(ItemStack stack) {
+        return new TranslatableText(this.getTranslationKey()).formatted(Formatting.GOLD);
     }
 
     @Override

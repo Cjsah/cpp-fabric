@@ -4,8 +4,6 @@ import java.util.*;
 
 import javax.annotation.Nullable;
 
-import com.mojang.datafixers.optics.Lens;
-import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;

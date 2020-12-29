@@ -1,15 +1,6 @@
 package net.cpp.init;
 
-import net.cpp.block.entity.AllInOneMachineBlockEntity;
-import net.cpp.block.entity.BeaconEnhancerBlockEntity;
-import net.cpp.block.entity.ChestDropperBlockEntity;
-import net.cpp.block.entity.CraftingMachineBlockEntity;
-import net.cpp.block.entity.DustbinBlockEntity;
-import net.cpp.block.entity.EmptyBookshelfBlockEntity;
-import net.cpp.block.entity.GoldenAnvilBlockEntity;
-import net.cpp.block.entity.ItemProcessorBlockEntity;
-import net.cpp.block.entity.MobProjectorBlockEntity;
-import net.cpp.block.entity.TradeMachineBlockEntity;
+import net.cpp.block.entity.*;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;

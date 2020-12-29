@@ -2,8 +2,6 @@ package net.cpp;
 
 import net.cpp.api.IPlayerJoinCallback;
 import net.cpp.init.*;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;

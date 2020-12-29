@@ -1,5 +1,7 @@
 package net.cpp.item;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -8,6 +10,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
@@ -23,6 +28,12 @@ public class WhiteForceOfLightning extends Item {
     public WhiteForceOfLightning(Settings settings) {
         super(settings);
         this.register();
+    }
+
+    @Override
+    @Environment(EnvType.CLIENT)
+    public Text getName(ItemStack stack) {
+        return new TranslatableText(this.getTranslationKey()).formatted(Formatting.GOLD);
     }
 
     @Override

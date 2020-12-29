@@ -1,23 +1,15 @@
 package net.cpp.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.cpp.api.CodingTool;
 import net.cpp.init.CppItems;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.decoration.AbstractDecorationEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.PlayerManager;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 @Mixin(ItemFrameEntity.class)

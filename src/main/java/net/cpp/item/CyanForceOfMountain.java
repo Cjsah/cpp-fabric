@@ -42,6 +42,12 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem{
 
     @Override
     @Environment(EnvType.CLIENT)
+    public Text getName(ItemStack stack) {
+        return new TranslatableText(this.getTranslationKey()).formatted(Formatting.GOLD);
+    }
+
+    @Override
+    @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         CompoundTag tag = stack.getOrCreateTag();
         tooltip.add(new TranslatableText("tooltip.cpp.cfom.direction", new TranslatableText("tooltip.cpp.cfom." + (tag.getBoolean("horizontal") ? "horizontal" : "vertical"))).formatted(Formatting.GREEN));
@@ -69,13 +75,14 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem{
                 user.incrementStat(Stats.USED.getOrCreateStat(this));
                 return TypedActionResult.success(item);
             }else if (!user.isSneaking() && hitResult.getType() == HitResult.Type.BLOCK) {
-                user.incrementStat(Stats.USED.getOrCreateStat(this));
                 if (user.isCreative()) {
                     if (fill(world, user, blockPos, item, tag))
-                        return TypedActionResult.success(user.getStackInHand(hand));
+                        user.incrementStat(Stats.USED.getOrCreateStat(this));
+                    return TypedActionResult.success(user.getStackInHand(hand));
                 }else if (getExperience(user) >= 4) {
                     if (fill(world, user, blockPos, item, tag)) {
                         user.addExperience(-4);
+                        user.incrementStat(Stats.USED.getOrCreateStat(this));
                         return TypedActionResult.success(user.getStackInHand(hand));
                     }
                 }else {

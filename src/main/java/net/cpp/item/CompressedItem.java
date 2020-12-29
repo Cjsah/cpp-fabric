@@ -37,8 +37,7 @@ public class CompressedItem extends Item {
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack itemStack = user.getStackInHand(hand);
-		if (!world.isClient) {
-			uncompressAndDrop(user, itemStack);
+		if (!world.isClient && uncompressAndDrop(user, itemStack)) {
 			return TypedActionResult.success(itemStack);
 		}
 		return TypedActionResult.pass(itemStack);
@@ -94,6 +93,7 @@ public class CompressedItem extends Item {
 	}
 
 	@Override
+	@Environment(EnvType.CLIENT)
 	public Text getName(ItemStack stack) {
 		ItemStack itemStack = ItemStack.fromTag(stack.getOrCreateTag().getCompound("item"));
 		return new TranslatableText("tooltip.cpp.compressed").formatted(Formatting.DARK_AQUA).append(((MutableText) itemStack.getName()).formatted(itemStack.getRarity().formatting));
