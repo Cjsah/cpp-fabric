@@ -13,6 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -29,6 +31,7 @@ public abstract class AMachineBlock extends BlockWithEntity {
 	public AMachineBlock(Settings settings) {
 		super(settings);
 	}
+
 	/*
 	 * 以下是BlockWithEntity的方法
 	 */
@@ -85,6 +88,10 @@ public abstract class AMachineBlock extends BlockWithEntity {
 	/*
 	 * 以下是自定义的方法
 	 */
+	public MutableText getName() {
+		return new TranslatableText(this.getTranslationKey());
+	}
+
 	/**
 	 * @return 右键方块时需要增加的统计
 	 */
