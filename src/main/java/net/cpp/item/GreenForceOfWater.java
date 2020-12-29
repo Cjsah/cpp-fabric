@@ -3,6 +3,8 @@ package net.cpp.item;
 import java.util.List;
 import java.util.Objects;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -44,6 +46,7 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         // MJSB
 //        tooltip.set(0, tooltip.get(0).shallowCopy().formatted(Formatting.GOLD));
