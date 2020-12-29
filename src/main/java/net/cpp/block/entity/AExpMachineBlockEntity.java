@@ -2,6 +2,7 @@ package net.cpp.block.entity;
 
 import static net.minecraft.item.Items.EXPERIENCE_BOTTLE;
 
+import net.cpp.item.CompressedItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
@@ -72,9 +73,12 @@ public abstract class AExpMachineBlockEntity extends AOutputMachineBlockEntity {
 	 * 把附魔之瓶槽里的附魔之瓶转化成经验储存到经验槽里
 	 */
 	protected void transferExpBottle() {
-		if (getStack(0).getItem() == EXPERIENCE_BOTTLE && expStorage + 9 <= XP_CAPACITY) {
-			getStack(0).decrement(1);
-			expStorage += 9;
+		if (getStack(0).isOf(EXPERIENCE_BOTTLE)) {
+			int exp = CompressedItem.getCompressedExp(getStack(0));
+			if (expStorage + exp <= XP_CAPACITY) {
+				getStack(0).decrement(1);
+				expStorage += exp;
+			}
 		}
 	}
 

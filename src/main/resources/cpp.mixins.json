@@ -5,7 +5,9 @@
     "compatibilityLevel": "JAVA_8",
     "mixins": [
 		"PlayerEntityMixin",
-		"ItemFrameMixin"
+		"ItemFrameMixin",
+		"ExperienceBottleItemMixin",
+		"ExperienceBottleEntityMixin"
     ],
     "client": [
         "ItemStackMixin",
