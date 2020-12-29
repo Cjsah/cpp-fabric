@@ -26,21 +26,22 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
 	/**
 	 * 当玩家携带启用的磁铁时，吸引16米内的物品
-	 * @param callbackInfo
 	 */
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	public void tick(CallbackInfo callbackInfo) {
 		{
-			boolean enabled = false;
-			for (int i = 0; i < getInventory().size(); i++) {
-				ItemStack itemStack = getInventory().getStack(i);
-				if (itemStack.isOf(CppItems.MAGNET) && itemStack.getOrCreateTag().getBoolean("enabled")) {
-					enabled = true;
-					break;
+			if (!this.world.isClient) {
+				boolean enabled = false;
+				for (int i = 0; i < getInventory().size(); i++) {
+					ItemStack itemStack = getInventory().getStack(i);
+					if (itemStack.isOf(CppItems.MAGNET) && itemStack.getOrCreateTag().getBoolean("enabled")) {
+						enabled = true;
+						break;
+					}
 				}
-			}
-			if (enabled) {
-				CodingTool.attractItems(getPos().add(0, 1, 0), world, true, false);
+				if (enabled) {
+					CodingTool.attractItems(getPos().add(0, 1, 0), world, true, false);
+				}
 			}
 		}
 	}

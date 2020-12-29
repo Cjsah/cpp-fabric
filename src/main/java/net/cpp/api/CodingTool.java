@@ -188,6 +188,9 @@ public class CodingTool {
 		}
 	}
 
+	/**
+	 * 报时
+	 */
 	public static void timeChecker(World world) {
 		if (!world.isClient) {
 			long time = world.getTimeOfDay();
