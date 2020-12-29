@@ -3,6 +3,7 @@ package net.cpp.item;
 import static net.cpp.api.CodingTool.rayItem;
 
 import net.cpp.init.CppItems;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -37,7 +38,7 @@ public class Compressor extends Item {
 				if (itemStack != (itemStack = compress(itemStack))) {
 					itemEntity.setStack(itemStack);
 					((ServerPlayerEntity) user).networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_PISTON_EXTEND, SoundCategory.PLAYERS, pos.getX(), pos.getY(), pos.getZ(), 1, 1));
-					((ServerPlayerEntity) user).networkHandler.sendPacket(new ParticleS2CPacket(ParticleTypes.CRIT, false, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, .2f, .2f, .2f, .02f, 3));
+					((ServerPlayerEntity) user).networkHandler.sendPacket(new ParticleS2CPacket(ParticleTypes.CRIT, false, pos.getX(), pos.getY()+EntityType.ITEM.getHeight()/2, pos.getZ(), .3f, .3f, .3f, .1f, 10));
 					user.incrementStat(Stats.USED.getOrCreateStat(this));
 					return TypedActionResult.success(item);
 				}
@@ -45,8 +46,10 @@ public class Compressor extends Item {
 		}
 		return TypedActionResult.pass(item);
 	}
+
 	/**
-	 * 压缩物品 
+	 * 压缩物品
+	 * 
 	 * @param itemStack 要被压缩的物品叠
 	 * @return 压缩之后的物品，如果物品叠不可压缩，则原样返回（同一个对象）
 	 */

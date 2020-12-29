@@ -523,6 +523,7 @@
   "tooltip.cpp.cfom.level": "等级：%s",
   "tooltip.cpp.cfom.xp": "经验：%s",
   "tooltip.cpp.multiple": "%s重",
+  "tooltip.cpp.compressed": "压缩",
 
   "word.infinite": "∞",
   

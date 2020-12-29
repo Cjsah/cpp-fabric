@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
 import net.cpp.api.IMultiple;
+import net.cpp.item.CompressedItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
@@ -19,11 +20,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.BlockPos.Mutable;
 import net.minecraft.world.World;
 
 @Mixin(ExperienceBottleItem.class)
@@ -32,28 +35,42 @@ public class ExperienceBottleItemMixin extends Item {
 	public ExperienceBottleItemMixin(Settings settings) {
 		super(settings);
 	}
+
 	@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-		CompoundTag tag = stack.getOrCreateTag();
-		tooltip.add(new TranslatableText("tooltip.cpp.multiple", tag.getByte("multiple")).formatted(Formatting.DARK_AQUA));
+		int multiple = stack.getOrCreateTag().getByte("multiple");
+		if (multiple != 0)
+			tooltip.add(new TranslatableText("tooltip.cpp.multiple", multiple).formatted(Formatting.DARK_AQUA));
 	}
+
 	@Overwrite
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack itemStack = user.getStackInHand(hand);
-		world.playSound((PlayerEntity) null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_EXPERIENCE_BOTTLE_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
-		if (!world.isClient) {
-			ExperienceBottleEntity experienceBottleEntity = new ExperienceBottleEntity(world, user);
-			experienceBottleEntity.setItem(itemStack);
-			experienceBottleEntity.setProperties(user, user.pitch, user.yaw, -20.0F, 0.7F, 1.0F);
-			((IMultiple)experienceBottleEntity).setMultiple(itemStack.getOrCreateTag().getByte("multiple"));
-			world.spawnEntity(experienceBottleEntity);
-		}
+		int multiple = itemStack.getOrCreateTag().getByte("multiple");
+		if (multiple <= 1) {
+			world.playSound((PlayerEntity) null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_EXPERIENCE_BOTTLE_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
+			if (!world.isClient) {
+				ExperienceBottleEntity experienceBottleEntity = new ExperienceBottleEntity(world, user);
+				experienceBottleEntity.setItem(itemStack);
+				experienceBottleEntity.setProperties(user, user.pitch, user.yaw, -20.0F, 0.7F, 1.0F);
+				((IMultiple) experienceBottleEntity).setMultiple(multiple);
+				world.spawnEntity(experienceBottleEntity);
+			}
 
-		user.incrementStat(Stats.USED.getOrCreateStat(this));
-		if (!user.getAbilities().creativeMode) {
-			itemStack.decrement(1);
+			if (!user.getAbilities().creativeMode) {
+				itemStack.decrement(1);
+			}
+		} else {
+			CompressedItem.uncompressAndDrop(user, itemStack);
 		}
+		user.incrementStat(Stats.USED.getOrCreateStat(this));
 
 		return TypedActionResult.success(itemStack, world.isClient());
+	}
+
+	@Override
+	public Text getName(ItemStack stack) {
+		int multiple = stack.getOrCreateTag().getByte("multiple");
+		return multiple == 0 ? super.getName(stack) : new TranslatableText("tooltip.cpp.compressed").formatted(Formatting.DARK_AQUA).append(((MutableText)super.getName(stack)).formatted(stack.getRarity().formatting));
 	}
 }

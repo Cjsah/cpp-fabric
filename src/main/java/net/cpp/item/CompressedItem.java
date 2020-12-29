@@ -11,11 +11,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Pair;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
@@ -28,7 +30,7 @@ public class CompressedItem extends Item {
 	@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
 		CompoundTag tag = stack.getOrCreateTag();
-		tooltip.add(new TranslatableText(ItemStack.fromTag(tag.getCompound("item")).getTranslationKey()).formatted(Formatting.YELLOW));
+//		tooltip.add(new TranslatableText(ItemStack.fromTag(tag.getCompound("item")).getTranslationKey()).formatted(Formatting.YELLOW));
 		tooltip.add(new TranslatableText("tooltip.cpp.multiple", tag.getByte("multiple")).formatted(Formatting.DARK_AQUA));
 	}
 
@@ -36,16 +38,7 @@ public class CompressedItem extends Item {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack itemStack = user.getStackInHand(hand);
 		if (!world.isClient) {
-			Pair<ItemStack, Integer> uncompressed = uncompress(itemStack);
-			if (user.isSneaking()) {
-				int i = uncompressed.getRight();
-				while (i-- > 0)
-					user.dropStack(uncompressed.getLeft().copy());
-				itemStack.decrement(uncompressed.getRight());
-			} else {
-				user.dropStack(uncompressed.getLeft());
-				itemStack.decrement(1);
-			}
+			uncompressAndDrop(user, itemStack);
 			return TypedActionResult.success(itemStack);
 		}
 		return TypedActionResult.pass(itemStack);
@@ -72,7 +65,37 @@ public class CompressedItem extends Item {
 		}
 		return new Pair<>(result, count);
 	}
+
+	/**
+	 * 获取压缩附魔之瓶的经验值
+	 * 
+	 * @param compressedExpBottle 压缩附魔之瓶
+	 * @return 一瓶的经验值
+	 */
 	public static int getCompressedExp(ItemStack compressedExpBottle) {
-		return 9 << (6*compressedExpBottle.getOrCreateTag().getByte("multiple"));
+		return 9 << (6 * compressedExpBottle.getOrCreateTag().getByte("multiple"));
+	}
+
+	public static boolean uncompressAndDrop(PlayerEntity playerEntity, ItemStack compressed) {
+		Pair<ItemStack, Integer> pair = uncompress(compressed);
+		if (!(pair.getLeft() == compressed)) {
+			if (playerEntity.isSneaking()) {
+				int i = pair.getRight();
+				while (i-- > 0)
+					playerEntity.dropStack(pair.getLeft().copy());
+				compressed.decrement(pair.getRight());
+			} else {
+				playerEntity.dropStack(pair.getLeft());
+				compressed.decrement(1);
+			}
+			return true;
+		} else
+			return false;
+	}
+
+	@Override
+	public Text getName(ItemStack stack) {
+		ItemStack itemStack = ItemStack.fromTag(stack.getOrCreateTag().getCompound("item"));
+		return new TranslatableText("tooltip.cpp.compressed").formatted(Formatting.DARK_AQUA).append(((MutableText) itemStack.getName()).formatted(itemStack.getRarity().formatting));
 	}
 }
