@@ -13,7 +13,11 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-
+/**
+ * 经验槽（按钮）
+ * @author Ph-苯
+ *
+ */
 public class ExpTankButton extends TexturedButtonWidget {
 	public static final int SYNC_ID = CodingTool.nextSyncId();
 	public static final Identifier XP = new Identifier("cpp:textures/gui/xp.png");

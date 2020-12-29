@@ -162,19 +162,22 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 		}
 		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
-/**
- * 更新RGB文本
- */
+
+	/**
+	 * 更新RGB文本
+	 */
 	private void updateText() {
 		for (int i = 0; i < 3; i++) {
 			colorFields[i].setText(String.format("%02X", (rgb >> ((2 - i) * 8)) & 0xff));
 		}
 	}
-/**
- * 左右方向按钮
- * @author Ph-苯
- *
- */
+
+	/**
+	 * 左右方向按钮
+	 * 
+	 * @author Ph-苯
+	 *
+	 */
 	public static class DirectionButton extends TexturedButtonWidget {
 		public final boolean left;
 
@@ -191,10 +194,12 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 			drawTexture(matrices, x, y, 181 + (left ? 0 : 7), isHovered() ? 12 : 0, 7, 12);
 		}
 	}
-/**
- * 通过HSB更新RGB
- * @return
- */
+
+	/**
+	 * 通过HSB更新RGB
+	 * 
+	 * @return
+	 */
 	public int updateRGB() {
 		if (rgb != (rgb = Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]))) {
 			handler.update(rgb);

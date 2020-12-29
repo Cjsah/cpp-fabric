@@ -85,7 +85,9 @@ public class PortableCraftingMachineScreenHandler extends ScreenHandler {
 	public void populateRecipeFinder(RecipeFinder finder) {
 		this.input.provideRecipeInputs(finder);
 	}
-
+/**
+ * 清除物品栏
+ */
 	public void clearCraftingSlots() {
 		this.input.clear();
 		this.result.clear();

@@ -38,7 +38,11 @@ public class EmptyBookshelfScreenHandler extends AMachineScreenHandler {
 		}
 		return ItemStack.EMPTY;
 	}
-
+/**
+ * 空书架槽，只允许放入{@link EmptyBookshelfBlockEntity#STORABLE}中的物品
+ * @author Ph-苯
+ *
+ */
 	public static class BookshelfSlot extends Slot {
 		public BookshelfSlot(Inventory inventory, int index, int x, int y) {
 			super(inventory, index, x, y);

@@ -35,6 +35,9 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
 public class ColorPaletteScreenHandler extends ScreenHandler {
+	/**
+	 * 染料物品，用于调用染色方法（搞得跟静态方法一样，MJSB）
+	 */
 	public static final DyeableItem DYER = new DyeableItem() {
 	};
 	public final Identifier channel = new Identifier("cpp", "color_palette");

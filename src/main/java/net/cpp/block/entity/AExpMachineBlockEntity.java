@@ -8,8 +8,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+
 /**
  * 带经验槽和方向输出的机器方块实体
+ * 
  * @author Ph-苯
  *
  */
@@ -57,12 +59,15 @@ public abstract class AExpMachineBlockEntity extends AOutputMachineBlockEntity {
 	public int getWorkTimeTotal() {
 		return workTimeTotal;
 	}
+
 	public void setExpStorage(int expStorage) {
 		this.expStorage = expStorage;
 	}
+
 	public int getExpStorage() {
 		return expStorage;
 	}
+
 	/**
 	 * 把附魔之瓶槽里的附魔之瓶转化成经验储存到经验槽里
 	 */
@@ -72,8 +77,10 @@ public abstract class AExpMachineBlockEntity extends AOutputMachineBlockEntity {
 			expStorage += 9;
 		}
 	}
+
 	/**
 	 * 同步了经验槽
+	 * 
 	 * @author Ph-苯
 	 *
 	 */

@@ -17,15 +17,17 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+
 /**
  * 默认机器
+ * 
  * @author Ph-苯
  *
  */
 public abstract class AMachineBlockEntity extends LootableContainerBlockEntity {
 	protected DefaultedList<ItemStack> inventory = DefaultedList.of();
 
-	public AMachineBlockEntity(BlockEntityType<?> blockEntityType,BlockPos pos, BlockState state) {
+	public AMachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
 		super(blockEntityType, pos, state);
 	}
 
@@ -73,12 +75,14 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity {
 	public void onClose(PlayerEntity player) {
 
 	}
+
 	/**
 	 * 设置物品栏容量
+	 * 
 	 * @param capacity 容量
 	 * @return 设置后的物品栏
 	 */
-	protected DefaultedList<ItemStack> setCapacity(int capacity){
+	protected DefaultedList<ItemStack> setCapacity(int capacity) {
 		return inventory = DefaultedList.ofSize(capacity, ItemStack.EMPTY);
 	}
 }

@@ -4,7 +4,11 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.slot.Slot;
-
+/**
+ * 附魔之瓶槽，只允许放入附魔之瓶
+ * @author Ph-苯
+ *
+ */
 public class ExperienceBottleSlot extends Slot {
 //	private int amount;
 	public ExperienceBottleSlot(Inventory inventory, int index, int x, int y) {
