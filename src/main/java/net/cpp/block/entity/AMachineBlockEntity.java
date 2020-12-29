@@ -61,7 +61,7 @@ public abstract class AMachineBlockEntity extends LootableContainerBlockEntity {
 
 	@Override
 	public Text getContainerName() {
-		return getCustomName() != null ? getCustomName() : getCachedState().getBlock().getName();
+		return getCustomName() != null ? getCustomName() : new TranslatableText(getCachedState().getBlock().getTranslationKey());
 	}
 
 	protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {

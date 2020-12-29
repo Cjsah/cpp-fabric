@@ -68,11 +68,6 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 	}
 
 	@Override
-	public Text getContainerName() {
-		return getCustomName() != null ? getCustomName() : getCachedState().getBlock().getName();
-	}
-
-	@Override
 	public int size() {
 		return getInvStackList().size();
 	}

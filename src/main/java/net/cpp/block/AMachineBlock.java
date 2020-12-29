@@ -81,10 +81,6 @@ public abstract class AMachineBlock extends BlockWithEntity {
 		return true;
 	}
 
-	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
-		return ScreenHandler.calculateComparatorOutput(world.getBlockEntity(pos));
-	}
-
 	/*
 	 * 以下是自定义的方法
 	 */

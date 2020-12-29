@@ -51,6 +51,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
@@ -215,9 +216,9 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 		return new BeaconEnhancerScreenHandler(syncId, inv, this);
 	}
 
-	@Override
+	
 	public Text getDisplayName() {
-		return getCachedState().getBlock().getName();
+		return new TranslatableText(getCachedState().getBlock().getTranslationKey());
 	}
 
 	/**

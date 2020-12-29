@@ -63,6 +63,7 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 				} else {
 					rgb = rgb & (0xff00ffff >> (fi * 8)) | (Integer.valueOf(s.length() == 0 ? "0" : s, 16) << ((2 - fi) * 8));
 					hsb = Color.RGBtoHSB(rgb >> 16 & 0xff, rgb >> 8 & 0xff, rgb & 0xff, hsb);
+					updateRGB();
 				}
 			});
 			colorFields[i].setMaxLength(2);
@@ -75,6 +76,7 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 					int i1 = ((rgb >> ((2 - fi) * 8)) + (fj == 0 ? -1 : 1)) & 0xff;
 					rgb = rgb & (0xff00ffff >> (fi * 8)) | (i1 << ((2 - fi) * 8));
 					hsb = Color.RGBtoHSB(rgb >> 16 & 0xff, rgb >> 8 & 0xff, rgb & 0xff, hsb);
+					updateRGB();
 				}));
 			}
 		}
