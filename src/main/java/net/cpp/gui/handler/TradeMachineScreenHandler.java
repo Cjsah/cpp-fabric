@@ -26,9 +26,24 @@ public class TradeMachineScreenHandler extends AExpMachineScreenHandler {
 	public TradeMachineScreenHandler(int syncId, PlayerInventory playerInventory, TradeMachineBlockEntity blockEntity) {
 		super(CppScreenHandler.TRADE_MACHINE, syncId, playerInventory, blockEntity);
 		this.blockEntity = blockEntity;
-		addSlot(new Slot(blockEntity, 1, x(1), y(1)));
-		addSlot(new Slot(blockEntity, 2, x(5), y(1)));
-		addSlot(new Slot(blockEntity, 3, x(6), y(1)));
+		addSlot(new Slot(blockEntity, 1, x(1), y(1)) {
+			@Override
+			public boolean canInsert(ItemStack stack) {
+				return blockEntity.getMode() == 0;
+			}
+		});
+		addSlot(new Slot(blockEntity, 2, x(5), y(1)) {
+			@Override
+			public boolean canInsert(ItemStack stack) {
+				return blockEntity.getMode() == 1;
+			}
+		});
+		addSlot(new Slot(blockEntity, 3, x(6), y(1)) {
+			@Override
+			public boolean canInsert(ItemStack stack) {
+				return blockEntity.getMode() == 1;
+			}
+		});
 	}
 
 	@Override
