@@ -10,16 +10,14 @@ public interface IOutputDiractional {
 	/**
 	 * 设置输出方向
 	 * 
-	 * @return 设置前的输出方向
-	 * @see #outputDir
 	 * @see #shiftOutputDir()
 	 */
 	void setOutputDir(Direction dir);
 
 	/**
-	 * 
+	 * 等同于setOutputDir(byteToDir((byte) dirToByte()))
 	 * @param b
-	 * @return setOutputDir(byteToDir((byte) (dirToByte() + 1)))
+	 *  
 	 * @see #setOutputDir(Direction)
 	 * @see #byteToDir(byte)
 	 * @see #dirToByte()
@@ -32,16 +30,13 @@ public interface IOutputDiractional {
 	 * 获取当前输出方向
 	 * 
 	 * @return 输出方向
-	 * @see #outputDir
 	 * @see #shiftOutputDir()
 	 */
 	Direction getOutputDir();
 
 	/**
-	 * 切换输出方向
+	 * 切换输出方向，等同于setOutputDir(byteToDir((byte) (dirToByte() + 1)))
 	 * 
-	 * @return 切换后的方向
-	 * @see #outputDir
 	 * @see #getOutputDir()
 	 */
 	default void shiftOutputDir() {

@@ -30,7 +30,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 /**
- * 机器模板，子类只需要实现两个方法{@link BlockEntityProvider#createBlockEntity(BlockView)}和{@link #getStatIdentifier()}
+ * 机器方块
  * 
  * @author Ph-苯
  *

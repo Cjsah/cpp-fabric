@@ -65,7 +65,7 @@ public class CodingTool {
 	}
 
 	/**
-	 * 将UUID转化为包含4个元素的int型数组</br>
+	 * 将UUID转化为包含4个元素的int型数组<br>
 	 * （本类未使用）
 	 *
 	 * @author Phoupraw
@@ -83,7 +83,7 @@ public class CodingTool {
 	}
 
 	/**
-	 * 将长为4的int数组标签转化为UUID</br>
+	 * 将长为4的int数组标签转化为UUID<br>
 	 * （本类未使用）
 	 *
 	 * @author Phoupraw

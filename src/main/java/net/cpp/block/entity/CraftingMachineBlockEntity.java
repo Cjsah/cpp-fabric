@@ -158,31 +158,6 @@ public class CraftingMachineBlockEntity extends AOutputMachineBlockEntity implem
 	}
 
 	/*
-	 * 以下是SidedInventory的方法
-	 */
-//	@Override
-//	public int[] getAvailableSlots(Direction side) {
-//		int[] slots = new int[9];
-//		int size = 0;
-//		for (int i = 0; i < 9; i++)
-//			if (!inputInventory.getStack(i).isEmpty()) {
-//				slots[size++] = i;
-//			}
-//		slots = Arrays.copyOf(slots, size);
-//		return slots;
-//	}
-//
-//	@Override
-//	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-//		return slot >= 0 && slot < 9 && getStack(slot).getItem().equals(stack.getItem());
-//	}
-//
-//	@Override
-//	public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-//		return false;
-//	}
-
-	/*
 	 * 以下是RecipeUnlocker的方法
 	 */
 	@Override
@@ -293,7 +268,7 @@ public class CraftingMachineBlockEntity extends AOutputMachineBlockEntity implem
 	}
 
 	/**
-	 * 判断一个配方能否被使用。当且仅当任意打开过该合成器的玩家都没有解锁该配方且游戏规则“限制合成”开启时才禁止被使用</br>
+	 * 判断一个配方能否被使用。当且仅当任意打开过该合成器的玩家都没有解锁该配方且游戏规则“限制合成”开启时才禁止被使用<br>
 	 * （未完成，目前永远返回true）
 	 * 
 	 * @param recipe
