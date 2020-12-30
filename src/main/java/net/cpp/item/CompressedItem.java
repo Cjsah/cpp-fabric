@@ -42,7 +42,7 @@ public class CompressedItem extends Item {
 		if (!world.isClient && uncompressAndDrop(user, itemStack)) {
 			return TypedActionResult.success(itemStack);
 		}
-		return TypedActionResult.pass(itemStack);
+		return TypedActionResult.success(itemStack);
 	}
 
 	/**

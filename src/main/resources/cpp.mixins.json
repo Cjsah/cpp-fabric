@@ -7,7 +7,11 @@
 		"PlayerEntityMixin",
 		"ItemFrameMixin",
 		"ExperienceBottleItemMixin",
-		"ExperienceBottleEntityMixin"
+		"ExperienceBottleEntityMixin",
+		"SpiderEntityMixin",
+		"SilverfishEntityMixin",
+		"EndermiteEntityMixin",
+		"BeeEntityMixin"
     ],
     "client": [
         "ItemStackMixin",

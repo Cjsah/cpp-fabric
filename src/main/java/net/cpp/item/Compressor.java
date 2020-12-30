@@ -31,20 +31,21 @@ public class Compressor extends Item {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack item = user.getStackInHand(hand);
 		if (!world.isClient) {
+			user.incrementStat(Stats.USED.getOrCreateStat(this));
 			ItemEntity itemEntity = rayItem(user);
 			if (itemEntity != null) {
 				Vec3d pos = itemEntity.getPos();
 				ItemStack itemStack = itemEntity.getStack();
 				if (itemStack != (itemStack = compress(itemStack))) {
 					itemEntity.setStack(itemStack);
+					itemEntity.setPickupDelay(0);
 					((ServerPlayerEntity) user).networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_PISTON_EXTEND, SoundCategory.PLAYERS, pos.getX(), pos.getY(), pos.getZ(), 1, 1));
 					((ServerPlayerEntity) user).networkHandler.sendPacket(new ParticleS2CPacket(ParticleTypes.CRIT, false, pos.getX(), pos.getY()+EntityType.ITEM.getHeight()/2, pos.getZ(), .3f, .3f, .3f, .1f, 10));
-					user.incrementStat(Stats.USED.getOrCreateStat(this));
 					return TypedActionResult.success(item);
 				}
 			}
 		}
-		return TypedActionResult.pass(item);
+		return TypedActionResult.success(item);
 	}
 
 	/**

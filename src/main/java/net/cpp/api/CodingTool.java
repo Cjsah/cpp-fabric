@@ -1,13 +1,19 @@
 package net.cpp.api;
 
-import java.util.*;
+import static net.cpp.api.CppChat.say;
+
+import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import net.cpp.init.CppItems;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.ai.TargetPredicate;
+import net.minecraft.entity.ai.goal.FleeEntityGoal;
+import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -27,9 +33,39 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import static net.cpp.api.CppChat.say;
-
 public class CodingTool {
+	public static class SachetFleeGoal extends FleeEntityGoal<PlayerEntity> {
+		public final PathAwareEntity entity;
+
+		public SachetFleeGoal(PathAwareEntity entity) {
+			super(entity, PlayerEntity.class, 16, 1, 1.2);
+			this.entity = entity;
+		}
+
+		public boolean canStart() {
+			boolean b = false;
+			TargetPredicate targetPredicate = new TargetPredicate();
+			targetPredicate.setPredicate(livingEntity -> livingEntity.getPos().isInRange(entity.getPos(), 16));
+			for (PlayerEntity playerEntity : entity.world.getPlayers(targetPredicate, entity, new Box(entity.getPos(), entity.getPos()).expand(16))) {
+				if (playerEntity.getInventory().contains(CppItems.SACHET.getDefaultStack())) {
+					b = true;
+//					System.out.println(1);
+					break;
+				}
+			}
+//			targetEntity = mob.world.getClosestEntity(mob.world.getEntitiesByClass(classToFleeFrom, mob.getBoundingBox().expand(fleeDistance, 3, fleeDistance), entity -> entity.getInventory().contains(CppItems.SACHET.getDefaultStack())), targetPredicate, mob, mob.getX(), mob.getY(), mob.getZ());
+			if (!b)
+				return false;
+			super.canStart();
+			return targetEntity != null;
+		}
+
+		@Override
+		public void stop() {
+			targetEntity = null;
+		}
+	}
+
 	private CodingTool() {
 
 	}

@@ -484,7 +484,7 @@ public final class CppItems {
 		ELDER_S_WORDS = registerItem("elder_s_words", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		COORDINATE_RECORDER = registerItem("coordinate_recorder", new CoordinateRecorder(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		MUFFLER = registerItem("muffler", new Muffler(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-		SACHET = registerItem("sachet", new Sachet(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		SACHET = registerItem("sachet", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		GRAFTER = registerItem("grafter", new Grafter(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		GLASS_PICKAXE = registerItem("glass_pickaxe", new GlassPickaxe(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		CHEST_TRANSPORTER = registerItem("chest_transporter", new ChestTransporter(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
