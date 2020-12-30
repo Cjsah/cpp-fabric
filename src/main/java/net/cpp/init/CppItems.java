@@ -392,7 +392,6 @@ public final class CppItems {
 	public static final Item BLACK_SIGN;
 	public static final Item GLASS_SIGN;
 	public static final Item COMPRESSED_ITEM;
-	public static final Item COMPRESSED_EXPERIENCE_BOTTLE;
 	public static final Map<Item, Item> SEEDS_TO_FLOWERS;
 	public static final Set<Item> FRUITS;
 	static {
@@ -756,7 +755,6 @@ public final class CppItems {
 		BLACK_SIGN = registerItem("black_sign", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 		GLASS_SIGN = registerItem("glass_sign", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 		COMPRESSED_ITEM = registerItem("compressed_item", new CompressedItem(new Item.Settings()));
-		COMPRESSED_EXPERIENCE_BOTTLE = registerItem("compressed_experience_bottle", new CompressedExperienceBottleItem());
 		{
 			Item[] flowers = { LYCORIS_RADIATA, TRIFOLIUM, BLACKTHORN, CATTAIL, MARIGOLD, HIBISCUS, HYACINTH, CALAMUS,
 					WILD_LILIUM, BAUHINIA, FLUFFY_GRASS, GERBERA, ESPARTO, GLOW_FORSYTHIA, GLAZED_SHADE, STELERA,

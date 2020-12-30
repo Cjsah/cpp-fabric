@@ -222,7 +222,7 @@ public class CodingTool {
 		}
 	}
 
-	private static void sendMessage(World world, String name, boolean playSound) {
+	public static void sendMessage(World world, String name, boolean playSound) {
 		for (PlayerEntity player : world.getPlayers()) {
 			say(player, new TranslatableText("chat.cpp.time." + name));
 			if (playSound)

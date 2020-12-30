@@ -229,7 +229,7 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 		this.rgb = rgb;
 		neededDye = getNearestDye(rgb);
 		onContentChanged(items);
-
+//		CodingTool.sendMessage(player.world, String.format("%s:%s", player.getName(), rgb), false);
 	}
 
 	/**
