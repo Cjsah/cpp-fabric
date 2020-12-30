@@ -527,6 +527,7 @@
   "tooltip.cpp.compressed": "压缩",
   "tooltip.cpp.coordinate": "坐标：%s",
   "tooltip.cpp.coordinate_absent": "缺少坐标！",
+  "tooltip.cpp.erasure": "消音了%s个实体",
 
   "word.infinite": "∞",
   
