@@ -16,11 +16,14 @@ import java.util.Set;
 import net.cpp.api.CppFoodOrPotion;
 import net.cpp.item.*;
 import net.cpp.item.Character;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.UseAction;
@@ -391,6 +394,7 @@ public final class CppItems {
 	public static final Item RED_SIGN;
 	public static final Item BLACK_SIGN;
 	public static final Item GLASS_SIGN;
+
 	public static final Item COMPRESSED_ITEM;
 	public static final Map<Item, Item> SEEDS_TO_FLOWERS;
 	public static final Set<Item> FRUITS;
@@ -478,7 +482,7 @@ public final class CppItems {
 		ORIGIN_OF_THE_WORLD = registerItem("origin_of_the_world", new OriginOfTheWorld(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		COMPRESSOR = registerItem("compressor", new Compressor(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		ELDER_S_WORDS = registerItem("elder_s_words", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-		COORDINATE_RECORDER = registerItem("coordinate_recorder", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		COORDINATE_RECORDER = registerItem("coordinate_recorder", new CoordinateRecorder(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		MUFFLER = registerItem("muffler", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		SACHET = registerItem("sachet", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		GRAFTER = registerItem("grafter", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
@@ -499,7 +503,7 @@ public final class CppItems {
 		WARRIOR_GOLEM = registerItem("warrior_golem", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		HERDER_GOLEM = registerItem("herder_golem", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		SANTA_GIFT = registerItem("santa_gift", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-		COLOR_PALETTE = registerItem("color_palette", new ColorPaletteItem(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		COLOR_PALETTE = registerItem("color_palette", new ColorPalette(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 
 		KETCHUP = registerItem("ketchup", new CppFoodOrPotion(UseAction.EAT, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
 		STRAWBERRY_JAM = registerItem("strawberry_jam", new CppFoodOrPotion(UseAction.EAT, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));
@@ -754,23 +758,16 @@ public final class CppItems {
 		RED_SIGN = registerItem("red_sign", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 		BLACK_SIGN = registerItem("black_sign", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 		GLASS_SIGN = registerItem("glass_sign", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
+
 		COMPRESSED_ITEM = registerItem("compressed_item", new CompressedItem(new Item.Settings()));
 		{
-			Item[] flowers = { LYCORIS_RADIATA, TRIFOLIUM, BLACKTHORN, CATTAIL, MARIGOLD, HIBISCUS, HYACINTH, CALAMUS,
-					WILD_LILIUM, BAUHINIA, FLUFFY_GRASS, GERBERA, ESPARTO, GLOW_FORSYTHIA, GLAZED_SHADE, STELERA,
-					FORAGE_CRYSTAL, ISORCHID, BURNING_CHRYSANTHE, OXALIS },
-					seeds = { LYCORIS_RADIATA_SEED, TRIFOLIUM_SEED, BLACKTHORN_SEED, CATTAIL_SEED, MARIGOLD_SEED,
-							HIBISCUS_SEED, HYACINTH_SEED, CALAMUS_SEED, WILD_LILIUM_SEED, BAUHINIA_SEED,
-							FLUFFY_GRASS_SEED, GERBERA_SEED, ESPARTO_SEED, GLOW_FORSYTHIA_SEED, GLAZED_SHADE_SEED,
-							STELERA_SEED, FORAGE_CRYSTAL_SEED, ISORCHID_SEED, BURNING_CHRYSANTHE_SEED, OXALIS_SEED };
+			Item[] flowers = { LYCORIS_RADIATA, TRIFOLIUM, BLACKTHORN, CATTAIL, MARIGOLD, HIBISCUS, HYACINTH, CALAMUS, WILD_LILIUM, BAUHINIA, FLUFFY_GRASS, GERBERA, ESPARTO, GLOW_FORSYTHIA, GLAZED_SHADE, STELERA, FORAGE_CRYSTAL, ISORCHID, BURNING_CHRYSANTHE, OXALIS }, seeds = { LYCORIS_RADIATA_SEED, TRIFOLIUM_SEED, BLACKTHORN_SEED, CATTAIL_SEED, MARIGOLD_SEED, HIBISCUS_SEED, HYACINTH_SEED, CALAMUS_SEED, WILD_LILIUM_SEED, BAUHINIA_SEED, FLUFFY_GRASS_SEED, GERBERA_SEED, ESPARTO_SEED, GLOW_FORSYTHIA_SEED, GLAZED_SHADE_SEED, STELERA_SEED, FORAGE_CRYSTAL_SEED, ISORCHID_SEED, BURNING_CHRYSANTHE_SEED, OXALIS_SEED };
 			SEEDS_TO_FLOWERS = new HashMap<>();
 			for (int i = 0; i < flowers.length; i++)
 				SEEDS_TO_FLOWERS.put(seeds[i], flowers[i]);
 		}
 
-		FRUITS = new HashSet<>(Arrays.asList(APRICOT, BANANA, BLUEBERRY, CHERRY, CHINESE_DATE, COCONUT, GOLDEN_GRAPE,
-				GRAPE, GRAPEFRUIT, HAWTHORN, LEMON, LONGAN, LOQUAT, LYCHEE, MANGO, ORANGE, PAYAPA, PEACH, PEAR,
-				PERSIMMON, PLUM, POMEGRANATE, STRAWBERRY, TOMATO));
+		FRUITS = new HashSet<>(Arrays.asList(APRICOT, BANANA, BLUEBERRY, CHERRY, CHINESE_DATE, COCONUT, GOLDEN_GRAPE, GRAPE, GRAPEFRUIT, HAWTHORN, LEMON, LONGAN, LOQUAT, LYCHEE, MANGO, ORANGE, PAYAPA, PEACH, PEAR, PERSIMMON, PLUM, POMEGRANATE, STRAWBERRY, TOMATO));
 	}
 
 	private static Item registerItem(String id, Item item) {
@@ -782,6 +779,7 @@ public final class CppItems {
 		return Registry.register(Registry.ITEM, new Identifier(MODID, id), item);
 	}
 
-	public static void register() {}
+	public static void register() {
+	}
 
 }

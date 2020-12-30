@@ -104,6 +104,7 @@
   "item.cpp.warrior_golem": "傀儡战士",
   "item.cpp.herder_golem": "傀儡牧民",
   "item.cpp.santa_gift": "圣诞礼物",
+  "item.cpp.color_palette": "调色盘",
   "item.cpp.ketchup": "番茄酱",
   "item.cpp.strawberry_jam": "草莓果酱",
   "item.cpp.blue_berry_jam": "蓝莓果酱",
@@ -465,7 +466,7 @@
   "item.cpp.red_sign": "红色告示牌",
   "item.cpp.black_sign": "黑色告示牌",
   "item.cpp.glass_sign": "玻璃告示牌",
-  "item.explorer_map": "探险家地图",
+  "item.cpp.explorer_map": "探险家地图",
 
   "block.cpp.crafting_machine": "合成器",
   "block.cpp.all_in_one_machine": "多功能一体机",
@@ -524,6 +525,8 @@
   "tooltip.cpp.cfom.xp": "经验：%s",
   "tooltip.cpp.multiple": "%s重",
   "tooltip.cpp.compressed": "压缩",
+  "tooltip.cpp.coordinate": "坐标：%s",
+  "tooltip.cpp.coordinate_absent": "缺少坐标！",
 
   "word.infinite": "∞",
   

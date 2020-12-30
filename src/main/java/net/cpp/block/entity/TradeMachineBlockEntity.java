@@ -582,7 +582,7 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 					ItemStack itemStack = FilledMapItem.createMap(serverWorld, blockPos.getX(), blockPos.getZ(), (byte) 1, true, true);
 					FilledMapItem.fillExplorationMap(serverWorld, itemStack);
 					MapState.addDecorationsTag(itemStack, blockPos, "X", MapIcon.Type.RED_X);
-					itemStack.setCustomName(new TranslatableText("structure_feature." + structureFeature.getName()).append(new TranslatableText("item.explorer_map")));
+					itemStack.setCustomName(new TranslatableText("structure_feature." + structureFeature.getName()).append(new TranslatableText("item.cpp.explorer_map")));
 					return itemStack;
 				}
 			} catch (Exception e) {

@@ -9,8 +9,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-public class ColorPaletteItem extends Item {
-	public ColorPaletteItem(Settings settings) {
+public class ColorPalette extends Item {
+	public ColorPalette(Settings settings) {
 		super(settings);
 	}
 
