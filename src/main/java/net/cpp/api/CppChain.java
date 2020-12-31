@@ -12,6 +12,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.Objects;
@@ -57,9 +58,10 @@ public class CppChain {
 
     /**
      * 深搜
+     * (栈溢出利器)
      *
      * @param player    挖掘者
-     * @param pos       挖掘原点
+     * @param pos       挖掘点
      * @param block     挖掘的方块
      * @param count     连锁次数
      * @return          连锁次数
@@ -68,14 +70,9 @@ public class CppChain {
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 for (int k = -1; k <= 1; k++) {
-                    if (world.getBlockState(pos.add(i,j,k)).getBlock() == block && pos.getSquaredDistance(pos.add(i,j,k)) < 32 && count < 32767) {
-                        if (player.interactionManager.getGameMode().isCreative()) {
-                            world.setBlockState(pos.add(i,j,k), Blocks.AIR.getDefaultState());
-                        }else {
-                            world.setBlockState(pos.add(i,j,k), Blocks.AIR.getDefaultState());
-                            count++;
-                        }
-                        count = dfsChain(world, player, pos.add(i,j,k), block, count);
+                    if (world.getBlockState(pos.add(i,j,k)).getBlock() == block && player.getPos().distanceTo(Vec3d.ofCenter(pos.add(i,j,k))) < 16 && count < 32767) {
+                        world.setBlockState(pos.add(i,j,k), Blocks.AIR.getDefaultState());
+                        count = dfsChain(world, player, pos.add(i,j,k), block, ++count);
                     }
                 }
             }
