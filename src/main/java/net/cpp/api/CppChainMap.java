@@ -1,4 +1,4 @@
-package net.cpp.init;
+package net.cpp.api;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
@@ -11,11 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class CppChainMap {
-    public static final Map<Block, Item> BreakResult = new HashMap<>();
-    public static final Map<Block, String> BreakTools = new HashMap<>();
-    public static final Map<String, ImmutableList<Item>> ToolType = new HashMap<>();
-    public static final ArrayList<Item> ChainTools = new ArrayList<>();
-    public static final ArrayList<Block> ChainBlocks = new ArrayList<>();
+    private static final Map<Block, Item> BreakResult = new HashMap<>();
+    private static final Map<Block, String> BreakTools = new HashMap<>();
+    private static final Map<String, ImmutableList<Item>> ToolType = new HashMap<>();
+    private static final ArrayList<Item> ChainTools = new ArrayList<>();
+    private static final ArrayList<Block> ChainBlocks = new ArrayList<>();
+    private static final Map<Block, ImmutableList<Integer>> Experiences = new HashMap<>();
 
     static {
         ToolType.put("axe", ImmutableList.of(
@@ -51,13 +52,11 @@ public final class CppChainMap {
                 Items.NETHERITE_HOE
         ));
 
-
         BreakResult.put(Blocks.COAL_ORE, Items.COAL);
         BreakResult.put(Blocks.DIAMOND_ORE, Items.DIAMOND);
         BreakResult.put(Blocks.LAPIS_ORE, Items.LAPIS_LAZULI);
         BreakResult.put(Blocks.EMERALD_ORE, Items.EMERALD);
         BreakResult.put(Blocks.REDSTONE_ORE, Items.REDSTONE);
-
 
         BreakTools.put(Blocks.OAK_LOG, "axe");
         BreakTools.put(Blocks.SPRUCE_LOG, "axe");
@@ -137,8 +136,27 @@ public final class CppChainMap {
                 Blocks.SHROOMLIGHT
         ));
 
+        Experiences.put(Blocks.COAL_ORE, ImmutableList.of(0, 2));
+        Experiences.put(Blocks.DIAMOND_ORE, ImmutableList.of(3, 7));
+        Experiences.put(Blocks.EMERALD_ORE, ImmutableList.of(3, 7));
+        Experiences.put(Blocks.LAPIS_ORE, ImmutableList.of(2, 5));
+        Experiences.put(Blocks.NETHER_QUARTZ_ORE, ImmutableList.of(2, 5));
+        Experiences.put(Blocks.REDSTONE_ORE, ImmutableList.of(1, 5));
+
 
     }
+
     public static void register() {}
 
+    public static boolean rightBreakTool(Item tool, Block chainBlock) {
+        return ChainBlocks.contains(chainBlock) && ChainTools.contains(tool) && ToolType.get(BreakTools.get(chainBlock)).contains(tool);
+    }
+
+    public static ImmutableList<Integer> getExperienceRange(Block block) {
+        return Experiences.get(block);
+    }
+
+    public static Item getBreakResult(Block block) {
+        return BreakResult.get(block);
+    }
 }

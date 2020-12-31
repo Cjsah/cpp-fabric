@@ -1,6 +1,7 @@
 package net.cpp.init;
 
 import net.cpp.api.CppChain;
+import net.cpp.api.CppChainMap;
 import net.cpp.api.CppEffect;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.entity.effect.StatusEffect;
@@ -14,11 +15,12 @@ public final class CppEffects {
 
     public static void register() {
         // 连环药水效果
-        PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, entity) -> {
-            StatusEffectInstance effect = player.getStatusEffect(CppEffects.CHAIN);
-            if (effect != null && CppChainMap.ChainBlocks.contains(state.getBlock()) && CppChainMap.ChainTools.contains(player.getMainHandStack().getItem())) {
+        PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
+            if (player.getStatusEffect(CppEffects.CHAIN) != null && CppChainMap.rightBreakTool(player.getMainHandStack().getItem(), state.getBlock())) {
                 CppChain.chain(world, (ServerPlayerEntity) player, pos, state.getBlock());
+                return false;
             }
+            return true;
         });
     }
 }

@@ -40,7 +40,7 @@ public abstract class ExperienceBottleEntityMixin extends ThrownItemEntity imple
 		super.onCollision(hitResult);
 		if (this.world instanceof ServerWorld) {
 			this.world.syncWorldEvent(2002, this.getBlockPos(), PotionUtil.getColor(Potions.WATER));
-			long amount = 9 << (multiple * 6);
+			long amount = 9L << (multiple * 6);
 			while (amount > 0x7fff) {
 				world.spawnEntity(new ExperienceOrbEntity(world, hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, 0x7fff));
 				amount -= 0x7fff;
