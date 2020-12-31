@@ -16,7 +16,7 @@ public final class CppEffects {
     public static void register() {
         // 连环药水效果
         PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
-            if (player.getStatusEffect(CppEffects.CHAIN) != null && CppChainMap.rightBreakTool(player.getMainHandStack().getItem(), state.getBlock())) {
+            if (player.getStatusEffect(CppEffects.CHAIN) != null && /*CppChainMap.rightBreakTool(player.getMainHandStack().getItem(), state.getBlock())*/CppChain.canChain(player.getMainHandStack(), state)) {
                 CppChain.chain(world, (ServerPlayerEntity) player, pos, state.getBlock());
                 return false;
             }
