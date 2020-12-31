@@ -8,7 +8,9 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
@@ -26,7 +28,7 @@ public class DyeStick extends Item {
 	@Override
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
 		String colorString = stack.getOrCreateTag().getString("color");
-		tooltip.add(new TranslatableText("color.minecraft." + colorString).formatted(Formatting.valueOf(colorString)));
+		tooltip.add(new TranslatableText("color.minecraft." + colorString).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(DyeColor.byName(colorString, DyeColor.WHITE).getSignColor()))));
 	}
 
 	@Override
