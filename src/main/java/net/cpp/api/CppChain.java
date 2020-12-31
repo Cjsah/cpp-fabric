@@ -97,7 +97,6 @@ public class CppChain {
         return count;
     }
 
-
     private static void spawn(World world, BlockPos pos, Block block, int count, boolean silk_torch) {
         if (!silk_torch) {
             int xp = 0;
