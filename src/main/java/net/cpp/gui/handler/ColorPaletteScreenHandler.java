@@ -7,9 +7,11 @@ import static net.minecraft.item.Items.LEATHER_HORSE_ARMOR;
 import static net.minecraft.item.Items.LEATHER_LEGGINGS;
 import static net.minecraft.item.Items.WHITE_DYE;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 import net.cpp.api.CodingTool;
@@ -23,8 +25,9 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.DyeableItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.Item.Settings;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.IntTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
@@ -101,11 +104,11 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 		}
 		addSlot(new Slot(items, 0, CodingTool.x(8), CodingTool.y(0)) {
 			/**
-			 * 仅可染色物品可以放入
+			 * 仅可染色物品和烟火之星可以放入
 			 */
 			@Override
 			public boolean canInsert(ItemStack stack) {
-				return stack.getItem() instanceof DyeableItem;
+				return stack.getItem() instanceof DyeableItem || stack.isOf(Items.FIREWORK_STAR);
 			}
 		});
 		addSlot(new Slot(items, 1, CodingTool.x(8), CodingTool.y(1)) {
@@ -134,6 +137,7 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 						onCrafted(stack);
 						items.getStack(0).decrement(1);
 						items.getStack(1).decrement(1);
+						onContentChanged(items);
 						return stack;
 					}
 
@@ -141,13 +145,12 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 						if (this.hasStack()) {
 							this.amount += Math.min(amount, this.getStack().getCount());
 						}
-
 						return super.takeStack(amount);
 					}
 
 					protected void onCrafted(ItemStack stack, int amount) {
 						this.amount += amount;
-						this.onCrafted(stack);
+						onCrafted(stack);
 					}
 
 					protected void onTake(int amount) {
@@ -156,7 +159,7 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 
 					protected void onCrafted(ItemStack stack) {
 						if (this.amount > 0) {
-							stack.onCraft(player.world, player, this.amount);
+							stack.onCraft(player.world, player, amount);
 						}
 						this.amount = 0;
 					}
@@ -187,15 +190,22 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 
 	public void close(PlayerEntity player) {
 		super.close(player);
-		items.setStack(2, ItemStack.EMPTY);
+		items.removeStack(2);
 		dropInventory(player, items);
 	}
 
 	@Override
 	public void onContentChanged(Inventory inventory) {
+		items.setStack(2, items.getStack(0).copy());
+		items.getStack(2).setCount(1);
 		if (items.getStack(0).getItem() instanceof DyeableItem) {
-			items.setStack(2, items.getStack(0).copy());
 			DYER.setColor(items.getStack(2), rgb & 0x00ffffff);
+		} else if (items.getStack(0).isOf(Items.FIREWORK_STAR)) {
+
+			List<Integer> list = Arrays.stream(items.getStack(2).getOrCreateSubTag("Explosion").getIntArray("Colors")).boxed().collect(Collectors.toList());
+			list.add(rgb);
+			items.getStack(2).getOrCreateSubTag("Explosion").putIntArray("Colors", list);
+
 		} else {
 			items.removeStack(2);
 		}
@@ -209,8 +219,14 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 			ItemStack itemStack = slot.getStack();
 			if (index >= 36) {
 				this.insertItem(itemStack, 0, 36, true);
+				if (index == 38) {
+					slots.get(38).onTakeItem(player, itemStack);
+					if (slots.get(38).canTakeItems(player)) {
+						transferSlot(player, index);
+					}
+				}
 			} else if (index < 36) {
-				if (itemStack.getItem() instanceof DyeableItem)
+				if (itemStack.getItem() instanceof DyeableItem || itemStack.isOf(Items.FIREWORK_STAR))
 					insertItem(itemStack, 36, 37, false);
 				else if (itemStack.getItem() instanceof DyeItem) {
 					insertItem(itemStack, 37, 38, false);
