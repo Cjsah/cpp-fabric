@@ -137,16 +137,15 @@ public class CodingTool {
 	}
 
 	/**
-	 * 获取某个玩家的经验值
+	 * 获取某个玩家的当前等级的经验值
 	 *
 	 * @author Cjsah
 	 * @param player 被获取经验值的玩家
-	 * @return 获取到的经验值
+	 * @return 当前等级的经验值
 	 */
 	public static int getExperience(PlayerEntity player) {
 		return Math.round(player.experienceProgress * player.getNextLevelExperience());
 	}
-
 	/**
 	 * 获取玩家指向的物品实体
 	 *

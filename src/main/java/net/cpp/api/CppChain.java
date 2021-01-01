@@ -38,16 +38,7 @@ public class CppChain {
 	public static final Map<Item, Set<Block>> TOOL_TO_BLOCK = new HashMap<>();
 	static {
 		// TODO
-		Set<Block> tmpSet = new HashSet<Block>();
-		for (Entry<RegistryKey<Block>, Block> entry : Registry.BLOCK.getEntries()) {
-			String s = entry.getKey().getValue().getPath();
-			if (s.contains("_log") || s.contains("")) {
-				tmpSet.add(entry.getValue());
-			}
-		}
-		for (Item item : FabricToolTags.AXES.values()) {
-			TOOL_TO_BLOCK.put(item, tmpSet);
-		}
+		
 	}
 
 	public static Set<Block> searchBlockByKeyWord(String keyWord) {

@@ -45,7 +45,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 			PlayerEntity this0 = (PlayerEntity) ((Object) this);//自己的引用，便于行事
 			if (getInventory().containsAny(Collections.singleton(CppItems.MAGNET))) {//磁铁
 				CodingTool.attractItems(getPos().add(0, 1, 0), (ServerWorld) world, true, false);
-				for (ExperienceOrbEntity orb : world.getEntitiesByClass(ExperienceOrbEntity.class, new Box(getPos(), getPos()), orb -> orb.getPos().isInRange(getPos(), 16))) {
+				for (ExperienceOrbEntity orb : world.getEntitiesByClass(ExperienceOrbEntity.class, new Box(getPos(), getPos()).expand(16), orb -> orb.getPos().isInRange(getPos(), 16))) {
 					orb.teleport(getPos().x, getPos().y, getPos().z);
 				}
 			}
@@ -56,14 +56,13 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 				}
 			}
 			if (getOffHandStack().isOf(Items.HOPPER)) {//副手漏斗
-				int xp = CodingTool.getExperience(this0);
 				int round = 9;
 				ItemStack stack = Items.EXPERIENCE_BOTTLE.getDefaultStack();
 				if (getMainHandStack().isOf(CppItems.COMPRESSOR)) {
 					round <<= 6;
 					stack.getOrCreateTag().putByte("multiple", (byte) 1);
 				}
-				if (xp >= round) {
+				if (this0.totalExperience >= round) {
 					this0.addExperience(-round);
 					this0.giveItemStack(stack);
 					if (!stack.isEmpty()) {

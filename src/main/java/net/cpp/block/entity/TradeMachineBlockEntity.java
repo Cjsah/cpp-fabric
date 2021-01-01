@@ -48,8 +48,11 @@ import net.minecraft.potion.PotionUtil;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -246,7 +249,7 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 	public static void addEnchanted(int code, Item currency, int currencyCount, Item result, int resultCount, int experience, int cooldown) {
 		SELL_TABLE.add(new Recipe(currency, currencyCount, experience, cooldown, (blockEntity) -> {
 			return EnchantmentHelper.enchant(blockEntity.getWorld().random, new ItemStack(result, resultCount), blockEntity.getWorld().random.nextInt(14) + 5, false);
-		},(list,context)->list.add(new TranslatableText("tooltip.cpp.enchantment_with_levels", 5, 19).append(result.getName()))));
+		}, (list, context) -> list.add(new TranslatableText("tooltip.cpp.enchantment_with_levels", 5, 19).append(result.getName()))));
 	}
 
 	/**
@@ -654,7 +657,11 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 
 		public Recipe(Item currency, int currencyCount, int experience, int cooldown, Function<BlockEntity, ItemStack> outputer) {
 			this(currency, currencyCount, experience, cooldown, outputer, (list, context) -> {
-				list.addAll(outputer.apply(new TradeMachineBlockEntity(BlockPos.ORIGIN, CppBlocks.TRADE_MACHINE.getDefaultState())).getTooltip(null, context));
+				ItemStack stack = outputer.apply(new TradeMachineBlockEntity(BlockPos.ORIGIN, CppBlocks.TRADE_MACHINE.getDefaultState()));
+				List<Text> list2 = stack.getTooltip(null, context);
+				if (stack.getCount() != 1)
+					list2.set(0, ((MutableText) list2.get(0)).append(new LiteralText("×" + stack.getCount()).formatted(Formatting.WHITE)));
+				list.addAll(list2);
 			});
 		}
 
@@ -675,17 +682,30 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		public ItemStack apply(BlockEntity blockEntity) {
 			return outputer.apply(blockEntity);
 		}
-
+		/**
+		 * 修饰提示，用于交易插件的提示
+		 * @param list 提示文本列表
+		 * @param context 提示环境
+		 */
 		public void modifyTooltip(List<Text> list, TooltipContext context) {
 			tooltipModifier.accept(list, context);
 			list.add(new TranslatableText("tooltip.cpp.prise", currencyCount, currency.getName()));
 			list.add(new TranslatableText("tooltip.cpp.cfom.xp", experience));
 			list.add(new TranslatableText("tooltip.cpp.cooldown", cooldown));
 		}
-		
+		/**
+		 * 创建从列表中随机选择一个输出的输出器
+		 * @param results 产物列表
+		 * @return 输出器
+		 */
 		public static Function<BlockEntity, ItemStack> createOutputer(List<ItemStack> results) {
 			return blockEntity -> results.get((int) (results.size() * blockEntity.getWorld().random.nextDouble()));
 		}
+		/**
+		 * 创建一个提示修饰器，添加一行“随机{@code translationKey}”
+		 * @param translationKey 翻译关键词
+		 * @return 提示修饰器
+		 */
 		public static BiConsumer<List<Text>, TooltipContext> createTooltipModifier(String translationKey) {
 			return (list, context) -> list.add(new TranslatableText("tooltip.cpp.random").append(new TranslatableText(translationKey)));
 		}

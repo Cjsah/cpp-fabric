@@ -193,7 +193,14 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 							}
 							// 施加状态效果
 							for (PlayerEntity e : players) {
-								e.addStatusEffect(new StatusEffectInstance(blockEntity.playerEffect, blockEntity.playerEffect == StatusEffects.NIGHT_VISION ? 400 : 200, 0, true, true));
+								int duratioin;
+								if (blockEntity.playerEffect == StatusEffects.NIGHT_VISION)
+									duratioin=400;
+								else if (blockEntity.playerEffect == StatusEffects.SATURATION)
+									duratioin=5;
+								else
+									duratioin=200;
+								e.addStatusEffect(new StatusEffectInstance(blockEntity.playerEffect, duratioin, 0, true, true));
 							}
 							for (MobEntity e : entities) {
 								if (blockEntity.getMobEffect() != ATTRACTING)
