@@ -467,6 +467,8 @@
   "item.cpp.black_sign": "黑色告示牌",
   "item.cpp.glass_sign": "玻璃告示牌",
   "item.cpp.explorer_map": "探险家地图",
+  "item.cpp.coral_block": "珊瑚块",
+  "item.cpp.dye": "染料",
 
   "block.cpp.crafting_machine": "合成器",
   "block.cpp.all_in_one_machine": "多功能一体机",
@@ -528,6 +530,10 @@
   "tooltip.cpp.coordinate": "坐标：%s",
   "tooltip.cpp.coordinate_absent": "缺少坐标！",
   "tooltip.cpp.erasure": "消音了%s个实体",
+  "tooltip.cpp.prise": "价格：%s%s",
+  "tooltip.cpp.cooldown": "冷却：%s刻",
+  "tooltip.cpp.random": "随机",
+  "tooltip.cpp.enchantment_with_levels": "%s到%s级附魔",
 
   "word.infinite": "∞",
   
@@ -548,6 +554,8 @@
   "structure_feature.pillager_outpost": "掠夺者前哨站",
   "structure_feature.nether_fossil": "下界化石",
   "structure_feature.bastion_remnant": "堡垒遗迹",
-  "structure_feature.ruined_portal": "废弃传送门"
+  "structure_feature.ruined_portal": "废弃传送门",
+  
+  "loot_table.minecraft.gameplay/piglin_bartering": "猪灵交易表"
 
 }

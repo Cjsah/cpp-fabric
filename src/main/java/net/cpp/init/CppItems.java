@@ -422,9 +422,9 @@ public final class CppItems {
 		BASALT_PLUGIN = registerItem("basalt_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
 		MENDING_PLUGIN = registerItem("mending_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
 		WIFI_PLUGIN = registerItem("wifi_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		EMERALD_TRADE_PLUGIN = registerItem("emerald_trade_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		GOLD_TRADE_PLUGIN = registerItem("gold_trade_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		MOON_TRADE_PLUGIN = registerItem("moon_trade_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+		EMERALD_TRADE_PLUGIN = registerItem("emerald_trade_plugin", new TradePlugin(new Item.Settings().group(CPP_GROUP_MACHINE)));
+		GOLD_TRADE_PLUGIN = registerItem("gold_trade_plugin", new TradePlugin(new Item.Settings().group(CPP_GROUP_MACHINE)));
+		MOON_TRADE_PLUGIN = registerItem("moon_trade_plugin", new TradePlugin(new Item.Settings().group(CPP_GROUP_MACHINE)));
 
 		ANCIENT_SCROLL = registerItem("ancient_scroll", new AncientScroll(new Item.Settings().group(CPP_GROUP_MISC).rarity(Rarity.UNCOMMON)));
 

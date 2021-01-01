@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import com.google.common.collect.ImmutableSet;
@@ -20,11 +22,12 @@ import com.ibm.icu.impl.Pair;
 
 import net.cpp.gui.handler.TradeMachineScreenHandler;
 import net.cpp.init.CppBlockEntities;
+import net.cpp.init.CppBlocks;
 import net.cpp.init.CppItems;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.cpp.item.Character;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -45,6 +48,7 @@ import net.minecraft.potion.PotionUtil;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
@@ -79,11 +83,11 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 	private static final int[] AVAILABLE_SLOTS_1 = new int[] { 0, 1 };
 	private static final int[] AVAILABLE_SLOTS_2 = new int[] { 0, 2, 3 };
 	/**
-	 * 模式1配方 键为被交易机购买的物品，值为Pair(价值点,冷却时间)
+	 * 模式1配方：键为被交易机购买的物品，值为Pair(价值点,冷却时间)
 	 */
 	public static final Map<Item, Pair<Integer, Integer>> BUY_MAP = new HashMap<>();
 	/**
-	 * 模式2配方 键为交易配方代号，存在NBT的"code"里
+	 * 模式2配方：键为交易配方代号，存在NBT的"code"里
 	 */
 	public static final List<Recipe> SELL_TABLE = new ArrayList<>();
 	/**
@@ -163,7 +167,7 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		if (stack.getItem() == EXPERIENCE_BOTTLE)
 			return slot == 0;
 		if (mode == 0) {
-			return slot == 1 && BUY_MAP.keySet().contains(stack.getItem());
+			return slot == 1 /* && BUY_MAP.keySet().contains(stack.getItem()) */;
 		} else {
 			return slot == 2 && PLUGIN.contains(stack.getItem()) || slot == 3 && CURRENCY.contains(stack.getItem());
 		}
@@ -242,7 +246,7 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 	public static void addEnchanted(int code, Item currency, int currencyCount, Item result, int resultCount, int experience, int cooldown) {
 		SELL_TABLE.add(new Recipe(currency, currencyCount, experience, cooldown, (blockEntity) -> {
 			return EnchantmentHelper.enchant(blockEntity.getWorld().random, new ItemStack(result, resultCount), blockEntity.getWorld().random.nextInt(14) + 5, false);
-		}));
+		},(list,context)->list.add(new TranslatableText("tooltip.cpp.enchantment_with_levels", 5, 19).append(result.getName()))));
 	}
 
 	/**
@@ -311,6 +315,8 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 						blockEntity.tradeValue += pair.first;
 						blockEntity.cooldown += pair.second;
 						blockEntity.getStack(1).decrement(1);
+					} else {// 如果不能购买，则直接输出
+						blockEntity.output(1);
 					}
 					if (blockEntity.tradeValue >= 2048) {// 产出绿宝石
 						if (blockEntity.expStorage + 7 <= AExpMachineBlockEntity.XP_CAPACITY && blockEntity.tryInsert(2, EMERALD.getDefaultStack())) {
@@ -442,7 +448,8 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		addSell(1, EMERALD, 1, WHITE_WOOL, 1, 1, 30);
 		addSell(2, EMERALD, 1, PACKED_ICE, 1, 1, 30);
 		addSell(3, EMERALD, 1, BLUE_ICE, 1, 1, 30);
-		addSell(4, EMERALD, 1, stacksOf(BRAIN_CORAL_BLOCK, BUBBLE_CORAL_BLOCK, FIRE_CORAL_BLOCK, HORN_CORAL_BLOCK, TUBE_CORAL_BLOCK), 1, 30);
+//		addSell(4, EMERALD, 1, stacksOf(BRAIN_CORAL_BLOCK, BUBBLE_CORAL_BLOCK, FIRE_CORAL_BLOCK, HORN_CORAL_BLOCK, TUBE_CORAL_BLOCK), 1, 30);
+		SELL_TABLE.add(new Recipe(EMERALD, 1, 1, 30, Recipe.createOutputer(stacksOf(BRAIN_CORAL_BLOCK, BUBBLE_CORAL_BLOCK, FIRE_CORAL_BLOCK, HORN_CORAL_BLOCK, TUBE_CORAL_BLOCK)), Recipe.createTooltipModifier("item.cpp.coral_block")));
 		addSell(5, EMERALD, 1, LANTERN, 1, 1, 30);
 		addSell(6, EMERALD, 1, CAKE, 1, 1, 30);
 		addSell(7, EMERALD, 1, CppItems.RABBIT_STEW, 1, 1, 30);
@@ -466,7 +473,8 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		stew = SUSPICIOUS_STEW.getDefaultStack();
 		SuspiciousStewItem.addEffectToStew(stew, StatusEffects.POISON, 280);
 		tmpList.add(stew);
-		addSell(8, EMERALD, 1, tmpList, 1, 30);
+//		addSell(8, EMERALD, 1, tmpList, 1, 30);
+		SELL_TABLE.add(new Recipe(EMERALD, 1, 1, 30, Recipe.createOutputer(Collections.unmodifiableList(tmpList)), Recipe.createTooltipModifier("item.minecraft.suspicious_stew")));
 
 		addSell(9, EMERALD, 1, TERRACOTTA, 1, 1, 30);
 		addSell(10, EMERALD, 1, LAPIS_LAZULI, 1, 1, 30);
@@ -485,13 +493,15 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 			PotionUtil.setPotion(itemStack, entry.getValue());
 			tmpList.add(itemStack);
 		}
-		addSell(19, EMERALD, 1, tmpList, 1, 30);
+//		addSell(19, EMERALD, 1, tmpList, 1, 30);
+		SELL_TABLE.add(new Recipe(EMERALD, 1, 1, 30, Recipe.createOutputer(Collections.unmodifiableList(tmpList)), Recipe.createTooltipModifier("item.minecraft.tipped_arrow")));
 
 		addSell(20, EMERALD, 1, APPLE, 4, 1, 30);
 		addSell(21, EMERALD, 1, PUMPKIN_PIE, 4, 1, 30);
 		addSell(22, EMERALD, 1, GLASS, 4, 1, 30);
 		addSell(23, EMERALD, 1, RED_SAND, 4, 1, 30);
-		addSell(24, EMERALD, 1, stacksOf(4, "_dye"), 1, 30);
+//		addSell(24, EMERALD, 1, stacksOf(4, "_dye"), 1, 30);
+		SELL_TABLE.add(new Recipe(EMERALD, 1, 1, 30, Recipe.createOutputer(Collections.unmodifiableList(stacksOf(4, "_dye"))), Recipe.createTooltipModifier("item.cpp.dye")));
 		addSell(25, EMERALD, 1, COOKED_PORKCHOP, 5, 1, 30);
 		addSell(26, EMERALD, 1, BREAD, 6, 1, 30);
 		addSell(27, EMERALD, 1, COOKIE, 12, 1, 30);
@@ -564,7 +574,7 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		addSell(93, EMERALD, 12, enchantOf(Enchantments.MULTISHOT), 1, 40);
 
 		SELL_TABLE.add(new Recipe(GOLD_INGOT, 1, 4, 120, LootTables.PIGLIN_BARTERING_GAMEPLAY));
-		SELL_TABLE.add(new Recipe(CppItems.MOON_SHARD, 1, 64, 40, blockEntity -> net.cpp.item.Character.randomGetOne()));
+		SELL_TABLE.add(new Recipe(CppItems.MOON_SHARD, 1, 64, 40, blockEntity -> net.cpp.item.Character.randomGetOne(), Recipe.createTooltipModifier("item.cpp.character")));
 		addSell(96, CppItems.MOON_SHARD, 1, SHULKER_BOX, 1, 64, 40);
 		addSell(97, CppItems.MOON_SHARD, 1, CppItems.SANTA_GIFT, 1, 64, 40);
 		SELL_TABLE.add(new Recipe(CppItems.MOON_SHARD, 1, 64, 40, blockEntity -> {
@@ -589,7 +599,7 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 				e.printStackTrace();
 			}
 			return ItemStack.EMPTY;
-		}));
+		}, Recipe.createTooltipModifier("item.cpp.explorer_map")));
 
 		PLUGINS.add(ItemStack.EMPTY);
 		for (Recipe recipe : SELL_TABLE) {
@@ -612,6 +622,7 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		public final Item currency;
 		public final int currencyCount, experience, cooldown;
 		public final Function<BlockEntity, ItemStack> outputer;
+		public final BiConsumer<List<Text>, TooltipContext> tooltipModifier;
 
 		public Recipe(Item currency, int currencyCount, int experience, int cooldown, Item item) {
 			this(currency, currencyCount, experience, cooldown, (blockEntity) -> new ItemStack(item, 1));
@@ -628,19 +639,32 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		public Recipe(Item currency, int currencyCount, int experience, int cooldown, Identifier lootTable) {
 			this(currency, currencyCount, experience, cooldown, (blockEntity) -> {
 				return blockEntity.getWorld().getServer().getLootManager().getTable(lootTable).generateLoot((new LootContext.Builder((ServerWorld) blockEntity.getWorld())).random(blockEntity.getWorld().random).build(LootContextTypes.EMPTY)).get(0);
+			}, (list, context) -> {
+				list.add(new TranslatableText("loot_table." + lootTable.toString()));
 			});
 		}
 
 		public Recipe(Item currency, int currencyCount, int experience, int cooldown, List<ItemStack> results) {
-			this(currency, currencyCount, experience, cooldown, (blockEntity) -> results.get((int) (results.size() * blockEntity.getWorld().random.nextDouble())));
+			this(currency, currencyCount, experience, cooldown, createOutputer(results), (list, context) -> {
+				for (ItemStack stack : results) {
+					list.add(stack.getName());
+				}
+			});
 		}
 
 		public Recipe(Item currency, int currencyCount, int experience, int cooldown, Function<BlockEntity, ItemStack> outputer) {
+			this(currency, currencyCount, experience, cooldown, outputer, (list, context) -> {
+				list.addAll(outputer.apply(new TradeMachineBlockEntity(BlockPos.ORIGIN, CppBlocks.TRADE_MACHINE.getDefaultState())).getTooltip(null, context));
+			});
+		}
+
+		public Recipe(Item currency, int currencyCount, int experience, int cooldown, Function<BlockEntity, ItemStack> outputer, BiConsumer<List<Text>, TooltipContext> tooltipModifier) {
 			this.currency = currency;
 			this.currencyCount = currencyCount;
 			this.experience = experience;
 			this.cooldown = cooldown;
 			this.outputer = outputer;
+			this.tooltipModifier = tooltipModifier;
 		}
 
 		public ItemStack output(BlockEntity blockEntity) {
@@ -650,6 +674,20 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		@Override
 		public ItemStack apply(BlockEntity blockEntity) {
 			return outputer.apply(blockEntity);
+		}
+
+		public void modifyTooltip(List<Text> list, TooltipContext context) {
+			tooltipModifier.accept(list, context);
+			list.add(new TranslatableText("tooltip.cpp.prise", currencyCount, currency.getName()));
+			list.add(new TranslatableText("tooltip.cpp.cfom.xp", experience));
+			list.add(new TranslatableText("tooltip.cpp.cooldown", cooldown));
+		}
+		
+		public static Function<BlockEntity, ItemStack> createOutputer(List<ItemStack> results) {
+			return blockEntity -> results.get((int) (results.size() * blockEntity.getWorld().random.nextDouble()));
+		}
+		public static BiConsumer<List<Text>, TooltipContext> createTooltipModifier(String translationKey) {
+			return (list, context) -> list.add(new TranslatableText("tooltip.cpp.random").append(new TranslatableText(translationKey)));
 		}
 	}
 }
