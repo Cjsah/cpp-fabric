@@ -34,17 +34,28 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 
 public class ChainProcessor {
-	private static final Map<Item, Set<Block>> TOOL_TO_BLOCKS = new HashMap<>();
-	private static final Set<Block> RIPE = ImmutableSet.of(WHEAT, BEETROOTS, CARROTS, POTATOES, NETHER_WART);
-
-	private static final List<BlockPos> OFFSETS = BlockPos.stream(-1, -1, -1, 1, 1, 1).map(BlockPos::toImmutable).filter(pos -> !BlockPos.ORIGIN.equals(pos)).collect(Collectors.toList());
+	/**
+	 * 键：物品<br>
+	 * 值：可连锁的方块
+	 */
+	protected static final Map<Item, Set<Block>> TOOL_TO_BLOCKS = new HashMap<>();
+	/**
+	 * 偏移量
+	 */
+	protected static final List<BlockPos> OFFSETS = BlockPos.stream(-1, -1, -1, 1, 1, 1).map(BlockPos::toImmutable).filter(pos -> !BlockPos.ORIGIN.equals(pos)).collect(Collectors.toList());
 	public final ServerWorld world;
 	public final BlockPos startPos;
 	public final Block block;
 	public final ItemStack toolStack;
 	public final ServerPlayerEntity player;
-	private final List<ItemStack> droppeds = new LinkedList<>();
-	private final Queue<BlockPos> posQueue = new LinkedList<>();
+	/**
+	 * 掉落物
+	 */
+	protected final List<ItemStack> droppeds = new LinkedList<>();
+	/**
+	 * 待挖掘的方块坐标
+	 */
+	protected final Queue<BlockPos> posQueue = new LinkedList<>();
 
 	public ChainProcessor(ServerWorld startWorld, BlockPos startPos, Block block, ItemStack toolStack, ServerPlayerEntity player) {
 		this.world = startWorld;
@@ -55,6 +66,9 @@ public class ChainProcessor {
 		posQueue.add(startPos);
 	}
 
+	/**
+	 * 开始挖掘
+	 */
 	public void start() {
 		double squaredDis = 0;
 		int maxCount = toolStack.getMaxDamage() * (EnchantmentHelper.getLevel(Enchantments.UNBREAKING, toolStack) + 1);
@@ -68,7 +82,7 @@ public class ChainProcessor {
 			for (BlockPos offset : OFFSETS) {
 				BlockPos pos = pos0.add(offset);
 				BlockState blockState = world.getBlockState(pos);
-				if (blockState.isOf(block) && (!RIPE.contains(block) || ((CropBlock) block).isMature(blockState))) {
+				if (blockState.isOf(block) && checkRipe(blockState)) {
 					posQueue.offer(pos);
 					squaredDis = Math.max(squaredDis, startPos.getSquaredDistance(pos));
 				}
@@ -77,13 +91,18 @@ public class ChainProcessor {
 		for (ExperienceOrbEntity orb : world.getEntitiesByClass(ExperienceOrbEntity.class, new Box(startPos, startPos).expand(Math.sqrt(squaredDis)), orb -> true)) {
 			orb.teleport(startPos.getX(), startPos.getY(), startPos.getZ());
 		}
-		System.out.println(droppeds.size());
+
 		for (ItemStack stack : droppeds) {
 			Block.dropStack(world, startPos, stack);
 		}
 	}
 
-	private void excavate(BlockPos pos) {
+	/**
+	 * 挖掘方块，不直接掉落物品，不产生粒子和音效，战利品存入{@link #droppeds}
+	 * 
+	 * @param pos
+	 */
+	protected void excavate(BlockPos pos) {
 		BlockState blockState = world.getBlockState(pos);
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		block.onBreak(world, pos, blockState, player);
@@ -97,11 +116,28 @@ public class ChainProcessor {
 		world.removeBlock(pos, false);
 	}
 
+	/**
+	 * 查询是否能连锁
+	 * 
+	 * @param item       工具物品
+	 * @param blockState 被挖掘的方块
+	 * @return 能连锁
+	 */
 	public static boolean canChain(Item item, BlockState blockState) {
 		Set<Block> set = TOOL_TO_BLOCKS.get(item);
 		if (set == null || !set.contains(blockState.getBlock()))
 			return false;
-		return !RIPE.contains(blockState.getBlock()) || ((CropBlock) blockState.getBlock()).isMature(blockState);
+		return checkRipe(blockState);
+	}
+
+	/**
+	 * 判断一个状态方块是否是成熟的作物
+	 * 
+	 * @param blockState 状态方块
+	 * @return 不是作物或是成熟的作物
+	 */
+	public static boolean checkRipe(BlockState blockState) {
+		return !(blockState.getBlock() instanceof CropBlock) || ((CropBlock) blockState.getBlock()).isMature(blockState);
 	}
 
 	static {
