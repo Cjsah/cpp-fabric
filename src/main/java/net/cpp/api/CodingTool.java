@@ -33,7 +33,6 @@ import net.minecraft.stat.Stats;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -218,9 +217,9 @@ public class CodingTool {
 	 * @return 位移后的坐标
 	 */
 	public static Vec3d move(PlayerEntity player, Vec3d pos, float length) {
-		float yaw = player.yaw;
-		float x = -MathHelper.sin(yaw * (float) (Math.PI) / 180F) * length;
-		float z = MathHelper.cos(yaw * (float) (Math.PI) / 180F) * length;
+		double yaw = player.yaw;
+		double x = -Math.sin(yaw * Math.PI / 180D) * length;
+		double z = Math.cos(yaw * Math.PI / 180D) * length;
 		return pos.add(x, 0, z);
 	}
 
