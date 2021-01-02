@@ -159,19 +159,17 @@ public class CodingTool {
 	 * @return 物品实体
 	 */
 	public static ItemEntity rayItem(PlayerEntity player) {
-		float length = 0.05F;
+		double length = 0.05D;
 		Vec3d playerPos = player.getCameraPosVec(1.0F);
-		Vec3d pos = playerPos;
-		float yaw = player.yaw;
-		float pitch = player.pitch;
-		float y = -MathHelper.sin(pitch * (float) (Math.PI) / 180F) * length;
-		float x = -MathHelper.sin(yaw * (float) (Math.PI) / 180F);
-		float z = MathHelper.cos(yaw * (float) (Math.PI) / 180F);
-		float proportion = MathHelper.sqrt((((length * length) - (y * y)) / ((x * x) + (z * z))));
+		double yaw = player.yaw;
+		double pitch = player.pitch;
+		double y = -Math.sin(pitch * Math.PI / 180D) * length;
+		double x = -Math.sin(yaw * Math.PI / 180D);
+		double z = Math.cos(yaw * Math.PI / 180D);
+		double proportion = Math.sqrt((((length * length) - (y * y)) / ((x * x) + (z * z))));
 		x *= proportion;
 		z *= proportion;
-		while (Math.sqrt(Math.pow(pos.x - playerPos.x, 2) + Math.pow(pos.y - playerPos.y, 2) + Math.pow(pos.z - playerPos.z, 2)) < 5) {
-			pos = pos.add(x, y, z);
+		for (Vec3d pos = playerPos;Math.sqrt(Math.pow(pos.x - playerPos.x, 2) + Math.pow(pos.y - playerPos.y, 2) + Math.pow(pos.z - playerPos.z, 2)) < 5;pos = pos.add(x, y, z)) {
 			if (player.world.getBlockState(new BlockPos(pos)).getBlock() != Blocks.AIR) {
 				return null;
 			}
@@ -182,6 +180,33 @@ public class CodingTool {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * 获取玩家指向的物品实体
+	 *
+	 * @author Cjsah
+	 * @param player 玩家
+	 * @return 坐标
+	 */
+	public static Vec3d rayingPos(PlayerEntity player) {
+		double length = 0.05D;
+		Vec3d playerPos = player.getCameraPosVec(1.0F);
+		Vec3d pos = playerPos;
+		double yaw = player.yaw;
+		double pitch = player.pitch;
+		double y = -Math.sin(pitch * Math.PI / 180D) * length;
+		double x = -Math.sin(yaw * Math.PI / 180D);
+		double z = Math.cos(yaw * Math.PI / 180D);
+		double proportion = Math.sqrt((((length * length) - (y * y)) / ((x * x) + (z * z))));
+		x *= proportion;
+		z *= proportion;
+		for (;Math.sqrt(Math.pow(pos.x - playerPos.x, 2) + Math.pow(pos.y - playerPos.y, 2) + Math.pow(pos.z - playerPos.z, 2)) < 5;pos = pos.add(x, y, z)) {
+			if (player.world.getBlockState(new BlockPos(pos)).getBlock() != Blocks.AIR) {
+				return pos.add(-x, -y, -z);
+			}
+		}
+		return pos;
 	}
 
 	/**
