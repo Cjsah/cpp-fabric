@@ -1,14 +1,31 @@
 package net.cpp.api;
 
-import static net.minecraft.block.Blocks.*;
+import static net.minecraft.block.Blocks.ANCIENT_DEBRIS;
+import static net.minecraft.block.Blocks.BEETROOTS;
+import static net.minecraft.block.Blocks.CARROTS;
+import static net.minecraft.block.Blocks.CLAY;
+import static net.minecraft.block.Blocks.GRAVEL;
+import static net.minecraft.block.Blocks.HAY_BLOCK;
+import static net.minecraft.block.Blocks.MELON;
+import static net.minecraft.block.Blocks.NETHER_WART;
+import static net.minecraft.block.Blocks.NETHER_WART_BLOCK;
+import static net.minecraft.block.Blocks.OBSIDIAN;
+import static net.minecraft.block.Blocks.POTATOES;
+import static net.minecraft.block.Blocks.PUMPKIN;
+import static net.minecraft.block.Blocks.RED_SAND;
+import static net.minecraft.block.Blocks.SAND;
+import static net.minecraft.block.Blocks.SHROOMLIGHT;
+import static net.minecraft.block.Blocks.WARPED_WART_BLOCK;
+import static net.minecraft.block.Blocks.WHEAT;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableSet;
@@ -17,14 +34,14 @@ import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CropBlock;
+import net.minecraft.block.GourdBlock;
+import net.minecraft.block.NetherWartBlock;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolItem;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
@@ -40,7 +57,7 @@ public class ChainProcessor {
 	 */
 	protected static final Map<Item, Set<Block>> TOOL_TO_BLOCKS = new HashMap<>();
 	/**
-	 * 偏移量
+	 * 偏移量，用于遍历一个方块周围的26个方块
 	 */
 	protected static final List<BlockPos> OFFSETS = BlockPos.stream(-1, -1, -1, 1, 1, 1).map(BlockPos::toImmutable).filter(pos -> !BlockPos.ORIGIN.equals(pos)).collect(Collectors.toList());
 	public final ServerWorld world;
@@ -50,6 +67,8 @@ public class ChainProcessor {
 	public final ServerPlayerEntity player;
 	/**
 	 * 掉落物
+	 * 
+	 * @see #excavate(BlockPos)
 	 */
 	protected final List<ItemStack> droppeds = new LinkedList<>();
 	/**
@@ -71,6 +90,7 @@ public class ChainProcessor {
 	 */
 	public void start() {
 		double squaredDis = 0;
+		Set<BlockPos> set = new HashSet<>();
 		int maxCount = toolStack.getMaxDamage() * (EnchantmentHelper.getLevel(Enchantments.UNBREAKING, toolStack) + 1);
 		while (!posQueue.isEmpty() && toolStack.getDamage() + 1 < toolStack.getMaxDamage() && maxCount > 0) {
 			BlockPos pos0 = posQueue.poll();
@@ -82,8 +102,9 @@ public class ChainProcessor {
 			for (BlockPos offset : OFFSETS) {
 				BlockPos pos = pos0.add(offset);
 				BlockState blockState = world.getBlockState(pos);
-				if (blockState.isOf(block) && checkRipe(blockState)) {
+				if (blockState.isOf(block) && checkRipe(blockState) && !set.contains(pos)) {
 					posQueue.offer(pos);
+					set.add(pos);
 					squaredDis = Math.max(squaredDis, startPos.getSquaredDistance(pos));
 				}
 			}
@@ -134,47 +155,38 @@ public class ChainProcessor {
 	 * 判断一个状态方块是否是成熟的作物
 	 * 
 	 * @param blockState 状态方块
-	 * @return 不是作物或是成熟的作物
+	 * @return 是成熟的作物或不是作物
 	 */
 	public static boolean checkRipe(BlockState blockState) {
-		return !(blockState.getBlock() instanceof CropBlock) || ((CropBlock) blockState.getBlock()).isMature(blockState);
+		return (!(blockState.getBlock() instanceof CropBlock) || ((CropBlock) blockState.getBlock()).isMature(blockState)) && (!(blockState.getBlock() instanceof NetherWartBlock) || blockState.get(NetherWartBlock.AGE) >= 3);
 	}
 
 	static {
-		Set<Block> tmpSet = new HashSet<>();
+		Set<Block> axeBlocks = new HashSet<>(), pickaxeBlocks = new HashSet<>(), shovelBlocks = new HashSet<>(), hoeBlocks = new HashSet<>();
 		for (Entry<RegistryKey<Block>, Block> entry : Registry.BLOCK.getEntries()) {
 			String s = entry.getKey().getValue().getPath();
-			if (s.contains("_log") || s.contains("_stem")) {
-				tmpSet.add(entry.getValue());
-			}
-		}
-		tmpSet.addAll(ImmutableSet.of(MELON, PUMPKIN, WHEAT, BEETROOTS, CARROTS, POTATOES, NETHER_WART));
-		for (Item item : FabricToolTags.AXES.values()) {
-			TOOL_TO_BLOCKS.put(item, tmpSet);
-		}
-
-		tmpSet = new HashSet<>();
-		for (Entry<RegistryKey<Block>, Block> entry : Registry.BLOCK.getEntries()) {
-			String s = entry.getKey().getValue().getPath();
-			if (s.contains("_ore")) {
-				tmpSet.add(entry.getValue());
-			}
-		}
-		tmpSet.addAll(ImmutableSet.of(ANCIENT_DEBRIS, OBSIDIAN));
-		for (Item item : FabricToolTags.PICKAXES.values()) {
-			TOOL_TO_BLOCKS.put(item, tmpSet);
+			if (s.contains("_log") || s.contains("_stem"))
+				axeBlocks.add(entry.getValue());
+			else if (s.contains("_ore"))
+				pickaxeBlocks.add(entry.getValue());
+			else if (entry.getValue() instanceof CropBlock)
+				axeBlocks.add(entry.getValue());
+			else if (entry.getValue() instanceof GourdBlock)
+				axeBlocks.add(entry.getValue());
 		}
 
-		tmpSet = new HashSet<>();
-		tmpSet.addAll(ImmutableSet.of(SAND, RED_SAND, GRAVEL, CLAY));
-		for (Item item : FabricToolTags.SHOVELS.values()) {
-			TOOL_TO_BLOCKS.put(item, tmpSet);
-		}
+		axeBlocks.addAll(ImmutableSet.of(NETHER_WART));
+		pickaxeBlocks.addAll(ImmutableSet.of(ANCIENT_DEBRIS, OBSIDIAN));
+		shovelBlocks.addAll(ImmutableSet.of(SAND, RED_SAND, GRAVEL, CLAY));
+		hoeBlocks.addAll(ImmutableSet.of(HAY_BLOCK, NETHER_WART_BLOCK, WARPED_WART_BLOCK, SHROOMLIGHT));
 
-		tmpSet = new HashSet<>();
-		tmpSet.addAll(ImmutableSet.of(HAY_BLOCK, NETHER_WART_BLOCK, WARPED_WART_BLOCK, SHROOMLIGHT));
-		for (Item item : FabricToolTags.HOES.values()) {
-			TOOL_TO_BLOCKS.put(item, tmpSet);
-		}
+		for (Item item : FabricToolTags.AXES.values())
+			TOOL_TO_BLOCKS.put(item, axeBlocks);
+		for (Item item : FabricToolTags.PICKAXES.values())
+			TOOL_TO_BLOCKS.put(item, pickaxeBlocks);
+		for (Item item : FabricToolTags.SHOVELS.values())
+			TOOL_TO_BLOCKS.put(item, shovelBlocks);
+		for (Item item : FabricToolTags.HOES.values())
+			TOOL_TO_BLOCKS.put(item, hoeBlocks);
 	}
 }

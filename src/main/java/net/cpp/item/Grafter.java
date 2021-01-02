@@ -69,20 +69,20 @@ public class Grafter extends MiningToolItem {
 		if (!context.getWorld().isClient) {
 //			context.getWorld().breakBlock(context.getBlockPos(), true, context.getPlayer());
 //			context.getWorld().setBlockState(context.getBlockPos(), Blocks.AIR.getDefaultState());
-			BlockState blockState = context.getWorld().getBlockState(context.getBlockPos());
-			Block block = blockState.getBlock();
-			BlockEntity blockEntity = context.getWorld().getBlockEntity(context.getBlockPos());
-			block.onBreak(context.getWorld(), context.getBlockPos(), blockState, context.getPlayer());
-			block.onBroken(context.getWorld(), context.getBlockPos(), blockState);
-			block.onStacksDropped(blockState, (ServerWorld) context.getWorld(), context.getBlockPos(), context.getStack());
-			List<ItemStack> droppeds = Block.getDroppedStacks(blockState, (ServerWorld) context.getWorld(), context.getBlockPos(), blockEntity, context.getPlayer(), context.getStack());
-			context.getPlayer().incrementStat(Stats.MINED.getOrCreateStat(block));
-			context.getPlayer().incrementStat(Stats.USED.getOrCreateStat(context.getStack().getItem()));
-			for (ItemStack stack : droppeds)
-				Block.dropStack(context.getWorld(), context.getBlockPos(), stack);
-			context.getWorld().removeBlock(context.getBlockPos(), false);
+//			BlockState blockState = context.getWorld().getBlockState(context.getBlockPos());
+//			Block block = blockState.getBlock();
+//			BlockEntity blockEntity = context.getWorld().getBlockEntity(context.getBlockPos());
+//			block.onBreak(context.getWorld(), context.getBlockPos(), blockState, context.getPlayer());
+//			block.onBroken(context.getWorld(), context.getBlockPos(), blockState);
+//			block.onStacksDropped(blockState, (ServerWorld) context.getWorld(), context.getBlockPos(), context.getStack());
+//			List<ItemStack> droppeds = Block.getDroppedStacks(blockState, (ServerWorld) context.getWorld(), context.getBlockPos(), blockEntity, context.getPlayer(), context.getStack());
+//			context.getPlayer().incrementStat(Stats.MINED.getOrCreateStat(block));
+//			context.getPlayer().incrementStat(Stats.USED.getOrCreateStat(context.getStack().getItem()));
+//			for (ItemStack stack : droppeds)
+//				Block.dropStack(context.getWorld(), context.getBlockPos(), stack);
+//			context.getWorld().removeBlock(context.getBlockPos(), false);
 		}
-		return ActionResult.SUCCESS;
+		return ActionResult.PASS;
 	}
 
 	static {
