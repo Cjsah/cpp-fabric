@@ -8,7 +8,10 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import net.cpp.init.CppItems;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.ai.TargetPredicate;
@@ -26,6 +29,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.stat.Stats;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -265,5 +269,21 @@ public class CodingTool {
 				((ServerPlayerEntity) player).networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, player.getX(), player.getY(), player.getZ(), 20.0F, 1.5F));
 		}
 	}
-
+	public static void excavate(ServerWorld world, ServerPlayerEntity player, BlockPos pos, @Nullable List<ItemStack> droppeds) {
+		BlockState blockState = world.getBlockState(pos);
+		Block block = blockState.getBlock();
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+		ItemStack toolStack = player.getMainHandStack();
+		block.onBreak(world, pos, blockState, player);
+		block.onBroken(world, pos, blockState);
+		if (!player.isCreative()) {
+			block.onStacksDropped(blockState, world, pos, toolStack);
+			if (droppeds != null) {
+				droppeds.addAll(Block.getDroppedStacks(blockState, world, pos, blockEntity, player, toolStack));				
+			}
+			player.incrementStat(Stats.MINED.getOrCreateStat(block));
+			toolStack.postMine(world, blockState, pos, player);
+		}
+		world.removeBlock(pos, false);
+	}
 }
