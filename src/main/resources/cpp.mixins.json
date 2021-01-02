@@ -11,7 +11,9 @@
 		"SpiderEntityMixin",
 		"SilverfishEntityMixin",
 		"EndermiteEntityMixin",
-		"BeeEntityMixin"
+		"BeeEntityMixin",
+        "ItemMixin",
+        "LivingEntityMixin"
     ],
     "client": [
         "ItemStackMixin",

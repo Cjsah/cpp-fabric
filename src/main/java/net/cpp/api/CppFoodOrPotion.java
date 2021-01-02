@@ -1,9 +1,6 @@
 package net.cpp.api;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
@@ -34,13 +31,18 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
-public class CppFoodOrPotion extends Item {
+import javax.annotation.Nullable;
+
+public class CppFoodOrPotion extends Item implements INutrition {
+    public static final Map<Item, Integer> map = new HashMap<>();
     private static final MutableText field_25817;
     private final UseAction useAction;
+    private final int nutrition;
 
-    public CppFoodOrPotion(UseAction useAction, Settings settings) {
+    public CppFoodOrPotion(UseAction useAction, int nutrition, Settings settings) {
         super(settings);
         this.useAction = useAction;
+        this.nutrition = nutrition;
     }
 
     @Override
@@ -141,11 +143,11 @@ public class CppFoodOrPotion extends Item {
     }
 
     public ItemStack eatFood(World world, ItemStack stack, PlayerEntity player) {
+        if (this.useAction == UseAction.EAT) {
+            return player.eatFood(world, stack);
+        }
         player.getHungerManager().eat(stack.getItem(), stack);
         player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
-        if (this.useAction == UseAction.EAT) {
-            world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.random.nextFloat() * 0.1F + 0.9F);
-        }
         if (player instanceof ServerPlayerEntity) {
             Criteria.CONSUME_ITEM.trigger((ServerPlayerEntity)player, stack);
         }
@@ -166,8 +168,51 @@ public class CppFoodOrPotion extends Item {
         }
     }
 
-    static {
-        field_25817 = (new TranslatableText("effect.none")).formatted(Formatting.GRAY);
+    @Override
+    public int getNutrition(ItemStack itemStack) {
+        return this.nutrition;
     }
 
+    static {
+        field_25817 = (new TranslatableText("effect.none")).formatted(Formatting.GRAY);
+
+        map.put(Items.MUSHROOM_STEM, -6);
+        map.put(Items.BEETROOT_SOUP, -6);
+        map.put(Items.SUSPICIOUS_STEW, -6);
+        map.put(Items.BREAD, -5);
+        map.put(Items.BAKED_POTATO, -5);
+        map.put(Items.APPLE, -4);
+        map.put(Items.GOLDEN_APPLE, -4);
+        map.put(Items.ENCHANTED_GOLDEN_APPLE, -4);
+        map.put(Items.CHORUS_FRUIT, -4);
+        map.put(Items.PUMPKIN_PIE, -3);
+        map.put(Items.CARROT, -3);
+        map.put(Items.GOLDEN_CARROT, -3);
+        map.put(Items.MELON_SLICE, -2);
+        map.put(Items.COOKIE, -2);
+        map.put(Items.POISONOUS_POTATO, -2);
+        map.put(Items.SWEET_BERRIES, -2);
+        map.put(Items.DRIED_KELP, -1);
+        map.put(Items.BEETROOT, -1);
+        map.put(Items.POTATO, -1);
+        map.put(Items.TROPICAL_FISH, 1);
+        map.put(Items.PUFFERFISH, 1);
+        map.put(Items.SPIDER_EYE, 2);
+        map.put(Items.MUTTON, 2);
+        map.put(Items.RABBIT, 2);
+        map.put(Items.CHICKEN, 2);
+        map.put(Items.COD, 2);
+        map.put(Items.SALMON, 2);
+        map.put(Items.BEEF, 3);
+        map.put(Items.PORKCHOP, 3);
+        map.put(Items.HONEY_BOTTLE, 3);
+        map.put(Items.ROTTEN_FLESH, 4);
+        map.put(Items.COOKED_RABBIT, 5);
+        map.put(Items.COOKED_COD, 5);
+        map.put(Items.COOKED_CHICKEN, 6);
+        map.put(Items.COOKED_MUTTON, 6);
+        map.put(Items.COOKED_SALMON, 6);
+        map.put(Items.COOKED_BEEF, 8);
+        map.put(Items.COOKED_PORKCHOP, 8);
+    }
 }
