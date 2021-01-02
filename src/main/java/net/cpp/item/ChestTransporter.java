@@ -1,12 +1,10 @@
 package net.cpp.item;
 
-import net.cpp.block.entity.AExpMachineBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.ToolItem;
@@ -37,11 +35,7 @@ public class ChestTransporter extends ToolItem {
 			tag.remove("z");
 			tag.remove("id");
 			itemStack.putSubTag("BlockEntityTag", tag);
-			((Inventory) blockEntity).clear();// MJSB
-			if (blockEntity instanceof AExpMachineBlockEntity) {
-				AExpMachineBlockEntity expBlockEntity = (AExpMachineBlockEntity) blockEntity;
-				expBlockEntity.setExpStorage(0);
-			}
+			blockEntity.markRemoved();
 			world.setBlockState(context.getBlockPos(), Blocks.AIR.getDefaultState(), 0b0100011);// MJSB
 			Block.dropStack(world, context.getBlockPos(), itemStack);
 			if (!context.getPlayer().isCreative())
