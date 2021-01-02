@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.cpp.api.CodingTool;
 import net.cpp.init.CppItems;
+import net.cpp.item.Magnet;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.LivingEntity;
@@ -46,10 +47,14 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 	public void tick(CallbackInfo callbackInfo) {
 		if (!world.isClient) {
 			ServerPlayerEntity this0 = (ServerPlayerEntity) ((Object) this);// 自己的引用，便于行事
-			if (getInventory().contains(CppItems.MAGNET.getDefaultStack())) {// 磁铁
-				CodingTool.attractItems(getPos().add(0, 1, 0), (ServerWorld) world, true, false);
-				for (ExperienceOrbEntity orb : world.getEntitiesByClass(ExperienceOrbEntity.class, new Box(getPos(), getPos()).expand(16), orb -> orb.getPos().isInRange(getPos(), 16))) {
-					orb.teleport(getPos().x, getPos().y, getPos().z);
+			for (int i = 0; i < getInventory().size(); i++) {
+				ItemStack itemStack = getInventory().getStack(i);
+				if (itemStack.isOf(CppItems.MAGNET) && Magnet.isEnabled(itemStack)) {
+					CodingTool.attractItems(getPos().add(0, 1, 0), (ServerWorld) world, true, false);
+					for (ExperienceOrbEntity orb : world.getEntitiesByClass(ExperienceOrbEntity.class, new Box(getPos(), getPos()).expand(16), orb -> orb.getPos().isInRange(getPos(), 16))) {
+						orb.teleport(getPos().x, getPos().y, getPos().z);
+					}
+					break;
 				}
 			}
 			if (getInventory().containsAny(Collections.singleton(CppItems.ELDER_S_WORDS))) {// 年长者之教诲
@@ -81,13 +86,14 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 		if (!world.isClient) {
 			ServerPlayerEntity this0 = (ServerPlayerEntity) ((Object) this);// 自己的引用，便于行事
 			if (getMainHandStack().isOf(CppItems.BROOM) || getOffHandStack().isOf(CppItems.BROOM)) {
-				double vy = isSneaking() ? -.1 : .1;
+				double vy = isSneaking() ? -1.1 : 1.1;
 				setVelocity(0, vy, 0);
-				System.out.println(getVelocity());
+//				System.out.println(getVelocity());
 //				double dvy = getVelocity().y - vy;
 //				if (dvy < 0) {
 //					addVelocity(0, dvy < -1 ? 1 : -dvy, 0);
 //				}
+				
 				this0.networkHandler.sendPacket(new ParticleS2CPacket(ParticleTypes.FIREWORK, false, getX(), getY(), getZ(), .3f, 0, .3f, .01f, 1));
 			}
 		}
