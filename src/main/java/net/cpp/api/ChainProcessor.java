@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -68,7 +69,7 @@ public class ChainProcessor {
 	/**
 	 * 待挖掘的方块坐标
 	 */
-	protected final Queue<BlockPos> posQueue = new LinkedList<>();
+	protected final Queue<BlockPos> posQueue;
 
 	public ChainProcessor(ServerWorld startWorld, BlockPos startPos, Block block, ItemStack toolStack, ServerPlayerEntity player) {
 		this.world = startWorld;
@@ -76,6 +77,7 @@ public class ChainProcessor {
 		this.block = block;
 		this.toolStack = toolStack;
 		this.player = player;
+		posQueue = new PriorityQueue<>((a,b)->Double.compare(a.getSquaredDistance(startPos),b.getSquaredDistance(startPos)));
 		posQueue.add(startPos);
 	}
 
