@@ -40,6 +40,10 @@ public class ExperienceBottleItemMixin extends Item {
 			tooltip.add(new TranslatableText("tooltip.cpp.multiple", multiple).formatted(Formatting.DARK_AQUA));
 	}
 
+	/**
+	 * @author Phoupraw
+	 * @reason null
+	 */
 	@Overwrite
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack itemStack = user.getStackInHand(hand);
