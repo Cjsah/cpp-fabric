@@ -1,7 +1,13 @@
 package net.cpp.api;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.advancement.criterion.Criteria;
@@ -27,10 +33,6 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public class CppFoodOrPotion extends Item {
     private static final MutableText field_25817;
@@ -73,7 +75,7 @@ public class CppFoodOrPotion extends Item {
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         List<StatusEffectInstance> list2 = getFoodEffects(stack);
         List<Pair<EntityAttribute, EntityAttributeModifier>> list3 = Lists.newArrayList();
-        Iterator var5;
+        Iterator<StatusEffectInstance> var5;
         TranslatableText mutableText;
         StatusEffect statusEffect;
         if (!list2.isEmpty()) {
@@ -87,7 +89,7 @@ public class CppFoodOrPotion extends Item {
                     for (Map.Entry<EntityAttribute, EntityAttributeModifier> entry : map.entrySet()) {
                         EntityAttributeModifier entityAttributeModifier = entry.getValue();
                         EntityAttributeModifier entityAttributeModifier2 = new EntityAttributeModifier(entityAttributeModifier.getName(), statusEffect.adjustModifierAmount(statusEffectInstance.getAmplifier(), entityAttributeModifier), entityAttributeModifier.getOperation());
-                        list3.add(new Pair(entry.getKey(), entityAttributeModifier2));
+                        list3.add(new Pair<EntityAttribute, EntityAttributeModifier>(entry.getKey(), entityAttributeModifier2));
                     }
                 }
 

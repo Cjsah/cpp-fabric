@@ -3,8 +3,6 @@ package net.cpp.gui.handler;
 import static net.cpp.api.CodingTool.x;
 import static net.cpp.api.CodingTool.y;
 
-import net.cpp.api.CodingTool;
-import net.cpp.block.entity.AllInOneMachineBlockEntity;
 import net.cpp.block.entity.TradeMachineBlockEntity;
 import net.cpp.gui.screen.TradeMachineScreen;
 import net.cpp.init.CppItems;

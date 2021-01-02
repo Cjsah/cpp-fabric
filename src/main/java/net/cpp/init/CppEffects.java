@@ -1,12 +1,9 @@
 package net.cpp.init;
 
 import net.cpp.api.ChainProcessor;
-import net.cpp.api.CppChain;
-import net.cpp.api.CppChainMap;
 import net.cpp.api.CppEffect;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;

@@ -1,15 +1,10 @@
 package net.cpp.gui.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-
 import net.cpp.gui.handler.AOutputMachineScreenHandler;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
 
 public abstract class AOutputMachineScreen<T extends AOutputMachineScreenHandler> extends AMachineScreen<T> {
 	public final OutputDirectionButton oButton = new OutputDirectionButton(buttonWidget -> {

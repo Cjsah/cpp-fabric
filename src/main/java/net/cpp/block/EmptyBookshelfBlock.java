@@ -2,7 +2,6 @@ package net.cpp.block;
 
 import javax.annotation.Nullable;
 
-import net.cpp.block.entity.ChestDropperBlockEntity;
 import net.cpp.block.entity.EmptyBookshelfBlockEntity;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppStats;
@@ -12,7 +11,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.state.StateManager.Builder;
-import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;

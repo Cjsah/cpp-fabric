@@ -1,8 +1,18 @@
 package net.cpp;
 
-import net.cpp.api.CppChainMap;
+import static net.cpp.api.CppChat.say;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.cpp.api.IPlayerJoinCallback;
-import net.cpp.init.*;
+import net.cpp.init.CppBlockEntities;
+import net.cpp.init.CppBlocks;
+import net.cpp.init.CppEffects;
+import net.cpp.init.CppItems;
+import net.cpp.init.CppRecipes;
+import net.cpp.init.CppScreenHandler;
+import net.cpp.init.CppStats;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
@@ -13,10 +23,6 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import static net.cpp.api.CppChat.say;
 
 public class Craftingpp implements ModInitializer {
 
@@ -41,7 +47,6 @@ public class Craftingpp implements ModInitializer {
 		CppRecipes.register();
 		CppStats.register();
 		CppEffects.register();
-		CppChainMap.register();
 
 		IPlayerJoinCallback.EVENT.register((player, server) -> {
 			if (!player.world.isClient)

@@ -14,7 +14,6 @@ import net.minecraft.text.TextColor;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
@@ -35,6 +34,7 @@ public class DyeStick extends Item {
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		if (!context.getWorld().isClient) {
 			String colorString = context.getStack().getOrCreateTag().getString("color");
+			@SuppressWarnings("unused")
 			int time = context.getStack().getOrCreateTag().getInt("time");
 			if (colorString.length() > 0) {
 				BlockState blockState = context.getWorld().getBlockState(context.getBlockPos());

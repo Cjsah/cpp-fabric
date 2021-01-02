@@ -17,7 +17,6 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Pair;
-import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
@@ -32,7 +31,6 @@ public class CompressedItem extends Item {
 		CompoundTag tag = stack.getOrCreateTag();
 		tooltip.add(new TranslatableText("tooltip.cpp.multiple", tag.getByte("multiple")).formatted(Formatting.DARK_AQUA));
 		List<Text> itemTooltip = ItemStack.fromTag(tag.getCompound("item")).getTooltip(null, context);
-//		itemTooltip.remove(0);
 		tooltip.addAll(itemTooltip);
 	}
 

@@ -1,11 +1,11 @@
 package net.cpp.init;
 
+import static net.cpp.Craftingpp.CPP_GROUP_DECORATE;
 import static net.cpp.Craftingpp.CPP_GROUP_FOOD;
 import static net.cpp.Craftingpp.CPP_GROUP_MACHINE;
 import static net.cpp.Craftingpp.CPP_GROUP_MISC;
 import static net.cpp.Craftingpp.CPP_GROUP_PLANT;
 import static net.cpp.Craftingpp.CPP_GROUP_TOOL;
-import static net.cpp.Craftingpp.CPP_GROUP_DECORATE;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,16 +14,40 @@ import java.util.Map;
 import java.util.Set;
 
 import net.cpp.api.CppFoodOrPotion;
-import net.cpp.item.*;
+import net.cpp.item.AncientScroll;
+import net.cpp.item.BlackForceOfMoon;
+import net.cpp.item.BlueForceOfSky;
+import net.cpp.item.Broom;
 import net.cpp.item.Character;
-import net.minecraft.block.Blocks;
+import net.cpp.item.ChestTransporter;
+import net.cpp.item.ColorPalette;
+import net.cpp.item.CompressedItem;
+import net.cpp.item.Compressor;
+import net.cpp.item.CoordinateRecorder;
+import net.cpp.item.CyanForceOfMountain;
+import net.cpp.item.DyeStick;
+import net.cpp.item.Firecrackers;
+import net.cpp.item.GlassPickaxe;
+import net.cpp.item.Grafter;
+import net.cpp.item.GreenForceOfWater;
+import net.cpp.item.Magnet;
+import net.cpp.item.Muffler;
+import net.cpp.item.OrangeForceOfDirt;
+import net.cpp.item.OriginOfTheWorld;
+import net.cpp.item.PortableCraftingMachine;
+import net.cpp.item.PortableCraftingTable;
+import net.cpp.item.PurpleForceOfLife;
+import net.cpp.item.RedForceOfFire;
+import net.cpp.item.TimeChecker;
+import net.cpp.item.TimeConditioner;
+import net.cpp.item.TradePlugin;
+import net.cpp.item.WhiteForceOfLightning;
+import net.cpp.item.YellowForceOfEarth;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.UseAction;
@@ -422,9 +446,9 @@ public final class CppItems {
 		BASALT_PLUGIN = registerItem("basalt_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
 		MENDING_PLUGIN = registerItem("mending_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
 		WIFI_PLUGIN = registerItem("wifi_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		EMERALD_TRADE_PLUGIN = registerItem("emerald_trade_plugin", new TradePlugin(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		GOLD_TRADE_PLUGIN = registerItem("gold_trade_plugin", new TradePlugin(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		MOON_TRADE_PLUGIN = registerItem("moon_trade_plugin", new TradePlugin(new Item.Settings().group(CPP_GROUP_MACHINE)));
+		EMERALD_TRADE_PLUGIN = registerItem("emerald_trade_plugin", new TradePlugin(new Item.Settings().group(CPP_GROUP_MACHINE).rarity(Rarity.UNCOMMON)));
+		GOLD_TRADE_PLUGIN = registerItem("gold_trade_plugin", new TradePlugin(new Item.Settings().group(CPP_GROUP_MACHINE).rarity(Rarity.UNCOMMON)));
+		MOON_TRADE_PLUGIN = registerItem("moon_trade_plugin", new TradePlugin(new Item.Settings().group(CPP_GROUP_MACHINE).rarity(Rarity.UNCOMMON)));
 
 		ANCIENT_SCROLL = registerItem("ancient_scroll", new AncientScroll(new Item.Settings().group(CPP_GROUP_MISC).rarity(Rarity.UNCOMMON)));
 

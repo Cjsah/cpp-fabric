@@ -1,9 +1,11 @@
 package net.cpp.gui.screen;
 
+import static net.cpp.api.CodingTool.nextSyncId;
+import static net.cpp.api.CodingTool.x;
+import static net.cpp.api.CodingTool.y;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import static net.cpp.api.CodingTool.*;
-import net.cpp.gui.handler.AllInOneMachineScreenHandler;
 import net.cpp.gui.handler.TradeMachineScreenHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;

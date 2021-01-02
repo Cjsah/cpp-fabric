@@ -1,19 +1,19 @@
 package net.cpp.gui.handler;
 
-import static net.cpp.init.CppItems.*;
-import static net.minecraft.item.Items.*;
+import static net.cpp.init.CppItems.ANCIENT_SCROLL;
+import static net.cpp.init.CppItems.MENDING_PLUGIN;
+import static net.cpp.init.CppItems.MOON_SHARD;
+import static net.cpp.init.CppItems.WIFI_PLUGIN;
+import static net.minecraft.item.Items.BOOK;
+import static net.minecraft.item.Items.ENCHANTED_GOLDEN_APPLE;
+import static net.minecraft.item.Items.EXPERIENCE_BOTTLE;
+
 import net.cpp.api.CodingTool;
-import net.cpp.block.entity.AExpMachineBlockEntity;
 import net.cpp.block.entity.GoldenAnvilBlockEntity;
-import net.cpp.block.entity.ItemProcessorBlockEntity;
-import net.cpp.block.entity.TradeMachineBlockEntity;
-import net.cpp.init.CppItems;
 import net.cpp.init.CppScreenHandler;
-import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.screen.slot.Slot;
 
 public class GoldenAnvilScreenHandler extends AExpMachineScreenHandler {

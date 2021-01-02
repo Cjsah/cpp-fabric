@@ -1,5 +1,7 @@
 package net.cpp.item;
 
+import java.util.List;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
@@ -32,10 +34,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class RedForceOfFire extends Item {
 	/**

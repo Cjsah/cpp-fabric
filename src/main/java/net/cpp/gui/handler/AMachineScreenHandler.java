@@ -1,9 +1,6 @@
 package net.cpp.gui.handler;
 
-import net.cpp.block.AMachineBlock;
 import net.cpp.block.entity.AMachineBlockEntity;
-import net.cpp.block.entity.AOutputMachineBlockEntity;
-import net.cpp.gui.screen.OutputDirectionButton;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;

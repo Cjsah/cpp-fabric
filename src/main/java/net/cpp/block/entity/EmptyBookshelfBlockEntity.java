@@ -1,12 +1,19 @@
 package net.cpp.block.entity;
 
-import static net.minecraft.item.Items.*;
-import static net.cpp.init.CppItems.*;
+import static net.cpp.init.CppItems.ANCIENT_SCROLL;
+import static net.minecraft.item.Items.BOOK;
+import static net.minecraft.item.Items.COMPASS;
+import static net.minecraft.item.Items.ENCHANTED_BOOK;
+import static net.minecraft.item.Items.FILLED_MAP;
+import static net.minecraft.item.Items.MAP;
+import static net.minecraft.item.Items.PAPER;
+import static net.minecraft.item.Items.WRITABLE_BOOK;
+import static net.minecraft.item.Items.WRITTEN_BOOK;
+
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
-import net.cpp.block.AMachineBlock;
 import net.cpp.block.EmptyBookshelfBlock;
 import net.cpp.gui.handler.EmptyBookshelfScreenHandler;
 import net.cpp.init.CppBlockEntities;
