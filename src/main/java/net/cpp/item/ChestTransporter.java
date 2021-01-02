@@ -1,5 +1,6 @@
 package net.cpp.item;
 
+import net.cpp.block.entity.AExpMachineBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -20,7 +21,7 @@ public class ChestTransporter extends ToolItem {
 	public ChestTransporter(Settings settings) {
 		super(ToolMaterials.IRON, settings);
 	}
-	
+
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		BlockEntity blockEntity = context.getWorld().getBlockEntity(context.getBlockPos());
@@ -36,10 +37,15 @@ public class ChestTransporter extends ToolItem {
 			tag.remove("z");
 			tag.remove("id");
 			itemStack.putSubTag("BlockEntityTag", tag);
-			((Inventory)blockEntity).clear();//MJSB
-			world.setBlockState(context.getBlockPos(), Blocks.AIR.getDefaultState(), 0b0100011);//MJSB
+			((Inventory) blockEntity).clear();// MJSB
+			if (blockEntity instanceof AExpMachineBlockEntity) {
+				AExpMachineBlockEntity expBlockEntity = (AExpMachineBlockEntity) blockEntity;
+				expBlockEntity.setExpStorage(0);
+			}
+			world.setBlockState(context.getBlockPos(), Blocks.AIR.getDefaultState(), 0b0100011);// MJSB
 			Block.dropStack(world, context.getBlockPos(), itemStack);
-			context.getStack().damage(1, world.random, (ServerPlayerEntity) context.getPlayer());
+			if (!context.getPlayer().isCreative())
+				context.getStack().damage(1, world.random, (ServerPlayerEntity) context.getPlayer());
 		}
 		return ActionResult.SUCCESS;
 	}
