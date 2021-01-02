@@ -49,4 +49,11 @@ public class Magnet extends Item implements IDefaultTagItem {
 		tag.putBoolean("enabled", true);
 		return tag;
 	}
+
+	@Override
+	public ItemStack getDefaultStack() {
+		ItemStack stack = super.getDefaultStack();
+		modifyDefaultTag(stack.getOrCreateTag());
+		return stack;
+	}
 }
