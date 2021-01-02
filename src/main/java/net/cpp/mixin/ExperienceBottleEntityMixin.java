@@ -35,6 +35,10 @@ public abstract class ExperienceBottleEntityMixin extends ThrownItemEntity imple
 		return super.toTag(tag);
 	}
 
+	/**
+	 * @author Phoupraw
+	 * @reason null
+	 */
 	@Overwrite
 	public void onCollision(HitResult hitResult) {
 		super.onCollision(hitResult);
