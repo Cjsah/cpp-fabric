@@ -150,6 +150,7 @@ public class CodingTool {
 	public static int getExperience(PlayerEntity player) {
 		return Math.round(player.experienceProgress * player.getNextLevelExperience());
 	}
+
 	/**
 	 * 获取玩家指向的物品实体
 	 *
@@ -269,6 +270,15 @@ public class CodingTool {
 				((ServerPlayerEntity) player).networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, player.getX(), player.getY(), player.getZ(), 20.0F, 1.5F));
 		}
 	}
+
+	/**
+	 * 挖掘方块
+	 * 
+	 * @param world    世界
+	 * @param player   玩家
+	 * @param pos      位置
+	 * @param droppeds 掉落物列表，方块的掉落物将会被加入该列表，如果为{@code null}，则掉落物直接消失
+	 */
 	public static void excavate(ServerWorld world, ServerPlayerEntity player, BlockPos pos, @Nullable List<ItemStack> droppeds) {
 		BlockState blockState = world.getBlockState(pos);
 		Block block = blockState.getBlock();
@@ -279,7 +289,7 @@ public class CodingTool {
 		if (!player.isCreative()) {
 			block.onStacksDropped(blockState, world, pos, toolStack);
 			if (droppeds != null) {
-				droppeds.addAll(Block.getDroppedStacks(blockState, world, pos, blockEntity, player, toolStack));				
+				droppeds.addAll(Block.getDroppedStacks(blockState, world, pos, blockEntity, player, toolStack));
 			}
 			player.incrementStat(Stats.MINED.getOrCreateStat(block));
 			toolStack.postMine(world, blockState, pos, player);

@@ -512,7 +512,7 @@ public final class CppItems {
 		SACHET = registerItem("sachet", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		GRAFTER = registerItem("grafter", new Grafter(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1).maxDamage(66)));
 		GLASS_PICKAXE = registerItem("glass_pickaxe", new GlassPickaxe(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-		CHEST_TRANSPORTER = registerItem("chest_transporter", new ChestTransporter(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		CHEST_TRANSPORTER = registerItem("chest_transporter", new ChestTransporter(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1).maxDamage(26)));
 		FIRECRACKERS = registerItem("firecrackers", new Firecrackers(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		BROOM = registerItem("broom", new Broom(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		SHOOTING_STAR = registerItem("shooting_star", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
