@@ -4,21 +4,20 @@
     "package": "net.cpp.mixin",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
-		"PlayerEntityMixin",
-		"ItemFrameMixin",
-		"ExperienceBottleItemMixin",
-		"ExperienceBottleEntityMixin",
-		"SpiderEntityMixin",
-		"SilverfishEntityMixin",
-		"EndermiteEntityMixin",
-		"BeeEntityMixin",
+		"MixinBeeEntity",
+		"MixinBlock",
+		"MixinEndermiteEntity",
+		"MixinExperienceBottleEntity",
+		"MixinExperienceBottleItem",
+		"MixinItem",
+		"MixinItemFrame",
+		"MixinItemStack",
+		"MixinLivingEntity",
+		"MixinPlayerEntity",
+		"MixinPlayerManager",
 		"MixinServerPlayerEntity",
-        "ItemMixin",
-        "LivingEntityMixin"
-    ],
-    "client": [
-        "ItemStackMixin",
-        "PlayerManagerMixin"
+		"MixinSilverfishEntity",
+		"MixinSpiderEntity"
     ],
     "injectors": {
         "defaultRequire": 1

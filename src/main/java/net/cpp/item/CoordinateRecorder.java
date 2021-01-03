@@ -72,7 +72,7 @@ public class CoordinateRecorder extends BlockItem {
 				}
 			}
 		}
-		return ActionResult.PASS;
+		return ActionResult.SUCCESS;
 	}
 	@Override
 	public String getTranslationKey() {

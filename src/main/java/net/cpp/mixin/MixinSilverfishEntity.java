@@ -14,8 +14,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
 @Mixin(SilverfishEntity.class)
-public class SilverfishEntityMixin extends HostileEntity {
-	protected SilverfishEntityMixin(EntityType<? extends HostileEntity> entityType, World world) {
+public class MixinSilverfishEntity extends HostileEntity {
+	protected MixinSilverfishEntity(EntityType<? extends HostileEntity> entityType, World world) {
 		super(entityType, world);
 	}
 	public boolean isAngryAt(PlayerEntity player) {

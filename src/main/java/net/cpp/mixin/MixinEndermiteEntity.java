@@ -14,9 +14,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
 @Mixin(EndermiteEntity.class)
-public class EndermiteEntityMixin extends HostileEntity {
+public class MixinEndermiteEntity extends HostileEntity {
 
-	public EndermiteEntityMixin(EntityType<? extends HostileEntity> entityType, World world) {
+	public MixinEndermiteEntity(EntityType<? extends HostileEntity> entityType, World world) {
 		super(entityType, world);
 	}
 

@@ -13,8 +13,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 
 @Mixin(ItemFrameEntity.class)
-public abstract class ItemFrameMixin extends AbstractDecorationEntity {
-	protected ItemFrameMixin(EntityType<? extends AbstractDecorationEntity> entityType, World world) {
+public abstract class MixinItemFrame extends AbstractDecorationEntity {
+	protected MixinItemFrame(EntityType<? extends AbstractDecorationEntity> entityType, World world) {
 		super(entityType, world);
 	}
 

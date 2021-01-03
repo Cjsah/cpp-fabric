@@ -8,4 +8,7 @@ public class Broom extends Item {
 		super(settings);
 	}
 
+	static {
+		
+	}
 }

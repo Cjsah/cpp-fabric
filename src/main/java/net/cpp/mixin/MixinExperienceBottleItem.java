@@ -27,9 +27,9 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 @Mixin(ExperienceBottleItem.class)
-public class ExperienceBottleItemMixin extends Item {
+public class MixinExperienceBottleItem extends Item {
 
-	public ExperienceBottleItemMixin(Settings settings) {
+	public MixinExperienceBottleItem(Settings settings) {
 		super(settings);
 	}
 

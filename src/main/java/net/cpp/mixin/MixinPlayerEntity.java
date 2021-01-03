@@ -25,10 +25,10 @@ import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin extends LivingEntity {
+public abstract class MixinPlayerEntity extends LivingEntity {
 	private int elderSWordCoolDown = 50;
 
-	protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
+	protected MixinPlayerEntity(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
@@ -70,10 +70,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 				}
 				if (this0.totalExperience >= round) {
 					this0.addExperience(-round);
-					this0.giveItemStack(stack);
-					if (!stack.isEmpty()) {
-						this0.dropStack(stack);
-					}
+					CodingTool.give(this0, stack);
 				}
 			}
 		}

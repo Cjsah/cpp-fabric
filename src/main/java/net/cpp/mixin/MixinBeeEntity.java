@@ -12,9 +12,9 @@ import net.minecraft.entity.passive.BeeEntity;
 import net.minecraft.world.World;
 
 @Mixin(BeeEntity.class)
-public abstract class BeeEntityMixin extends AnimalEntity {
+public abstract class MixinBeeEntity extends AnimalEntity {
 
-	protected BeeEntityMixin(EntityType<? extends AnimalEntity> entityType, World world) {
+	protected MixinBeeEntity(EntityType<? extends AnimalEntity> entityType, World world) {
 		super(entityType, world);
 	}
 

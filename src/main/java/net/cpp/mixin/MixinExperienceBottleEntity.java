@@ -16,10 +16,10 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 
 @Mixin(ExperienceBottleEntity.class)
-public abstract class ExperienceBottleEntityMixin extends ThrownItemEntity implements IMultiple {
+public abstract class MixinExperienceBottleEntity extends ThrownItemEntity implements IMultiple {
 	private int multiple = 0;
 
-	public ExperienceBottleEntityMixin(EntityType<? extends ThrownItemEntity> entityType, double d, double e, double f, World world) {
+	public MixinExperienceBottleEntity(EntityType<? extends ThrownItemEntity> entityType, double d, double e, double f, World world) {
 		super(entityType, d, e, f, world);
 	}
 

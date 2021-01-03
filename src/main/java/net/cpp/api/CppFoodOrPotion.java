@@ -1,6 +1,10 @@
 package net.cpp.api;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
@@ -20,8 +24,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
@@ -30,8 +32,6 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
 
 public class CppFoodOrPotion extends Item implements INutrition {
     public static final Map<Item, Integer> map = new HashMap<>();
