@@ -19,8 +19,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Box;
@@ -43,11 +41,11 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 	/**
 	 * 当玩家携带启用的磁铁时，吸引16米内的物品和经验球
 	 */
-	@Inject(at = @At("HEAD"), method = "tick()V")
+	@Inject(at = @At("HEAD"), method = "tick")
 	public void tick(CallbackInfo callbackInfo) {
 		if (!world.isClient) {
 			ServerPlayerEntity this0 = (ServerPlayerEntity) ((Object) this);// 自己的引用，便于行事
-			for (int i = 0; i < getInventory().size(); i++) {
+			for (int i = 0; i < getInventory().size(); i++) {//磁铁
 				ItemStack itemStack = getInventory().getStack(i);
 				if (itemStack.isOf(CppItems.MAGNET) && Magnet.isEnabled(itemStack)) {
 					CodingTool.attractItems(getPos().add(0, 1, 0), (ServerWorld) world, true, false);
@@ -81,23 +79,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 		}
 	}
 
-	@Inject(at = @At("RETURN"), method = "tick()V")
-	private void tickBroom(CallbackInfo info) {
-		if (!world.isClient) {
-			ServerPlayerEntity this0 = (ServerPlayerEntity) ((Object) this);// 自己的引用，便于行事
-			if (getMainHandStack().isOf(CppItems.BROOM) || getOffHandStack().isOf(CppItems.BROOM)) {
-				double vy = isSneaking() ? -1.1 : 1.1;
-				setVelocity(0, vy, 0);
-//				System.out.println(getVelocity());
-//				double dvy = getVelocity().y - vy;
-//				if (dvy < 0) {
-//					addVelocity(0, dvy < -1 ? 1 : -dvy, 0);
-//				}
-				
-				this0.networkHandler.sendPacket(new ParticleS2CPacket(ParticleTypes.FIREWORK, false, getX(), getY(), getZ(), .3f, 0, .3f, .01f, 1));
-			}
-		}
-	}
+
 
 	@Inject(at = @At("HEAD"), method = "readCustomDataFromTag")
 	public void fromTag1(CompoundTag tag, CallbackInfo info) {
