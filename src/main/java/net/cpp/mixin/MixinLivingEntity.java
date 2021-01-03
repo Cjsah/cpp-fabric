@@ -10,6 +10,7 @@ import net.cpp.init.CppItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.particle.ParticleTypes;
@@ -31,8 +32,13 @@ public abstract class MixinLivingEntity extends Entity {
 	@Inject(at = @At("RETURN"), method = "tick()V")
 	public void tick(CallbackInfo callbackInfo) {
 		if (!isSpectator() && canFly()) {
+			if ((Object) this instanceof PlayerEntity) {
+				PlayerEntity player = ((PlayerEntity) (Object) this);
+				player.getAbilities().flying = player.isCreative() || player.isSpectator() || getMainHandStack().isOf(CppItems.SHOOTING_STAR);
+			}
 			if (getMainHandStack().isOf(CppItems.SHOOTING_STAR)) {
-				double dvy = getVelocity().y;
+				double vy = isSneaking() ? -.3 : 0;
+				double dvy = vy - getVelocity().y;
 				if (dvy < -.3)
 					addVelocity(0, .3, 0);
 				else if (dvy > .3)

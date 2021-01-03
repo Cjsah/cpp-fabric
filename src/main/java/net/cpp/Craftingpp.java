@@ -2,11 +2,18 @@ package net.cpp;
 
 import static net.cpp.api.CppChat.say;
 
-import net.cpp.init.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.cpp.api.IPlayerJoinCallback;
+import net.cpp.init.CppBlockEntities;
+import net.cpp.init.CppBlocks;
+import net.cpp.init.CppEffects;
+import net.cpp.init.CppItems;
+import net.cpp.init.CppLootTableFunctions;
+import net.cpp.init.CppRecipes;
+import net.cpp.init.CppScreenHandler;
+import net.cpp.init.CppStats;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
@@ -48,5 +55,8 @@ public class Craftingpp implements ModInitializer {
 				say(player, new TranslatableText("misc.cpp1", new TranslatableText("chat.cpp.load1"), new TranslatableText("chat.cpp.load2").setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.cjsah.net/ruhuasiyu/"))).formatted(Formatting.GOLD)));
 			return ActionResult.PASS;
 		});
+	}
+	
+	static {
 	}
 }
