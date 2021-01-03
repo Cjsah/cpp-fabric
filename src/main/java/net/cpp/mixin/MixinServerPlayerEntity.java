@@ -40,7 +40,6 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 	}
 	
 	private int elderSWordCoolDown = 50;
-	private int weight = 0;
 
 	@Inject(at = @At("RETURN"), method = "playerTick")
 	private void tickBroom(CallbackInfo info) {
@@ -73,40 +72,15 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 				CodingTool.give(this0, stack);
 			}
 		}
-		{
-			int value = weight / 100;
-			String fat = "normal";
-			if (value > 0) {
-				this0.applyStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 2, value - 1, false, false));
-				fat = "fat" + Math.min(value, 2);
-			} else if (value < 0) {
-				this0.applyStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 2, -value - 1, false, false));
-				fat = "thin" + Math.min(-value, 2);
-			}
-			BlockState blockState = this0.world.getBlockState(this0.getBlockPos());
-			if (!this0.isSpectator() && blockState.getBlock() == Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE) {
-				((ServerPlayerEntity) this0).networkHandler.sendPacket(new TitleS2CPacket(TitleS2CPacket.Action.ACTIONBAR, new TranslatableText("misc.cpp", new TranslatableText("chat.cpp.title").formatted(Formatting.GOLD), new TranslatableText("chat.cpp.weight", weight, new TranslatableText("cpp.chat.weight." + fat)))));
-			}
-		}
-	}
-
-	public void eatFood(World world, ItemStack stack, CallbackInfoReturnable<ItemStack> info) {
-		if (stack.isFood() && stack.getItem() instanceof INutrition) {
-			this.weight += ((INutrition) stack.getItem()).getNutrition(stack);
-			System.out.println(weight);
-		}
-		super.eatFood(world, stack);
 	}
 
 	@Inject(at = @At("HEAD"), method = "writeCustomDataToTag")
 	public void writeCustomDataToTag(CompoundTag tag, CallbackInfo info) {
-		tag.putInt("weight", weight);
 		tag.putInt("elder_s_word_cooldown", elderSWordCoolDown);
 	}
 
 	@Inject(at = @At("HEAD"), method = "readCustomDataFromTag")
 	public void readCustomDataFromTag(CompoundTag tag, CallbackInfo info) {
-		weight = tag.getInt("weight");
 		elderSWordCoolDown = tag.getInt("elder_s_word_cooldown");
 	}
 }
