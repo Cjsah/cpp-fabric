@@ -335,20 +335,21 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 					blockEntity.output(2);
 					blockEntity.output(3);
 				} else {// 交易机向玩家售卖
-					if (PLUGIN.contains(blockEntity.getStack(2).getItem()) && PLACE_TAKERS.contains(blockEntity.getStack(1).getItem())) {
+					if (PLUGIN.contains(blockEntity.getStack(2).getItem()) && !PLACE_TAKERS.contains(blockEntity.getStack(1).getItem())) {
 						int code = blockEntity.getStack(2).getOrCreateTag().getInt("code");
-						if (blockEntity.getStack(1).isEmpty()) {
-							Recipe recipe = SELL_TABLE.get(code);
-							if (recipe != null) {
-								if (blockEntity.getStack(3).getItem() == recipe.currency && blockEntity.getStack(3).getCount() >= recipe.currencyCount && blockEntity.expStorage >= recipe.experience) {
-									if (blockEntity.tryInsert(1, recipe.output(blockEntity).copy())) {
-										blockEntity.getStack(3).decrement(recipe.currencyCount);
-										blockEntity.cooldown += recipe.cooldown;
-										blockEntity.expStorage -= recipe.experience;
-									}
+//						if (blockEntity.getStack(1).isEmpty()) {
+						Recipe recipe = SELL_TABLE.get(code);
+						if (recipe != null) {
+							if (blockEntity.getStack(3).getItem() == recipe.currency && blockEntity.getStack(3).getCount() >= recipe.currencyCount && blockEntity.expStorage >= recipe.experience) {
+								ItemStack prod = recipe.output(blockEntity).copy();
+								if (!prod.isEmpty() && blockEntity.tryInsert(1, prod)) {
+									blockEntity.getStack(3).decrement(recipe.currencyCount);
+									blockEntity.cooldown += recipe.cooldown;
+									blockEntity.expStorage -= recipe.experience;
 								}
 							}
 						}
+//						}
 					}
 					blockEntity.output(1);
 				}
@@ -680,9 +681,11 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		public ItemStack apply(BlockEntity blockEntity) {
 			return outputer.apply(blockEntity);
 		}
+
 		/**
 		 * 修饰提示，用于交易插件的提示
-		 * @param list 提示文本列表
+		 * 
+		 * @param list    提示文本列表
 		 * @param context 提示环境
 		 */
 		public void modifyTooltip(List<Text> list, TooltipContext context) {
@@ -691,16 +694,20 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 			list.add(new TranslatableText("tooltip.cpp.cfom.xp", experience));
 			list.add(new TranslatableText("tooltip.cpp.cooldown", cooldown));
 		}
+
 		/**
 		 * 创建从列表中随机选择一个输出的输出器
+		 * 
 		 * @param results 产物列表
 		 * @return 输出器
 		 */
 		public static Function<BlockEntity, ItemStack> createOutputer(List<ItemStack> results) {
 			return blockEntity -> results.get((int) (results.size() * blockEntity.getWorld().random.nextDouble()));
 		}
+
 		/**
 		 * 创建一个提示修饰器，添加一行“随机{@code translationKey}”
+		 * 
 		 * @param translationKey 翻译关键词
 		 * @return 提示修饰器
 		 */
