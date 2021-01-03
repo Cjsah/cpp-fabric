@@ -323,14 +323,14 @@ public class CodingTool {
 	
 	/**
 	 * 给予物品，先试图塞入物品栏，塞满后生成在玩家脚下并设定Owner，就像/give命令
-	 * @param pleyer 玩家
+	 * @param player 玩家
 	 * @param stacks 物品
 	 */
-	public static void give(PlayerEntity pleyer, ItemStack... stacks) {
+	public static void give(PlayerEntity player, ItemStack... stacks) {
 		for (ItemStack stack:stacks) {
-			ItemEntity itemEntity = new ItemEntity(pleyer.world, pleyer.getX(), pleyer.getY(), pleyer.getZ(), stack);
-			itemEntity.setOwner(pleyer.getUuid());
-			pleyer.world.spawnEntity(itemEntity);
+			ItemEntity itemEntity = new ItemEntity(player.world, player.getX(), player.getY(), player.getZ(), stack);
+			itemEntity.setOwner(player.getUuid());
+			player.world.spawnEntity(itemEntity);
 		}
 	}
 }

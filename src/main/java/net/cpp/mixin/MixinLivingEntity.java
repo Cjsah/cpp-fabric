@@ -1,8 +1,14 @@
 package net.cpp.mixin;
 
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
 import net.cpp.api.INutrition;
 import net.cpp.init.CppItems;
-import net.minecraft.block.AbstractBlock.AbstractBlockState;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -20,12 +26,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity extends Entity {
@@ -60,11 +60,15 @@ public abstract class MixinLivingEntity extends Entity {
 				((ServerPlayerEntity) player).networkHandler.sendPacket(new TitleS2CPacket(TitleS2CPacket.Action.ACTIONBAR, new TranslatableText("misc.cpp", new TranslatableText("chat.cpp.title").formatted(Formatting.GOLD), new TranslatableText("chat.cpp.weight", weight, new TranslatableText("cpp.chat.weight." + fat)))));
 			}
 		}
-		ServerPlayerEntity this0 = (ServerPlayerEntity) ((Object) this);// 自己的引用，便于行事
 		if (getMainHandStack().isOf(CppItems.BROOM) || getOffHandStack().isOf(CppItems.BROOM)) {
-			double vy = isSneaking() ? -1.1 : 1.1;
-			setVelocity(0, vy, 0);
-			this0.networkHandler.sendPacket(new ParticleS2CPacket(ParticleTypes.FIREWORK, false, getX(), getY(), getZ(), .3f, 0, .3f, .01f, 1));
+			double vy = isSneaking() ? -.1 : .1;
+			double dvy = getVelocity().y - vy;
+			if (dvy < 0) {
+				addVelocity(0, dvy < -1 ? 1 : -dvy, 0);
+			}
+			if ((Object)this instanceof ServerPlayerEntity) {
+				((ServerPlayerEntity)(Object)this).networkHandler.sendPacket(new ParticleS2CPacket(ParticleTypes.FIREWORK, false, getX(), getY(), getZ(), .3f, 0, .3f, .01f, 1));
+			}
 		}
 	}
 
