@@ -2,6 +2,7 @@ package net.cpp.item;
 
 import java.util.List;
 
+import net.cpp.api.CodingTool;
 import net.cpp.init.CppItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -81,10 +82,12 @@ public class CompressedItem extends Item {
 			if (playerEntity.isSneaking()) {
 				int i = pair.getRight();
 				while (i-- > 0)
-					playerEntity.dropStack(pair.getLeft().copy());
+//					playerEntity.dropStack(pair.getLeft().copy());
+					CodingTool.give(playerEntity, pair.getLeft().copy());
 				compressed.decrement(pair.getRight());
 			} else {
-				playerEntity.dropStack(pair.getLeft());
+				CodingTool.give(playerEntity, pair.getLeft());
+//				playerEntity.dropStack(pair.getLeft());
 				compressed.decrement(1);
 			}
 			return true;

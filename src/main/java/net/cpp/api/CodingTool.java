@@ -327,18 +327,10 @@ public class CodingTool {
 	 * @param stacks 物品
 	 */
 	public static void give(PlayerEntity pleyer, ItemStack... stacks) {
-		int i = 0;
-		while (i < stacks.length) {
-			pleyer.giveItemStack(stacks[i]);
-			if (!stacks[i].isEmpty())
-				break;
-			i++;
-		}
-		while (i < stacks.length) {
-			ItemEntity itemEntity = new ItemEntity(pleyer.world, pleyer.getX(), pleyer.getY(), pleyer.getZ(), stacks[i]);
+		for (ItemStack stack:stacks) {
+			ItemEntity itemEntity = new ItemEntity(pleyer.world, pleyer.getX(), pleyer.getY(), pleyer.getZ(), stack);
 			itemEntity.setOwner(pleyer.getUuid());
 			pleyer.world.spawnEntity(itemEntity);
-			i++;
 		}
 	}
 }
