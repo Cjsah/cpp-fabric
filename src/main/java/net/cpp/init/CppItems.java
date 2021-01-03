@@ -16,9 +16,12 @@ import java.util.Set;
 import net.cpp.api.CppFoodOrPotion;
 import net.cpp.item.*;
 import net.cpp.item.Character;
+import net.cpp.misc.CppArmorMaterial;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.DyeableArmorItem;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
@@ -690,7 +693,7 @@ public final class CppItems {
 		TEMPERANCER = registerItem("temperancer", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		WAND_OF_THE_DARKNESS = registerItem("wand_of_the_darkness", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 
-		RED_LIP = registerItem("red_lip", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+		RED_LIP = registerItem("red_lip", new DyeableArmorItem(CppArmorMaterial.RED_LIP, EquipmentSlot.HEAD, new Item.Settings().group(CPP_GROUP_TOOL)));
 		PURPLE_EYE = registerItem("purple_eye", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		LASH = registerItem("lash", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		CAT_BREED = registerItem("cat_breed", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));

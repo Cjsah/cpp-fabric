@@ -1,6 +1,7 @@
 {
-    "parent": "minecraft:item/handheld",
+    "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "cpp:item/red_lip"
+        "layer0": "cpp:item/red_lip",
+        "layer1": "cpp:empty"
     }
 }

@@ -158,7 +158,7 @@ public class CodingTool {
 	 * @return 物品实体
 	 */
 	public static ItemEntity rayItem(PlayerEntity player) {
-		double length = 0.05D;
+		double length = .05D;
 		Vec3d playerPos = player.getCameraPosVec(1.0F);
 		double yaw = player.yaw;
 		double pitch = player.pitch;
@@ -189,7 +189,7 @@ public class CodingTool {
 	 * @return 坐标
 	 */
 	public static Vec3d rayingPos(PlayerEntity player) {
-		double length = 0.05D;
+		double length = .05D;
 		Vec3d playerPos = player.getCameraPosVec(1.0F);
 		Vec3d pos = playerPos;
 		double yaw = player.yaw;

@@ -76,7 +76,6 @@ public abstract class MixinLivingEntity extends Entity {
 	public void eatFood(World world, ItemStack stack, CallbackInfoReturnable<ItemStack> info) {
 		if (!world.isClient && stack.isFood() && stack.getItem() instanceof INutrition) {
 			this.weight += ((INutrition) stack.getItem()).getNutrition(stack);
-			System.out.println(weight);
 		}
 	}
 
