@@ -54,8 +54,6 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
     @Override
     @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        // MJSB
-//        tooltip.set(0, tooltip.get(0).shallowCopy().formatted(Formatting.GOLD));
         CompoundTag tag = stack.getOrCreateTag();
         tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("block.minecraft.water"), new TranslatableText("word.infinite")).formatted(Formatting.GREEN));
         tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("block.minecraft.lava"), tag.getInt("lava")).formatted(Formatting.RED));

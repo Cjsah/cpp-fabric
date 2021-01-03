@@ -517,6 +517,12 @@
   "chat.cpp.time.normal": "设置作物生长速度为默认值",
   "chat.cpp.time.uncycle": "停止了日月循环",
   "chat.cpp.time.cycle": "开启了日月循环",
+  "chat.cpp.weight": "你的体重指数为%s, %s",
+  "cpp.chat.weight.normal": "正常",
+  "cpp.chat.weight.fat1": "偏胖",
+  "cpp.chat.weight.fat2": "过胖",
+  "cpp.chat.weight.thin1": "偏瘦",
+  "cpp.chat.weight.thin2": "过瘦",
 
   "tooltip.cpp.gfow.water": "水 %s",
   "tooltip.cpp.gfow.lava": "岩浆 %s",

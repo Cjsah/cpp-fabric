@@ -12,7 +12,9 @@
 		"SilverfishEntityMixin",
 		"EndermiteEntityMixin",
 		"BeeEntityMixin",
-		"MixinServerPlayerEntity"
+		"MixinServerPlayerEntity",
+        "ItemMixin",
+        "LivingEntityMixin"
     ],
     "client": [
         "ItemStackMixin",
