@@ -3,6 +3,8 @@ package net.cpp.item;
 import java.util.List;
 import java.util.Objects;
 
+import com.google.gson.JsonObject;
+import net.cpp.api.ICppConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.advancement.criterion.Criteria;
@@ -39,10 +41,13 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
-public class GreenForceOfWater extends Item implements IDefaultTagItem {
+public class GreenForceOfWater extends Item implements IDefaultTagItem, ICppConfig {
+
+    private static JsonObject json;
 
     public GreenForceOfWater(Settings settings) {
         super(settings);
+        json = this.getConfig();
     }
 
     @Override
@@ -158,4 +163,15 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
         tag.putInt("lava", 0);
         return tag;
 	}
+
+    @Override
+    public String getConfigName() {
+        return "green_force_of_water";
+    }
+
+    @Override
+    public JsonObject defaultConfig(JsonObject json) {
+        json.addProperty("StartLevel", 2);
+        return json;
+    }
 }
