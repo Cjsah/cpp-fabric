@@ -1,6 +1,8 @@
 package net.cpp.item;
 
 import com.google.common.collect.ImmutableList;
+import com.google.gson.JsonObject;
+import net.cpp.api.ICppConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
@@ -30,9 +32,13 @@ import java.util.List;
 import static net.cpp.api.CppChat.say;
 import static net.cpp.api.CodingTool.getExperience;
 
-public class CyanForceOfMountain extends Item implements IDefaultTagItem{
+public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppConfig {
+
+    private static JsonObject config;
+
     public CyanForceOfMountain(Settings settings) {
         super(settings);
+        config = this.getConfig();
     }
 
     private static final ImmutableList<Block> canClear = ImmutableList.of(Blocks.DIRT, Blocks.COARSE_DIRT,
@@ -125,8 +131,19 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem{
 
     public CompoundTag modifyDefaultTag(CompoundTag tag) {
 		tag.putBoolean("horizontal", true);
-        tag.putInt("level", 2);
+        tag.putInt("level", config.get("StartLevel").getAsInt());
         tag.putInt("xp", 0);
         return tag;
 	}
+
+    @Override
+    public String getConfigName() {
+        return "cyan_force_of_mountains";
+    }
+
+    @Override
+    public JsonObject defaultConfig(JsonObject json) {
+        json.addProperty("StartLevel", 2);
+        return json;
+    }
 }
