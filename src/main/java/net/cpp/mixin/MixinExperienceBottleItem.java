@@ -62,7 +62,7 @@ public class MixinExperienceBottleItem extends Item {
 				itemStack.decrement(1);
 			}
 		} else {
-			CompressedItem.uncompressAndDrop(user, itemStack);
+			CompressedItem.uncompressAndGive(user, itemStack);
 		}
 		user.incrementStat(Stats.USED.getOrCreateStat(this));
 

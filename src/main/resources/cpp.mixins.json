@@ -11,6 +11,8 @@
 		"MixinExperienceBottleItem",
 		"MixinItem",
 		"MixinItemFrame",
+		"MixinItemModels",
+		"MixinItemRenderer",
 		"MixinItemStack",
 		"MixinLivingEntity",
 		"MixinPlayerEntity",

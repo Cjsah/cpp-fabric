@@ -1,5 +1,6 @@
 package net.cpp.item;
 
+import java.util.Arrays;
 import java.util.List;
 
 import net.cpp.api.CodingTool;
@@ -38,7 +39,7 @@ public class CompressedItem extends Item {
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack itemStack = user.getStackInHand(hand);
-		if (!world.isClient && uncompressAndDrop(user, itemStack)) {
+		if (!world.isClient && uncompressAndGive(user, itemStack)) {
 			return TypedActionResult.success(itemStack);
 		}
 		return TypedActionResult.success(itemStack);
@@ -76,18 +77,16 @@ public class CompressedItem extends Item {
 		return 9 << (6 * compressedExpBottle.getOrCreateTag().getByte("multiple"));
 	}
 
-	public static boolean uncompressAndDrop(PlayerEntity playerEntity, ItemStack compressed) {
+	public static boolean uncompressAndGive(PlayerEntity playerEntity, ItemStack compressed) {
 		Pair<ItemStack, Integer> pair = uncompress(compressed);
 		if (!(pair.getLeft() == compressed)) {
 			if (playerEntity.isSneaking()) {
-				int i = pair.getRight();
-				while (i-- > 0)
-//					playerEntity.dropStack(pair.getLeft().copy());
-					CodingTool.give(playerEntity, pair.getLeft().copy());
+				ItemStack[] stacks = new ItemStack[pair.getRight()];
+				Arrays.fill(stacks, pair.getLeft().copy());
+				CodingTool.give(playerEntity, stacks);
 				compressed.decrement(pair.getRight());
 			} else {
 				CodingTool.give(playerEntity, pair.getLeft());
-//				playerEntity.dropStack(pair.getLeft());
 				compressed.decrement(1);
 			}
 			return true;

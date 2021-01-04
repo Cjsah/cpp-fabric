@@ -1,5 +1,7 @@
 package net.cpp.misc;
 
+import java.util.function.Supplier;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.EquipmentSlot;
@@ -8,8 +10,6 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Lazy;
-
-import java.util.function.Supplier;
 
 public enum CppArmorMaterial implements ArmorMaterial {
     RED_LIP("red_lip", 1, new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY),
@@ -47,7 +47,7 @@ public enum CppArmorMaterial implements ArmorMaterial {
         this.equipSound = equipSound;
         this.toughness = toughness;
         this.knockbackResistance = knockbackResistance;
-        this.repairIngredientSupplier = new Lazy(repairIngredientSupplier);
+        this.repairIngredientSupplier = new Lazy<Ingredient>(repairIngredientSupplier);
     }
 
     @Override
