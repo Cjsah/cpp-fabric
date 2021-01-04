@@ -82,11 +82,11 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppCo
                 return TypedActionResult.success(item);
             }else if (!user.isSneaking() && hitResult.getType() == HitResult.Type.BLOCK) {
                 if (user.isCreative()) {
-                    if (fill(world, user, blockPos, item, tag))
+                    if (fill(world, user, blockPos, tag))
                         user.incrementStat(Stats.USED.getOrCreateStat(this));
                     return TypedActionResult.success(user.getStackInHand(hand));
                 }else if (getExperience(user) >= 4) {
-                    if (fill(world, user, blockPos, item, tag)) {
+                    if (fill(world, user, blockPos, tag)) {
                         user.addExperience(-4);
                         user.incrementStat(Stats.USED.getOrCreateStat(this));
                         return TypedActionResult.success(user.getStackInHand(hand));
@@ -99,7 +99,7 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppCo
         return TypedActionResult.pass(item);
     }
 
-    private static Boolean fill(World world, PlayerEntity user, BlockPos blockPos, ItemStack item, CompoundTag tag) {
+    private static Boolean fill(World world, PlayerEntity user, BlockPos blockPos, CompoundTag tag) {
         int level = tag.getInt("level"), xp = tag.getInt("xp");
         int length = 32, high = level;
         if (!tag.getBoolean("horizontal")) {
