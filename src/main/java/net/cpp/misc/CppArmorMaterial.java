@@ -1,7 +1,5 @@
 package net.cpp.misc;
 
-import java.util.function.Supplier;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.EquipmentSlot;
@@ -9,42 +7,29 @@ import net.minecraft.item.ArmorMaterial;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Lazy;
 
 public enum CppArmorMaterial implements ArmorMaterial {
-    RED_LIP("red_lip", new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    PURPLE_EYE("purple_eye", new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    LASH("lash", new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    CAT_BREAD("cat_breed", new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    GARLAND("garland", new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    BLACK_FRAMED_GLASSES("black_framed_glasses", new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    ORANGE_FRAMED_GLASSES("orange_framed_glasses", new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    JOKING_GLASSES("joking_glasses", new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    MINION_GOGGLES("minion_goggles", new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    PANTS("pants", new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    EMPIRE_HAT("empire_hat", new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    GLASS_HELMET("glass_helmet", new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    GLOW_HAT("glow_hat", new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    GREEN_HAT("green_hat", new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    BLACK_HAT("black_hat", new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY),
-    NURSE_HAT("nurse_hat", new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.EMPTY);
+    RED_LIP("red_lip"),
+    PURPLE_EYE("purple_eye"),
+    LASH("lash"),
+    CAT_BREAD("cat_breed"),
+    GARLAND("garland"),
+    BLACK_FRAMED_GLASSES("black_framed_glasses"),
+    ORANGE_FRAMED_GLASSES("orange_framed_glasses"),
+    JOKING_GLASSES("joking_glasses"),
+    MINION_GOGGLES("minion_goggles"),
+    PANTS("pants"),
+    EMPIRE_HAT("empire_hat"),
+    GLASS_HELMET("glass_helmet"),
+    GLOW_HAT("glow_hat"),
+    GREEN_HAT("green_hat"),
+    BLACK_HAT("black_hat"),
+    NURSE_HAT("nurse_hat");
 
     private final String name;
-    private final int[] protectionAmounts;
-    private final int enchantAbility;
-    private final SoundEvent equipSound;
-    private final float toughness;
-    private final float knockbackResistance;
-    private final Lazy<Ingredient> repairIngredientSupplier;
 
-    CppArmorMaterial(String name, int[] protectionAmounts, int enchantAbility, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredientSupplier) {
+    CppArmorMaterial(String name) {
         this.name = name;
-        this.protectionAmounts = protectionAmounts;
-        this.enchantAbility = enchantAbility;
-        this.equipSound = equipSound;
-        this.toughness = toughness;
-        this.knockbackResistance = knockbackResistance;
-        this.repairIngredientSupplier = new Lazy<>(repairIngredientSupplier);
     }
 
     @Override
@@ -54,22 +39,22 @@ public enum CppArmorMaterial implements ArmorMaterial {
 
     @Override
     public int getProtectionAmount(EquipmentSlot slot) {
-        return this.protectionAmounts[slot.getEntitySlotId()];
+        return 0;
     }
 
     @Override
     public int getEnchantability() {
-        return this.enchantAbility;
+        return 0;
     }
 
     @Override
     public SoundEvent getEquipSound() {
-        return this.equipSound;
+        return SoundEvents.ITEM_ARMOR_EQUIP_LEATHER;
     }
 
     @Override
     public Ingredient getRepairIngredient() {
-        return this.repairIngredientSupplier.get();
+        return Ingredient.EMPTY;
     }
 
     @Override
@@ -80,11 +65,11 @@ public enum CppArmorMaterial implements ArmorMaterial {
 
     @Override
     public float getToughness() {
-        return this.toughness;
+        return 0.0F;
     }
 
     @Override
     public float getKnockbackResistance() {
-        return this.knockbackResistance;
+        return 0.0F;
     }
 }
