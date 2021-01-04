@@ -2,7 +2,6 @@ package net.cpp;
 
 import static net.cpp.api.CppChat.say;
 
-import net.cpp.config.CppConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,7 +29,7 @@ public class Craftingpp implements ModInitializer {
 
 	public static final Logger logger = LogManager.getLogger("Craftingpp");
 
-	public static final CppConfig CONFIG = new CppConfig();
+	public static final CraftingppConfig CONFIG = new CraftingppConfig();
 
 	public static final ItemGroup CPP_GROUP_MACHINE = FabricItemGroupBuilder.create(new Identifier("cpp:title.machine")).icon(() -> new ItemStack(CppBlocks.CRAFTING_MACHINE)).build();
 	public static final ItemGroup CPP_GROUP_MISC = FabricItemGroupBuilder.create(new Identifier("cpp:title.misc")).icon(() -> new ItemStack(CppItems.ENCHANTED_IRON)).build();
