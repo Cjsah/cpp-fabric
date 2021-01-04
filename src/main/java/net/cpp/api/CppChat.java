@@ -13,13 +13,13 @@ public final class CppChat {
      *
      * @author Cjsah
      * @param user 说话的玩家
-     * @param translatableText 说话的内容
+     * @param text 说话的内容
      */
-    public static void say(PlayerEntity user, Text translatableText) {
+    public static void say(PlayerEntity user, Text text) {
         user.sendSystemMessage(
                 new TranslatableText("misc.cpp",
                         new TranslatableText("chat.cpp.title").formatted(Formatting.GOLD),
-                        translatableText),
+                        text),
                 Util.NIL_UUID
         );
     }
