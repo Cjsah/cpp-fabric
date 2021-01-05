@@ -1,6 +1,6 @@
 {
-    "parent": "minecraft:item/handheld",
-    "textures": {
-        "layer0": "cpp:item/temperancer"
-    }
+    "overrides" : [
+        {"predicate" : {"temperancer": 0}, "model": "cpp:item/temperancer_off"},
+        {"predicate" : {"temperancer": 1}, "model": "cpp:item/temperancer_on"}
+    ]
 }

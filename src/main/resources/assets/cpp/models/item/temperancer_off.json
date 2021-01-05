@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/handheld",
     "textures": {
-        "layer0": "cpp:item/shield_cbl"
+        "layer0": "cpp:item/temperancer_off"
     }
 }
