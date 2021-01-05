@@ -4,6 +4,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonWriter;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,7 +48,7 @@ public class CraftingppConfig {
             return true;
         }else {
             try(FileWriter fileWriter = new FileWriter(json_file)) {
-                fileWriter.write(json.toString());
+                fileWriter.write(GSON.toJson(json));
                 return true;
             }catch (IOException e) {
                 logger.error("Failed to create config file!");

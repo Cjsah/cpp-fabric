@@ -160,7 +160,6 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppCo
             jsonArray.add(name);
         }
         json.add("CanBreak", jsonArray);
-        System.out.println(json);
         return json;
     }
 }
