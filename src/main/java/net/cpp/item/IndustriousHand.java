@@ -107,8 +107,10 @@ public class IndustriousHand extends Item implements ITickableInItemFrame {
 						}
 					}
 				}
-				if (world.getBlockState(pos2.up()).isOf(block)) {
+				if (world.getBlockState(pos2.up()).isOf(world.getBlockState(pos2).getBlock())) {
 					world.breakBlock(pos2.up(), true);
+				} else if (world.getBlockState(pos2.down()).isOf(world.getBlockState(pos2).getBlock())) {
+					world.breakBlock(pos2.down(), true);
 				}
 				return true;
 			case 1:
