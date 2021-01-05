@@ -168,7 +168,7 @@ public class CodingTool {
 		double proportion = Math.sqrt((((length * length) - (y * y)) / ((x * x) + (z * z))));
 		x *= proportion;
 		z *= proportion;
-		for (Vec3d pos = playerPos;Math.sqrt(Math.pow(pos.x - playerPos.x, 2) + Math.pow(pos.y - playerPos.y, 2) + Math.pow(pos.z - playerPos.z, 2)) < 5;pos = pos.add(x, y, z)) {
+		for (Vec3d pos = playerPos; Math.sqrt(Math.pow(pos.x - playerPos.x, 2) + Math.pow(pos.y - playerPos.y, 2) + Math.pow(pos.z - playerPos.z, 2)) < 5; pos = pos.add(x, y, z)) {
 			if (player.world.getBlockState(new BlockPos(pos)).getBlock() != Blocks.AIR) {
 				return null;
 			}
@@ -200,7 +200,7 @@ public class CodingTool {
 		double proportion = Math.sqrt((((length * length) - (y * y)) / ((x * x) + (z * z))));
 		x *= proportion;
 		z *= proportion;
-		for (;Math.sqrt(Math.pow(pos.x - playerPos.x, 2) + Math.pow(pos.y - playerPos.y, 2) + Math.pow(pos.z - playerPos.z, 2)) < 5;pos = pos.add(x, y, z)) {
+		for (; Math.sqrt(Math.pow(pos.x - playerPos.x, 2) + Math.pow(pos.y - playerPos.y, 2) + Math.pow(pos.z - playerPos.z, 2)) < 5; pos = pos.add(x, y, z)) {
 			if (player.world.getBlockState(new BlockPos(pos)).getBlock() != Blocks.AIR) {
 				return pos.add(-x, -y, -z);
 			}
@@ -320,17 +320,26 @@ public class CodingTool {
 		}
 		world.removeBlock(pos, false);
 	}
-	
+
 	/**
 	 * 给予物品，先试图塞入物品栏，塞满后生成在玩家脚下并设定Owner，就像/give命令
+	 * 
 	 * @param player 玩家
 	 * @param stacks 物品
 	 */
 	public static void give(PlayerEntity player, ItemStack... stacks) {
-		for (ItemStack stack:stacks) {
+		for (ItemStack stack : stacks) {
 			ItemEntity itemEntity = new ItemEntity(player.world, player.getX(), player.getY(), player.getZ(), stack);
 			itemEntity.setOwner(player.getUuid());
 			player.world.spawnEntity(itemEntity);
+		}
+	}
+
+	public static void drop(ServerWorld world, Vec3d pos, List<ItemStack> list) {
+		for (ItemStack stack : list) {
+			ItemEntity itemEntity = new ItemEntity(world, pos.x, pos.y, pos.z, stack);
+			itemEntity.setToDefaultPickupDelay();
+			world.spawnEntity(itemEntity);
 		}
 	}
 }
