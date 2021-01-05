@@ -23,12 +23,9 @@ public class SantaGift extends Item {
 		ItemStack item = user.getStackInHand(hand);
 		if (!world.isClient) {
 			ItemStack itemStack = world.getServer().getLootManager().getTable(new Identifier("cpp:items/santa_gift")).generateLoot((new LootContext.Builder((ServerWorld) world)).random(world.random).build(LootContextTypes.EMPTY)).get(0);
-//            ItemEntity itemEntity = new ItemEntity(world, user.getX(), user.getY() + 0.5, user.getZ(), itemStack);
-//            world.spawnEntity(itemEntity);
 			CodingTool.give(user, itemStack);
 			item.decrement(1);
 			user.incrementStat(Stats.USED.getOrCreateStat(this));
-			return TypedActionResult.success(item);
 		}
 		return TypedActionResult.success(item);
 	}
