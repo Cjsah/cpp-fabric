@@ -394,17 +394,6 @@ public final class CppItems {
 	public static final Item TCP_LOGO;
 	public static final Item CBL_LOGO;
 	public static final Item NF_LOGO;
-	public static final Item SHIELD_CHINA_FLAG;
-	public static final Item SHIELD_USA_FLAG;
-	public static final Item SHIELD_RUSSIA_FLAG;
-	public static final Item SHIELD_UK_FLAG;
-	public static final Item SHIELD_FRANCE_FLAG;
-	public static final Item SHIELD_BILIBILI;
-	public static final Item SHIELD_GITHUB;
-	public static final Item SHIELD_MCMOD;
-	public static final Item SHIELD_TCP;
-	public static final Item SHIELD_CBL;
-	public static final Item SHIELD_NF;
 	// 告示牌
 	public static final Item WHITE_SIGN;
 	public static final Item ORANGE_SIGN;
@@ -715,11 +704,11 @@ public final class CppItems {
 		WOOL_LEAVES = registerItem("wool_leaves", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
 		SAKURA_LEAVES = registerItem("sakura_leaves", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
 
-		SEALING_WAND = registerItem("sealing_wand", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-		STAR_WAND = registerItem("star_wand", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-		DREAM_WAND = registerItem("dream_wand", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-		TEMPERANCER = registerItem("temperancer", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
-		WAND_OF_THE_DARKNESS = registerItem("wand_of_the_darkness", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
+		SEALING_WAND = registerItem("sealing_wand", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		STAR_WAND = registerItem("star_wand", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		DREAM_WAND = registerItem("dream_wand", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		TEMPERANCER = registerItem("temperancer", new Temperancer(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		WAND_OF_THE_DARKNESS = registerItem("wand_of_the_darkness", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 
 		RED_LIP = registerItem("red_lip", new DyeableArmorItem(CppArmorMaterial.RED_LIP, EquipmentSlot.HEAD, new Item.Settings().group(CPP_GROUP_TOOL)));
 		PURPLE_EYE = registerItem("purple_eye", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
@@ -759,17 +748,6 @@ public final class CppItems {
 		TCP_LOGO = registerItem("tcp_logo", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 		CBL_LOGO = registerItem("cbl_logo", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 		NF_LOGO = registerItem("nf_logo", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
-		SHIELD_CHINA_FLAG = registerItem("shield_china_flag", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-		SHIELD_USA_FLAG = registerItem("shield_usa_flag", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-		SHIELD_RUSSIA_FLAG = registerItem("shield_russia_flag", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-		SHIELD_UK_FLAG = registerItem("shield_uk_flag", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-		SHIELD_FRANCE_FLAG = registerItem("shield_france_flag", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-		SHIELD_BILIBILI = registerItem("shield_bilibili", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-		SHIELD_GITHUB = registerItem("shield_github", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-		SHIELD_MCMOD = registerItem("shield_mcmod", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-		SHIELD_TCP = registerItem("shield_tcp", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-		SHIELD_CBL = registerItem("shield_cbl", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-		SHIELD_NF = registerItem("shield_nf", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 
 		WHITE_SIGN = registerItem("white_sign", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 		ORANGE_SIGN = registerItem("orange_sign", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));

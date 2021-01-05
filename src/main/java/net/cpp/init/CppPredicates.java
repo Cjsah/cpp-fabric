@@ -5,6 +5,7 @@ import net.minecraft.util.Identifier;
 
 public class CppPredicates {
     public static void register(){
-        FabricModelPredicateProviderRegistry.register(new Identifier("character"), (itemStack, clientWorld, livingEntity, i) -> itemStack.hasTag() ? (float)itemStack.getOrCreateTag().getInt("character") : 0.0F);
+        FabricModelPredicateProviderRegistry.register(new Identifier("character"), (itemStack, clientWorld, livingEntity, i) -> (float)itemStack.getOrCreateTag().getInt("character"));
+        FabricModelPredicateProviderRegistry.register(new Identifier("temperancer"), (itemStack, clientWorld, livingEntity, i) -> (float)itemStack.getOrCreateTag().getInt("open"));
     }
 }

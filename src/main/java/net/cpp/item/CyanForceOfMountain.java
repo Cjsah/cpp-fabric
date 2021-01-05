@@ -1,6 +1,9 @@
 package net.cpp.item;
 
-import com.google.common.collect.ImmutableList;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import net.cpp.api.ICppConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
@@ -17,28 +20,31 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 import static net.cpp.api.CppChat.say;
 import static net.cpp.api.CodingTool.getExperience;
 
-public class CyanForceOfMountain extends Item implements IDefaultTagItem{
+public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppConfig {
+
+    private static JsonObject config;
+
     public CyanForceOfMountain(Settings settings) {
         super(settings);
+        config = this.getConfig();
     }
 
-    private static final ImmutableList<Block> canClear = ImmutableList.of(Blocks.DIRT, Blocks.COARSE_DIRT,
-            Blocks.DIRT_PATH, Blocks.FARMLAND, Blocks.PODZOL, Blocks.GRASS_BLOCK, Blocks.MYCELIUM, Blocks.STONE,
-            Blocks.GRANITE, Blocks.DIORITE, Blocks.ANDESITE, Blocks.GRAVEL, Blocks.SAND, Blocks.SANDSTONE,
-            Blocks.NETHERRACK, Blocks.BLACKSTONE);
 
     @Override
     @Environment(EnvType.CLIENT)
@@ -76,11 +82,11 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem{
                 return TypedActionResult.success(item);
             }else if (!user.isSneaking() && hitResult.getType() == HitResult.Type.BLOCK) {
                 if (user.isCreative()) {
-                    if (fill(world, user, blockPos, item, tag))
+                    if (fill(world, user, blockPos, tag))
                         user.incrementStat(Stats.USED.getOrCreateStat(this));
                     return TypedActionResult.success(user.getStackInHand(hand));
                 }else if (getExperience(user) >= 4) {
-                    if (fill(world, user, blockPos, item, tag)) {
+                    if (fill(world, user, blockPos, tag)) {
                         user.addExperience(-4);
                         user.incrementStat(Stats.USED.getOrCreateStat(this));
                         return TypedActionResult.success(user.getStackInHand(hand));
@@ -93,7 +99,7 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem{
         return TypedActionResult.pass(item);
     }
 
-    private static Boolean fill(World world, PlayerEntity user, BlockPos blockPos, ItemStack item, CompoundTag tag) {
+    private static Boolean fill(World world, PlayerEntity user, BlockPos blockPos, CompoundTag tag) {
         int level = tag.getInt("level"), xp = tag.getInt("xp");
         int length = 32, high = level;
         if (!tag.getBoolean("horizontal")) {
@@ -101,10 +107,16 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem{
             high = 32;
         }
         int value = 0;
-        for (int i = 0; i < high; i++) {
+        ArrayList<Block> canBreak = new ArrayList<>();
+        for (JsonElement name : config.get("CanBreak").getAsJsonArray()) {
+            canBreak.add(Registry.BLOCK.get(new Identifier(name.getAsString())));
+
+        }
+            for (int i = 0; i < high; i++) {
             BlockPos pos = blockPos.add(0, i-1, 0);
             for (int j = 0; j < length; j++) {
-                if (canClear.contains(world.getBlockState(pos).getBlock())) {
+
+                if (canBreak.contains(world.getBlockState(pos).getBlock())) {
                     world.setBlockState(pos, Blocks.AIR.getDefaultState());
                     value++;
                 }
@@ -125,8 +137,29 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem{
 
     public CompoundTag modifyDefaultTag(CompoundTag tag) {
 		tag.putBoolean("horizontal", true);
-        tag.putInt("level", 2);
+        tag.putInt("level", config.get("StartLevel").getAsInt());
         tag.putInt("xp", 0);
         return tag;
 	}
+
+    @Override
+    public String getConfigName() {
+        return "cyan_force_of_mountains";
+    }
+
+    @Override
+    public JsonObject defaultConfig(JsonObject json) {
+        String[] defaultNames = new String[]{"minecraft:dirt", "minecraft:dirt_path", "minecraft:diorite",
+                "minecraft:farmland", "minecraft:podzol", "minecraft:grass_block", "minecraft:mycelium",
+                "minecraft:stone", "minecraft:granite", "minecraft:diorite", "minecraft:andesite", "minecraft:gravel",
+                "minecraft:sand", "minecraft:sandstone", "minecraft:netherrack", "minecraft:blackstone"};
+
+        json.addProperty("StartLevel", 2);
+        JsonArray jsonArray = new JsonArray();
+        for (String name : defaultNames) {
+            jsonArray.add(name);
+        }
+        json.add("CanBreak", jsonArray);
+        return json;
+    }
 }
