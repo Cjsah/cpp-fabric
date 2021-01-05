@@ -1,6 +1,7 @@
 package net.cpp.item;
 
-import com.google.common.collect.ImmutableList;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.cpp.api.ICppConfig;
 import net.fabricmc.api.EnvType;
@@ -19,14 +20,17 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 import static net.cpp.api.CppChat.say;
@@ -41,10 +45,6 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppCo
         config = this.getConfig();
     }
 
-    private static final ImmutableList<Block> canClear = ImmutableList.of(Blocks.DIRT, Blocks.COARSE_DIRT,
-            Blocks.DIRT_PATH, Blocks.FARMLAND, Blocks.PODZOL, Blocks.GRASS_BLOCK, Blocks.MYCELIUM, Blocks.STONE,
-            Blocks.GRANITE, Blocks.DIORITE, Blocks.ANDESITE, Blocks.GRAVEL, Blocks.SAND, Blocks.SANDSTONE,
-            Blocks.NETHERRACK, Blocks.BLACKSTONE);
 
     @Override
     @Environment(EnvType.CLIENT)
@@ -107,10 +107,16 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppCo
             high = 32;
         }
         int value = 0;
-        for (int i = 0; i < high; i++) {
+        ArrayList<Block> canBreak = new ArrayList<>();
+        for (JsonElement name : config.get("CanBreak").getAsJsonArray()) {
+            canBreak.add(Registry.BLOCK.get(new Identifier(name.getAsString())));
+
+        }
+            for (int i = 0; i < high; i++) {
             BlockPos pos = blockPos.add(0, i-1, 0);
             for (int j = 0; j < length; j++) {
-                if (canClear.contains(world.getBlockState(pos).getBlock())) {
+
+                if (canBreak.contains(world.getBlockState(pos).getBlock())) {
                     world.setBlockState(pos, Blocks.AIR.getDefaultState());
                     value++;
                 }
@@ -143,7 +149,18 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppCo
 
     @Override
     public JsonObject defaultConfig(JsonObject json) {
+        String[] defaultNames = new String[]{"minecraft:dirt", "minecraft:dirt_path", "minecraft:diorite",
+                "minecraft:farmland", "minecraft:podzol", "minecraft:grass_block", "minecraft:mycelium",
+                "minecraft:stone", "minecraft:granite", "minecraft:diorite", "minecraft:andesite", "minecraft:gravel",
+                "minecraft:sand", "minecraft:sandstone", "minecraft:netherrack", "minecraft:blackstone"};
+
         json.addProperty("StartLevel", 2);
+        JsonArray jsonArray = new JsonArray();
+        for (String name : defaultNames) {
+            jsonArray.add(name);
+        }
+        json.add("CanBreak", jsonArray);
+        System.out.println(json);
         return json;
     }
 }
