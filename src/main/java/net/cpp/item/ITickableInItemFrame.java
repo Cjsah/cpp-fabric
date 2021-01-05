@@ -1,10 +1,7 @@
 package net.cpp.item;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.entity.decoration.ItemFrameEntity;
 
 public interface ITickableInItemFrame {
-	boolean tickInItemFrame(ServerWorld world, Vec3d pos, ItemStack stack);
+	boolean tick(ItemFrameEntity itemFrameEntity);
 }

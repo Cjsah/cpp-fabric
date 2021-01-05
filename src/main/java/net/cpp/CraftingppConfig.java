@@ -1,19 +1,20 @@
 package net.cpp;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonWriter;
-import net.fabricmc.loader.api.FabricLoader;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.FileWriter;
-import java.io.BufferedReader;
+import net.fabricmc.loader.api.FabricLoader;
 
 
 public class CraftingppConfig {

@@ -2,15 +2,18 @@ package net.cpp.item;
 
 import java.util.List;
 
+import net.cpp.api.CodingTool;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -19,7 +22,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-public class Magnet extends Item implements IDefaultTagItem {
+public class Magnet extends Item implements IDefaultTagItem, ITickableInItemFrame {
 	public Magnet(Settings settings) {
 		super(settings);
 	}
@@ -49,8 +52,17 @@ public class Magnet extends Item implements IDefaultTagItem {
 		tag.putBoolean("enabled", true);
 		return tag;
 	}
-	
+
 	public static boolean isEnabled(ItemStack stack) {
 		return stack.getOrCreateTag().getBoolean("enabled");
+	}
+
+	@Override
+	public boolean tick(ItemFrameEntity itemFrameEntity) {
+		if (itemFrameEntity.getHeldItemStack().getOrCreateTag().getBoolean("enabled") ^ ((itemFrameEntity.getRotation() & 1) == 0)) {
+			CodingTool.attractItems(itemFrameEntity.getPos(), (ServerWorld) itemFrameEntity.world, true, true);
+			return true;
+		}
+		return false;
 	}
 }
