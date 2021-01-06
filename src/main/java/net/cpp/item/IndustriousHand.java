@@ -26,9 +26,7 @@ import static net.minecraft.block.Blocks.WEEPING_VINES_PLANT;
 import static net.minecraft.block.Blocks.WHEAT;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -49,7 +47,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.ScheduledTick;
 import net.minecraft.world.World;
 
 public class IndustriousHand extends Item implements ITickableInItemFrame {
@@ -70,7 +67,7 @@ public class IndustriousHand extends Item implements ITickableInItemFrame {
 
 	@Override
 	public boolean tick(ItemFrameEntity itemFrameEntity) {
-		BlockPos pos2 = itemFrameEntity.getBlockPos().up(2);
+		BlockPos pos2 = new BlockPos(ITickableInItemFrame.getPos(itemFrameEntity));
 		World world = itemFrameEntity.world;
 		List<ItemEntity> boneMeals = world.getEntitiesByClass(ItemEntity.class, new Box(pos2, pos2).expand(2), itemEntity -> itemEntity.getStack().isOf(Items.BONE_MEAL));
 		if (!boneMeals.isEmpty()) {

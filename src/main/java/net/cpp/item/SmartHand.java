@@ -24,7 +24,7 @@ public class SmartHand extends Item implements ITickableInItemFrame {
 	public boolean tick(ItemFrameEntity itemFrameEntity) {
 		World world = itemFrameEntity.world;
 		Vec3d pos = itemFrameEntity.getPos();
-		Vec3d fishingPos = pos.add(new Vec3d(itemFrameEntity.getHorizontalFacing().getUnitVector()).multiply(itemFrameEntity.getRotation()));
+		Vec3d fishingPos = ITickableInItemFrame.getPos(itemFrameEntity);
 		if (world.isWater(new BlockPos(fishingPos))) {
 //			world.addParticle(ParticleTypes.BUBBLE, fishingPos.x, fishingPos.y, fishingPos.z, 0, 0, 0);
 			int time = itemFrameEntity.getHeldItemStack().getOrCreateTag().getInt("time") + 1;

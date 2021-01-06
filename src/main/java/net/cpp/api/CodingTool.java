@@ -14,10 +14,12 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -299,26 +301,34 @@ public class CodingTool {
 	 * 挖掘方块
 	 * 
 	 * @param world    世界
-	 * @param player   玩家
+	 * @param entity   玩家
 	 * @param pos      位置
 	 * @param droppeds 掉落物列表，方块的掉落物将会被加入该列表，如果为{@code null}，则掉落物直接消失
 	 */
-	public static void excavate(ServerWorld world, ServerPlayerEntity player, BlockPos pos, @Nullable List<ItemStack> droppeds) {
+	public static void excavate(ServerWorld world, LivingEntity entity, BlockPos pos, @Nullable List<ItemStack> droppeds) {
 		BlockState blockState = world.getBlockState(pos);
 		Block block = blockState.getBlock();
 		BlockEntity blockEntity = world.getBlockEntity(pos);
-		ItemStack toolStack = player.getMainHandStack();
-		block.onBreak(world, pos, blockState, player);
-		block.onBroken(world, pos, blockState);
-		if (!player.isCreative()) {
+		ItemStack toolStack = entity.getMainHandStack();
+//		block.onBreak(world, pos, blockState, player);
+//		block.onBroken(world, pos, blockState);
+		boolean b = true;
+		if (entity instanceof ServerPlayerEntity) {
+			ServerPlayerEntity player = (ServerPlayerEntity) entity;
+			if (b = !player.isCreative()) {
+				player.incrementStat(Stats.MINED.getOrCreateStat(block));
+				toolStack.postMine(world, blockState, pos, player);
+			}
+		} else {
+			toolStack.damage(1, world.random, null);
+		}
+		if (b) {
 			block.onStacksDropped(blockState, world, pos, toolStack);
 			if (droppeds != null) {
-				droppeds.addAll(Block.getDroppedStacks(blockState, world, pos, blockEntity, player, toolStack));
+				droppeds.addAll(Block.getDroppedStacks(blockState, world, pos, blockEntity, entity, toolStack));
 			}
-			player.incrementStat(Stats.MINED.getOrCreateStat(block));
-			toolStack.postMine(world, blockState, pos, player);
 		}
-		world.removeBlock(pos, false);
+		world.breakBlock(pos, false, entity);
 	}
 
 	/**
@@ -340,6 +350,22 @@ public class CodingTool {
 			ItemEntity itemEntity = new ItemEntity(world, pos.x, pos.y, pos.z, stack);
 			itemEntity.setToDefaultPickupDelay();
 			world.spawnEntity(itemEntity);
+		}
+	}
+
+	public static void transfer(Inventory source, Inventory target) {
+		for (int i = 0; i < source.size(); i++) {
+			ItemStack stack1 = source.getStack(i);
+			if (stack1.isEmpty())
+				continue;
+			for (int j = 0; j < target.size(); j++) {
+				ItemStack stack2 = target.getStack(j);
+				if (ItemStack.areItemsEqual(stack1, stack2) && ItemStack.areTagsEqual(stack1, stack2)) {
+					int c = stack2.getMaxCount() - stack1.getCount() - stack2.getCount();
+					stack2.increment(c);
+					stack1.decrement(c);
+				}
+			}
 		}
 	}
 }

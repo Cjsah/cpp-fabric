@@ -12,7 +12,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class ToughenHand extends Item implements ITickableInItemFrame {
-
 	public ToughenHand(Settings settings) {
 		super(settings);
 	}
@@ -21,7 +20,7 @@ public class ToughenHand extends Item implements ITickableInItemFrame {
 	public boolean tick(ItemFrameEntity itemFrameEntity) {
 		World world = itemFrameEntity.world;
 		if (world.getTime() % 600 == 0) {
-			Vec3d pos = itemFrameEntity.getPos();
+			Vec3d pos = ITickableInItemFrame.getPos(itemFrameEntity);
 			for (SheepEntity sheep : world.getEntitiesByClass(SheepEntity.class, new Box(pos, pos).expand(16), sheep -> sheep.isShearable())) {
 				sheep.sheared(SoundCategory.MASTER);
 			}

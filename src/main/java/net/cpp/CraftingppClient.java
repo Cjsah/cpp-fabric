@@ -1,5 +1,6 @@
 package net.cpp;
 
+import net.cpp.entity.render.GolemMinerRenderer;
 import net.cpp.gui.screen.AllInOneMachineScreen;
 import net.cpp.gui.screen.BeaconEnhancerScreen;
 import net.cpp.gui.screen.ColorPaletteScreen;
@@ -10,11 +11,13 @@ import net.cpp.gui.screen.ItemProcessorScreen;
 import net.cpp.gui.screen.MobProjectorScreen;
 import net.cpp.gui.screen.PortableCraftingMachineScreen;
 import net.cpp.gui.screen.TradeMachineScreen;
+import net.cpp.init.CppEntities;
 import net.cpp.init.CppPredicates;
 import net.cpp.init.CppScreenHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.minecraft.client.gui.screen.ingame.CraftingScreen;
 
@@ -36,6 +39,10 @@ public class CraftingppClient implements ClientModInitializer {
 		ScreenRegistry.register(CppScreenHandler.GOLDEN_ANVIL, GoldenAnvilScreen::new);
 		ScreenRegistry.register(CppScreenHandler.EMPTY_BOOKSHELF, EmptyBookshelfScreen::new);
 		ScreenRegistry.register(CppScreenHandler.COLOR_PALETTE, ColorPaletteScreen::new);
+		
+//		EntityRendererRegistry.INSTANCE.register(CppEntities.GOLEM_MINER, ctx -> {
+//            return new GolemMinerRenderer(ctx);
+//        });
 	}
 
 }
