@@ -1,6 +1,7 @@
 package net.cpp.init;
 
 
+import net.cpp.Craftingpp;
 import net.cpp.misc.AncientScrollRandomTag;
 import net.minecraft.loot.function.LootFunction;
 import net.minecraft.loot.function.LootFunctionType;
@@ -14,7 +15,7 @@ public class CppLootTableFunctions {
 
 
     private static LootFunctionType register(String id, JsonSerializer<? extends LootFunction> jsonSerializer) {
-        return Registry.register(Registry.LOOT_FUNCTION_TYPE, new Identifier("cpp", id), new LootFunctionType(jsonSerializer));
+        return Registry.register(Registry.LOOT_FUNCTION_TYPE, new Identifier(Craftingpp.MOD_ID3, id), new LootFunctionType(jsonSerializer));
     }
 
     public static void register() {}

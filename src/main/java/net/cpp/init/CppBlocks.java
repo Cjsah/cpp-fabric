@@ -2,6 +2,7 @@ package net.cpp.init;
 
 import static net.cpp.Craftingpp.CPP_GROUP_MACHINE;
 
+import net.cpp.Craftingpp;
 import net.cpp.block.AllInOneMachineBlock;
 import net.cpp.block.BeaconEnhancerBlock;
 import net.cpp.block.ChestDropperBlock;
@@ -20,6 +21,7 @@ import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public final class CppBlocks {
@@ -42,13 +44,13 @@ public final class CppBlocks {
 	}
 
 	private static Block registerMachine(String id, Block block) {
-		Block regBlock = Registry.register(Registry.BLOCK, "cpp:" + id, block);
+		Block regBlock = Registry.register(Registry.BLOCK, new Identifier(Craftingpp.MOD_ID3, id) + id, block);
 		BlockItem item = Registry.register(Registry.ITEM, Registry.BLOCK.getId(regBlock), new BlockItem(regBlock, new Item.Settings().group(CPP_GROUP_MACHINE)));
 		item.appendBlocks(Item.BLOCK_ITEMS, item);
 		return regBlock;
 	}
 
 	private static Block registerBlock(String id, Block block) {
-		return Registry.register(Registry.BLOCK, "cpp:" + id, block);
+		return Registry.register(Registry.BLOCK, new Identifier(Craftingpp.MOD_ID3, id), block);
 	}
 }

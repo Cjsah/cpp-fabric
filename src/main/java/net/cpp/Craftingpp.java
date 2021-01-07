@@ -29,6 +29,10 @@ import net.minecraft.util.Identifier;
 
 public class Craftingpp implements ModInitializer {
 
+	public static final String MOD_ID1 = "Crafting++";
+	public static final String MOD_ID2 = "Craftingpp";
+	public static final String MOD_ID3 = "cpp";
+
 	public static final Logger logger = LogManager.getLogger("Craftingpp");
 
 	public static final CppConfig CONFIG = new CppConfig();
