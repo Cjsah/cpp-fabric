@@ -137,18 +137,4 @@ public class CppOptionsGui extends Screen implements Supplier<Screen> {
     public Screen get() {
         return this;
     }
-
-    public void onConfigChanging(String option, Object value) {
-
-    }
-
-    public boolean wasMouseReleased() {
-        boolean result = mouseReleased;
-        mouseReleased = false;
-        return result;
-    }
-
-    public void setMouseReleased(boolean value) {
-        mouseReleased = value;
-    }
 }

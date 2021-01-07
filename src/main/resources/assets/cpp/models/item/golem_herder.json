@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/handheld",
     "textures": {
-        "layer0": "cpp:item/warrior_golem"
+        "layer0": "cpp:item/golem_herder"
     }
 }
