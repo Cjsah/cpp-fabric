@@ -30,7 +30,6 @@ public final class CppScreenHandler {
 		return ScreenHandlerRegistry.registerSimple(Registry.BLOCK.getId(block), factory);
 	}
 
-	
 	private static <T extends ScreenHandler> ScreenHandlerType<T> register(Item item, SimpleClientHandlerFactory<T> factory) {
 		return ScreenHandlerRegistry.registerSimple(Registry.ITEM.getId(item), factory);
 	}

@@ -3,8 +3,8 @@
   "id": "craftingpp",
   "version": "${version}",
 
-  "name": "Craftingpp",
-  "description": "Nothing there",
+  "name": "Crafting++",
+  "description": "Rewrite from datapack named Craftingpp",
   "authors": [
     "Cjsah",
     "Phoupraw",
@@ -25,6 +25,9 @@
     ],
     "client": [
       "net.cpp.CraftingppClient"
+    ],
+    "modmenu": [
+      "net.cpp.config.CppModMenu"
     ]
   },
   "mixins": [
@@ -39,4 +42,5 @@
   "suggests": {
     "flamingo": "*"
   }
+
 }

@@ -1,5 +1,6 @@
 package net.cpp.init;
 
+import net.cpp.Craftingpp;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -20,7 +21,7 @@ public final class CppStats {
 	}
 
 	private static Identifier registerStats(String name) {		
-		return Registry.register(Registry.CUSTOM_STAT, "cpp:" + name, new Identifier("cpp:" + name));
+		return Registry.register(Registry.CUSTOM_STAT, new Identifier(Craftingpp.MOD_ID3, name), new Identifier("cpp:" + name));
 	}
 
 }

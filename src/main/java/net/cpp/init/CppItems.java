@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.cpp.Craftingpp;
 import net.cpp.api.CppFoodOrPotion;
 import net.cpp.item.AncientScroll;
 import net.cpp.item.AngryHand;
@@ -67,9 +68,6 @@ import net.minecraft.util.UseAction;
 import net.minecraft.util.registry.Registry;
 
 public final class CppItems {
-
-	public static final String MODID = "cpp";
-
 	// 稀有物品
 	public static final Item SHARD_OF_THE_DARKNESS;
 	public static final Item WING_OF_SKY;
@@ -788,12 +786,12 @@ public final class CppItems {
 	}
 
 	private static Item registerItem(String id, Item item) {
-		return Registry.register(Registry.ITEM, new Identifier(MODID, id), item);
+		return Registry.register(Registry.ITEM, new Identifier(Craftingpp.MOD_ID3, id), item);
 	}
 
 	private static Item registerBlockItem(String id, BlockItem item) {
 		item.appendBlocks(Item.BLOCK_ITEMS, item);
-		return Registry.register(Registry.ITEM, new Identifier(MODID, id), item);
+		return Registry.register(Registry.ITEM, new Identifier(Craftingpp.MOD_ID3, id), item);
 	}
 
 	public static void register() {

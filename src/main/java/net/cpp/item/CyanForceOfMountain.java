@@ -45,7 +45,6 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppCo
         config = this.getConfig();
     }
 
-
     @Override
     @Environment(EnvType.CLIENT)
     public Text getName(ItemStack stack) {
