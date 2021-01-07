@@ -41,7 +41,7 @@ public class CppConfig {
                 String file_name = json_file.getName();
                 if (json_file.isFile() && file_name.endsWith(".json")) {
                     try(BufferedReader reader = new BufferedReader(new FileReader(json_file))) {
-                        JSON.add(file_name.substring(0, file_name.length()-4), GSON.fromJson(reader, JsonObject.class));
+                        JSON.add(file_name.substring(0, file_name.length()-5), GSON.fromJson(reader, JsonObject.class));
                     } catch (IOException e) {
                         logger.error("Failed to load config file " + json_file);
                         e.printStackTrace();
@@ -52,6 +52,9 @@ public class CppConfig {
     }
 
     public JsonObject getConfig(String configName){
+        System.out.println(JSON);
+        System.out.println(configName);
+        System.out.println(JSON.get(configName));
         return JSON.get(configName).getAsJsonObject();
     }
 
