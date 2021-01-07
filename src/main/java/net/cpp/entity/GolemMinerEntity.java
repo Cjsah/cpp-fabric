@@ -20,14 +20,12 @@ public class GolemMinerEntity extends AMovingGolem {
 	@Override
 	public void work() {
 		BlockState blockState = getBlockState();
-
-		if (!world.isClient && !CONTROLS.contains(blockState.getBlock()) && getMainHandStack().getMiningSpeedMultiplier(blockState) > 0) {
+		if (!world.isClient && !CONTROLS.contains(blockState.getBlock()) && CodingTool.canHarvest(getMainHandStack(), blockState) && blockState.getHardness(world, getBlockPos()) >= 0) {
 			List<ItemStack> droppeds = new ArrayList<ItemStack>();
 			CodingTool.excavate((ServerWorld) world, this, getBlockPos(), droppeds);
 			for (int i = 0; i < droppeds.size(); i++) {
 				droppeds.set(i, inventory.addStack(droppeds.get(i)));
 			}
-			CodingTool.drop((ServerWorld) world, getPos(), droppeds);
 		}
 	}
 

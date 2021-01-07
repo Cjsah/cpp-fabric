@@ -311,25 +311,26 @@ public class CodingTool {
 		Block block = blockState.getBlock();
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		ItemStack toolStack = entity.getMainHandStack();
-//		block.onBreak(world, pos, blockState, player);
-//		block.onBroken(world, pos, blockState);
-		boolean b = true;
-		if (entity instanceof ServerPlayerEntity) {
-			ServerPlayerEntity player = (ServerPlayerEntity) entity;
-			if (b = !player.isCreative()) {
-				player.incrementStat(Stats.MINED.getOrCreateStat(block));
-				toolStack.postMine(world, blockState, pos, player);
+		if (canHarvest(toolStack, blockState, world, pos)) {
+			boolean b = true;
+			if (entity instanceof ServerPlayerEntity) {
+				ServerPlayerEntity player = (ServerPlayerEntity) entity;
+				if (b = !player.isCreative()) {
+					player.incrementStat(Stats.MINED.getOrCreateStat(block));
+					toolStack.postMine(world, blockState, pos, player);
+				}
+			} else {
+				if (blockState.getHardness(world, pos) != 0)
+					toolStack.damage(1, world.random, null);
 			}
-		} else {
-			toolStack.damage(1, world.random, null);
-		}
-		if (b) {
-			block.onStacksDropped(blockState, world, pos, toolStack);
-			if (droppeds != null) {
-				droppeds.addAll(Block.getDroppedStacks(blockState, world, pos, blockEntity, entity, toolStack));
+			if (b) {
+				block.onStacksDropped(blockState, world, pos, toolStack);
+				if (droppeds != null) {
+					droppeds.addAll(Block.getDroppedStacks(blockState, world, pos, blockEntity, entity, toolStack));
+				}
 			}
+			world.breakBlock(pos, false, entity);
 		}
-		world.breakBlock(pos, false, entity);
 	}
 
 	/**
@@ -346,30 +347,76 @@ public class CodingTool {
 		}
 	}
 
+	/**
+	 * 掉落物品
+	 * 
+	 * @param world  世界
+	 * @param pos    位置
+	 * @param stacks 被掉落的物品
+	 */
 	public static void drop(World world, Vec3d pos, ItemStack... stacks) {
 		drop(world, pos, Arrays.asList(stacks));
 	}
-	public static void drop(World world, Vec3d pos, List<ItemStack> list) {
-		for (ItemStack stack : list) {
+
+	/**
+	 * 掉落物品
+	 * 
+	 * @param world  世界
+	 * @param pos    位置
+	 * @param stacks 被掉落的物品
+	 */
+	public static void drop(World world, Vec3d pos, List<ItemStack> stacks) {
+		for (ItemStack stack : stacks) {
 			ItemEntity itemEntity = new ItemEntity(world, pos.x, pos.y, pos.z, stack);
 			itemEntity.setToDefaultPickupDelay();
 			world.spawnEntity(itemEntity);
 		}
 	}
 
+	/**
+	 * 在物品栏间移动物品
+	 * 
+	 * @param source 源物品栏
+	 * @param target 目标物品栏
+	 */
 	public static void transfer(Inventory source, Inventory target) {
 		for (int i = 0; i < source.size(); i++) {
 			ItemStack stack1 = source.getStack(i);
-			if (stack1.isEmpty())
-				continue;
-			for (int j = 0; j < target.size(); j++) {
+			for (int j = 0; j < target.size() && !stack1.isEmpty(); j++) {
 				ItemStack stack2 = target.getStack(j);
-				if (ItemStack.areItemsEqual(stack1, stack2) && ItemStack.areTagsEqual(stack1, stack2)) {
-					int c = stack2.getMaxCount() - stack1.getCount() - stack2.getCount();
+				if (stack2.isEmpty()) {
+					target.setStack(j, stack1.copy());
+					stack1.decrement(stack1.getCount());
+				} else if (ItemStack.areItemsEqual(stack1, stack2) && ItemStack.areTagsEqual(stack1, stack2)) {
+					int c = stack1.getMaxCount() - stack1.getCount() - stack2.getCount();
 					stack2.increment(c);
 					stack1.decrement(c);
 				}
 			}
 		}
+	}
+
+	/**
+	 * 测试工具能否挖掘方块，但不考虑基岩之类的把硬度设为{@code -1}的方块
+	 * 
+	 * @param stack 工具
+	 * @param state 方块
+	 * @return
+	 */
+	public static boolean canHarvest(ItemStack stack, BlockState state) {
+		return (!state.isToolRequired() || stack.isSuitableFor(state));
+	}
+
+	/**
+	 * 测试工具能否挖掘方块，考虑基岩之类的把硬度设为{@code -1}的方块
+	 * 
+	 * @param stack 工具
+	 * @param state 方块
+	 * @param world 世界
+	 * @param pos   位置
+	 * @return
+	 */
+	public static boolean canHarvest(ItemStack stack, BlockState state, World world, BlockPos pos) {
+		return canHarvest(stack, state) && state.getHardness(world, pos) >= 0;
 	}
 }

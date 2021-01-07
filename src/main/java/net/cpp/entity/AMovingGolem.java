@@ -14,9 +14,6 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 
 import net.cpp.api.CodingTool;
-import net.cpp.api.CppChat;
-import net.cpp.init.CppEntities;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
@@ -30,20 +27,21 @@ import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Arm;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public abstract class AMovingGolem extends LivingEntity {
+	/**
+	 * 控制方块
+	 */
 	public static final Set<Block> CONTROLS = ImmutableSet.of(RED_WOOL, YELLOW_WOOL, BLUE_WOOL, GREEN_WOOL, CYAN_WOOL, MAGENTA_WOOL, WHITE_WOOL, Blocks.CHEST, Blocks.TRAPPED_CHEST);
 	protected ItemStack mainHandStack = ItemStack.EMPTY;
 	protected Arm mainArm = Arm.RIGHT;
@@ -51,13 +49,13 @@ public abstract class AMovingGolem extends LivingEntity {
 	protected SimpleInventory inventory = new SimpleInventory(27);
 	protected int continuousDisplacement;
 	protected int experience;
+	protected boolean killed;
 
 	public AMovingGolem(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
 		setNoGravity(true);
 		setInvulnerable(true);
 		noClip = true;
-
 	}
 
 	@Override
@@ -88,16 +86,20 @@ public abstract class AMovingGolem extends LivingEntity {
 		work();
 		teleport(getPos().x + movingDirection.getOffsetX(), getPos().y + movingDirection.getOffsetY(), getPos().z + movingDirection.getOffsetZ());
 		continuousDisplacement++;
-//		System.out.println(continuousDisplacement);
 		if (experience >= 9) {
 			experience -= 9;
 			inventory.addStack(Items.EXPERIENCE_BOTTLE.getDefaultStack());
 		}
 		if (continuousDisplacement > 64 && !world.isClient)
-			kill();
+			killed = true;
 		super.tick();
+		if (killed)
+			kill();
 	}
 
+	/**
+	 * 对{@link #CONTROLS}里面方块的反应
+	 */
 	protected void reactBlock() {
 		Block block = getBlockState().getBlock();
 		if (block == RED_WOOL)
@@ -113,7 +115,7 @@ public abstract class AMovingGolem extends LivingEntity {
 		else if (block == MAGENTA_WOOL)
 			setMovingDirection(Direction.DOWN);
 		else if (block == WHITE_WOOL && !world.isClient)
-			kill();
+			killed = true;
 		else if (block instanceof TrappedChestBlock)
 			CodingTool.transfer((TrappedChestBlockEntity) world.getBlockEntity(getBlockPos()), inventory);
 		else if (block instanceof ChestBlock)
@@ -121,8 +123,14 @@ public abstract class AMovingGolem extends LivingEntity {
 
 	}
 
+	/**
+	 * 针对当前方块的操作
+	 */
 	public abstract void work();
 
+	/**
+	 * 捡起物品和经验球
+	 */
 	protected void pickup() {
 		for (ItemEntity itemEntity : world.getEntitiesByClass(ItemEntity.class, new Box(getPos(), getPos()).expand(1), item -> true)) {
 			itemEntity.setStack(inventory.addStack(itemEntity.getStack()));
@@ -183,7 +191,6 @@ public abstract class AMovingGolem extends LivingEntity {
 			ExperienceOrbEntity.spawn((ServerWorld) world, getPos(), experience);
 		}
 		discard();
-//		remove(RemovalReason.DISCARDED);
 	}
 
 	public void setMovingDirection(Direction movingDirection) {
