@@ -47,6 +47,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class IndustriousHand extends Item implements ITickableInItemFrame {
@@ -67,7 +68,8 @@ public class IndustriousHand extends Item implements ITickableInItemFrame {
 
 	@Override
 	public boolean tick(ItemFrameEntity itemFrameEntity) {
-		BlockPos pos2 = new BlockPos(ITickableInItemFrame.getPos(itemFrameEntity));
+		Vec3d pos1 = ITickableInItemFrame.getPos(itemFrameEntity);
+		BlockPos pos2 = new BlockPos(pos1);
 		World world = itemFrameEntity.world;
 		List<ItemEntity> boneMeals = world.getEntitiesByClass(ItemEntity.class, new Box(pos2, pos2).expand(2), itemEntity -> itemEntity.getStack().isOf(Items.BONE_MEAL));
 		if (!boneMeals.isEmpty()) {
@@ -77,7 +79,7 @@ public class IndustriousHand extends Item implements ITickableInItemFrame {
 			case 0:
 				if (!BoneMealItem.useOnFertilizable(boneMeals.get(0).getStack(), world, pos2)) {
 					if (block instanceof SweetBerryBushBlock) {
-						((SweetBerryBushBlock) block).onUse(world.getBlockState(pos2), world, pos2, null, Hand.MAIN_HAND, new BlockHitResult(itemFrameEntity.getPos().add(0, 2, 0), Direction.DOWN, pos2, false));
+						((SweetBerryBushBlock) block).onUse(world.getBlockState(pos2), world, pos2, null, Hand.MAIN_HAND, new BlockHitResult(pos1, Direction.DOWN, pos2, false));
 						tick(itemFrameEntity);
 					} else {
 						List<ItemStack> droppeds = Block.getDroppedStacks(world.getBlockState(pos2), (ServerWorld) world, pos2, world.getBlockEntity(pos2));

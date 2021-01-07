@@ -9,6 +9,7 @@ import static net.minecraft.block.Blocks.WHITE_WOOL;
 import static net.minecraft.block.Blocks.YELLOW_WOOL;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
@@ -27,6 +28,7 @@ import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -38,52 +40,32 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public abstract class AMovingGolem extends LivingEntity {
+public abstract class AMovingGolemEntity extends AGolemEntity {
 	/**
 	 * 控制方块
 	 */
 	public static final Set<Block> CONTROLS = ImmutableSet.of(RED_WOOL, YELLOW_WOOL, BLUE_WOOL, GREEN_WOOL, CYAN_WOOL, MAGENTA_WOOL, WHITE_WOOL, Blocks.CHEST, Blocks.TRAPPED_CHEST);
-	protected ItemStack mainHandStack = ItemStack.EMPTY;
-	protected Arm mainArm = Arm.RIGHT;
+
 	protected Direction movingDirection = Direction.EAST;
 	protected SimpleInventory inventory = new SimpleInventory(27);
 	protected int continuousDisplacement;
 	protected int experience;
 	protected boolean killed;
 
-	public AMovingGolem(EntityType<? extends LivingEntity> entityType, World world) {
+	public AMovingGolemEntity(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
 		setNoGravity(true);
 		setInvulnerable(true);
 		noClip = true;
 	}
 
-	@Override
-	public Iterable<ItemStack> getArmorItems() {
-		return Collections.emptyList();
-	}
 
-	@Override
-	public ItemStack getEquippedStack(EquipmentSlot slot) {
-		return slot == EquipmentSlot.MAINHAND ? mainHandStack : ItemStack.EMPTY;
-	}
-
-	@Override
-	public void equipStack(EquipmentSlot slot, ItemStack stack) {
-		if (slot == EquipmentSlot.MAINHAND)
-			mainHandStack = stack;
-	}
-
-	@Override
-	public Arm getMainArm() {
-		return mainArm;
-	}
 
 	@Override
 	public void tick() {
 		reactBlock();
-		pickup();
 		work();
+		pickup();
 		teleport(getPos().x + movingDirection.getOffsetX(), getPos().y + movingDirection.getOffsetY(), getPos().z + movingDirection.getOffsetZ());
 		continuousDisplacement++;
 		if (experience >= 9) {
@@ -124,11 +106,6 @@ public abstract class AMovingGolem extends LivingEntity {
 	}
 
 	/**
-	 * 针对当前方块的操作
-	 */
-	public abstract void work();
-
-	/**
 	 * 捡起物品和经验球
 	 */
 	protected void pickup() {
@@ -144,23 +121,20 @@ public abstract class AMovingGolem extends LivingEntity {
 
 	@Override
 	public void fromTag(CompoundTag tag) {
-		mainHandStack = ItemStack.fromTag(tag.getCompound("mainHandStack"));
-		mainArm = tag.getBoolean("rightArm") ? Arm.RIGHT : Arm.LEFT;
+		continuousDisplacement = tag.getInt("continuousDisplacement");
+		experience = tag.getInt("experience");
+		CodingTool.inventoryFromTag(inventory, tag);
 		Vec3d rotation = getRotationVector();
 		movingDirection = Direction.getFacing(rotation.x, rotation.y, rotation.z);
-		experience = tag.getInt("experience");
 		super.fromTag(tag);
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.put("mainHandStack", mainHandStack.toTag(new CompoundTag()));
+		tag.putInt("continuousDisplacement", continuousDisplacement);
+		tag.putInt("experience", experience);
+		CodingTool.inventoryToTag(inventory, tag);
 		return super.toTag(tag);
-	}
-
-	protected void setFacing(Direction direction) {
-		movingDirection = direction;
-		setRotation(direction.asRotation(), -direction.getOffsetY() * 90);
 	}
 
 	@Override
@@ -197,6 +171,7 @@ public abstract class AMovingGolem extends LivingEntity {
 		if (this.movingDirection != movingDirection)
 			continuousDisplacement = 0;
 		this.movingDirection = movingDirection;
+		setRotation(movingDirection.asRotation(), -movingDirection.getOffsetY() * 90);
 	}
 
 	@Override
@@ -206,5 +181,12 @@ public abstract class AMovingGolem extends LivingEntity {
 
 	public void setMainHandStack(ItemStack mainHandStack) {
 		this.mainHandStack = mainHandStack;
+	}
+	
+	protected void listMerge(List<ItemStack> droppeds) {
+		for (int i = 0; i < droppeds.size(); i++) {
+			droppeds.set(i, inventory.addStack(droppeds.get(i)));
+		}
+		CodingTool.drop(world, getPos(), droppeds);
 	}
 }

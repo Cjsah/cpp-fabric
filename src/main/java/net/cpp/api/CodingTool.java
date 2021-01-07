@@ -20,6 +20,7 @@ import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,6 +35,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -404,7 +406,7 @@ public class CodingTool {
 	 * @return
 	 */
 	public static boolean canHarvest(ItemStack stack, BlockState state) {
-		return (!state.isToolRequired() || stack.isSuitableFor(state));
+		return !state.isToolRequired() || stack.isSuitableFor(state);
 	}
 
 	/**
@@ -417,6 +419,24 @@ public class CodingTool {
 	 * @return
 	 */
 	public static boolean canHarvest(ItemStack stack, BlockState state, World world, BlockPos pos) {
+//		System.out.println(state.getBlock() + ": " + state.getHardness(world, pos));
 		return canHarvest(stack, state) && state.getHardness(world, pos) >= 0;
 	}
+
+	public static void inventoryToTag(Inventory inventory, CompoundTag tag) {
+		DefaultedList<ItemStack> stacks = DefaultedList.ofSize(inventory.size(), ItemStack.EMPTY);
+		for (int i = 0; i < stacks.size(); i++) {
+			stacks.set(i, inventory.getStack(i));
+		}
+		Inventories.toTag(tag, stacks);
+	}
+
+	public static void inventoryFromTag(Inventory inventory, CompoundTag tag) {
+		DefaultedList<ItemStack> stacks = DefaultedList.ofSize(inventory.size(), ItemStack.EMPTY);
+		Inventories.fromTag(tag, stacks);
+		for (int i = 0; i < inventory.size(); i++) {
+			inventory.setStack(i, stacks.get(i));
+		}
+	}
+
 }

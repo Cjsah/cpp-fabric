@@ -1,13 +1,5 @@
 package net.cpp;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.common.jimfs.File;
-
-import net.cpp.entity.render.GolemMinerModel;
 import net.cpp.entity.render.GolemMinerRenderer;
 import net.cpp.gui.screen.AllInOneMachineScreen;
 import net.cpp.gui.screen.BeaconEnhancerScreen;
@@ -27,12 +19,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CraftingScreen;
-import net.minecraft.client.model.TexturedModelData;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
-import net.minecraft.client.render.entity.model.EntityModelLoader;
-import net.minecraft.client.util.math.Dilation;
 
 @Environment(EnvType.CLIENT)
 public class CraftingppClient implements ClientModInitializer {

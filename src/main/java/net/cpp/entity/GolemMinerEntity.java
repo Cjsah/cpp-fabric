@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 
-public class GolemMinerEntity extends AMovingGolem {
+public class GolemMinerEntity extends AMovingGolemEntity {
 
 	public GolemMinerEntity(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
@@ -20,12 +20,10 @@ public class GolemMinerEntity extends AMovingGolem {
 	@Override
 	public void work() {
 		BlockState blockState = getBlockState();
-		if (!world.isClient && !CONTROLS.contains(blockState.getBlock()) && CodingTool.canHarvest(getMainHandStack(), blockState) && blockState.getHardness(world, getBlockPos()) >= 0) {
+		if (!world.isClient && !CONTROLS.contains(blockState.getBlock()) && CodingTool.canHarvest(getMainHandStack(), blockState, world, getBlockPos())) {
 			List<ItemStack> droppeds = new ArrayList<ItemStack>();
 			CodingTool.excavate((ServerWorld) world, this, getBlockPos(), droppeds);
-			for (int i = 0; i < droppeds.size(); i++) {
-				droppeds.set(i, inventory.addStack(droppeds.get(i)));
-			}
+			listMerge(droppeds);
 		}
 	}
 
