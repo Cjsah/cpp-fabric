@@ -17,14 +17,14 @@ import com.google.gson.JsonObject;
 import net.fabricmc.loader.api.FabricLoader;
 
 
-public class CraftingppConfig {
+public class CppConfig {
     private static final File JSON_PATH = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Craftingpp");
 
     private static final Logger logger = LogManager.getLogger("Craftingpp");
 
     public static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
 
-    public CraftingppConfig() {
+    public CppConfig() {
         if (!JSON_PATH.isDirectory() && !JSON_PATH.mkdirs()) {
             logger.error("Failed to create config dir");
         }
