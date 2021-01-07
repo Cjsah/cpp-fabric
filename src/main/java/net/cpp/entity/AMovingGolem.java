@@ -14,29 +14,37 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 
 import net.cpp.api.CodingTool;
+import net.cpp.api.CppChat;
 import net.cpp.init.CppEntities;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.TrappedChestBlock;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.TrappedChestBlockEntity;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Arm;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public abstract class AMovingGolem extends LivingEntity {
-	public static final Set<Block> CONTROLS = ImmutableSet.of(RED_WOOL, YELLOW_WOOL, BLUE_WOOL, GREEN_WOOL, CYAN_WOOL, MAGENTA_WOOL, WHITE_WOOL);
+	public static final Set<Block> CONTROLS = ImmutableSet.of(RED_WOOL, YELLOW_WOOL, BLUE_WOOL, GREEN_WOOL, CYAN_WOOL, MAGENTA_WOOL, WHITE_WOOL, Blocks.CHEST, Blocks.TRAPPED_CHEST);
 	protected ItemStack mainHandStack = ItemStack.EMPTY;
 	protected Arm mainArm = Arm.RIGHT;
 	protected Direction movingDirection = Direction.EAST;
@@ -46,6 +54,10 @@ public abstract class AMovingGolem extends LivingEntity {
 
 	public AMovingGolem(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
+		setNoGravity(true);
+		setInvulnerable(true);
+		noClip = true;
+
 	}
 
 	@Override
@@ -71,28 +83,36 @@ public abstract class AMovingGolem extends LivingEntity {
 
 	@Override
 	public void tick() {
-		super.tick();
+		reactBlock();
 		pickup();
 		work();
-		reactBlock();
 		teleport(getPos().x + movingDirection.getOffsetX(), getPos().y + movingDirection.getOffsetY(), getPos().z + movingDirection.getOffsetZ());
+		continuousDisplacement++;
+//		System.out.println(continuousDisplacement);
+		if (experience >= 9) {
+			experience -= 9;
+			inventory.addStack(Items.EXPERIENCE_BOTTLE.getDefaultStack());
+		}
+		if (continuousDisplacement > 64 && !world.isClient)
+			kill();
+		super.tick();
 	}
 
 	protected void reactBlock() {
 		Block block = getBlockState().getBlock();
 		if (block == RED_WOOL)
-			movingDirection = Direction.EAST;
+			setMovingDirection(Direction.EAST);
 		else if (block == YELLOW_WOOL)
-			movingDirection = Direction.SOUTH;
+			setMovingDirection(Direction.SOUTH);
 		else if (block == BLUE_WOOL)
-			movingDirection = Direction.WEST;
+			setMovingDirection(Direction.WEST);
 		else if (block == GREEN_WOOL)
-			movingDirection = Direction.NORTH;
+			setMovingDirection(Direction.NORTH);
 		else if (block == CYAN_WOOL)
-			movingDirection = Direction.UP;
+			setMovingDirection(Direction.UP);
 		else if (block == MAGENTA_WOOL)
-			movingDirection = Direction.DOWN;
-		else if (block == WHITE_WOOL)
+			setMovingDirection(Direction.DOWN);
+		else if (block == WHITE_WOOL && !world.isClient)
 			kill();
 		else if (block instanceof TrappedChestBlock)
 			CodingTool.transfer((TrappedChestBlockEntity) world.getBlockEntity(getBlockPos()), inventory);
@@ -105,10 +125,12 @@ public abstract class AMovingGolem extends LivingEntity {
 
 	protected void pickup() {
 		for (ItemEntity itemEntity : world.getEntitiesByClass(ItemEntity.class, new Box(getPos(), getPos()).expand(1), item -> true)) {
-			inventory.addStack(itemEntity.getStack());
+			itemEntity.setStack(inventory.addStack(itemEntity.getStack()));
+			System.out.println(1);
 		}
 		for (ExperienceOrbEntity orb : world.getEntitiesByClass(ExperienceOrbEntity.class, new Box(getPos(), getPos()).expand(1), orb -> true)) {
 			experience += orb.getExperienceAmount();
+			orb.discard();
 		}
 	}
 
@@ -121,13 +143,61 @@ public abstract class AMovingGolem extends LivingEntity {
 		experience = tag.getInt("experience");
 		super.fromTag(tag);
 	}
+
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		tag.put("mainHandStack", mainHandStack.toTag(new CompoundTag()));
 		return super.toTag(tag);
 	}
+
 	protected void setFacing(Direction direction) {
 		movingDirection = direction;
 		setRotation(direction.asRotation(), -direction.getOffsetY() * 90);
+	}
+
+	@Override
+	public double getHeightOffset() {
+		return 0;
+	}
+
+	@Override
+	public PistonBehavior getPistonBehavior() {
+		return PistonBehavior.IGNORE;
+	}
+
+	@Override
+	public boolean collides() {
+		return false;
+	}
+
+	@Override
+	public boolean damage(DamageSource source, float amount) {
+		return false;
+	}
+
+	@Override
+	public void kill() {
+		CodingTool.drop(world, getPos(), inventory.clearToList());
+		CodingTool.drop(world, getPos(), mainHandStack);
+		if (!world.isClient) {
+			ExperienceOrbEntity.spawn((ServerWorld) world, getPos(), experience);
+		}
+		discard();
+//		remove(RemovalReason.DISCARDED);
+	}
+
+	public void setMovingDirection(Direction movingDirection) {
+		if (this.movingDirection != movingDirection)
+			continuousDisplacement = 0;
+		this.movingDirection = movingDirection;
+	}
+
+	@Override
+	public void tickMovement() {
+		super.tickMovement();
+	}
+
+	public void setMainHandStack(ItemStack mainHandStack) {
+		this.mainHandStack = mainHandStack;
 	}
 }

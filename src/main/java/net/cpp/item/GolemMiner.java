@@ -1,13 +1,10 @@
 package net.cpp.item;
 
+import net.cpp.entity.GolemMinerEntity;
 import net.cpp.init.CppEntities;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ArmorStandItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -47,11 +44,11 @@ public class GolemMiner extends Item {
 	         }) && world.getOtherEntities((Entity)null, box).isEmpty()) {
 	            if (world instanceof ServerWorld) {
 	               ServerWorld serverWorld = (ServerWorld)world;
-	               net.cpp.entity.GolemMiner entity = (net.cpp.entity.GolemMiner)CppEntities.GOLEM_MINER.create(serverWorld, itemStack.getTag(), (Text)null, context.getPlayer(), blockPos, SpawnReason.SPAWN_EGG, true, true);
+	               GolemMinerEntity entity = (GolemMinerEntity)CppEntities.GOLEM_MINER.create(serverWorld, itemStack.getTag(), (Text)null, context.getPlayer(), blockPos, SpawnReason.SPAWN_EGG, true, true);
 	               if (entity == null) {
 	                  return ActionResult.FAIL;
 	               }
-
+	               entity.setMainHandStack(ItemStack.fromTag(itemStack.getSubTag("tool")));
 	               float f = (float)MathHelper.floor((MathHelper.wrapDegrees(context.getPlayerYaw() - 180.0F) + 22.5F) / 45.0F) * 45.0F;
 	               entity.refreshPositionAndAngles(entity.getX(), entity.getY(), entity.getZ(), f, 0.0F);
 	               

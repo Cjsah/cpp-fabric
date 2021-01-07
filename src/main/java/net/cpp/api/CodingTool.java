@@ -2,6 +2,7 @@ package net.cpp.api;
 
 import static net.cpp.api.CppChat.say;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -345,7 +346,10 @@ public class CodingTool {
 		}
 	}
 
-	public static void drop(ServerWorld world, Vec3d pos, List<ItemStack> list) {
+	public static void drop(World world, Vec3d pos, ItemStack... stacks) {
+		drop(world, pos, Arrays.asList(stacks));
+	}
+	public static void drop(World world, Vec3d pos, List<ItemStack> list) {
 		for (ItemStack stack : list) {
 			ItemEntity itemEntity = new ItemEntity(world, pos.x, pos.y, pos.z, stack);
 			itemEntity.setToDefaultPickupDelay();
