@@ -1,6 +1,6 @@
 package net.cpp.init;
 
-import net.cpp.entity.GolemMiner;
+import net.cpp.entity.GolemMinerEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -9,7 +9,7 @@ import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.registry.Registry;
 
 public final class CppEntities {
-	public static final EntityType<GolemMiner> GOLEM_MINER = register("moving_golem", GolemMiner::new, SpawnGroup.MISC);
+	public static final EntityType<GolemMinerEntity> GOLEM_MINER = register("golem_miner", GolemMinerEntity::new, SpawnGroup.MISC);
 
 	private CppEntities() {
 	}
