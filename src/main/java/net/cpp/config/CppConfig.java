@@ -1,4 +1,4 @@
-package net.cpp;
+package net.cpp.config;
 
 import java.io.BufferedReader;
 import java.io.File;
