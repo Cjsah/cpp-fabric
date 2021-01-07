@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -34,6 +35,7 @@ public class CompressedItem extends Item {
 		tooltip.add(new TranslatableText("tooltip.cpp.multiple", tag.getByte("multiple")).formatted(Formatting.DARK_AQUA));
 		List<Text> itemTooltip = ItemStack.fromTag(tag.getCompound("item")).getTooltip(null, context);
 		tooltip.addAll(itemTooltip);
+		tooltip.add(LiteralText.EMPTY);
 	}
 
 	@Override

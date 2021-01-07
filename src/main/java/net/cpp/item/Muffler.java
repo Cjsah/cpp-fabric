@@ -20,8 +20,6 @@ public class Muffler extends Item {
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-//		user.addVelocity(0, 1, 0);
-		
 		ItemStack stack = user.getStackInHand(hand);
 		user.incrementStat(Stats.USED.getOrCreateStat(this));
 		if (!world.isClient) {

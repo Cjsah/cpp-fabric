@@ -109,7 +109,7 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 	 * @param direction 方向
 	 * @return 已满
 	 */
-	public boolean isInventoryFull(Inventory inv, Direction direction) {
+	public static boolean isInventoryFull(Inventory inv, Direction direction) {
 		return getAvailableSlots(inv, direction).allMatch((i) -> {
 			ItemStack itemStack = inv.getStack(i);
 			return itemStack.getCount() >= itemStack.getMaxCount();
@@ -126,7 +126,7 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 		Inventory inventory = getOutputInventory();
 		if (inventory != null) {
 			Direction direction = getOutputDir();
-			if (!this.isInventoryFull(inventory, direction)) {
+			if (!isInventoryFull(inventory, direction)) {
 				setStack(index, transfer(this, inventory, getStack(index), direction));
 				if (getStack(index).isEmpty()) {
 					inventory.markDirty();
@@ -147,7 +147,7 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 		Inventory inventory = getOutputInventory();
 		if (inventory != null) {
 			Direction direction = getOutputDir();
-			if (!this.isInventoryFull(inventory, direction)) {
+			if (!isInventoryFull(inventory, direction)) {
 				transfer(this, inventory, outputStack, direction);
 				if (outputStack.isEmpty()) {
 					inventory.markDirty();
@@ -406,10 +406,6 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 		} else {
 			return ItemStack.areTagsEqual(first, second);
 		}
-	}
-
-	public static void tick(World world, BlockPos pos, BlockState state, AOutputMachineBlockEntity blockEntity) {
-
 	}
 
 	public abstract PropertyDelegate getPropertyDelegate();
