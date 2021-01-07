@@ -1,10 +1,9 @@
-package net.cpp;
+package net.cpp.config;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonWriter;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,17 +15,25 @@ import java.io.FileWriter;
 import java.io.BufferedReader;
 
 
-public class CraftingppConfig {
+public class CppConfig {
+    public static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
+
     private static final File JSON_PATH = new File(FabricLoader.getInstance().getConfigDir().toFile(), "Craftingpp");
 
     private static final Logger logger = LogManager.getLogger("Craftingpp");
 
-    public static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
+    private static final JsonObject JSON = new JsonObject();
 
-    public CraftingppConfig() {
+    public CppConfig() {
         if (!JSON_PATH.isDirectory() && !JSON_PATH.mkdirs()) {
             logger.error("Failed to create config dir");
         }
+//        init();
+    }
+
+    private void init() {
+        File[] files = JSON_PATH.listFiles();
+
     }
 
     public JsonObject getConfig(String configName){
