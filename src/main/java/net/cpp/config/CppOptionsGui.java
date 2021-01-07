@@ -24,7 +24,6 @@ import static net.minecraft.client.gui.widget.AbstractButtonWidget.WIDGETS_LOCAT
 public class CppOptionsGui extends Screen implements Supplier<Screen> {
 
     private final Screen screen;
-    private final String modName;
 //    private final ModConfigurationHandler handler;
 //    private final List<String> options;
     private final Logger LOGGER;
@@ -46,11 +45,9 @@ public class CppOptionsGui extends Screen implements Supplier<Screen> {
     private static final Text trueText = new TranslatableText("de.guntram.mcmod.fabrictools.true").formatted(Formatting.GREEN);
     private static final Text falseText = new TranslatableText("de.guntram.mcmod.fabrictools.false").formatted(Formatting.RED);
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     protected CppOptionsGui(Screen screen, String modName) {
         super(new LiteralText(modName));
         this.screen = screen;
-        this.modName = modName;
         this.screenTitle = modName + "Configuration";
         this.LOGGER = Craftingpp.logger;
 

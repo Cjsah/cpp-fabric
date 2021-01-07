@@ -23,9 +23,9 @@ public class CppConfig {
 
     private static final Logger logger = LogManager.getLogger(Craftingpp.MOD_ID1);
 
-    public static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
+    private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
 
-    public static final JsonObject JSON = new JsonObject();
+    private static final JsonObject JSON = new JsonObject();
 
     public CppConfig() {
         if (!JSON_PATH.isDirectory() && !JSON_PATH.mkdirs()) {
@@ -52,9 +52,6 @@ public class CppConfig {
     }
 
     public JsonObject getConfig(String configName){
-        System.out.println(JSON);
-        System.out.println(configName);
-        System.out.println(JSON.get(configName));
         return JSON.get(configName).getAsJsonObject();
     }
 

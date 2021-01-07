@@ -44,7 +44,7 @@ public final class CppBlocks {
 	}
 
 	private static Block registerMachine(String id, Block block) {
-		Block regBlock = Registry.register(Registry.BLOCK, new Identifier(Craftingpp.MOD_ID3, id) + id, block);
+		Block regBlock = Registry.register(Registry.BLOCK, new Identifier(Craftingpp.MOD_ID3, id), block);
 		BlockItem item = Registry.register(Registry.ITEM, Registry.BLOCK.getId(regBlock), new BlockItem(regBlock, new Item.Settings().group(CPP_GROUP_MACHINE)));
 		item.appendBlocks(Item.BLOCK_ITEMS, item);
 		return regBlock;
