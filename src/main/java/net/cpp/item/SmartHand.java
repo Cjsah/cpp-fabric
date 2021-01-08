@@ -26,7 +26,6 @@ public class SmartHand extends Item implements ITickableInItemFrame {
 		Vec3d pos = itemFrameEntity.getPos();
 		Vec3d fishingPos = ITickableInItemFrame.getPos(itemFrameEntity);
 		if (world.isWater(new BlockPos(fishingPos))) {
-//			world.addParticle(ParticleTypes.BUBBLE, fishingPos.x, fishingPos.y, fishingPos.z, 0, 0, 0);
 			int time = itemFrameEntity.getHeldItemStack().getOrCreateTag().getInt("time") + 1;
 			if (time % 100 == 0) {
 				double chance = Math.pow((time - 100.) / 800, 1);

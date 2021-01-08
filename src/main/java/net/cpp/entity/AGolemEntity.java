@@ -2,21 +2,27 @@ package net.cpp.entity;
 
 import java.util.Collections;
 
+import net.cpp.api.CodingTool;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Arm;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public abstract class AGolemEntity extends LivingEntity {
 	protected ItemStack mainHandStack = ItemStack.EMPTY;
+	protected boolean killed;
 
 	public AGolemEntity(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
+		setNoGravity(true);
+		setInvulnerable(true);
+		noClip = true;
 	}
 
 	@Override
@@ -39,6 +45,7 @@ public abstract class AGolemEntity extends LivingEntity {
 	public Arm getMainArm() {
 		return Arm.RIGHT;
 	}
+
 	@Override
 	public void fromTag(CompoundTag tag) {
 		mainHandStack = ItemStack.fromTag(tag.getCompound("mainHandStack"));
@@ -50,6 +57,76 @@ public abstract class AGolemEntity extends LivingEntity {
 		tag.put("mainHandStack", mainHandStack.toTag(new CompoundTag()));
 		return super.toTag(tag);
 	}
+
 	public abstract void work();
 
+	public void setMainHandStack(ItemStack mainHandStack) {
+		this.mainHandStack = mainHandStack;
+	}
+
+	protected void reactBlock() {
+		if (world.getBlockState(getBlockPos().down()).isAir()) {
+			killed = true;
+		}
+	}
+
+	@Override
+	public void tick() {
+		reactBlock();
+		work();
+		super.tick();
+		if (killed) {
+			kill();
+		}
+	}
+
+	@Override
+	public double getHeightOffset() {
+		return 0;
+	}
+
+	@Override
+	public PistonBehavior getPistonBehavior() {
+		return PistonBehavior.IGNORE;
+	}
+
+	@Override
+	public boolean collides() {
+		return false;
+	}
+
+	@Override
+	public boolean damage(DamageSource source, float amount) {
+		return false;
+	}
+
+	@Override
+	public void kill() {
+		CodingTool.drop(world, getPos(), mainHandStack);
+		discard();
+	}
+
+	@Override
+	protected boolean isImmobile() {
+		return false;
+	}
+
+	@Override
+	public void tickMovement() {
+		if (this.isLogicalSideForUpdatingMovement()) {
+			this.bodyTrackingIncrements = 0;
+			this.updateTrackedPosition(this.getX(), this.getY(), this.getZ());
+		}
+		if (this.bodyTrackingIncrements > 0) {
+			double d = this.getX() + (this.serverX - this.getX()) / (double) this.bodyTrackingIncrements;
+			double e = this.getY() + (this.serverY - this.getY()) / (double) this.bodyTrackingIncrements;
+			double f = this.getZ() + (this.serverZ - this.getZ()) / (double) this.bodyTrackingIncrements;
+			double g = MathHelper.wrapDegrees(this.serverYaw - (double) this.yaw);
+			this.yaw = (float) ((double) this.yaw + g / (double) this.bodyTrackingIncrements);
+			this.pitch = (float) ((double) this.pitch + (this.serverPitch - (double) this.pitch) / (double) this.bodyTrackingIncrements);
+			--this.bodyTrackingIncrements;
+			this.updatePosition(d, e, f);
+			this.setRotation(this.yaw, this.pitch);
+		}
+	}
 }

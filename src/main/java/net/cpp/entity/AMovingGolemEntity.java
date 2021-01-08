@@ -8,7 +8,6 @@ import static net.minecraft.block.Blocks.RED_WOOL;
 import static net.minecraft.block.Blocks.WHITE_WOOL;
 import static net.minecraft.block.Blocks.YELLOW_WOOL;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -23,18 +22,15 @@ import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.TrappedChestBlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Arm;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -50,33 +46,19 @@ public abstract class AMovingGolemEntity extends AGolemEntity {
 	protected SimpleInventory inventory = new SimpleInventory(27);
 	protected int continuousDisplacement;
 	protected int experience;
-	protected boolean killed;
 
 	public AMovingGolemEntity(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
-		setNoGravity(true);
-		setInvulnerable(true);
-		noClip = true;
 	}
-
-
 
 	@Override
 	public void tick() {
-		reactBlock();
-		work();
 		pickup();
-		teleport(getPos().x + movingDirection.getOffsetX(), getPos().y + movingDirection.getOffsetY(), getPos().z + movingDirection.getOffsetZ());
-		continuousDisplacement++;
 		if (experience >= 9) {
 			experience -= 9;
 			inventory.addStack(Items.EXPERIENCE_BOTTLE.getDefaultStack());
 		}
-		if (continuousDisplacement > 64 && !world.isClient)
-			killed = true;
 		super.tick();
-		if (killed)
-			kill();
 	}
 
 	/**
@@ -138,33 +120,12 @@ public abstract class AMovingGolemEntity extends AGolemEntity {
 	}
 
 	@Override
-	public double getHeightOffset() {
-		return 0;
-	}
-
-	@Override
-	public PistonBehavior getPistonBehavior() {
-		return PistonBehavior.IGNORE;
-	}
-
-	@Override
-	public boolean collides() {
-		return false;
-	}
-
-	@Override
-	public boolean damage(DamageSource source, float amount) {
-		return false;
-	}
-
-	@Override
 	public void kill() {
 		CodingTool.drop(world, getPos(), inventory.clearToList());
-		CodingTool.drop(world, getPos(), mainHandStack);
 		if (!world.isClient) {
 			ExperienceOrbEntity.spawn((ServerWorld) world, getPos(), experience);
 		}
-		discard();
+		super.kill();
 	}
 
 	public void setMovingDirection(Direction movingDirection) {
@@ -177,12 +138,12 @@ public abstract class AMovingGolemEntity extends AGolemEntity {
 	@Override
 	public void tickMovement() {
 		super.tickMovement();
+		teleport(getPos().x + movingDirection.getOffsetX(), getPos().y + movingDirection.getOffsetY(), getPos().z + movingDirection.getOffsetZ());
+		continuousDisplacement++;
+		if (continuousDisplacement > 64 && !world.isClient)
+			killed = true;
 	}
 
-	public void setMainHandStack(ItemStack mainHandStack) {
-		this.mainHandStack = mainHandStack;
-	}
-	
 	protected void listMerge(List<ItemStack> droppeds) {
 		for (int i = 0; i < droppeds.size(); i++) {
 			droppeds.set(i, inventory.addStack(droppeds.get(i)));

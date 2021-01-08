@@ -1,6 +1,7 @@
 package net.cpp;
 
-import net.cpp.entity.render.GolemMinerRenderer;
+import net.cpp.entity.AGolemEntity;
+import net.cpp.entity.render.GolemRenderer;
 import net.cpp.gui.screen.AllInOneMachineScreen;
 import net.cpp.gui.screen.BeaconEnhancerScreen;
 import net.cpp.gui.screen.ColorPaletteScreen;
@@ -20,6 +21,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.minecraft.client.gui.screen.ingame.CraftingScreen;
+import net.minecraft.entity.EntityType;
 
 @Environment(EnvType.CLIENT)
 public class CraftingppClient implements ClientModInitializer {
@@ -40,10 +42,9 @@ public class CraftingppClient implements ClientModInitializer {
 		ScreenRegistry.register(CppScreenHandler.EMPTY_BOOKSHELF, EmptyBookshelfScreen::new);
 		ScreenRegistry.register(CppScreenHandler.COLOR_PALETTE, ColorPaletteScreen::new);
 
-		EntityRendererRegistry.INSTANCE.register(CppEntities.GOLEM_MINER, ctx -> {
-			return new GolemMinerRenderer(ctx);
-		});
-
+		for (EntityType<? extends AGolemEntity> type : CppEntities.GOLEMS) {
+			EntityRendererRegistry.INSTANCE.register(type, ctx -> new GolemRenderer(ctx, type));
+		}
 
 	}
 

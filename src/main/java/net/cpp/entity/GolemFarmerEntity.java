@@ -1,36 +1,41 @@
 package net.cpp.entity;
 
+import static net.minecraft.block.Blocks.BAMBOO;
+import static net.minecraft.block.Blocks.BROWN_MUSHROOM_BLOCK;
+import static net.minecraft.block.Blocks.MELON;
+import static net.minecraft.block.Blocks.MUSHROOM_STEM;
+import static net.minecraft.block.Blocks.NETHER_WART_BLOCK;
+import static net.minecraft.block.Blocks.PUMPKIN;
+import static net.minecraft.block.Blocks.RED_MUSHROOM_BLOCK;
+import static net.minecraft.block.Blocks.SHROOMLIGHT;
+import static net.minecraft.block.Blocks.SUGAR_CANE;
+import static net.minecraft.block.Blocks.WARPED_WART_BLOCK;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
-import static net.minecraft.block.Blocks.*;
+import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Streams;
 
 import net.cpp.api.CodingTool;
-import net.minecraft.block.BeetrootsBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CropBlock;
+import net.minecraft.block.NetherWartBlock;
 import net.minecraft.block.SweetBerryBushBlock;
-import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Hand;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
@@ -58,7 +63,7 @@ public class GolemFarmerEntity extends AMovingGolemEntity {
 					if (decrement(block.asItem()))
 						world.setBlockState(blockPos, block.getDefaultState());
 				}
-			} else if (block instanceof SweetBerryBushBlock && state.get(SweetBerryBushBlock.AGE) >= 3) {
+			} else if ((block instanceof SweetBerryBushBlock || block instanceof NetherWartBlock) && state.get(Properties.AGE_3) >= 3) {
 				CodingTool.excavate((ServerWorld) world, this, getBlockPos(), droppeds);
 				droppeds.get(0).decrement(1);
 				world.setBlockState(blockPos, block.getDefaultState());
@@ -67,7 +72,7 @@ public class GolemFarmerEntity extends AMovingGolemEntity {
 				CodingTool.excavate((ServerWorld) world, this, blockPos, droppeds);
 				listMerge(droppeds);
 				Block sapling = LOG_TO_SAPLING.get(block);
-				if (decrement(sapling.asItem()))
+				if (sapling.canPlaceAt(sapling.getDefaultState(), world, blockPos) && decrement(sapling.asItem()))
 					world.setBlockState(blockPos, sapling.getDefaultState());
 			} else if (HARVESTABLE.contains(block)) {
 				CodingTool.excavate((ServerWorld) world, this, blockPos, droppeds);
@@ -77,7 +82,6 @@ public class GolemFarmerEntity extends AMovingGolemEntity {
 	}
 
 	public static BlockState getHarvestedState(BlockState state) {
-
 		return Blocks.AIR.getDefaultState();
 	}
 

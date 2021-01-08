@@ -4,7 +4,14 @@
 
 package net.cpp.config;
 
+import static net.minecraft.client.gui.widget.AbstractButtonWidget.WIDGETS_LOCATION;
+
+import java.util.function.Supplier;
+
+import org.apache.logging.log4j.Logger;
+
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.cpp.Craftingpp;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
@@ -15,11 +22,6 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
-import org.apache.logging.log4j.Logger;
-
-import java.util.function.Supplier;
-
-import static net.minecraft.client.gui.widget.AbstractButtonWidget.WIDGETS_LOCATION;
 
 public class CppOptionsGui extends Screen implements Supplier<Screen> {
 
