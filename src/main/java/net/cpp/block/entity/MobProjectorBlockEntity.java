@@ -364,6 +364,7 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 		addRecipe(Items.SALMON, BONE, 32, EntityType.SALMON, 41);
 		addRecipe(Items.TROPICAL_FISH, BONE, 32, EntityType.TROPICAL_FISH, 42);
 		addRecipe(Items.PUFFERFISH, BONE, 32, EntityType.PUFFERFISH, 43);
+		addRecipe(Items.PUFFERFISH, SKELETON_SKULL, 32, EntityType.AXOLOTL, 44);
 	}
 
 	public static class Recipe {
