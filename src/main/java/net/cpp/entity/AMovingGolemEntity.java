@@ -20,12 +20,10 @@ import net.minecraft.block.ChestBlock;
 import net.minecraft.block.TrappedChestBlock;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.TrappedChestBlockEntity;
-import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -93,12 +91,8 @@ public abstract class AMovingGolemEntity extends AGolemEntity {
 	protected void pickup() {
 		for (ItemEntity itemEntity : world.getEntitiesByClass(ItemEntity.class, new Box(getPos(), getPos()).expand(1), item -> true)) {
 			itemEntity.setStack(inventory.addStack(itemEntity.getStack()));
-			System.out.println(1);
 		}
-		for (ExperienceOrbEntity orb : world.getEntitiesByClass(ExperienceOrbEntity.class, new Box(getPos(), getPos()).expand(1), orb -> true)) {
-			experience += orb.getExperienceAmount();
-			orb.discard();
-		}
+		experience += CodingTool.collectExpOrbs(world, getPos(), 1, false);
 	}
 
 	@Override

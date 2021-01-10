@@ -78,6 +78,7 @@ public class GolemFarmerEntity extends AMovingGolemEntity {
 				CodingTool.excavate((ServerWorld) world, this, blockPos, droppeds);
 				listMerge(droppeds);
 			}
+			experience=CodingTool.mend(mainHandStack, experience);
 		}
 	}
 
