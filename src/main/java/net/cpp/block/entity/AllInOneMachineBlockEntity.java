@@ -1,7 +1,6 @@
 package net.cpp.block.entity;
 
-import static net.cpp.init.CppBlocks.RARE_EARTH_GLASS;
-import static net.cpp.init.CppBlocks.REINFORCED_GLASS;
+import static net.cpp.init.CppBlocks.*;
 import static net.cpp.init.CppItems.*;
 import static net.minecraft.item.Items.*;
 
@@ -518,30 +517,30 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		}
 		Item[] fruits = new Item[] { APRICOT, BANANA, BLUEBERRY, CHERRY, CHINESE_DATE, COCONUT, GOLDEN_GRAPE, GRAPE, GRAPEFRUIT, HAWTHORN, LEMON, LONGAN, LOQUAT, LYCHEE, MANGO, ORANGE, PAYAPA, PEACH, PEAR, PERSIMMON, PLUM, POMEGRANATE, STRAWBERRY, TOMATO };
 		{
-			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, FRUIT_SAPLING, FERTILIZER);
+			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, FRUIT_SAPLING.asItem(), FERTILIZER);
 			RECIPES.put(c, Recipe.PLACE_TAKER);
 			List<Recipe> list = new ArrayList<>();
 			for (Item item : fruits)
-				list.add(new Recipe(Degree.ORDINARY, Degree.ORDINARY, FRUIT_SAPLING, FERTILIZER, new ItemStack(item, 2), new ItemStack(FRUIT_SAPLING), 0F, 4F, 2, 40));
+				list.add(new Recipe(Degree.ORDINARY, Degree.ORDINARY, FRUIT_SAPLING.asItem(), FERTILIZER, new ItemStack(item, 2), new ItemStack(FRUIT_SAPLING), 0F, 4F, 2, 40));
 			RANDOM_RECIPES.put(c, list);
 		}
 		{
-			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, ORE_SAPLING, FERTILIZER);
+			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, ORE_SAPLING.asItem(), FERTILIZER);
 			RECIPES.put(c, Recipe.PLACE_TAKER);
 			List<Recipe> list = new ArrayList<>();
 			for (Item item : oreRateMap.keySet())
-				list.add(new Recipe(Degree.ORDINARY, Degree.ORDINARY, ORE_SAPLING, FERTILIZER, new ItemStack(item, 2), new ItemStack(ORE_SAPLING), 0F, 4F, 2, 40));
+				list.add(new Recipe(Degree.ORDINARY, Degree.ORDINARY, ORE_SAPLING.asItem(), FERTILIZER, new ItemStack(item, 2), new ItemStack(ORE_SAPLING), 0F, 4F, 2, 40));
 			RANDOM_RECIPES.put(c, list);
 		}
 		{
-			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, WOOL_SAPLING, FERTILIZER);
+			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, WOOL_SAPLING.asItem(), FERTILIZER);
 			RECIPES.put(c, Recipe.PLACE_TAKER);
 			List<Recipe> list = new ArrayList<>();
 			for (Item item : new Item[] { WHITE_WOOL, ORANGE_WOOL, MAGENTA_WOOL, LIGHT_BLUE_WOOL, YELLOW_WOOL, LIME_WOOL, PINK_WOOL, GRAY_WOOL, LIGHT_GRAY_WOOL, CYAN_WOOL, PURPLE_WOOL, BLUE_WOOL, BROWN_WOOL, GREEN_WOOL, RED_WOOL, BLACK_WOOL })
-				list.add(new Recipe(Degree.ORDINARY, Degree.ORDINARY, WOOL_SAPLING, FERTILIZER, new ItemStack(item, 2), new ItemStack(WOOL_SAPLING), 0F, 4F, 2, 40));
+				list.add(new Recipe(Degree.ORDINARY, Degree.ORDINARY, WOOL_SAPLING.asItem(), FERTILIZER, new ItemStack(item, 2), new ItemStack(WOOL_SAPLING), 0F, 4F, 2, 40));
 			RANDOM_RECIPES.put(c, list);
 		}
-		addRecipe(Degree.ORDINARY, Degree.ORDINARY, SAKURA_SAPLING, FERTILIZER, new ItemStack(CHERRY), new ItemStack(SAKURA_SAPLING), 2F, 5F, 0F, 4F, 2, 40);
+		addRecipe(Degree.ORDINARY, Degree.ORDINARY, SAKURA_SAPLING.asItem(), FERTILIZER, new ItemStack(CHERRY), new ItemStack(SAKURA_SAPLING), 2F, 5F, 0F, 4F, 2, 40);
 		{
 			Item[] seeds = new Item[] { LYCORIS_RADIATA_SEED, TRIFOLIUM_SEED, BLACKTHORN_SEED, CATTAIL_SEED, MARIGOLD_SEED, HIBISCUS_SEED, HYACINTH_SEED, CALAMUS_SEED, WILD_LILIUM_SEED, BAUHINIA_SEED, FLUFFY_GRASS_SEED, GERBERA_SEED, ESPARTO_SEED, GLOW_FORSYTHIA_SEED, GLAZED_SHADE_SEED, STELERA_SEED, FORAGE_CRYSTAL_SEED, ISORCHID_SEED, BURNING_CHRYSANTHE_SEED, OXALIS_SEED }, plants = new Item[] { LYCORIS_RADIATA, TRIFOLIUM, BLACKTHORN, CATTAIL, MARIGOLD, HIBISCUS, HYACINTH, CALAMUS, WILD_LILIUM, BAUHINIA, FLUFFY_GRASS, GERBERA, ESPARTO, GLOW_FORSYTHIA, GLAZED_SHADE, STELERA, FORAGE_CRYSTAL, ISORCHID, BURNING_CHRYSANTHE, OXALIS };
 			for (int i = 0; i < seeds.length; i++) {

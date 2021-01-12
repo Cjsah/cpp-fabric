@@ -9,7 +9,6 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import io.netty.util.internal.IntegerHolder;
 import net.cpp.init.CppItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

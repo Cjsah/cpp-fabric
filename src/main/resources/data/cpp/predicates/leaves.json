@@ -1,0 +1,24 @@
+{
+	"condition": "alternative",
+	"terms": [
+		{
+			"condition": "match_tool",
+			"predicate": {
+				"item": "shears"
+			}
+		},
+		{
+			"condition": "match_tool",
+			"predicate": {
+				"enchantments": [
+					{
+						"enchantment": "silk_touch",
+						"levels": {
+							"min": 1
+						}
+					}
+				]
+			}
+		}
+	]
+}

@@ -1,17 +1,17 @@
 package net.cpp.block.entity;
 
-import static net.cpp.init.CppItems.FRUIT_LEAVES;
-import static net.cpp.init.CppItems.FRUIT_SAPLING;
+import static net.cpp.init.CppBlocks.FRUIT_LEAVES;
+import static net.cpp.init.CppBlocks.FRUIT_SAPLING;
+import static net.cpp.init.CppBlocks.ORE_LEAVES;
+import static net.cpp.init.CppBlocks.ORE_SAPLING;
+import static net.cpp.init.CppBlocks.SAKURA_LEAVES;
+import static net.cpp.init.CppBlocks.SAKURA_SAPLING;
+import static net.cpp.init.CppBlocks.WOOL_LEAVES;
+import static net.cpp.init.CppBlocks.WOOL_SAPLING;
 import static net.cpp.init.CppItems.GRAFTER;
 import static net.cpp.init.CppItems.GREEN_FORCE_OF_WATER;
-import static net.cpp.init.CppItems.ORE_LEAVES;
-import static net.cpp.init.CppItems.ORE_SAPLING;
 import static net.cpp.init.CppItems.RED_FORCE_OF_FIRE;
-import static net.cpp.init.CppItems.SAKURA_LEAVES;
-import static net.cpp.init.CppItems.SAKURA_SAPLING;
 import static net.cpp.init.CppItems.SPLINT;
-import static net.cpp.init.CppItems.WOOL_LEAVES;
-import static net.cpp.init.CppItems.WOOL_SAPLING;
 import static net.minecraft.item.Items.*;
 
 import java.util.Arrays;
@@ -375,10 +375,10 @@ public class ItemProcessorBlockEntity extends AOutputMachineBlockEntity {
 			put(map, JUNGLE_LEAVES, JUNGLE_SAPLING);
 			put(map, OAK_LEAVES, OAK_SAPLING);
 			put(map, SPRUCE_LEAVES, SPRUCE_SAPLING);
-			put(map, FRUIT_LEAVES, FRUIT_SAPLING);
-			put(map, ORE_LEAVES, ORE_SAPLING);
-			put(map, SAKURA_LEAVES, SAKURA_SAPLING);
-			put(map, WOOL_LEAVES, WOOL_SAPLING);
+			put(map, FRUIT_LEAVES.asItem(), FRUIT_SAPLING.asItem());
+			put(map, ORE_LEAVES.asItem(), ORE_SAPLING.asItem());
+			put(map, SAKURA_LEAVES.asItem(), SAKURA_SAPLING.asItem());
+			put(map, WOOL_LEAVES.asItem(), WOOL_SAPLING.asItem());
 			put(map, NETHER_WART_BLOCK, CRIMSON_FUNGUS);
 			put(map, WARPED_WART_BLOCK, WARPED_FUNGUS);
 			put(map, BROWN_MUSHROOM_BLOCK, BROWN_MUSHROOM);

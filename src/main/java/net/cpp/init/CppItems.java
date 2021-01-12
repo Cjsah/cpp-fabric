@@ -101,13 +101,9 @@ public final class CppItems {
 	public static final Item COAL_NUGGET;
 	public static final Item CINDER;
 	public static final Item SPLINT;
-	public static final Item RARE_EARTH_GLASS;
-	public static final Item REINFORCED_GLASS;
 	public static final Item SILICON_PLATE;
 	public static final Item MOON_SHARD;
 	public static final Item SUN_SHARD;
-	public static final Item MOON_STONE;
-	public static final Item SUN_STONE;
 
 	public static final Item CLAY_BUCKET;
 	// 粉末和瓶装物
@@ -345,14 +341,6 @@ public final class CppItems {
 	public static final Item CHRISTMAS_TREE;
 	public static final Item RICE_SEED;
 	public static final Item RICE;
-	public static final Item FRUIT_SAPLING;
-	public static final Item ORE_SAPLING;
-	public static final Item WOOL_SAPLING;
-	public static final Item SAKURA_SAPLING;
-	public static final Item FRUIT_LEAVES;
-	public static final Item ORE_LEAVES;
-	public static final Item WOOL_LEAVES;
-	public static final Item SAKURA_LEAVES;
 	// 仪式和魔法
 	public static final Item SEALING_WAND;
 	public static final Item STAR_WAND;
@@ -456,13 +444,9 @@ public final class CppItems {
 		COAL_NUGGET = registerItem("coal_nugget", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		CINDER = registerItem("cinder", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		SPLINT = registerItem("splint", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-		RARE_EARTH_GLASS = registerBlockItem("rare_earth_glass", new BlockItem(CppBlocks.RARE_EARTH_GLASS, new Item.Settings().group(CPP_GROUP_MISC)));
-		REINFORCED_GLASS = registerBlockItem("reinforced_glass", new BlockItem(CppBlocks.REINFORCED_GLASS, new Item.Settings().group(CPP_GROUP_MISC)));
 		SILICON_PLATE = registerItem("silicon_plate", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		MOON_SHARD = registerItem("moon_shard", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		SUN_SHARD = registerItem("sun_shard", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
-		MOON_STONE = registerBlockItem("moon_stone", new BlockItem(CppBlocks.MOON_STONE, new Item.Settings().group(CPP_GROUP_MISC)));
-		SUN_STONE = registerBlockItem("sun_stone", new BlockItem(CppBlocks.SUN_STONE, new Item.Settings().group(CPP_GROUP_MISC)));
 		CLAY_BUCKET = registerItem("clay_bucket", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 
 		COPPER_DUST = registerItem("copper_dust", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
@@ -699,14 +683,6 @@ public final class CppItems {
 		CHRISTMAS_TREE = registerItem("christmas_tree", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
 		RICE_SEED = registerItem("rice_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
 		RICE = registerItem("rice", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		FRUIT_SAPLING = registerItem("fruit_sapling", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		ORE_SAPLING = registerItem("ore_sapling", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		WOOL_SAPLING = registerItem("wool_sapling", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		SAKURA_SAPLING = registerItem("sakura_sapling", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		FRUIT_LEAVES = registerItem("fruit_leaves", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		ORE_LEAVES = registerItem("ore_leaves", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		WOOL_LEAVES = registerItem("wool_leaves", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		SAKURA_LEAVES = registerItem("sakura_leaves", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
 
 		SEALING_WAND = registerItem("sealing_wand", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		STAR_WAND = registerItem("star_wand", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
