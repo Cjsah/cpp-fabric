@@ -8,7 +8,6 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
 
 public class WoolLeavesBlock extends LeavesBlock {
 
@@ -17,10 +16,10 @@ public class WoolLeavesBlock extends LeavesBlock {
 	}
 
 	@Override
-	public void onBroken(WorldAccess world, BlockPos pos, BlockState state) {
-		if (!world.isClient() && world.getRandom().nextDouble() < .005 && world instanceof World) {
-			SheepEntity sheep = EntityType.SHEEP.create((World) world);
-			sheep.teleport(pos.getX()+.5, pos.getY(), pos.getZ()+.5);
+	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+		if (!world.isClient() && !newState.isOf(this) && world.getRandom().nextDouble() < .5) {
+			SheepEntity sheep = EntityType.SHEEP.create(world);
+			sheep.teleport(pos.getX() + .5, pos.getY(), pos.getZ() + .5);
 			sheep.setColor(DyeColor.byId(world.getRandom().nextInt(DyeColor.values().length)));
 			sheep.setBaby(true);
 			sheep.setCustomName(new LiteralText("jeb_"));

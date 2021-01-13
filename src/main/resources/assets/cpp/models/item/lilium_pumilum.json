@@ -1,6 +1,6 @@
 {
-    "parent": "minecraft:item/handheld",
-    "textures": {
-        "layer0": "cpp:item/lilium_pumilum"
-    }
+	"parent": "item/handheld",
+	"textures": {
+		"layer0": "cpp:block/lilium_pumilum"
+	}
 }

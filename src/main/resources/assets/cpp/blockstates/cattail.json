@@ -1,0 +1,16 @@
+{
+	"variants": {
+		"age=0": {
+			"model": "cpp:block/cattail_0"
+		},
+		"age=1": {
+			"model": "cpp:block/cattail_1"
+		},
+		"age=2": {
+			"model": "cpp:block/cattail_2"
+		},
+		"age=3": {
+			"model": "cpp:block/cattail_3"
+		}
+	}
+}

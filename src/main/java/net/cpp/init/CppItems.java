@@ -6,18 +6,34 @@ import static net.cpp.Craftingpp.CPP_GROUP_MACHINE;
 import static net.cpp.Craftingpp.CPP_GROUP_MISC;
 import static net.cpp.Craftingpp.CPP_GROUP_PLANT;
 import static net.cpp.Craftingpp.CPP_GROUP_TOOL;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import static net.cpp.init.CppBlocks.BAUHINIA;
+import static net.cpp.init.CppBlocks.BLACKTHORN;
+import static net.cpp.init.CppBlocks.BURNING_CHRYSANTHE;
+import static net.cpp.init.CppBlocks.CALAMUS;
+import static net.cpp.init.CppBlocks.CATTAIL;
+import static net.cpp.init.CppBlocks.ESPARTO;
+import static net.cpp.init.CppBlocks.FLUFFY_GRASS;
+import static net.cpp.init.CppBlocks.FORAGE_CRYSTAL;
+import static net.cpp.init.CppBlocks.GERBERA;
+import static net.cpp.init.CppBlocks.GLAZED_SHADE;
+import static net.cpp.init.CppBlocks.GLOW_FORSYTHIA;
+import static net.cpp.init.CppBlocks.HIBISCUS;
+import static net.cpp.init.CppBlocks.HYACINTH;
+import static net.cpp.init.CppBlocks.ISORCHID;
+import static net.cpp.init.CppBlocks.LYCORIS_RADIATA;
+import static net.cpp.init.CppBlocks.MARIGOLD;
+import static net.cpp.init.CppBlocks.OXALIS;
+import static net.cpp.init.CppBlocks.STELERA;
+import static net.cpp.init.CppBlocks.TRIFOLIUM;
+import static net.cpp.init.CppBlocks.WILD_LILIUM;
 
 import net.cpp.Craftingpp;
 import net.cpp.api.CppFoodOrPotion;
+import net.cpp.block.FlowerGrass1Block;
 import net.cpp.item.AncientScroll;
 import net.cpp.item.AngryHand;
 import net.cpp.item.BlackForceOfMoon;
+import net.cpp.item.BlockPlacerItem;
 import net.cpp.item.BlueForceOfSky;
 import net.cpp.item.BreakHand;
 import net.cpp.item.Character;
@@ -52,10 +68,10 @@ import net.cpp.item.TradePlugin;
 import net.cpp.item.WhiteForceOfLightning;
 import net.cpp.item.YellowForceOfEarth;
 import net.cpp.misc.CppArmorMaterial;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.DyeableArmorItem;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
@@ -283,63 +299,30 @@ public final class CppItems {
 	public static final Item AGENTIA_OF_FIRE;
 	public static final Item AGENTIA_OF_LIFE;
 	// 植物
-	public static final Item LYCORIS_RADIATA_SEED;
-	public static final Item TRIFOLIUM_SEED;
-	public static final Item BLACKTHORN_SEED;
-	public static final Item CATTAIL_SEED;
-	public static final Item MARIGOLD_SEED;
-	public static final Item HIBISCUS_SEED;
-	public static final Item HYACINTH_SEED;
-	public static final Item CALAMUS_SEED;
-	public static final Item WILD_LILIUM_SEED;
-	public static final Item BAUHINIA_SEED;
-	public static final Item FLUFFY_GRASS_SEED;
-	public static final Item GERBERA_SEED;
-	public static final Item ESPARTO_SEED;
-	public static final Item GLOW_FORSYTHIA_SEED;
-	public static final Item GLAZED_SHADE_SEED;
-	public static final Item STELERA_SEED;
-	public static final Item FORAGE_CRYSTAL_SEED;
-	public static final Item ISORCHID_SEED;
-	public static final Item BURNING_CHRYSANTHE_SEED;
-	public static final Item OXALIS_SEED;
-	public static final Item LYCORIS_RADIATA;
-	public static final Item TRIFOLIUM;
-	public static final Item BLACKTHORN;
-	public static final Item CATTAIL;
-	public static final Item MARIGOLD;
-	public static final Item HIBISCUS;
-	public static final Item HYACINTH;
-	public static final Item CALAMUS;
-	public static final Item WILD_LILIUM;
-	public static final Item BAUHINIA;
-	public static final Item FLUFFY_GRASS;
-	public static final Item GERBERA;
-	public static final Item ESPARTO;
-	public static final Item GLOW_FORSYTHIA;
-	public static final Item GLAZED_SHADE;
-	public static final Item STELERA;
-	public static final Item FORAGE_CRYSTAL;
-	public static final Item ISORCHID;
-	public static final Item BURNING_CHRYSANTHE;
-	public static final Item OXALIS;
-	public static final Item CALLIOPSIS;
-	public static final Item CYCLAMEN;
-	public static final Item IRIS;
-	public static final Item LILIUM_PUMILUM;
-	public static final Item SNOWDROP;
-	public static final Item NARCISSUS;
-	public static final Item COLE_FLOWER;
-	public static final Item LUPINE;
-	public static final Item CROCU;
-	public static final Item PANSY;
-	public static final Item ARABIA_SPEEDWELL;
-	public static final Item SILENE_PENDULA;
-	public static final Item ARTEMISIA_ARGYI;
+	public static final Item LYCORIS_RADIATA_SEEDS;
+	public static final Item TRIFOLIUM_SEEDS;
+	public static final Item BLACKTHORN_SEEDS;
+	public static final Item CATTAIL_SEEDS;
+	public static final Item MARIGOLD_SEEDS;
+	public static final Item HIBISCUS_SEEDS;
+	public static final Item HYACINTH_SEEDS;
+	public static final Item CALAMUS_SEEDS;
+	public static final Item WILD_LILIUM_SEEDS;
+	public static final Item BAUHINIA_SEEDS;
+	public static final Item FLUFFY_GRASS_SEEDS;
+	public static final Item GERBERA_SEEDS;
+	public static final Item ESPARTO_SEEDS;
+	public static final Item GLOW_FORSYTHIA_SEEDS;
+	public static final Item GLAZED_SHADE_SEEDS;
+	public static final Item STELERA_SEEDS;
+	public static final Item FORAGE_CRYSTAL_SEEDS;
+	public static final Item ISORCHID_SEEDS;
+	public static final Item BURNING_CHRYSANTHE_SEEDS;
+	public static final Item OXALIS_SEEDS;
 	public static final Item BLUE_ROSE;
 	public static final Item POINSETTIA;
 	public static final Item CHRISTMAS_TREE;
-	public static final Item RICE_SEED;
+	public static final Item RICE_SEEDS;
 	public static final Item RICE;
 	// 仪式和魔法
 	public static final Item SEALING_WAND;
@@ -406,8 +389,6 @@ public final class CppItems {
 	public static final Item GLASS_SIGN;
 
 	public static final Item COMPRESSED_ITEM;
-	public static final Map<Item, Item> SEEDS_TO_FLOWERS;
-	public static final Set<Item> FRUITS;
 	static {
 		SHARD_OF_THE_DARKNESS = registerItem("shard_of_the_darkness", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		WING_OF_SKY = registerItem("wing_of_sky", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
@@ -625,63 +606,30 @@ public final class CppItems {
 		AGENTIA_OF_FIRE = registerItem("agentia_of_fire", new CppFoodOrPotion(UseAction.DRINK, 0, new Item.Settings().group(CPP_GROUP_MISC).food((new FoodComponent.Builder()).hunger(6).saturationModifier(0.3F).alwaysEdible().statusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 14400, 0), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 7200, 1), 1.0F).build()).maxCount(1)));
 		AGENTIA_OF_LIFE = registerItem("agentia_of_life", new CppFoodOrPotion(UseAction.DRINK, 0, new Item.Settings().group(CPP_GROUP_MISC).food((new FoodComponent.Builder()).hunger(6).saturationModifier(0.3F).alwaysEdible().statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 3600, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 1, 3), 1.0F).build()).maxCount(1)));
 
-		LYCORIS_RADIATA_SEED = registerItem("lycoris_radiata_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		TRIFOLIUM_SEED = registerItem("trifolium_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		BLACKTHORN_SEED = registerItem("blackthorn_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		CATTAIL_SEED = registerItem("cattail_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		MARIGOLD_SEED = registerItem("marigold_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		HIBISCUS_SEED = registerItem("hibiscus_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		HYACINTH_SEED = registerItem("hyacinth_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		CALAMUS_SEED = registerItem("calamus_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		WILD_LILIUM_SEED = registerItem("wild_lilium_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		BAUHINIA_SEED = registerItem("bauhinia_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		FLUFFY_GRASS_SEED = registerItem("fluffy_grass_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		GERBERA_SEED = registerItem("gerbera_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		ESPARTO_SEED = registerItem("esparto_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		GLOW_FORSYTHIA_SEED = registerItem("glow_forsythia_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		GLAZED_SHADE_SEED = registerItem("glazed_shade_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		STELERA_SEED = registerItem("stelera_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		FORAGE_CRYSTAL_SEED = registerItem("forage_crystal_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		ISORCHID_SEED = registerItem("isorchid_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		BURNING_CHRYSANTHE_SEED = registerItem("burning_chrysanthe_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		OXALIS_SEED = registerItem("oxalis_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		LYCORIS_RADIATA = registerItem("lycoris_radiata", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		TRIFOLIUM = registerItem("trifolium", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		BLACKTHORN = registerItem("blackthorn", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		CATTAIL = registerItem("cattail", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		MARIGOLD = registerItem("marigold", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		HIBISCUS = registerItem("hibiscus", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		HYACINTH = registerItem("hyacinth", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		CALAMUS = registerItem("calamus", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		WILD_LILIUM = registerItem("wild_lilium", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		BAUHINIA = registerItem("bauhinia", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		FLUFFY_GRASS = registerItem("fluffy_grass", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		GERBERA = registerItem("gerbera", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		ESPARTO = registerItem("esparto", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		GLOW_FORSYTHIA = registerItem("glow_forsythia", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		GLAZED_SHADE = registerItem("glazed_shade", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		STELERA = registerItem("stelera", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		FORAGE_CRYSTAL = registerItem("forage_crystal", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		ISORCHID = registerItem("isorchid", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		BURNING_CHRYSANTHE = registerItem("burning_chrysanthe", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		OXALIS = registerItem("oxalis", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		CALLIOPSIS = registerItem("calliopsis", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		CYCLAMEN = registerItem("cyclamen", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		IRIS = registerItem("iris", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		LILIUM_PUMILUM = registerItem("lilium_pumilum", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		SNOWDROP = registerItem("snowdrop", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		NARCISSUS = registerItem("narcissus", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		COLE_FLOWER = registerItem("cole_flower", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		LUPINE = registerItem("lupine", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		CROCU = registerItem("crocu", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		PANSY = registerItem("pansy", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		ARABIA_SPEEDWELL = registerItem("arabia_speedwell", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		SILENE_PENDULA = registerItem("silene_pendula", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		ARTEMISIA_ARGYI = registerItem("artemisia_argyi", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
+		LYCORIS_RADIATA_SEEDS = registerSeeds(LYCORIS_RADIATA);
+		TRIFOLIUM_SEEDS = registerSeeds(TRIFOLIUM);
+		BLACKTHORN_SEEDS = registerSeeds(BLACKTHORN);
+		CATTAIL_SEEDS = registerSeeds(CATTAIL);
+		MARIGOLD_SEEDS = registerSeeds(MARIGOLD);
+		HIBISCUS_SEEDS = registerSeeds(HIBISCUS);
+		HYACINTH_SEEDS = registerSeeds(HYACINTH);
+		CALAMUS_SEEDS = registerSeeds(CALAMUS);
+		WILD_LILIUM_SEEDS = registerSeeds(WILD_LILIUM);
+		BAUHINIA_SEEDS = registerSeeds(BAUHINIA);
+		FLUFFY_GRASS_SEEDS = registerSeeds(FLUFFY_GRASS);
+		GERBERA_SEEDS = registerSeeds(GERBERA);
+		ESPARTO_SEEDS = registerSeeds(ESPARTO);
+		GLOW_FORSYTHIA_SEEDS = registerSeeds(GLOW_FORSYTHIA);
+		GLAZED_SHADE_SEEDS = registerSeeds(GLAZED_SHADE);
+		STELERA_SEEDS = registerSeeds(STELERA);
+		FORAGE_CRYSTAL_SEEDS = registerSeeds(FORAGE_CRYSTAL);
+		ISORCHID_SEEDS = registerSeeds(ISORCHID);
+		BURNING_CHRYSANTHE_SEEDS = registerSeeds(BURNING_CHRYSANTHE);
+		OXALIS_SEEDS = registerSeeds(OXALIS);
 		BLUE_ROSE = registerItem("blue_rose", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
 		POINSETTIA = registerItem("poinsettia", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
 		CHRISTMAS_TREE = registerItem("christmas_tree", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		RICE_SEED = registerItem("rice_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
+		RICE_SEEDS = registerItem("rice_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
 		RICE = registerItem("rice", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
 
 		SEALING_WAND = registerItem("sealing_wand", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
@@ -748,23 +696,16 @@ public final class CppItems {
 		GLASS_SIGN = registerItem("glass_sign", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 
 		COMPRESSED_ITEM = registerItem("compressed_item", new CompressedItem(new Item.Settings()));
-		{
-			Item[] flowers = { LYCORIS_RADIATA, TRIFOLIUM, BLACKTHORN, CATTAIL, MARIGOLD, HIBISCUS, HYACINTH, CALAMUS, WILD_LILIUM, BAUHINIA, FLUFFY_GRASS, GERBERA, ESPARTO, GLOW_FORSYTHIA, GLAZED_SHADE, STELERA, FORAGE_CRYSTAL, ISORCHID, BURNING_CHRYSANTHE, OXALIS }, seeds = { LYCORIS_RADIATA_SEED, TRIFOLIUM_SEED, BLACKTHORN_SEED, CATTAIL_SEED, MARIGOLD_SEED, HIBISCUS_SEED, HYACINTH_SEED, CALAMUS_SEED, WILD_LILIUM_SEED, BAUHINIA_SEED, FLUFFY_GRASS_SEED, GERBERA_SEED, ESPARTO_SEED, GLOW_FORSYTHIA_SEED, GLAZED_SHADE_SEED, STELERA_SEED, FORAGE_CRYSTAL_SEED, ISORCHID_SEED, BURNING_CHRYSANTHE_SEED, OXALIS_SEED };
-			SEEDS_TO_FLOWERS = new HashMap<>();
-			for (int i = 0; i < flowers.length; i++)
-				SEEDS_TO_FLOWERS.put(seeds[i], flowers[i]);
-		}
-
-		FRUITS = new HashSet<>(Arrays.asList(APRICOT, BANANA, BLUEBERRY, CHERRY, CHINESE_DATE, COCONUT, GOLDEN_GRAPE, GRAPE, GRAPEFRUIT, HAWTHORN, LEMON, LONGAN, LOQUAT, LYCHEE, MANGO, ORANGE, PAYAPA, PEACH, PEAR, PERSIMMON, PLUM, POMEGRANATE, STRAWBERRY, TOMATO));
 	}
 
 	private static Item registerItem(String id, Item item) {
 		return Registry.register(Registry.ITEM, new Identifier(Craftingpp.MOD_ID3, id), item);
 	}
 
-	private static Item registerBlockItem(String id, BlockItem item) {
-		item.appendBlocks(Item.BLOCK_ITEMS, item);
-		return Registry.register(Registry.ITEM, new Identifier(Craftingpp.MOD_ID3, id), item);
+	private static Item registerSeeds(Block block) {
+		Item item = Registry.register(Registry.ITEM, new Identifier(Craftingpp.MOD_ID3, Registry.BLOCK.getId(block).getPath() + "_seed"), new BlockPlacerItem(block, new Item.Settings().group(CPP_GROUP_PLANT)));
+		((FlowerGrass1Block) block).setSeed(item);
+		return item;
 	}
 
 	public static void register() {

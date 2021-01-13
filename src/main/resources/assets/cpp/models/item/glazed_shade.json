@@ -1,6 +1,6 @@
 {
-    "parent": "minecraft:item/handheld",
-    "textures": {
-        "layer0": "cpp:item/glazed_shade"
-    }
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "cpp:block/glazed_shade_3"
+	}
 }

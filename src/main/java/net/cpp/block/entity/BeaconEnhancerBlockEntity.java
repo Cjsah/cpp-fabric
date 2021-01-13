@@ -32,6 +32,7 @@ import net.minecraft.command.EntitySelectorReader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.AmbientEntity;
 import net.minecraft.entity.mob.HoglinEntity;
@@ -64,7 +65,7 @@ import net.minecraft.world.World;
  *
  */
 public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScreenHandlerFactory {
-	public static final StatusEffect ATTRACTING = new CppEffect(null, 0);
+	public static final StatusEffect ATTRACTING = new CppEffect(StatusEffectType.HARMFUL, 0);
 	public static final List<StatusEffect> AVAILABLE_PLAYER_EFFECTS = Collections.unmodifiableList(Arrays.asList(FIRE_RESISTANCE, NIGHT_VISION, WATER_BREATHING, INVISIBILITY, SATURATION, CppEffects.CHAIN));
 	public static final List<StatusEffect> AVAILABLE_MOB_EFFECTS = Collections.unmodifiableList(Arrays.asList(WEAKNESS, SLOWNESS, GLOWING, POISON, WITHER, ATTRACTING));
 	/** 当前选择的状态效果 */

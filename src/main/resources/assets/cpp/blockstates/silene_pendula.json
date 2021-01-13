@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "cpp:block/silene_pendula"
+    }
+  }
+}

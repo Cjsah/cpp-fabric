@@ -23,8 +23,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import net.cpp.block.FlowerGrass1Block;
 import net.cpp.gui.handler.ItemProcessorScreenHandler;
 import net.cpp.init.CppBlockEntities;
+import net.cpp.init.CppBlockTags;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppItems;
 import net.cpp.item.Compressor;
@@ -414,8 +416,8 @@ public class ItemProcessorBlockEntity extends AOutputMachineBlockEntity {
 
 			// 合成器
 			map = new HashMap<>();
-			for (Map.Entry<Item, Item> entry : CppItems.SEEDS_TO_FLOWERS.entrySet())
-				put(map, entry.getValue(), entry.getKey(), 3);
+			for (Block plant : CppBlockTags.FLOWER_GRASSES_1.values())
+				put(map, plant.asItem(), ((FlowerGrass1Block) plant).getSeed(), 3);
 			RECIPES.put(CppBlocks.CRAFTING_MACHINE.asItem(), map);
 
 			// 给红色火之力添加占位符

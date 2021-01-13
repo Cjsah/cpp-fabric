@@ -19,6 +19,7 @@ import net.cpp.block.AllInOneMachineBlock;
 import net.cpp.gui.handler.AllInOneMachineScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
+import net.cpp.init.CppItemTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -542,10 +543,10 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		}
 		addRecipe(Degree.ORDINARY, Degree.ORDINARY, SAKURA_SAPLING.asItem(), FERTILIZER, new ItemStack(CHERRY), new ItemStack(SAKURA_SAPLING), 2F, 5F, 0F, 4F, 2, 40);
 		{
-			Item[] seeds = new Item[] { LYCORIS_RADIATA_SEED, TRIFOLIUM_SEED, BLACKTHORN_SEED, CATTAIL_SEED, MARIGOLD_SEED, HIBISCUS_SEED, HYACINTH_SEED, CALAMUS_SEED, WILD_LILIUM_SEED, BAUHINIA_SEED, FLUFFY_GRASS_SEED, GERBERA_SEED, ESPARTO_SEED, GLOW_FORSYTHIA_SEED, GLAZED_SHADE_SEED, STELERA_SEED, FORAGE_CRYSTAL_SEED, ISORCHID_SEED, BURNING_CHRYSANTHE_SEED, OXALIS_SEED }, plants = new Item[] { LYCORIS_RADIATA, TRIFOLIUM, BLACKTHORN, CATTAIL, MARIGOLD, HIBISCUS, HYACINTH, CALAMUS, WILD_LILIUM, BAUHINIA, FLUFFY_GRASS, GERBERA, ESPARTO, GLOW_FORSYTHIA, GLAZED_SHADE, STELERA, FORAGE_CRYSTAL, ISORCHID, BURNING_CHRYSANTHE, OXALIS };
-			for (int i = 0; i < seeds.length; i++) {
-				addRecipe(Degree.ORDINARY, Degree.ORDINARY, seeds[i], FERTILIZER, new ItemStack(plants[i]), 2, 40);
-				addRecipe(Degree.ORDINARY, Degree.ORDINARY, plants[i], FERTILIZER, new ItemStack(plants[i], 4), 2, 40);
+			List<Item> plants = CppItemTags.FLOWER_GRASSES.values(), seeds = CppItemTags.FLOWER_GRASS_SEEDS.values();
+			for (int i = 0; i < plants.size(); i++) {
+				addRecipe(Degree.ORDINARY, Degree.ORDINARY, seeds.get(i), FERTILIZER, new ItemStack(plants.get(i)), 2, 40);
+				addRecipe(Degree.ORDINARY, Degree.ORDINARY, plants.get(i), FERTILIZER, new ItemStack(plants.get(i), 4), 2, 40);
 			}
 		}
 		/**

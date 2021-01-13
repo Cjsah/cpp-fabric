@@ -12,7 +12,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 @Mixin(LeavesBlock.class)
 public class MixinLeavesBlock extends Block {
@@ -20,14 +19,6 @@ public class MixinLeavesBlock extends Block {
 	public MixinLeavesBlock(Settings settings) {
 		super(settings);
 	}
-
-//	@Override
-//	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
-//		super.neighborUpdate(state, world, pos, block, fromPos, notify);
-//		if (!world.isClient && !state.get(LeavesBlock.PERSISTENT) && state.get(LeavesBlock.DISTANCE) == 7) {
-//			randomTick(state, (ServerWorld) world, pos, world.random);
-//		}
-//	}
 
 	@Inject(at = @At("RETURN"), method = "scheduledTick")
 	public void scheduledTick1(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo info) {

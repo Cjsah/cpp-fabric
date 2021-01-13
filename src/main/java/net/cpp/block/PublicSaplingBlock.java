@@ -8,5 +8,4 @@ public class PublicSaplingBlock extends SaplingBlock {
 	public PublicSaplingBlock(SaplingGenerator generator, Settings settings) {
 		super(generator, settings);
 	}
-
 }

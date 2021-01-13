@@ -1,6 +1,6 @@
 {
-    "parent": "minecraft:item/handheld",
-    "textures": {
-        "layer0": "cpp:item/lycoris_radiata"
-    }
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "cpp:block/lycoris_radiata_3"
+	}
 }

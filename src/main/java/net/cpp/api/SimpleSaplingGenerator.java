@@ -25,8 +25,4 @@ public class SimpleSaplingGenerator extends SaplingGenerator {
 	protected ConfiguredFeature<TreeFeatureConfig, ?> createTreeFeature(Random random, boolean bl) {
 		return Feature.TREE.configure((new TreeFeatureConfig.Builder(new SimpleBlockStateProvider(log.getDefaultState()), new SimpleBlockStateProvider(leaves.getDefaultState()), new BlobFoliagePlacer(UniformIntDistribution.of(2), UniformIntDistribution.of(0), 3), new StraightTrunkPlacer(5, 2, 0), new TwoLayersFeatureSize(1, 0, 1))).ignoreVines().build());
 	}
-
-	static {
-
-	}
 }

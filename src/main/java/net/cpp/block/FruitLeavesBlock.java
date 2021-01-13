@@ -2,25 +2,19 @@ package net.cpp.block;
 
 import java.util.Random;
 
-import net.cpp.Craftingpp;
 import net.cpp.api.CodingTool;
 import net.cpp.init.CppBlocks;
-import net.fabricmc.fabric.api.tag.TagRegistry;
+import net.cpp.init.CppItemTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.tag.Tag;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
 public class FruitLeavesBlock extends LeavesBlock {
-	public static final Tag<Item> FRUITS = TagRegistry.item(new Identifier(Craftingpp.MOD_ID3, "fruits"));
-	public static final Tag<Item> DROPPABLE_FRUITS = TagRegistry.item(new Identifier(Craftingpp.MOD_ID3, "droppable_fruits"));
 	public static int speed = 3600;
 
 	public FruitLeavesBlock(Settings settings) {
@@ -72,9 +66,9 @@ public class FruitLeavesBlock extends LeavesBlock {
 	}
 
 	public static ItemStack randomFruit(Random random) {
-		if (DROPPABLE_FRUITS.values().isEmpty())
+		if (CppItemTags.DROPPABLE_FRUITS.values().isEmpty())
 			return ItemStack.EMPTY;
-		return DROPPABLE_FRUITS.getRandom(random).getDefaultStack();
+		return CppItemTags.DROPPABLE_FRUITS.getRandom(random).getDefaultStack();
 	}
 
 	static {
