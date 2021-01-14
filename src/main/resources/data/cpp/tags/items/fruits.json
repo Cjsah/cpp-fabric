@@ -1,0 +1,30 @@
+{
+	"values": [
+		"apple",
+		"cpp:apricot",
+		"cpp:banana",
+		"cpp:blueberry",
+		"cpp:cherry",
+		"cpp:chinese_date",
+		"cpp:coconut",
+		"cpp:golden_grape",
+		"cpp:grape",
+		"cpp:grapefruit",
+		"cpp:hawthorn",
+		"cpp:lemon",
+		"cpp:longan",
+		"cpp:loquat",
+		"cpp:lychee",
+		"cpp:mango",
+		"cpp:orange",
+		"cpp:payapa",
+		"cpp:peach",
+		"cpp:pear",
+		"cpp:persimmon",
+		"cpp:plum",
+		"cpp:pomegranate",
+		"cpp:strawberry",
+		"cpp:tomato",
+		"cpp:citrus"
+	]
+}

@@ -1,6 +1,6 @@
 {
-    "parent": "minecraft:item/handheld",
-    "textures": {
-        "layer0": "cpp:item/wild_lilium"
-    }
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "cpp:block/wild_lilium_3"
+	}
 }

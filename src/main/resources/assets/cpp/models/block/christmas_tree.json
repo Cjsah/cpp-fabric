@@ -1,0 +1,6 @@
+{
+	"parent": "cpp:block/double_plant",
+	"textures": {
+		"cross": "cpp:block/christmas_tree"
+	}
+}

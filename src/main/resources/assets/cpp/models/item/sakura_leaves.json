@@ -1,6 +1,3 @@
 {
-    "parent": "minecraft:item/handheld",
-    "textures": {
-        "layer0": "cpp:item/sakura_leaves"
-    }
+    "parent": "cpp:block/sakura_leaves"
 }

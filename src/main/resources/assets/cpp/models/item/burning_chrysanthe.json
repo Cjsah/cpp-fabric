@@ -1,6 +1,6 @@
 {
-    "parent": "minecraft:item/handheld",
-    "textures": {
-        "layer0": "cpp:item/burning_chrysanthe"
-    }
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "cpp:block/burning_chrysanthe_3"
+	}
 }

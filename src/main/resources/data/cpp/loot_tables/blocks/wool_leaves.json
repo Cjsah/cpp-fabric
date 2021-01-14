@@ -1,0 +1,178 @@
+{
+	"type": "block",
+	"pools": [
+		{
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "alternatives",
+					"children": [
+						{
+							"type": "item",
+							"name": "cpp:wool_leaves",
+							"conditions": [
+								{
+									"condition": "reference",
+									"name": "cpp:leaves"
+								}
+							]
+						},
+						{
+							"type": "item",
+							"name": "cpp:wool_sapling",
+							"conditions": [
+								{
+									"condition": "survives_explosion"
+								},
+								{
+									"condition": "table_bonus",
+									"enchantment": "fortune",
+									"chances": [
+										0.05,
+										0.0625,
+										0.083333336,
+										0.1
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "item",
+					"conditions": [
+						{
+							"condition": "table_bonus",
+							"enchantment": "fortune",
+							"chances": [
+								0.02,
+								0.022222223,
+								0.025,
+								0.033333335,
+								0.1
+							]
+						}
+					],
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1.0,
+								"max": 2.0,
+								"type": "uniform"
+							}
+						},
+						{
+							"function": "explosion_decay"
+						}
+					],
+					"name": "stick"
+				}
+			],
+			"conditions": [
+				{
+					"condition": "inverted",
+					"term": {
+						"condition": "reference",
+						"name": "cpp:leaves"
+					}
+				}
+			]
+		},
+		{
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "item",
+					"name":"white_wool"
+				},
+				{
+					"type": "item",
+					"name":"orange_wool"
+				},
+				{
+					"type": "item",
+					"name":"magenta_wool"
+				},
+				{
+					"type": "item",
+					"name":"light_blue_wool"
+				},
+				{
+					"type": "item",
+					"name":"yellow_wool"
+				},
+				{
+					"type": "item",
+					"name":"lime_wool"
+				},
+				{
+					"type": "item",
+					"name":"pink_wool"
+				},
+				{
+					"type": "item",
+					"name":"gray_wool"
+				},
+				{
+					"type": "item",
+					"name":"light_gray_wool"
+				},
+				{
+					"type": "item",
+					"name":"cyan_wool"
+				},
+				{
+					"type": "item",
+					"name":"purple_wool"
+				},
+				{
+					"type": "item",
+					"name":"blue_wool"
+				},
+				{
+					"type": "item",
+					"name":"brown_wool"
+				},
+				{
+					"type": "item",
+					"name":"green_wool"
+				},
+				{
+					"type": "item",
+					"name":"red_wool"
+				},
+				{
+					"type": "item",
+					"name":"black_wool"		
+				},
+				{
+					"type": "item",
+					"name":"cod"
+				},
+				{
+					"type": "item",
+					"name":"salmon"
+				}
+			],
+			"conditions": [
+				{
+					"condition": "random_chance",
+					"chance": 0.05
+				},
+				{
+					"condition": "inverted",
+					"term": {
+						"condition": "reference",
+						"name": "cpp:leaves"
+					}
+				}
+			]
+		}
+	]
+}

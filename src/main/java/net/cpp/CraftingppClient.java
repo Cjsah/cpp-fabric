@@ -1,5 +1,10 @@
 package net.cpp;
 
+import static net.cpp.init.CppBlocks.*;
+import static net.cpp.init.CppBlocks.ORE_SAPLING;
+import static net.cpp.init.CppBlocks.SAKURA_SAPLING;
+import static net.cpp.init.CppBlocks.WOOL_SAPLING;
+
 import net.cpp.entity.AGolemEntity;
 import net.cpp.entity.render.GolemRenderer;
 import net.cpp.gui.screen.AllInOneMachineScreen;
@@ -12,6 +17,7 @@ import net.cpp.gui.screen.ItemProcessorScreen;
 import net.cpp.gui.screen.MobProjectorScreen;
 import net.cpp.gui.screen.PortableCraftingMachineScreen;
 import net.cpp.gui.screen.TradeMachineScreen;
+import net.cpp.init.CppBlocks;
 import net.cpp.init.CppEntities;
 import net.cpp.init.CppPredicates;
 import net.cpp.init.CppScreenHandler;
@@ -20,7 +26,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
+import net.fabricmc.fabric.impl.blockrenderlayer.BlockRenderLayerMapImpl;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.ingame.CraftingScreen;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.EntityType;
 
 @Environment(EnvType.CLIENT)
@@ -46,6 +55,9 @@ public class CraftingppClient implements ClientModInitializer {
 			EntityRendererRegistry.INSTANCE.register(type, ctx -> new GolemRenderer(ctx, type));
 		}
 
+		BlockRenderLayerMapImpl.INSTANCE.putBlocks(RenderLayer.getCutout(), FRUIT_SAPLING, ORE_SAPLING, SAKURA_SAPLING, WOOL_SAPLING, BLUE_ROSE, POINSETTIA, CHRISTMAS_TREE,RICE);
+		for (Block block : CppBlocks.FLOWER_GRASSES)
+			BlockRenderLayerMapImpl.INSTANCE.putBlock(block, RenderLayer.getCutout());
 	}
 
 }

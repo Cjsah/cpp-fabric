@@ -15,6 +15,7 @@
 		"MixinItemModels",
 		"MixinItemRenderer",
 		"MixinItemStack",
+		"MixinLeavesBlock",
 		"MixinLivingEntity",
 		"MixinPlayerEntity",
 		"MixinPlayerManager",

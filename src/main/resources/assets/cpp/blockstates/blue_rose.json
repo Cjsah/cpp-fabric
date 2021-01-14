@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "part=0": {
+      "model": "cpp:block/blue_rose"
+    },
+    "part=1": {
+      "model": "cpp:empty"
+    }
+  }
+}

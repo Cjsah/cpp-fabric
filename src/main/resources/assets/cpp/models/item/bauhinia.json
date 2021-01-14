@@ -1,6 +1,6 @@
 {
-    "parent": "minecraft:item/handheld",
-    "textures": {
-        "layer0": "cpp:item/bauhinia"
-    }
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "cpp:block/bauhinia_3"
+	}
 }

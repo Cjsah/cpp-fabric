@@ -1,0 +1,16 @@
+{
+	"variants": {
+		"age=0": {
+			"model": "cpp:block/calamus_0"
+		},
+		"age=1": {
+			"model": "cpp:block/calamus_1"
+		},
+		"age=2": {
+			"model": "cpp:block/calamus_2"
+		},
+		"age=3": {
+			"model": "cpp:block/calamus_3"
+		}
+	}
+}

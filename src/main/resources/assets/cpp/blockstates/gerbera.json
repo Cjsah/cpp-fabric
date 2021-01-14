@@ -1,0 +1,16 @@
+{
+	"variants": {
+		"age=0": {
+			"model": "cpp:block/gerbera_0"
+		},
+		"age=1": {
+			"model": "cpp:block/gerbera_1"
+		},
+		"age=2": {
+			"model": "cpp:block/gerbera_2"
+		},
+		"age=3": {
+			"model": "cpp:block/gerbera_3"
+		}
+	}
+}

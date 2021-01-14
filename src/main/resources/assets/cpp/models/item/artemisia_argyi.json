@@ -1,6 +1,6 @@
 {
-    "parent": "minecraft:item/handheld",
-    "textures": {
-        "layer0": "cpp:item/artemisia_argyi"
-    }
+	"parent": "item/handheld",
+	"textures": {
+		"layer0": "cpp:block/artemisia_argyi"
+	}
 }

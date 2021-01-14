@@ -3,9 +3,11 @@ package net.cpp.item;
 import java.util.List;
 
 import net.cpp.api.CodingTool;
+import net.cpp.init.CppItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -20,6 +22,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
 public class Magnet extends Item implements IDefaultTagItem, ITickableInItemFrame {
@@ -62,6 +65,20 @@ public class Magnet extends Item implements IDefaultTagItem, ITickableInItemFram
 		if (itemFrameEntity.getHeldItemStack().getOrCreateTag().getBoolean("enabled") ^ ((itemFrameEntity.getRotation() & 1) == 0)) {
 			CodingTool.attractItems(itemFrameEntity.getPos(), (ServerWorld) itemFrameEntity.world, true, true);
 			return true;
+		}
+		return false;
+	}
+
+	public static boolean tick(ServerPlayerEntity player) {
+		for (int i = 0; i < player.getInventory().size(); i++) {
+			ItemStack itemStack = player.getInventory().getStack(i);
+			if (itemStack.isOf(CppItems.MAGNET) && Magnet.isEnabled(itemStack)) {
+				CodingTool.attractItems(player.getPos().add(0, 1, 0), (ServerWorld) player.world, true, false);
+				for (ExperienceOrbEntity orb : player.world.getEntitiesByClass(ExperienceOrbEntity.class, new Box(player.getPos(), player.getPos()).expand(16), orb -> orb.getPos().isInRange(player.getPos(), 16))) {
+					orb.teleport(player.getPos().x, player.getPos().y, player.getPos().z);
+				}
+				break;
+			}
 		}
 		return false;
 	}

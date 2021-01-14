@@ -3,6 +3,7 @@ package net.cpp.api;
 import static net.cpp.api.CppChat.say;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,16 +15,20 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
@@ -423,6 +428,12 @@ public class CodingTool {
 		return canHarvest(stack, state) && state.getHardness(world, pos) >= 0;
 	}
 
+	/**
+	 * 把{@link Inventory}储存到{@link CompoundTag}
+	 * 
+	 * @param inventory 物品栏
+	 * @param tag       标签
+	 */
 	public static void inventoryToTag(Inventory inventory, CompoundTag tag) {
 		DefaultedList<ItemStack> stacks = DefaultedList.ofSize(inventory.size(), ItemStack.EMPTY);
 		for (int i = 0; i < stacks.size(); i++) {
@@ -431,6 +442,12 @@ public class CodingTool {
 		Inventories.toTag(tag, stacks);
 	}
 
+	/**
+	 * 从{@link CompoundTag}读取{@link Inventory}
+	 * 
+	 * @param inventory 物品栏
+	 * @param tag       标签
+	 */
 	public static void inventoryFromTag(Inventory inventory, CompoundTag tag) {
 		DefaultedList<ItemStack> stacks = DefaultedList.ofSize(inventory.size(), ItemStack.EMPTY);
 		Inventories.fromTag(tag, stacks);
@@ -439,4 +456,41 @@ public class CodingTool {
 		}
 	}
 
+	public static int mend(ItemStack stack, int exp) {
+		if (stack.isDamaged()) {
+			int amount = Math.min(stack.getDamage(), exp * 2);
+			stack.setDamage(stack.getDamage() - amount);
+			exp -= amount / 2 + ((amount & 2) == 0 ? 0 : (Math.random() < .5 ? 1 : 0));
+		}
+		return exp;
+	}
+
+	public static int collectExpOrbs(World world, Vec3d pos, double radius, boolean globe) {
+		int exp = 0;
+		for (ExperienceOrbEntity orb : world.getEntitiesByClass(ExperienceOrbEntity.class, new Box(pos, pos).expand(radius), orb -> globe ? orb.getPos().isInRange(pos, radius) : true)) {
+			exp += orb.getExperienceAmount();
+			orb.discard();
+		}
+		return exp;
+	}
+
+	public static List<ItemStack> expToBottle(int exp) {
+		List<ItemStack> list = new LinkedList<ItemStack>();
+		int c1 = exp / 9 + (Math.random() < (exp % 9) / 9. ? 1 : 0);
+		list.add(new ItemStack(Items.EXPERIENCE_BOTTLE, c1));
+		return list;
+	}
+
+	public static void removeEffectExceptHidden(PlayerEntity player, StatusEffect effect, int amplifier, int duration) {
+		StatusEffectInstance effectInstance = player.getStatusEffect(effect);
+		if (effectInstance != null && effectInstance.getAmplifier() == amplifier && effectInstance.getDuration() <= duration) {
+			CompoundTag tag1 = effectInstance.toTag(new CompoundTag());
+			if (tag1.contains("HiddenEffect")) {
+				CompoundTag tag2 = tag1.getCompound("HiddenEffect");
+				player.applyStatusEffect(StatusEffectInstance.fromTag(tag2));
+			} else {
+				player.removeStatusEffect(effect);
+			}
+		}
+	}
 }
