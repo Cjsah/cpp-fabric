@@ -52,13 +52,15 @@ public class FruitLeavesBlock extends LeavesBlock {
 		Direction[] directions = Direction.values();
 		BlockPos pos2 = pos;
 		for (Direction direction : directions) {
-			BlockPos pos3 = pos.add(direction.getVector());
-			BlockState state2 = world.getBlockState(pos3);
-			if (state2.isOf(CppBlocks.FRUIT_LEAVES)) {
-				int d2 = state2.get(DISTANCE);
-				if (distance < d2) {
-					distance = d2;
-					pos2 = pos3;
+			if (direction != Direction.UP) {
+				BlockPos pos3 = pos.add(direction.getVector());
+				BlockState state2 = world.getBlockState(pos3);
+				if (state2.isOf(CppBlocks.FRUIT_LEAVES)) {
+					int d2 = state2.get(DISTANCE);
+					if (distance < d2) {
+						distance = d2;
+						pos2 = pos3;
+					}
 				}
 			}
 		}

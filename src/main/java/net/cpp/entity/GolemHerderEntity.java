@@ -17,6 +17,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
 //TODO
 public class GolemHerderEntity extends AGolemEntity {
 
@@ -74,10 +75,10 @@ public class GolemHerderEntity extends AGolemEntity {
 //				Item item = itemEntity.getStack().getItem();
 //				map2.getOrDefault(item, defList).add(itemEntity.getStack());
 //			}
-			List<AnimalEntity> animals = world.getEntitiesByClass(AnimalEntity.class, new Box(getPos(), getPos()).expand(16), animal -> animal.getBreedingAge() == 0);
+			List<AnimalEntity> animals = world.getEntitiesByClass(AnimalEntity.class, new Box(getPos(), getPos()).expand(16), animal -> animal.getBreedingAge() >= 0);
 			int s = animals.size();
 			System.out.println(s);
-			Block block = world.getBlockState(getBlockPos().up()).getBlock();
+			Block block = world.getBlockState(getBlockPos().up(2)).getBlock();
 			for (AnimalEntity animal : animals) {
 //				int c = 0;
 //				for1: for (ItemStack stack: map.get(animal.getClass())) {
@@ -91,11 +92,12 @@ public class GolemHerderEntity extends AGolemEntity {
 //				if (c>=2) {
 //					
 //				}
-				animal.setLoveTicks(600);
 				if (animal instanceof SheepEntity)
 					((SheepEntity) animal).sheared(SoundCategory.MASTER);
 				if (block == Blocks.RED_WOOL && s >= 24 || block == Blocks.PINK_WOOL && s >= 48 || block == Blocks.MAGENTA_WOOL && s >= 96)
 					animal.damage(DamageSource.mob(this), 100);
+				if (animal.getBreedingAge() == 0)
+					animal.setLoveTicks(600);
 			}
 			for (ItemEntity itemEntity : world.getEntitiesByClass(ItemEntity.class, new Box(getPos(), getPos()).expand(16), itemEntity -> itemEntity.getStack().isOf(Items.EGG))) {
 				int c = itemEntity.getStack().getCount();

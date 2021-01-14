@@ -19,7 +19,7 @@ public class WoolLeavesBlock extends LeavesBlock {
 	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
 		if (!world.isClient() && !newState.isOf(this) && world.getRandom().nextDouble() < .5) {
 			SheepEntity sheep = EntityType.SHEEP.create(world);
-			sheep.teleport(pos.getX() + .5, pos.getY(), pos.getZ() + .5);
+			sheep.teleport(pos.getX() + .005, pos.getY(), pos.getZ() + .5);
 			sheep.setColor(DyeColor.byId(world.getRandom().nextInt(DyeColor.values().length)));
 			sheep.setBaby(true);
 			sheep.setCustomName(new LiteralText("jeb_"));

@@ -1,6 +1,7 @@
 package net.cpp.mixin;
 
 import net.cpp.api.INutrition;
+import net.cpp.item.Wand;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -34,6 +35,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 	@Inject(at = @At("RETURN"), method = "tick")
 	public void tick(CallbackInfo info) {
 		if (!this.world.isClient) {
+			ServerPlayerEntity this0 = (ServerPlayerEntity) (Object) this;
 			int value = weight / 100;
 			String fat = "normal";
 			if (value > 0) {
@@ -45,8 +47,9 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 			}
 			BlockState blockState = this.world.getBlockState(this.getBlockPos());
 			if (!this.isSpectator() && blockState.getBlock() == Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE) {
-				((ServerPlayerEntity)((Object)this)).networkHandler.sendPacket(new TitleS2CPacket(TitleS2CPacket.Action.ACTIONBAR, new TranslatableText("misc.cpp", new TranslatableText("chat.cpp.title").formatted(Formatting.GOLD), new TranslatableText("chat.cpp.weight", weight, new TranslatableText("cpp.chat.weight." + fat)))));
+				(this0).networkHandler.sendPacket(new TitleS2CPacket(TitleS2CPacket.Action.ACTIONBAR, new TranslatableText("misc.cpp", new TranslatableText("chat.cpp.title").formatted(Formatting.GOLD), new TranslatableText("chat.cpp.weight", weight, new TranslatableText("cpp.chat.weight." + fat)))));
 			}
+			Wand.tickEffect(this0);
 		}
 	}
 

@@ -65,6 +65,7 @@ import net.cpp.item.TimeChecker;
 import net.cpp.item.TimeConditioner;
 import net.cpp.item.ToughenHand;
 import net.cpp.item.TradePlugin;
+import net.cpp.item.Wand;
 import net.cpp.item.WhiteForceOfLightning;
 import net.cpp.item.YellowForceOfEarth;
 import net.cpp.misc.CppArmorMaterial;
@@ -72,9 +73,11 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.DyeableArmorItem;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.Settings;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.UseAction;
@@ -319,11 +322,7 @@ public final class CppItems {
 	public static final Item ISORCHID_SEEDS;
 	public static final Item BURNING_CHRYSANTHE_SEEDS;
 	public static final Item OXALIS_SEEDS;
-	public static final Item BLUE_ROSE;
-	public static final Item POINSETTIA;
-	public static final Item CHRISTMAS_TREE;
 	public static final Item RICE_SEEDS;
-	public static final Item RICE;
 	// 仪式和魔法
 	public static final Item SEALING_WAND;
 	public static final Item STAR_WAND;
@@ -387,6 +386,8 @@ public final class CppItems {
 	public static final Item RED_SIGN;
 	public static final Item BLACK_SIGN;
 	public static final Item GLASS_SIGN;
+
+	public static final Item BROKEN_SPAWNER = registerItem("broken_spawner", new Item(new Settings().group(CPP_GROUP_MISC)));
 
 	public static final Item COMPRESSED_ITEM;
 	static {
@@ -626,15 +627,11 @@ public final class CppItems {
 		ISORCHID_SEEDS = registerSeeds(ISORCHID);
 		BURNING_CHRYSANTHE_SEEDS = registerSeeds(BURNING_CHRYSANTHE);
 		OXALIS_SEEDS = registerSeeds(OXALIS);
-		BLUE_ROSE = registerItem("blue_rose", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		POINSETTIA = registerItem("poinsettia", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		CHRISTMAS_TREE = registerItem("christmas_tree", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		RICE_SEEDS = registerItem("rice_seed", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
-		RICE = registerItem("rice", new Item(new Item.Settings().group(CPP_GROUP_PLANT)));
+		RICE_SEEDS = registerItem("rice_seed", new BlockItem(CppBlocks.RICE, new Item.Settings().group(CPP_GROUP_PLANT)));
 
-		SEALING_WAND = registerItem("sealing_wand", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-		STAR_WAND = registerItem("star_wand", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-		DREAM_WAND = registerItem("dream_wand", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		SEALING_WAND = registerItem("sealing_wand", new Wand(1, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		STAR_WAND = registerItem("star_wand", new Wand(2, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		DREAM_WAND = registerItem("dream_wand", new Wand(3, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		TEMPERANCER = registerItem("temperancer", new Temperancer(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		WAND_OF_THE_DARKNESS = registerItem("wand_of_the_darkness", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 

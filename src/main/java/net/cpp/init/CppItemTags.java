@@ -13,6 +13,8 @@ public final class CppItemTags {
 	public static final Tag<Item> FLOWER_GRASS_SEEDS = register("flower_grass_seeds");
 	public static final Tag<Item> FRUITS = register("fruits");
 	public static final Tag<Item> DROPPABLE_FRUITS = register("droppable_fruits");
+	public static final Tag<Item> RARE_DROPS = register("rare_drops");
+	public static final Tag<Item> AGENTIAS = register("agentias");
 
 	private CppItemTags() {
 	}

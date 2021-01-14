@@ -1,6 +1,6 @@
 package net.cpp.init;
 
-import static net.cpp.Craftingpp.CPP_GROUP_MACHINE;
+import static net.cpp.Craftingpp.*;
 import static net.cpp.Craftingpp.CPP_GROUP_MISC;
 import static net.minecraft.entity.effect.StatusEffects.BLINDNESS;
 import static net.minecraft.entity.effect.StatusEffects.FIRE_RESISTANCE;
@@ -43,8 +43,11 @@ import net.cpp.block.GoldenAnvilBlock;
 import net.cpp.block.ItemProcessorBlock;
 import net.cpp.block.MobProjectorBlock;
 import net.cpp.block.OreLeavesBlock;
+import net.cpp.block.PublicPlantBlock;
 import net.cpp.block.PublicSaplingBlock;
+import net.cpp.block.RiceBlock;
 import net.cpp.block.TradeMachineBlock;
+import net.cpp.block.CustomHeightPlantBlock;
 import net.cpp.block.WoolLeavesBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
@@ -125,6 +128,11 @@ public final class CppBlocks {
 	public static final Block ARABIA_SPEEDWELL = registerFlowerGrass("arabia_speedwell");
 	public static final Block SILENE_PENDULA = registerFlowerGrass("silene_pendula");
 	public static final Block ARTEMISIA_ARGYI = registerFlowerGrass("artemisia_argyi");
+	public static final Block BLUE_ROSE = registerBlock("blue_rose", CustomHeightPlantBlock.of(2, FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS)), CPP_GROUP_PLANT);
+	public static final Block POINSETTIA = registerPlant("poinsettia");
+	public static final Block CHRISTMAS_TREE = registerBlock("christmas_tree", CustomHeightPlantBlock.of(2, FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS)), CPP_GROUP_PLANT);
+	public static final Block RICE = Registry.register(Registry.BLOCK, new Identifier(MOD_ID3, "rice"), new RiceBlock(FabricBlockSettings.of(Material.PLANT).ticksRandomly().noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS)));
+
 	public static final List<Block> FLOWER_GRASSES = ImmutableList.of(LYCORIS_RADIATA, TRIFOLIUM, BLACKTHORN, CATTAIL, MARIGOLD, HIBISCUS, HYACINTH, CALAMUS, WILD_LILIUM, BAUHINIA, FLUFFY_GRASS, GERBERA, ESPARTO, GLOW_FORSYTHIA, GLAZED_SHADE, STELERA, FORAGE_CRYSTAL, ISORCHID, BURNING_CHRYSANTHE, OXALIS, CALLIOPSIS, CYCLAMEN, IRIS, LILIUM_PUMILUM, SNOWDROP, NARCISSUS, COLE_FLOWER, LUPINE, CROCU, PANSY, ARABIA_SPEEDWELL, SILENE_PENDULA, ARTEMISIA_ARGYI);
 
 	public static void register() {
@@ -149,7 +157,7 @@ public final class CppBlocks {
 	private static Block registerLeaves(String id, Function<Settings, LeavesBlock> constructor) {
 		Identifier identifier = new Identifier(Craftingpp.MOD_ID3, id);
 		Block regBlock = Registry.register(Registry.BLOCK, identifier, constructor.apply(FabricBlockSettings.of(Material.LEAVES).strength(0.2F).ticksRandomly().sounds(BlockSoundGroup.GRASS).nonOpaque().allowsSpawning(CppBlocks::canSpawnOnLeaves)/* .suffocates(CppBlocks::never) *//* .blockVision(CppBlocks::never) */));
-		BlockItem item = Registry.register(Registry.ITEM, identifier, new BlockItem(regBlock, new Item.Settings().group(Craftingpp.CPP_GROUP_PLANT)));
+		BlockItem item = Registry.register(Registry.ITEM, identifier, new BlockItem(regBlock, new Item.Settings().group(CPP_GROUP_PLANT)));
 		item.appendBlocks(Item.BLOCK_ITEMS, item);
 		return regBlock;
 	}
@@ -157,7 +165,7 @@ public final class CppBlocks {
 	private static Block registerSapling(String id, BiFunction<SaplingGenerator, Settings, SaplingBlock> constructor, SaplingGenerator saplingGenerator) {
 		Identifier identifier = new Identifier(Craftingpp.MOD_ID3, id);
 		Block regBlock = Registry.register(Registry.BLOCK, identifier, constructor.apply(saplingGenerator, FabricBlockSettings.of(Material.PLANT).noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.GRASS)));
-		BlockItem item = Registry.register(Registry.ITEM, identifier, new AliasedBlockItem(regBlock, new Item.Settings().group(Craftingpp.CPP_GROUP_PLANT)));
+		BlockItem item = Registry.register(Registry.ITEM, identifier, new AliasedBlockItem(regBlock, new Item.Settings().group(CPP_GROUP_PLANT)));
 		item.appendBlocks(Item.BLOCK_ITEMS, item);
 		return regBlock;
 	}
@@ -165,7 +173,7 @@ public final class CppBlocks {
 	private static Block registerFlowerGrass(String id, StatusEffect suspiciousStewEffect, int effectDuration) {
 		Identifier identifier = new Identifier(Craftingpp.MOD_ID3, id);
 		Block regBlock = Registry.register(Registry.BLOCK, identifier, new FlowerGrass1Block(suspiciousStewEffect, effectDuration, FabricBlockSettings.of(Material.PLANT).ticksRandomly().noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS)));
-		BlockItem item = Registry.register(Registry.ITEM, identifier, new AliasedBlockItem(regBlock, new Item.Settings().group(Craftingpp.CPP_GROUP_PLANT)));
+		BlockItem item = Registry.register(Registry.ITEM, identifier, new AliasedBlockItem(regBlock, new Item.Settings().group(CPP_GROUP_PLANT)));
 		item.appendBlocks(Item.BLOCK_ITEMS, item);
 		return regBlock;
 	}
@@ -173,7 +181,15 @@ public final class CppBlocks {
 	private static Block registerFlowerGrass(String id) {
 		Identifier identifier = new Identifier(Craftingpp.MOD_ID3, id);
 		Block regBlock = Registry.register(Registry.BLOCK, identifier, new FlowerGrass2Block(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS)));
-		BlockItem item = Registry.register(Registry.ITEM, identifier, new AliasedBlockItem(regBlock, new Item.Settings().group(Craftingpp.CPP_GROUP_PLANT)));
+		BlockItem item = Registry.register(Registry.ITEM, identifier, new AliasedBlockItem(regBlock, new Item.Settings().group(CPP_GROUP_PLANT)));
+		item.appendBlocks(Item.BLOCK_ITEMS, item);
+		return regBlock;
+	}
+
+	private static Block registerPlant(String id) {
+		Identifier identifier = new Identifier(Craftingpp.MOD_ID3, id);
+		Block regBlock = Registry.register(Registry.BLOCK, identifier, new PublicPlantBlock(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS)));
+		BlockItem item = Registry.register(Registry.ITEM, identifier, new AliasedBlockItem(regBlock, new Item.Settings().group(CPP_GROUP_PLANT)));
 		item.appendBlocks(Item.BLOCK_ITEMS, item);
 		return regBlock;
 	}

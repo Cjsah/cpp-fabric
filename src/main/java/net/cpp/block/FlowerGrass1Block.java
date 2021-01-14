@@ -1,6 +1,9 @@
 package net.cpp.block;
 
+import java.util.List;
 import java.util.Random;
+
+import com.google.common.collect.ImmutableList;
 
 import net.cpp.init.CppItems;
 import net.minecraft.block.Block;
@@ -16,14 +19,13 @@ import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 public class FlowerGrass1Block extends FlowerBlock implements Fertilizable {
 	public static final IntProperty AGE = Properties.AGE_3;
-	public static final VoxelShape[] AGE_TO_SHAPE = { Block.createCuboidShape(3, 0, 3, 13, 10, 13), Block.createCuboidShape(2, 0.0D, 2, 14, 12, 14), Block.createCuboidShape(1, 0.0D, 1, 15, 14, 15), Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16, 16.0D) };
+	public static final List<VoxelShape> AGE_TO_SHAPE = ImmutableList.of(Block.createCuboidShape(3, 0, 3, 13, 10, 13), Block.createCuboidShape(2, 0.0D, 2, 14, 12, 14), Block.createCuboidShape(1, 0.0D, 1, 15, 14, 15), Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16, 16.0D));
 	private Item seed;
 
 	public FlowerGrass1Block(StatusEffect suspiciousStewEffect, int effectDuration, Settings settings) {
@@ -67,10 +69,7 @@ public class FlowerGrass1Block extends FlowerBlock implements Fertilizable {
 	}
 
 	public void setSeed(Item seed) {
-//		if (seed == null)
 		this.seed = seed;
-//		else
-//			throw new UnsupportedOperationException("已经设置过种子");
 	}
 
 	public Item getSeed() {
@@ -80,7 +79,6 @@ public class FlowerGrass1Block extends FlowerBlock implements Fertilizable {
 	}
 
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		Vec3d offset = state.getModelOffset(world, pos);
-		return AGE_TO_SHAPE[state.get(AGE)].offset(offset.x, offset.y, offset.z);
+		return AGE_TO_SHAPE.get(state.get(AGE));
 	}
 }

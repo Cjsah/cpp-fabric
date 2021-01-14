@@ -1,6 +1,6 @@
 {
-    "parent": "minecraft:item/handheld",
-    "textures": {
-        "layer0": "cpp:item/blue_rose"
-    }
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "cpp:block/blue_rose"
+	}
 }

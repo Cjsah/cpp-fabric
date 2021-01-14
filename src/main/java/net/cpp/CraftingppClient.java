@@ -1,6 +1,6 @@
 package net.cpp;
 
-import static net.cpp.init.CppBlocks.FRUIT_SAPLING;
+import static net.cpp.init.CppBlocks.*;
 import static net.cpp.init.CppBlocks.ORE_SAPLING;
 import static net.cpp.init.CppBlocks.SAKURA_SAPLING;
 import static net.cpp.init.CppBlocks.WOOL_SAPLING;
@@ -55,7 +55,7 @@ public class CraftingppClient implements ClientModInitializer {
 			EntityRendererRegistry.INSTANCE.register(type, ctx -> new GolemRenderer(ctx, type));
 		}
 
-		BlockRenderLayerMapImpl.INSTANCE.putBlocks(RenderLayer.getCutout(), FRUIT_SAPLING, ORE_SAPLING, SAKURA_SAPLING, WOOL_SAPLING);
+		BlockRenderLayerMapImpl.INSTANCE.putBlocks(RenderLayer.getCutout(), FRUIT_SAPLING, ORE_SAPLING, SAKURA_SAPLING, WOOL_SAPLING, BLUE_ROSE, POINSETTIA, CHRISTMAS_TREE,RICE);
 		for (Block block : CppBlocks.FLOWER_GRASSES)
 			BlockRenderLayerMapImpl.INSTANCE.putBlock(block, RenderLayer.getCutout());
 	}
