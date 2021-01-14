@@ -45,6 +45,7 @@ import java.util.UUID;
 
 import com.google.common.collect.ImmutableList;
 
+import net.cpp.api.CodingTool;
 import net.cpp.api.CppEffect;
 import net.cpp.api.IRitualStackHolder;
 import net.cpp.init.CppEffects;
@@ -417,20 +418,9 @@ public class Wand extends Item {
 					}
 				}
 			}
-			StatusEffectInstance effectInstance = player.getStatusEffect(NIGHT_VISION);
-			if (effectInstance != null && effectInstance.getAmplifier() == 254 && effectInstance.getDuration() <= 210) {
-				CompoundTag tag1 = effectInstance.toTag(new CompoundTag());
-				if (tag1.contains("HiddenEffect")) {
-					CompoundTag tag2 = tag1.getCompound("HiddenEffect");
-					player.applyStatusEffect(StatusEffectInstance.fromTag(tag2));
-				} else {
-					player.removeStatusEffect(NIGHT_VISION);
-				}
-
-			}
+			CodingTool.removeEffectExceptHidden(player, NIGHT_VISION, 254, 210);
 		}
 	}
-
 	static {
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			loadRandoms(server);

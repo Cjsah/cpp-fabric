@@ -10,8 +10,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.mojang.authlib.GameProfile;
 
 import net.cpp.api.CodingTool;
+import net.cpp.block.entity.BeaconEnhancerBlockEntity;
 import net.cpp.init.CppItems;
 import net.cpp.item.Magnet;
+import net.cpp.item.Wand;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -51,6 +53,8 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 				CodingTool.give(this0, stack);
 			}
 		}
+		Wand.tickEffect(this0);
+		BeaconEnhancerBlockEntity.tickEffect(this0);
 	}
 
 	@Inject(at = @At("HEAD"), method = "writeCustomDataToTag")

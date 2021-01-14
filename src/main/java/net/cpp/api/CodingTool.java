@@ -20,6 +20,8 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
@@ -477,5 +479,18 @@ public class CodingTool {
 		int c1 = exp / 9 + (Math.random() < (exp % 9) / 9. ? 1 : 0);
 		list.add(new ItemStack(Items.EXPERIENCE_BOTTLE, c1));
 		return list;
+	}
+
+	public static void removeEffectExceptHidden(PlayerEntity player, StatusEffect effect, int amplifier, int duration) {
+		StatusEffectInstance effectInstance = player.getStatusEffect(effect);
+		if (effectInstance != null && effectInstance.getAmplifier() == amplifier && effectInstance.getDuration() <= duration) {
+			CompoundTag tag1 = effectInstance.toTag(new CompoundTag());
+			if (tag1.contains("HiddenEffect")) {
+				CompoundTag tag2 = tag1.getCompound("HiddenEffect");
+				player.applyStatusEffect(StatusEffectInstance.fromTag(tag2));
+			} else {
+				player.removeStatusEffect(effect);
+			}
+		}
 	}
 }

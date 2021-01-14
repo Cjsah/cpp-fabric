@@ -19,6 +19,7 @@ import java.util.List;
 
 import com.mojang.brigadier.StringReader;
 
+import net.cpp.api.CodingTool;
 import net.cpp.api.CppEffect;
 import net.cpp.gui.handler.BeaconEnhancerScreenHandler;
 import net.cpp.init.CppBlockEntities;
@@ -194,14 +195,17 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 							}
 							// 施加状态效果
 							for (PlayerEntity e : players) {
-								int duratioin;
-								if (blockEntity.playerEffect == StatusEffects.NIGHT_VISION)
-									duratioin=400;
-								else if (blockEntity.playerEffect == StatusEffects.SATURATION)
-									duratioin=5;
-								else
-									duratioin=200;
-								e.addStatusEffect(new StatusEffectInstance(blockEntity.playerEffect, duratioin, 0, true, true));
+
+								if (blockEntity.playerEffect == StatusEffects.NIGHT_VISION) {
+									e.addStatusEffect(new StatusEffectInstance(blockEntity.playerEffect, 400, 253, true, true));
+								} else {
+									int duratioin;
+									if (blockEntity.playerEffect == StatusEffects.SATURATION)
+										duratioin = 1;
+									else
+										duratioin = 200;
+									e.addStatusEffect(new StatusEffectInstance(blockEntity.playerEffect, duratioin, 0, true, true));
+								}
 							}
 							for (MobEntity e : entities) {
 								if (blockEntity.getMobEffect() != ATTRACTING)
@@ -224,7 +228,6 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 		return new BeaconEnhancerScreenHandler(syncId, inv, this);
 	}
 
-	
 	public Text getDisplayName() {
 		return new TranslatableText(getCachedState().getBlock().getTranslationKey());
 	}
@@ -275,5 +278,9 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 	 */
 	public void shiftOnlyAdverse() {
 		propertyDelegate.set(2, onlyAdverse ? 0 : 1);
+	}
+	
+	public static void tickEffect(PlayerEntity player) {
+		CodingTool.removeEffectExceptHidden(player, NIGHT_VISION, 253, 199);
 	}
 }
