@@ -4,10 +4,10 @@
   "version": "${version}",
 
   "name": "Crafting++",
-  "description": "Rewrite from datapack named Craftingpp",
+  "description": "Fabric mod of Crafting++\nRewrite from datapack of Crafting++",
   "authors": [
-    "Cjsah",
     "Phoupraw",
+    "Cjsah",
     "ruhuasiyu"
   ],
   "contact": {

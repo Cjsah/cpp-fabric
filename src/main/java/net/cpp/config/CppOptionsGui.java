@@ -1,142 +1,162 @@
-/*
-来自gbl/GBfabrictools仓库
- */
-
 package net.cpp.config;
 
-import static net.minecraft.client.gui.widget.AbstractButtonWidget.WIDGETS_LOCATION;
-
-import java.util.function.Supplier;
-
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.screen.ScreenTexts;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.util.math.MatrixStack;
 import org.apache.logging.log4j.Logger;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-
 import net.cpp.Craftingpp;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 
-public class CppOptionsGui extends Screen implements Supplier<Screen> {
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
+public class CppOptionsGui extends Screen {
+    private static final Logger LOGGER = Craftingpp.logger;
+    private static final CppConfig config = Craftingpp.CONFIG;
     private final Screen screen;
-//    private final ModConfigurationHandler handler;
-//    private final List<String> options;
-    private final Logger LOGGER;
+    private TextFieldWidget searchBox;
+    private DescriptionListWidget descriptionListWidget;
+    private ConfigListWidget configList;
+    private Text tooltip;
+    private ConfigListEntry selected;
+    private double scrollPercent = 0.0D;
+    private boolean init = false;
+    private boolean filterOptionsShown = false;
+    private int paneY;
+    private int paneWidth;
+    private int rightPaneX;
+    private int searchBoxX;
+    private int filtersX;
+    private int filtersWidth;
+    private int searchRowWidth;
+    public final Set<String> showModChildren = new HashSet();
 
-    private String screenTitle;
-
-    private static final int LINEHEIGHT = 25;
-    private static final int BUTTONHEIGHT = 20;
-    private static final int TOP_BAR_SIZE = 40;
-    private static final int BOTTOM_BAR_SIZE = 35;
-
-    private boolean isDraggingScrollbar = false;
-    private boolean mouseReleased = false;      // used to capture mouse release events when a child slider has the mouse dragging
-
-    private int buttonWidth;
-    private int scrollAmount;
-    private int maxScroll;
-
-    private static final Text trueText = new TranslatableText("de.guntram.mcmod.fabrictools.true").formatted(Formatting.GREEN);
-    private static final Text falseText = new TranslatableText("de.guntram.mcmod.fabrictools.false").formatted(Formatting.RED);
-
-    protected CppOptionsGui(Screen screen, String modName) {
-        super(new LiteralText(modName));
+    public CppOptionsGui(Screen screen) {
+        super(new TranslatableText("modmenu.title"));
         this.screen = screen;
-        this.screenTitle = modName + "Configuration";
-        this.LOGGER = Craftingpp.logger;
-
     }
 
     @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+        if (this.configList.isMouseOver(mouseX, mouseY)) {
+            return this.configList.mouseScrolled(mouseX, mouseY, amount);
+        } else {
+            return this.descriptionListWidget.isMouseOver(mouseX, mouseY) && this.descriptionListWidget.mouseScrolled(mouseX, mouseY, amount);
+        }
+    }
+
+    public void tick() {
+        this.searchBox.tick();
+    }
+
     protected void init() {
-        buttonWidth = this.width / 2 -50;
-        if (buttonWidth > 200)
-            buttonWidth = 200;
+        Objects.requireNonNull(this.client).keyboard.setRepeatEvents(true);
+        this.paneY = 48;
+        this.paneWidth = this.width / 2 - 8;
+        this.rightPaneX = this.width - this.paneWidth;
+        int searchBoxWidth = this.paneWidth - 32 - 22;
+        this.searchBoxX = this.paneWidth / 2 - searchBoxWidth / 2 - 11;
+        this.searchBox = new TextFieldWidget(this.textRenderer, this.searchBoxX, 22, searchBoxWidth, 20, this.searchBox, new TranslatableText("modmenu.search"));
+        this.configList = new ConfigListWidget(this.client, this.paneWidth, this.height, this.paneY + 19, this.height - 36, 36, this.searchBox.getText(), config.JSON, this);
 
-        this.addButton(new AbstractButtonWidget(this.width / 2 - 100, this.height - 27, 200, BUTTONHEIGHT, new TranslatableText("gui.done")) {
-            @Override
-            public void onClick(double x, double y) {
+        this.configList.setLeftPos(0);
+        this.descriptionListWidget = new DescriptionListWidget(this.client, this.paneWidth, this.height, this.paneY + 60, this.height - 36, 9 + 1, this);
+        this.descriptionListWidget.setLeftPos(this.rightPaneX);
+        this.children.add(this.searchBox);
+        this.searchRowWidth = this.searchBoxX + searchBoxWidth + 22;
+        this.updateFiltersX();
+        this.children.add(this.configList);
+        this.children.add(this.descriptionListWidget);
+        this.addButton(new ButtonWidget(this.width / 2 -75, this.height - 28, 150, 20, ScreenTexts.DONE, (button) -> this.client.openScreen(this.screen)));
+        this.setInitialFocus(this.searchBox);
+        this.init = true;
 
-                for (AbstractButtonWidget button: buttons) {
-                    if (button instanceof TextFieldWidget) {
-                        if (button.isFocused()) {
-                            button.changeFocus(false);
-                        }
-                    }
-                }
-//                handler.onConfigChanged(new ConfigChangedEvent.OnConfigChangedEvent(modName));
-                client.openScreen(screen);
-            }
-        });
     }
 
     @Override
-    public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
-        renderBackground(stack);
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        return super.keyPressed(keyCode, scanCode, modifiers) || this.searchBox.keyPressed(keyCode, scanCode, modifiers);
+    }
 
-//        int y = TOP_BAR_SIZE + LINEHEIGHT/2 - scrollAmount;
-//        for (int i=0; i<this.options.size(); i++) {
-//            if (y > TOP_BAR_SIZE - LINEHEIGHT/2 && y < height - BOTTOM_BAR_SIZE) {
-//                textRenderer.draw(stack, new TranslatableText(options.get(i)).asOrderedText(), this.width / 2 -155, y+4, 0xffffff);
-//                ((AbstractButtonWidget)this.buttons.get(i*2+1)).y = y;                                          // config elem
-//                ((AbstractButtonWidget)this.buttons.get(i*2+1)).render(stack, mouseX, mouseY, partialTicks);
-//                ((AbstractButtonWidget)this.buttons.get(i*2+2)).y = y;                                        // reset button
-//                ((AbstractButtonWidget)this.buttons.get(i*2+2)).render(stack, mouseX, mouseY, partialTicks);
-//            }
-//            y += LINEHEIGHT;
-//        }
-
-//        y = TOP_BAR_SIZE + LINEHEIGHT/2 - scrollAmount;
-//        for (String text: options) {
-//            if (y > TOP_BAR_SIZE - LINEHEIGHT/2 && y < height - BOTTOM_BAR_SIZE) {
-//                if (mouseX>this.width/2-155 && mouseX<this.width/2 && mouseY>y && mouseY<y+BUTTONHEIGHT) {
-//                    String ttText = handler.getIConfig().getTooltip(text);
-//                    if (ttText == null || ttText.isEmpty()) {
-//                        y += LINEHEIGHT;
-//                        continue;
-//                    }
-//                    TranslatableText tooltip=new TranslatableText(handler.getIConfig().getTooltip(text));
-//                    int width = textRenderer.getWidth(tooltip);
-//                    if (width == 0) {
-//                        // do nothing
-//                    } else if (width<=250) {
-//                        renderTooltip(stack, tooltip, 0, mouseY);
-//                    } else {
-//                        List<OrderedText> lines = textRenderer.wrapLines(tooltip, 250);
-//                        renderOrderedTooltip(stack, lines, 0, mouseY);
-//                    }
-//                }
-//            }
-//            y+=LINEHEIGHT;
-//        }
-
-        if (maxScroll > 0) {
-            // fill(stack, width-5, TOP_BAR_SIZE, width, height - BOTTOM_BAR_SIZE, 0xc0c0c0);
-            int pos = (int)((height - TOP_BAR_SIZE - BOTTOM_BAR_SIZE - BUTTONHEIGHT) * ((float)scrollAmount / maxScroll));
-            // fill(stack, width-5, pos, width, pos+BUTTONHEIGHT, 0x303030);
-            this.client.getTextureManager().bindTexture(WIDGETS_LOCATION);
-            drawTexture(stack, width-5, pos+TOP_BAR_SIZE, 0, 66, 4, 20);
+    @Override
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        this.renderBackground(matrices);
+        this.tooltip = null;
+        ConfigListEntry selectedEntry = this.selected;
+        if (selectedEntry != null) {
+            this.descriptionListWidget.render(matrices, mouseX, mouseY, delta);
         }
 
-        this.client.getTextureManager().bindTexture(DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
-        RenderSystem.disableDepthTest();
-        drawTexture(stack, 0, 0, 0, 0, width, TOP_BAR_SIZE);
-        drawTexture(stack, 0, height-BOTTOM_BAR_SIZE, 0, 0, width, BOTTOM_BAR_SIZE);
-
-        drawCenteredString(stack, textRenderer, screenTitle, this.width/2, (TOP_BAR_SIZE - textRenderer.fontHeight)/2, 0xffffff);
-        this.buttons.get(0).render(stack, mouseX, mouseY, partialTicks);
+        this.configList.render(matrices, mouseX, mouseY, delta);
+        this.searchBox.render(matrices, mouseX, mouseY, delta);
+        RenderSystem.disableBlend();
+        drawTextWithShadow(matrices, this.textRenderer, this.title, this.configList.getWidth() / 2, 8, 16777215);
+        super.render(matrices, mouseX, mouseY, delta);
     }
 
-    @Override
-    public Screen get() {
-        return this;
+    private boolean updateFiltersX() {
+        if (this.filtersWidth + this.textRenderer.getWidth(this.getConfigCountText()) + 20 >= this.searchRowWidth && (this.filtersWidth + this.textRenderer.getWidth(this.getConfigCountText()) + 20 >= this.searchRowWidth || this.filtersWidth + this.textRenderer.getWidth(this.getConfigCountText()) + 20 >= this.searchRowWidth)) {
+            this.filtersX = this.paneWidth / 2 - this.filtersWidth / 2;
+            return !this.filterOptionsShown;
+        } else {
+            this.filtersX = this.searchRowWidth - this.filtersWidth + 1;
+            return true;
+        }
     }
+
+    ConfigListEntry getSelectedEntry() {
+        return this.selected;
+    }
+
+    private Text getConfigCountText() {
+        return new TranslatableText("modmenu.showingMods.a", this.configList.getDisplayedCount());
+    }
+
+    private void setTooltip(Text tooltip) {
+        this.tooltip = tooltip;
+    }
+
+    double getScrollPercent() {
+        return this.scrollPercent;
+    }
+
+    void updateScrollPercent(double scrollPercent) {
+        this.scrollPercent = scrollPercent;
+    }
+
+    public void renderBackground(MatrixStack matrices) {
+        overlayBackground(0, 0, this.width, this.height, 64, 64, 64, 255, 255);
+    }
+
+    static void overlayBackground(int x1, int y1, int x2, int y2, int red, int green, int blue, int startAlpha, int endAlpha) {
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buffer = tessellator.getBuffer();
+        MinecraftClient.getInstance().getTextureManager().bindTexture(DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
+        buffer.vertex(x1, y2, 0.0D).texture((float)x1 / 32.0F, (float)y2 / 32.0F).color(red, green, blue, endAlpha).next();
+        buffer.vertex(x2, y2, 0.0D).texture((float)x2 / 32.0F, (float)y2 / 32.0F).color(red, green, blue, endAlpha).next();
+        buffer.vertex(x2, y1, 0.0D).texture((float)x2 / 32.0F, (float)y1 / 32.0F).color(red, green, blue, startAlpha).next();
+        buffer.vertex(x1, y1, 0.0D).texture((float)x1 / 32.0F, (float)y1 / 32.0F).color(red, green, blue, startAlpha).next();
+        tessellator.draw();
+    }
+
+    public void onClose() {
+        super.onClose();
+        this.configList.close();
+        this.client.openScreen(this.screen);
+    }
+
 }
