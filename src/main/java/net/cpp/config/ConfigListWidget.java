@@ -34,14 +34,12 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
     private List<String> ConfigContainerList = null;
     private final Set<String> addedConfigs = new HashSet<>();
     private String selectedConfigId = null;
-    private final JsonObject config;
     private boolean scrolling;
 
 
     protected ConfigListWidget(MinecraftClient client, int width, int height, int y1, int y2, int entryHeight, String searchTerm, JsonObject config, CppOptionsGui parent) {
         super(client, width, height, y1, y2, entryHeight);
         this.parent = parent;
-        this.config = config;
         for (Map.Entry<String, JsonElement> i  : config.entrySet()) {
             configKeys.add(i.getKey());
         }
@@ -136,7 +134,7 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
             if (this.getScrollAmount() > (double)Math.max(0, this.getMaxPosition() - (this.bottom - this.top - 4))) {
                 this.setScrollAmount(Math.max(0, this.getMaxPosition() - (this.bottom - this.top - 4)));
             }
-            this.addEntry(new ConfigListEntry(key1, config.get(key1).getAsJsonObject(), this));
+            this.addEntry(new ConfigListEntry(key1, this));
 
         }
     }

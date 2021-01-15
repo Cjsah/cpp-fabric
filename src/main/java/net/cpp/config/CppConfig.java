@@ -19,11 +19,11 @@ import net.fabricmc.loader.api.FabricLoader;
 
 
 public class CppConfig {
-    protected static final File JSON_PATH = new File(FabricLoader.getInstance().getConfigDir().toFile(), Craftingpp.MOD_ID2);
+    protected final File JSON_PATH = new File(FabricLoader.getInstance().getConfigDir().toFile(), Craftingpp.MOD_ID2);
 
-    private static final Logger logger = LogManager.getLogger(Craftingpp.MOD_ID1);
+    private final Logger logger = LogManager.getLogger(Craftingpp.MOD_ID1);
 
-    private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
+    private final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
 
     protected final JsonObject JSON = new JsonObject();
 
@@ -55,7 +55,7 @@ public class CppConfig {
         return this.JSON.get(configName).getAsJsonObject();
     }
 
-    public boolean initConfig (String configName, JsonObject json) {
+    public boolean initConfig(String configName, JsonObject json) {
         File json_file = new File(JSON_PATH, configName + ".json");
         if (json_file.exists()) {
             return true;
@@ -68,6 +68,21 @@ public class CppConfig {
                 logger.error("Failed to create config file " + json_file);
                 e.printStackTrace();
                 return false;
+            }
+        }
+    }
+
+    public void changeConfig(String configName, JsonObject json) {
+        File json_file = new File(JSON_PATH, configName + ".json");
+        if (!json_file.exists()) {
+            logger.error(configName + "is not exists");
+        }else {
+            try(FileWriter fileWriter = new FileWriter(json_file)) {
+                fileWriter.write(GSON.toJson(json));
+                JSON.add(configName, json);
+            }catch (IOException e) {
+                logger.error("Failed to change config file " + json_file);
+                e.printStackTrace();
             }
         }
     }

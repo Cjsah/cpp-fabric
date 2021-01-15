@@ -15,8 +15,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Language;
 import net.minecraft.util.registry.Registry;
 
-import javax.annotation.Nonnull;
-
 
 public class ConfigListEntry extends Entry<ConfigListEntry> {
 
@@ -24,12 +22,10 @@ public class ConfigListEntry extends Entry<ConfigListEntry> {
     protected final MinecraftClient client = MinecraftClient.getInstance();
     public static final Identifier UNKNOWN_ICON = new Identifier("textures/misc/unknown_pack.png");
     private final String key;
-    private final JsonObject value;
     private final ConfigListWidget list;
 
-    public ConfigListEntry(String key, JsonObject value, ConfigListWidget list) {
+    public ConfigListEntry(String key, ConfigListWidget list) {
         this.key = key;
-        this.value = value;
         this.list = list;
     }
 
@@ -79,10 +75,6 @@ public class ConfigListEntry extends Entry<ConfigListEntry> {
 
     public String getKey() {
         return key;
-    }
-
-    public JsonObject getValue() {
-        return value;
     }
 
     public int getXOffset() {
