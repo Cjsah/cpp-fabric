@@ -1,0 +1,31 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"CDC",
+		"EFE"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:experience_bottle"
+		},
+		"B": {
+			"item": "cpp:enchanted_diamond"
+		},
+		"C": {
+			"item": "cpp:enchanted_gold"
+		},
+		"D": {
+			"item": "cpp:empty_plugin"
+		},
+		"E": {
+			"item": "minecraft:glass"
+		},
+		"F": {
+			"item": "cpp:wing_of_sky"
+		}
+	},
+	"result": {
+		"item": "cpp:low_pressure_plugin"
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "cpp:doughnut"
+		},
+		{
+			"item": "minecraft:sugar"
+		},
+		{
+			"item": "minecraft:green_dye"
+		}
+	],
+	"result": {
+		"item": "cpp:green_doughnut"
+	}
+}

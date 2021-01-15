@@ -1,0 +1,19 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"A A",
+		"ABA",
+		" B "
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:stick"
+		},
+		"B": {
+			"item": "cpp:enchanted_iron"
+		}
+	},
+	"result": {
+		"item": "cpp:chest_transporter"
+	}
+}

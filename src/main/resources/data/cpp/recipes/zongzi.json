@@ -1,0 +1,14 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "cpp:esparto"
+		},
+		{
+			"item": "cpp:rice_seed"
+		}
+	],
+	"result": {
+		"item": "cpp:zongzi"
+	}
+}

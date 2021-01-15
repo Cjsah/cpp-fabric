@@ -1,0 +1,19 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"AAA",
+		"ABA",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:stone"
+		},
+		"B": {
+			"item": "minecraft:experience_bottle"
+		}
+	},
+	"result": {
+		"item": "cpp:temperancer"
+	}
+}

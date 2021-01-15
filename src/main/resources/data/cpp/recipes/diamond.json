@@ -1,0 +1,16 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"AAA",
+		"AAA",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "cpp:splint"
+		}
+	},
+	"result": {
+		"item": "minecraft:diamond"
+	}
+}

@@ -1,0 +1,23 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"AAA",
+		"BCB",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:bread"
+		},
+		"B": {
+			"item": "cpp:bacon"
+		},
+		"C": {
+			"item": "cpp:boiled_egg"
+		}
+	},
+	"result": {
+		"item": "cpp:sandwich",
+		"count": 6
+	}
+}

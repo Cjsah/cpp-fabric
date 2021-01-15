@@ -28,7 +28,10 @@ import static net.minecraft.entity.effect.StatusEffects.SLOW_FALLING;
 import static net.minecraft.entity.effect.StatusEffects.SPEED;
 import static net.minecraft.entity.effect.StatusEffects.STRENGTH;
 import static net.minecraft.entity.effect.StatusEffects.WATER_BREATHING;
+import static net.minecraft.item.Items.AMETHYST_BLOCK;
+import static net.minecraft.item.Items.AMETHYST_SHARD;
 import static net.minecraft.item.Items.BOOK;
+import static net.minecraft.item.Items.BUDDING_AMETHYST;
 import static net.minecraft.item.Items.ENCHANTED_BOOK;
 import static net.minecraft.item.Items.EXPERIENCE_BOTTLE;
 import static net.minecraft.item.Items.GOLD_INGOT;
@@ -48,6 +51,7 @@ import com.google.common.collect.ImmutableList;
 import net.cpp.api.CodingTool;
 import net.cpp.api.CppEffect;
 import net.cpp.api.IRitualStackHolder;
+import net.cpp.api.ITemperancable;
 import net.cpp.init.CppEffects;
 import net.cpp.init.CppItemTags;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -61,6 +65,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributeModifier.Operation;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.effect.StatusEffect;
@@ -80,6 +85,8 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
+import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.resource.ServerResourceManager;
 import net.minecraft.server.MinecraftServer;
@@ -87,7 +94,10 @@ import net.minecraft.server.command.CommandOutput;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -120,218 +130,297 @@ public class Wand extends Item {
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		if (!context.getWorld().isClient) {
+			int suc = 0;
 			ServerWorld world = (ServerWorld) context.getWorld();
+			ServerPlayerEntity player = (ServerPlayerEntity) context.getPlayer();
 			BlockPos blockPos = context.getBlockPos();
 			BlockState state = world.getBlockState(blockPos);
 			if (state.isOf(Blocks.DISPENSER)) {
-				boolean b1 = true;
+				int type = 1;
 				for1: for (int i = -1; i < 2; i++) {
 					for (int j = -1; j < 2; j++) {
 						Block block = world.getBlockState(blockPos.add(i, -1, j)).getBlock();
 						if (i == 0 && j == 0) {
 							if (block != Blocks.LAPIS_BLOCK) {
-								b1 = false;
+								type = 0;
 								break for1;
 							}
 						} else if (((i + j) & 1) == 0) {
 							if (block != Blocks.EMERALD_BLOCK) {
-								b1 = false;
+								type = 0;
 								break for1;
 							}
 						} else {
 							if (block != Blocks.GOLD_BLOCK) {
-								b1 = false;
+								type = 0;
 								break for1;
 							}
 						}
 					}
 				}
-				if (b1) {
+				if (type == 0) {
+					type = 2;
+					for1: for (int i = -1; i < 2; i++) {
+						for (int j = -1; j < 2; j++) {
+							Block block = world.getBlockState(blockPos.add(i, -1, j)).getBlock();
+							if (i == 0 && j == 0) {
+								if (block != Blocks.BEDROCK) {
+									type = 0;
+									break for1;
+								}
+							} else if (((i + j) & 1) == 0) {
+								if (block != Blocks.OBSIDIAN) {
+									type = 0;
+									break for1;
+								}
+							} else {
+								if (block != Blocks.MAGMA_BLOCK) {
+									type = 0;
+									break for1;
+								}
+							}
+						}
+					}
+				}
+				if (type > 0) {
 					List<ItemFrameEntity> itemFrames = world.getEntitiesByClass(ItemFrameEntity.class, new Box(blockPos.up()), itemFrame -> itemFrame.getRotationClient().x == -90 && !itemFrame.getHeldItemStack().isEmpty());
 					if (!itemFrames.isEmpty()) {
 						ItemFrameEntity itemFrame = itemFrames.get(0);
 						ItemStack frameStack = itemFrame.getHeldItemStack();
 						DispenserBlockEntity inv = (DispenserBlockEntity) world.getBlockEntity(blockPos);
 						int level = ((Wand) context.getStack().getItem()).getLevel();
-						if (inv.getStack(0).isOf(EXPERIENCE_BOTTLE)) {
-							if (level >= 1 && frameStack.isOf(BOOK)) {
-								boolean b2 = true;
-								for (int i = 0; i < 9; i++) {
-									ItemStack stack = inv.getStack(i);
-									if ((i & 1) == 0 && i != 4) {
-										if (!stack.isOf(EXPERIENCE_BOTTLE) || stack.getCount() < 16) {
-											b2 = false;
-											break;
-										}
-									} else if (i >= 3 && i <= 5) {
-										if (!stack.isOf(LAPIS_LAZULI)) {
-											b2 = false;
-											break;
-										}
-									} else {
-										if (!stack.isIn(CppItemTags.RARE_DROPS)) {
-											b2 = false;
-											break;
-										}
-									}
-								}
-								if (b2) {
-									ItemStack stack1 = inv.getStack(1).getItem().getDefaultStack();
-									ItemStack stack2 = inv.getStack(7).getItem().getDefaultStack();
+						if (type == 1) {
+							if (inv.getStack(0).isOf(EXPERIENCE_BOTTLE)) {
+								if (level >= 1 && frameStack.isOf(BOOK)) {
+									boolean b2 = true;
 									for (int i = 0; i < 9; i++) {
 										ItemStack stack = inv.getStack(i);
 										if ((i & 1) == 0 && i != 4) {
-											stack.decrement(16);
+											if (!stack.isOf(EXPERIENCE_BOTTLE) || stack.getCount() < 16) {
+												b2 = false;
+												break;
+											}
+										} else if (i >= 3 && i <= 5) {
+											if (!stack.isOf(LAPIS_LAZULI)) {
+												b2 = false;
+												break;
+											}
 										} else {
-											stack.decrement(1);
+											if (!stack.isIn(CppItemTags.RARE_DROPS)) {
+												b2 = false;
+												break;
+											}
 										}
 									}
-									Set<Entry<RegistryKey<Enchantment>, Enchantment>> entries = Registry.ENCHANTMENT.getEntries();
-									int r = (randoms.get(stack1.getItem()) + randoms.get(stack2.getItem()) * CppItemTags.RARE_DROPS.values().size()) % entries.size();
-									Iterator<Entry<RegistryKey<Enchantment>, Enchantment>> iterator = entries.iterator();
-									while (--r > 0) {
-										iterator.next();
-									}
-									Enchantment enchantment = iterator.next().getValue();
-									ItemStack enchantedBook = ENCHANTED_BOOK.getDefaultStack();
-									EnchantedBookItem.addEnchantment(enchantedBook, new EnchantmentLevelEntry(enchantment, enchantment.getMaxLevel()));
-									setRitualStack(itemFrame, enchantedBook);
-									return ActionResult.SUCCESS;
-								}
-							}
-						} else if (inv.getStack(0).isOf(GOLD_INGOT)) {
-							Item frameItem = frameStack.getItem();
-							if (level >= 3 && checkFrameItem23(frameItem)) {
-								boolean b2 = true;
-								for (int i = 0; i < 9; i++) {
-									ItemStack stack = inv.getStack(i);
-									if ((i & 1) != 0) {
-										if (!stack.isOf(EXPERIENCE_BOTTLE) || stack.getCount() < 16) {
-											b2 = false;
-											break;
-										}
-									} else if ((i & 1) == 0 && i != 4) {
-										if (!stack.isOf(GOLD_INGOT)) {
-											b2 = false;
-											break;
-										}
-									} else {
-										if (!stack.isIn(CppItemTags.RARE_DROPS)) {
-											b2 = false;
-											break;
+									if (b2) {
+										if (level < 1) {
+											suc = 1 << 2 | 0b10;
+										} else {
+											ItemStack stack1 = inv.getStack(1).getItem().getDefaultStack();
+											ItemStack stack2 = inv.getStack(7).getItem().getDefaultStack();
+											for (int i = 0; i < 9; i++) {
+												ItemStack stack = inv.getStack(i);
+												if ((i & 1) == 0 && i != 4) {
+													stack.decrement(16);
+												} else {
+													stack.decrement(1);
+												}
+											}
+											Set<Entry<RegistryKey<Enchantment>, Enchantment>> entries = Registry.ENCHANTMENT.getEntries();
+											int r = (randoms.get(stack1.getItem()) + randoms.get(stack2.getItem()) * CppItemTags.RARE_DROPS.values().size()) % entries.size();
+											Iterator<Entry<RegistryKey<Enchantment>, Enchantment>> iterator = entries.iterator();
+											while (--r > 0) {
+												iterator.next();
+											}
+											Enchantment enchantment = iterator.next().getValue();
+											ItemStack enchantedBook = ENCHANTED_BOOK.getDefaultStack();
+											EnchantedBookItem.addEnchantment(enchantedBook, new EnchantmentLevelEntry(enchantment, enchantment.getMaxLevel()));
+											setRitualStack(itemFrame, enchantedBook);
+											suc = 1;
 										}
 									}
 								}
-								if (b2) {
-									ItemStack stack1 = inv.getStack(4).getItem().getDefaultStack();
+							} else if (inv.getStack(0).isOf(GOLD_INGOT)) {
+								Item frameItem = frameStack.getItem();
+								if (checkFrameItem23(frameItem)) {
+									boolean b2 = true;
 									for (int i = 0; i < 9; i++) {
 										ItemStack stack = inv.getStack(i);
 										if ((i & 1) != 0) {
-											stack.decrement(16);
+											if (!stack.isOf(EXPERIENCE_BOTTLE) || stack.getCount() < 16) {
+												b2 = false;
+												break;
+											}
+										} else if ((i & 1) == 0 && i != 4) {
+											if (!stack.isOf(GOLD_INGOT)) {
+												b2 = false;
+												break;
+											}
 										} else {
-											stack.decrement(1);
+											if (!stack.isIn(CppItemTags.RARE_DROPS)) {
+												b2 = false;
+												break;
+											}
 										}
 									}
-									int r = randoms.get(stack1.getItem()) ^ blockPos.hashCode();
-									double amount = 0;
-									EntityAttribute attribute = EntityAttributes.HORSE_JUMP_STRENGTH;
-									if (frameItem instanceof ToolItem || frameItem instanceof TridentItem) {
-										if ((r & 1) == 0) {
-											attribute = EntityAttributes.GENERIC_ATTACK_SPEED;
-											amount = (r >> 1) % 3;
+									if (b2) {
+										if (level < 3) {
+											suc = 3 << 2 | 0b10;
 										} else {
-											attribute = EntityAttributes.GENERIC_ATTACK_DAMAGE;
-											amount = (r >> 1) % 8;
-										}
-									} else {
-										switch (r % 4) {
-										case 0:
-											attribute = EntityAttributes.GENERIC_MAX_HEALTH;
-											amount = (r / 4) % 6;
-											break;
-										case 1:
-											attribute = EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE;
-											amount = (r / 4) % 4;
-											break;
-										case 2:
-											attribute = EntityAttributes.GENERIC_MOVEMENT_SPEED;
-											amount = (r / 4) % 16 / 100.;
-											break;
-										case 3:
-											attribute = EntityAttributes.GENERIC_LUCK;
-											amount = (r / 4) % 3;
-											break;
-										}
-									}
-									ItemStack modifiedStack = frameStack.copy();
-									EquipmentSlot slot = getSlot(frameItem);
-									ListTag attributeModifiers = modifiedStack.getOrCreateTag().getList("AttributeModifiers", 10);
-									if (attributeModifiers.isEmpty()) {
-										Item rawItem = modifiedStack.getItem();
-										for (Entry<EntityAttribute, EntityAttributeModifier> entry : rawItem.getAttributeModifiers(slot).entries()) {
-											modifiedStack.addAttributeModifier(entry.getKey(), entry.getValue(), slot);
-										}
-									} else {
-										for (Iterator<Tag> iterator = attributeModifiers.iterator(); iterator.hasNext();) {
-											Tag tag = iterator.next();
-											if (tag instanceof CompoundTag) {
-												CompoundTag compoundTag = (CompoundTag) tag;
-												if (NbtHelper.toUuid(compoundTag.get("UUID")).equals(ATTRIBUTE_UUID)) {
-													iterator.remove();
+											ItemStack stack1 = inv.getStack(4).getItem().getDefaultStack();
+											for (int i = 0; i < 9; i++) {
+												ItemStack stack = inv.getStack(i);
+												if ((i & 1) != 0) {
+													stack.decrement(16);
+												} else {
+													stack.decrement(1);
+												}
+											}
+											int r = randoms.get(stack1.getItem()) ^ blockPos.hashCode();
+											double amount = 0;
+											EntityAttribute attribute = EntityAttributes.HORSE_JUMP_STRENGTH;
+											if (frameItem instanceof ToolItem || frameItem instanceof TridentItem) {
+												if ((r & 1) == 0) {
+													attribute = EntityAttributes.GENERIC_ATTACK_SPEED;
+													amount = (r >> 1) % 3;
+												} else {
+													attribute = EntityAttributes.GENERIC_ATTACK_DAMAGE;
+													amount = (r >> 1) % 8;
+												}
+											} else {
+												switch (r % 4) {
+												case 0:
+													attribute = EntityAttributes.GENERIC_MAX_HEALTH;
+													amount = (r / 4) % 6;
+													break;
+												case 1:
+													attribute = EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE;
+													amount = (r / 4) % 4;
+													break;
+												case 2:
+													attribute = EntityAttributes.GENERIC_MOVEMENT_SPEED;
+													amount = (r / 4) % 16 / 100.;
+													break;
+												case 3:
+													attribute = EntityAttributes.GENERIC_LUCK;
+													amount = (r / 4) % 3;
 													break;
 												}
 											}
+											ItemStack modifiedStack = frameStack.copy();
+											EquipmentSlot slot = getSlot(frameItem);
+											ListTag attributeModifiers = modifiedStack.getOrCreateTag().getList("AttributeModifiers", 10);
+											if (attributeModifiers.isEmpty()) {
+												Item rawItem = modifiedStack.getItem();
+												for (Entry<EntityAttribute, EntityAttributeModifier> entry : rawItem.getAttributeModifiers(slot).entries()) {
+													modifiedStack.addAttributeModifier(entry.getKey(), entry.getValue(), slot);
+												}
+											} else {
+												for (Iterator<Tag> iterator = attributeModifiers.iterator(); iterator.hasNext();) {
+													Tag tag = iterator.next();
+													if (tag instanceof CompoundTag) {
+														CompoundTag compoundTag = (CompoundTag) tag;
+														if (NbtHelper.toUuid(compoundTag.get("UUID")).equals(ATTRIBUTE_UUID)) {
+															iterator.remove();
+															break;
+														}
+													}
+												}
+												modifiedStack.putSubTag("AttributeModifiers", attributeModifiers);
+											}
+											modifiedStack.addAttributeModifier(attribute, new EntityAttributeModifier(ATTRIBUTE_UUID, "仪式：属性附加", amount, Operation.ADDITION), slot);
+											setRitualStack(itemFrame, modifiedStack);
+											suc = 1;
 										}
-										modifiedStack.putSubTag("AttributeModifiers", attributeModifiers);
 									}
-									modifiedStack.addAttributeModifier(attribute, new EntityAttributeModifier(ATTRIBUTE_UUID, "仪式：属性附加", amount, Operation.ADDITION), slot);
-									setRitualStack(itemFrame, modifiedStack);
-									return ActionResult.SUCCESS;
+								}
+							} else if (inv.getStack(1).isOf(EXPERIENCE_BOTTLE)) {
+								Item frameItem = frameStack.getItem();
+								if (checkFrameItem23(frameItem)) {
+									boolean b2 = true;
+									for (int i = 0; i < 9; i++) {
+										ItemStack stack = inv.getStack(i);
+										if ((i & 1) != 0) {
+											if (!stack.isOf(EXPERIENCE_BOTTLE) || stack.getCount() < 16) {
+												b2 = false;
+												break;
+											}
+										} else if (i == 4) {
+											if (!stack.isIn(CppItemTags.RARE_DROPS)) {
+												b2 = false;
+												break;
+											}
+										} else {
+											if (!checkPotion(stack.getItem()) || !ItemStack.areItemsEqual(inv.getStack(0), stack)) {
+												b2 = false;
+												break;
+											}
+										}
+									}
+									if (b2) {
+										if (level < 2) {
+											suc = 2 << 2 | 0b10;
+										} else {
+											StatusEffect effect = EFFECTS.get(inv.getStack(0).getItem());
+											for (int i = 0; i < 9; i++) {
+												ItemStack stack = inv.getStack(i);
+												if ((i & 1) != 0) {
+													stack.decrement(16);
+												} else {
+													stack.decrement(1);
+												}
+											}
+											ItemStack modifiedStack = frameStack.copy();
+											String s = effect == MAGNETIC ? "cpp:magnetic" : Registry.STATUS_EFFECT.getId(effect).toString();
+											modifiedStack.getOrCreateTag().putString("statusEffect", s);
+											setRitualStack(itemFrame, modifiedStack);
+											suc = 1;
+										}
+									}
 								}
 							}
-						} else if (inv.getStack(1).isOf(EXPERIENCE_BOTTLE)) {
-							Item frameItem = frameStack.getItem();
-							if (level >= 2 && checkFrameItem23(frameItem)) {
+						} else if (type == 2) {
+							if (frameStack.isOf(AMETHYST_BLOCK)) {
 								boolean b2 = true;
 								for (int i = 0; i < 9; i++) {
 									ItemStack stack = inv.getStack(i);
-									if ((i & 1) != 0) {
-										if (!stack.isOf(EXPERIENCE_BOTTLE) || stack.getCount() < 16) {
-											b2 = false;
-											break;
-										}
-									} else if (i == 4) {
-										if (!stack.isIn(CppItemTags.RARE_DROPS)) {
+									if (i != 4) {
+										if (!stack.isOf(AMETHYST_SHARD)) {
 											b2 = false;
 											break;
 										}
 									} else {
-										if (!checkPotion(stack.getItem()) || !ItemStack.areItemsEqual(inv.getStack(0), stack)) {
+										if (!stack.isIn(CppItemTags.RARE_DROPS)) {
 											b2 = false;
 											break;
 										}
 									}
 								}
 								if (b2) {
-									StatusEffect effect = EFFECTS.get(inv.getStack(0).getItem());
-									for (int i = 0; i < 9; i++) {
-										ItemStack stack = inv.getStack(i);
-										if ((i & 1) != 0) {
-											stack.decrement(16);
-										} else {
-											stack.decrement(1);
+									if (level < 2) {
+										suc = 2 << 2 | 0b10;
+									} else {
+										context.getPlayer().damage(DamageSource.MAGIC, 5);
+										for (int i = 0; i < 9; i++) {
+											inv.getStack(i).decrement(1);
 										}
+										Wand.setRitualStack(itemFrame, BUDDING_AMETHYST.getDefaultStack());
+										suc = 1;
 									}
-									ItemStack modifiedStack = frameStack.copy();
-									String s = effect == MAGNETIC ? "cpp:magnetic" : Registry.STATUS_EFFECT.getId(effect).toString();
-									modifiedStack.getOrCreateTag().putString("statusEffect", s);
-									setRitualStack(itemFrame, modifiedStack);
-									return ActionResult.SUCCESS;
 								}
 							}
 						}
 					}
 				}
+			}
+			if (suc == 1) {
+				player.networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.PLAYERS, blockPos.getX() + .5, blockPos.getY() + .5, blockPos.getZ() + .5, 1, 1));
+				return ActionResult.SUCCESS;
+			} else if ((suc & 0b10) == 0b10) {
+				player.networkHandler.sendPacket(new TitleS2CPacket(TitleS2CPacket.Action.ACTIONBAR, new TranslatableText("chat.cpp.wand_level_error", suc >> 2, level)));
+				return ActionResult.CONSUME;
+			} else {
+				return ActionResult.PASS;
 			}
 		}
 		return ActionResult.PASS;
@@ -387,7 +476,7 @@ public class Wand extends Item {
 	}
 
 	public static void tickEffect(PlayerEntity player) {
-		if (player.world.getTime() % 20 == 0) {
+		if (((ITemperancable) player).isEffectEnabled() && player.world.getTime() % 20 == 0) {
 			for (EquipmentSlot slot : EquipmentSlot.values()) {
 				if (player.totalExperience <= 0)
 					break;
@@ -431,8 +520,11 @@ public class Wand extends Item {
 			if (delay-- <= 0) {
 				ritualStack.removeSubTag("delay");
 				frame.setHeldItemStack(ritualStack);
-				ritualStack = ItemStack.EMPTY;
+				((IRitualStackHolder) frame).setRitualStack(ItemStack.EMPTY);
 				frame.setInvulnerable(false);
+				for (ServerPlayerEntity player : ((ServerWorld) frame.world).getPlayers(player -> player.getPos().isInRange(frame.getPos(), 32))) {
+					player.networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_BEACON_POWER_SELECT, SoundCategory.PLAYERS, frame.getX(), frame.getY(), frame.getZ(), 5, 1));
+				}
 			} else {
 				ritualStack.getOrCreateTag().putInt("delay", delay);
 				for (ServerPlayerEntity player : ((ServerWorld) frame.world).getPlayers(player -> player.getPos().isInRange(frame.getPos(), 32))) {

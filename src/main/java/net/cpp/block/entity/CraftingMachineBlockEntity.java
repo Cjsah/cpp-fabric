@@ -291,6 +291,7 @@ public class CraftingMachineBlockEntity extends AOutputMachineBlockEntity implem
 		ItemStack itemStack = ItemStack.EMPTY;
 		if (!getWorld().isClient) {
 			Optional<ICppCraftingRecipe> optional = getWorld().getServer().getRecipeManager().getFirstMatch(CppRecipes.CRAFTING, inputInventory, getWorld());
+//			System.out.println(optional);
 			if (optional.isPresent()) {
 				ICppCraftingRecipe craftingRecipe = optional.get();
 				if (shouldCraftRecipe(craftingRecipe)) {

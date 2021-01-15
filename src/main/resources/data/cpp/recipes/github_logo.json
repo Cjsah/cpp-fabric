@@ -1,0 +1,20 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:painting"
+		},
+		{
+			"item": "cpp:cattail"
+		},
+		{
+			"item": "cpp:blackthorn"
+		},
+		{
+			"item": "cpp:trifolium"
+		}
+	],
+	"result": {
+		"item": "cpp:github_logo"
+	}
+}

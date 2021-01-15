@@ -11,8 +11,8 @@ import net.minecraft.util.collection.DefaultedList;
 
 import java.util.Random;
 
-public class Character extends Item {
-    public Character(Settings settings) {
+public class CharacterItem extends Item {
+    public CharacterItem(Settings settings) {
         super(settings);
     }
 

@@ -1,0 +1,20 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:bowl"
+		},
+		{
+			"item": "minecraft:nether_wart"
+		},
+		{
+			"item": "minecraft:weeping_vines"
+		},
+		{
+			"item": "minecraft:twisting_vines"
+		}
+	],
+	"result": {
+		"item": "cpp:double_color_vine_salad"
+	}
+}

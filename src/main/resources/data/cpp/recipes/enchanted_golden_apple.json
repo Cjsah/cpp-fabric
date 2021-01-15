@@ -1,0 +1,31 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"CDC",
+		"EFE"
+	],
+	"key": {
+		"A": {
+			"item": "cpp:enchanted_iron"
+		},
+		"B": {
+			"item": "minecraft:enchanted_book"
+		},
+		"C": {
+			"item": "cpp:enchanted_gold"
+		},
+		"D": {
+			"item": "minecraft:golden_apple"
+		},
+		"E": {
+			"item": "cpp:enchanted_diamond"
+		},
+		"F": {
+			"item": "minecraft:experience_bottle"
+		}
+	},
+	"result": {
+		"item": "minecraft:enchanted_golden_apple"
+	}
+}

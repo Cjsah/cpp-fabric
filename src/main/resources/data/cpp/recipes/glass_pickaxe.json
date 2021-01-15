@@ -1,0 +1,19 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"AAA",
+		" B ",
+		" B "
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:glass"
+		},
+		"B": {
+			"item": "minecraft:stick"
+		}
+	},
+	"result": {
+		"item": "cpp:glass_pickaxe"
+	}
+}

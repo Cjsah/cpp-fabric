@@ -19,7 +19,7 @@ public interface ICppCraftingRecipe extends Recipe<CraftingInventory> {
 	}
 	static ItemStack getItemStack(JsonObject json) {
 		String string = JsonHelper.getString(json, "item");
-		Item item = (Item) Registry.ITEM.getOrEmpty(new Identifier(string)).orElseThrow(() -> {
+		Item item = Registry.ITEM.getOrEmpty(new Identifier(string)).orElseThrow(() -> {
 			return new JsonSyntaxException("Unknown item '" + string + "'");
 		});
 		if (json.has("data")) {

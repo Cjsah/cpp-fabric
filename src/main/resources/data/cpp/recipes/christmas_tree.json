@@ -1,0 +1,35 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:glowstone_dust"
+		},
+		{
+			"item": "minecraft:glowstone_dust"
+		},
+		{
+			"item": "cpp:poinsettia"
+		},
+		{
+			"item": "minecraft:snowball"
+		},
+		{
+			"item": "minecraft:snowball"
+		},
+		{
+			"item": "minecraft:spruce_sapling"
+		},
+		{
+			"item": "minecraft:glowstone_dust"
+		},
+		{
+			"item": "minecraft:glowstone_dust"
+		},
+		{
+			"item": "cpp:poinsettia"
+		}
+	],
+	"result": {
+		"item": "cpp:christmas_tree"
+	}
+}

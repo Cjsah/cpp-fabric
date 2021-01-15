@@ -1,0 +1,15 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"AAA",
+		"A A"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:quartz"
+		}
+	},
+	"result": {
+		"item": "cpp:nurse_hat"
+	}
+}

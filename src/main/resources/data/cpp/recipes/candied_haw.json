@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"ABA",
+		" C "
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:sugar"
+		},
+		"B": {
+			"item": "cpp:hawthorn"
+		},
+		"C": {
+			"item": "minecraft:stick"
+		}
+	},
+	"result": {
+		"item": "cpp:candied_haw"
+	}
+}

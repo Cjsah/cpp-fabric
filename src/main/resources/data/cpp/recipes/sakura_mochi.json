@@ -1,0 +1,17 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "cpp:sakura_leaves"
+		},
+		{
+			"item": "cpp:rice_seed"
+		},
+		{
+			"item": "minecraft:sugar"
+		}
+	],
+	"result": {
+		"item": "cpp:sakura_mochi"
+	}
+}

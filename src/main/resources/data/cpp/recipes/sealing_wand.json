@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"BCB",
+		"ABA"
+	],
+	"key": {
+		"A": {
+			"item": "cpp:enchanted_iron"
+		},
+		"B": {
+			"item": "cpp:enchanted_gold"
+		},
+		"C": {
+			"item": "minecraft:stick"
+		}
+	},
+	"result": {
+		"item": "cpp:sealing_wand"
+	}
+}

@@ -1,0 +1,20 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:white_banner"
+		},
+		{
+			"item": "cpp:fluffy_grass"
+		},
+		{
+			"item": "minecraft:poppy"
+		},
+		{
+			"item": "cpp:hyacinth"
+		}
+	],
+	"result": {
+		"item": "cpp:uk_flag"
+	}
+}

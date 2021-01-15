@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"BCB",
+		"ABA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:orange_dye"
+		},
+		"B": {
+			"item": "minecraft:lapis_lazuli"
+		},
+		"C": {
+			"item": "cpp:soul_of_dirt"
+		}
+	},
+	"result": {
+		"item": "cpp:orange_force_of_dirt"
+	}
+}

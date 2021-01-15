@@ -1,0 +1,25 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"ACA",
+		"DDD"
+	],
+	"key": {
+		"A": {
+			"item": "cpp:enchanted_iron"
+		},
+		"B": {
+			"item": "minecraft:nether_star"
+		},
+		"C": {
+			"item": "minecraft:barrel"
+		},
+		"D": {
+			"item": "minecraft:netherite_block"
+		}
+	},
+	"result": {
+		"item": "cpp:beacon_enhancer"
+	}
+}

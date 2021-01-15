@@ -1,0 +1,28 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"ACA",
+		"DED"
+	],
+	"key": {
+		"A": {
+			"item": "cpp:enchanted_iron"
+		},
+		"B": {
+			"item": "cpp:dye_stick"
+		},
+		"C": {
+			"item": "minecraft:barrel"
+		},
+		"D": {
+			"item": "minecraft:water_bucket"
+		},
+		"E": {
+			"item": "minecraft:cauldron"
+		}
+	},
+	"result": {
+		"item": "cpp:color_palette"
+	}
+}

@@ -1,0 +1,32 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:cooked_porkchop"
+		},
+		{
+			"item": "minecraft:warped_fungus"
+		},
+		{
+			"item": "minecraft:blaze_powder"
+		},
+		{
+			"item": "minecraft:cooked_mutton"
+		},
+		{
+			"item": "minecraft:crimson_fungus"
+		},
+		{
+			"item": "minecraft:magma_block"
+		},
+		{
+			"item": "minecraft:cooked_beef"
+		},
+		{
+			"item": "minecraft:nether_wart"
+		}
+	],
+	"result": {
+		"item": "cpp:luxurious_netherite_barbecue"
+	}
+}

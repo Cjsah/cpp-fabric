@@ -1,0 +1,31 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"CDC",
+		"EFE"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:experience_bottle"
+		},
+		"B": {
+			"item": "cpp:enchanted_diamond"
+		},
+		"C": {
+			"item": "cpp:enchanted_gold"
+		},
+		"D": {
+			"item": "cpp:empty_plugin"
+		},
+		"E": {
+			"item": "minecraft:ender_pearl"
+		},
+		"F": {
+			"item": "cpp:spirit_of_life"
+		}
+	},
+	"result": {
+		"item": "cpp:wifi_plugin"
+	}
+}

@@ -1,0 +1,14 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "cpp:crafting_machine"
+		},
+		{
+			"item": "minecraft:experience_bottle"
+		}
+	],
+	"result": {
+		"item": "cpp:portable_crafting_machine"
+	}
+}

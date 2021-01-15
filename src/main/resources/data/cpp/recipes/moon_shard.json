@@ -1,0 +1,35 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "cpp:iron_dust"
+		},
+		{
+			"item": "cpp:emerald_dust"
+		},
+		{
+			"item": "cpp:copper_dust"
+		},
+		{
+			"item": "cpp:gold_dust"
+		},
+		{
+			"item": "cpp:quartz_dust"
+		},
+		{
+			"item": "minecraft:netherite_scrap"
+		},
+		{
+			"item": "cpp:diamond_dust"
+		},
+		{
+			"item": "cpp:carbon_dust"
+		},
+		{
+			"item": "minecraft:amethyst_shard"
+		}
+	],
+	"result": {
+		"item": "cpp:moon_shard"
+	}
+}

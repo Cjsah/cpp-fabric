@@ -22,10 +22,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
  *
  */
 public class CraftingMachineScreenHandler extends AOutputMachineScreenHandler {
-//	public CraftingMachineScreen screen;
-//	private ScreenHandlerContext context;
 	private PlayerEntity player;
-//	private World world;
 	private CraftingMachineBlockEntity blockEntity;
 	private CraftingInventory inputUI;
 	private CraftingResultInventory resultUI = new CraftingResultInventory();
@@ -38,11 +35,9 @@ public class CraftingMachineScreenHandler extends AOutputMachineScreenHandler {
 	public CraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory, CraftingMachineBlockEntity blockEntity, PropertyDelegate propertyDelegate, ScreenHandlerContext context) {
 		super(CppScreenHandler.CRAFTING_MACHINE, syncId, playerInventory, blockEntity);
 		player = playerInventory.player;
-//		world = player.world;
 		this.blockEntity = blockEntity;
 		inputUI = blockEntity.getInputInventory();
 		this.propertyDelegate = propertyDelegate;
-//		this.context = context;
 
 		for (int m = 0; m < 3; ++m) {
 			for (int l = 0; l < 3; ++l) {
@@ -159,6 +154,8 @@ public class CraftingMachineScreenHandler extends AOutputMachineScreenHandler {
 	private void updateResultUI() {
 		if (player instanceof ServerPlayerEntity) {
 			resultUI.setStack(0, blockEntity.getResult());
+//			System.out.println(resultUI.getStack(0));
+//			System.out.println(blockEntity.getInvStackList());
 			((ServerPlayerEntity) player).networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(syncId, 45, resultUI.getStack(0)));
 		}
 	}

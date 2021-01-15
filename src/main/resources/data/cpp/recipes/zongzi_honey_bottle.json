@@ -1,0 +1,17 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "cpp:esparto"
+		},
+		{
+			"item": "cpp:rice_seed"
+		},
+		{
+			"item": "minecraft:honey_bottle"
+		}
+	],
+	"result": {
+		"item": "cpp:zongzi_honey_bottle"
+	}
+}

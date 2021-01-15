@@ -1,19 +1,19 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "###",
-    "#1#",
-    "###"
-  ],
-  "key": {
-    "#": {
-      "item": "minecraft:experience_bottle"
-    },
-    "1": {
-      "item": "minecraft:crafting_table"
-    }
-  },
-  "result": {
-    "item": "cpp:crafting_machine"
-  }
+	"type": "crafting_shaped",
+	"pattern": [
+		"AAA",
+		"ABA",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:experience_bottle"
+		},
+		"B": {
+			"item": "minecraft:crafting_table"
+		}
+	},
+	"result": {
+		"item": "cpp:crafting_machine"
+	}
 }

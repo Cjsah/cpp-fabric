@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"BCB",
+		"ABA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:nether_star"
+		},
+		"B": {
+			"item": "minecraft:dragon_egg"
+		},
+		"C": {
+			"item": "minecraft:stick"
+		}
+	},
+	"result": {
+		"item": "cpp:dream_wand"
+	}
+}

@@ -36,7 +36,7 @@ import net.cpp.item.BlackForceOfMoon;
 import net.cpp.item.BlockPlacerItem;
 import net.cpp.item.BlueForceOfSky;
 import net.cpp.item.BreakHand;
-import net.cpp.item.Character;
+import net.cpp.item.CharacterItem;
 import net.cpp.item.ChestTransporter;
 import net.cpp.item.ColorPalette;
 import net.cpp.item.CompressedItem;
@@ -57,6 +57,7 @@ import net.cpp.item.OriginOfTheWorld;
 import net.cpp.item.PortableCraftingMachine;
 import net.cpp.item.PortableCraftingTable;
 import net.cpp.item.PurpleForceOfLife;
+import net.cpp.item.RecipeCreator;
 import net.cpp.item.RedForceOfFire;
 import net.cpp.item.SantaGift;
 import net.cpp.item.SmartHand;
@@ -66,6 +67,7 @@ import net.cpp.item.TimeConditioner;
 import net.cpp.item.ToughenHand;
 import net.cpp.item.TradePlugin;
 import net.cpp.item.Wand;
+import net.cpp.item.WandOfTheDarkness;
 import net.cpp.item.WhiteForceOfLightning;
 import net.cpp.item.YellowForceOfEarth;
 import net.cpp.misc.CppArmorMaterial;
@@ -388,6 +390,7 @@ public final class CppItems {
 	public static final Item GLASS_SIGN;
 
 	public static final Item BROKEN_SPAWNER = registerItem("broken_spawner", new Item(new Settings().group(CPP_GROUP_MISC)));
+	public static final Item RECIPE_CREATOR = registerItem("recipe_creator", new RecipeCreator());
 
 	public static final Item COMPRESSED_ITEM;
 	static {
@@ -633,7 +636,7 @@ public final class CppItems {
 		STAR_WAND = registerItem("star_wand", new Wand(2, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		DREAM_WAND = registerItem("dream_wand", new Wand(3, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		TEMPERANCER = registerItem("temperancer", new Temperancer(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-		WAND_OF_THE_DARKNESS = registerItem("wand_of_the_darkness", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+		WAND_OF_THE_DARKNESS = registerItem("wand_of_the_darkness", new WandOfTheDarkness(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 
 		RED_LIP = registerItem("red_lip", new DyeableArmorItem(CppArmorMaterial.RED_LIP, EquipmentSlot.HEAD, new Item.Settings().group(CPP_GROUP_TOOL)));
 		PURPLE_EYE = registerItem("purple_eye", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
@@ -660,7 +663,7 @@ public final class CppItems {
 		CLASSICAL_PAINTING = registerItem("classical_painting", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 		SPRING_FESTIVAL_DECORATIONS = registerItem("spring_festival_decorations", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 
-		CHARACTER = registerItem("character", new Character(new Item.Settings().group(CPP_GROUP_DECORATE)));
+		CHARACTER = registerItem("character", new CharacterItem(new Item.Settings().group(CPP_GROUP_DECORATE)));
 
 		CHINA_FLAG = registerItem("china_flag", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 		USA_FLAG = registerItem("usa_flag", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));

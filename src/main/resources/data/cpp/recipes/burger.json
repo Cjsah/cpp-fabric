@@ -1,0 +1,23 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:bread"
+		},
+		{
+			"item": "cpp:tomato"
+		},
+		{
+			"item": "minecraft:cooked_beef"
+		},
+		{
+			"item": "cpp:cheese"
+		},
+		{
+			"item": "cpp:ketchup"
+		}
+	],
+	"result": {
+		"item": "cpp:burger"
+	}
+}

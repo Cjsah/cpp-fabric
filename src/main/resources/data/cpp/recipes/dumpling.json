@@ -1,0 +1,20 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"AAA",
+		"ABA",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:wheat"
+		},
+		"B": {
+			"item": "minecraft:cooked_beef"
+		}
+	},
+	"result": {
+		"item": "cpp:dumpling",
+		"count": 4
+	}
+}

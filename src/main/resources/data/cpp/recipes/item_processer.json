@@ -1,0 +1,28 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"AAB",
+		"CDE",
+		"AAB"
+	],
+	"key": {
+		"A": {
+			"item": "cpp:enchanted_iron"
+		},
+		"B": {
+			"item": "minecraft:redstone"
+		},
+		"C": {
+			"item": "minecraft:crafting_table"
+		},
+		"D": {
+			"item": "minecraft:barrel"
+		},
+		"E": {
+			"item": "minecraft:furnace"
+		}
+	},
+	"result": {
+		"item": "cpp:item_processer"
+	}
+}

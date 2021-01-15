@@ -1,0 +1,23 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:cocoa_beans"
+		},
+		{
+			"item": "minecraft:fermented_spider_eye"
+		},
+		{
+			"item": "minecraft:bone_meal"
+		},
+		{
+			"item": "minecraft:potion"
+		},
+		{
+			"item": "minecraft:pumpkin"
+		}
+	],
+	"result": {
+		"item": "cpp:soda_water"
+	}
+}

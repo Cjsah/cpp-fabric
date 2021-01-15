@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"BCB",
+		"ABA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:black_dye"
+		},
+		"B": {
+			"item": "minecraft:glowstone_dust"
+		},
+		"C": {
+			"item": "minecraft:dragon_egg"
+		}
+	},
+	"result": {
+		"item": "cpp:black_force_of_moon"
+	}
+}

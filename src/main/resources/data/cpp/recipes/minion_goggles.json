@@ -1,0 +1,19 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"AAA",
+		"BAB",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:glass_pane"
+		},
+		"B": {
+			"item": "minecraft:ender_eye"
+		}
+	},
+	"result": {
+		"item": "cpp:minion_goggles"
+	}
+}

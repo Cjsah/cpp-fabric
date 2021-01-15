@@ -1,0 +1,17 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "cpp:esparto"
+		},
+		{
+			"item": "cpp:rice_seed"
+		},
+		{
+			"item": "cpp:soda_water"
+		}
+	],
+	"result": {
+		"item": "cpp:zongzi_soda_water"
+	}
+}

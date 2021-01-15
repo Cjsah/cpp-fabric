@@ -1,0 +1,23 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:milk_bucket"
+		},
+		{
+			"item": "minecraft:honey_bottle"
+		},
+		{
+			"item": "minecraft:sugar"
+		},
+		{
+			"item": "minecraft:bowl"
+		},
+		{
+			"item": "minecraft:egg"
+		}
+	],
+	"result": {
+		"item": "cpp:caramel_pudding"
+	}
+}

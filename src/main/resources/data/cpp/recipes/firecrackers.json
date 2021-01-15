@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"CBC",
+		"ABA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:gunpowder"
+		},
+		"B": {
+			"item": "minecraft:string"
+		},
+		"C": {
+			"item": "minecraft:paper"
+		}
+	},
+	"result": {
+		"item": "cpp:firecrackers"
+	}
+}

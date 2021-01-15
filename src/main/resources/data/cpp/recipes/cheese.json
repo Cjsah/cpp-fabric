@@ -1,0 +1,15 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:milk_bucket"
+		},
+		{
+			"item": "cpp:lemon"
+		}
+	],
+	"result": {
+		"item": "cpp:cheese",
+		"count": 3
+	}
+}

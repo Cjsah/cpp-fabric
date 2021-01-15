@@ -1,0 +1,19 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		" A ",
+		"ABA",
+		" A "
+	],
+	"key": {
+		"A": {
+			"item": "cpp:moon_shard"
+		},
+		"B": {
+			"item": "minecraft:ender_eye"
+		}
+	},
+	"result": {
+		"item": "cpp:sun_shard"
+	}
+}

@@ -1,0 +1,19 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"AAA",
+		"ABA",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:sugar"
+		},
+		"B": {
+			"item": "minecraft:apple"
+		}
+	},
+	"result": {
+		"item": "cpp:toffee_apple"
+	}
+}

@@ -1,0 +1,19 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"ABA",
+		"ABA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:feather"
+		},
+		"B": {
+			"item": "minecraft:stick"
+		}
+	},
+	"result": {
+		"item": "cpp:cat_breed"
+	}
+}

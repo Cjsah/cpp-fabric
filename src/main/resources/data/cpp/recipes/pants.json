@@ -1,0 +1,19 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"AAA",
+		"BBB",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:light_blue_wool"
+		},
+		"B": {
+			"item": "minecraft:white_wool"
+		}
+	},
+	"result": {
+		"item": "cpp:pants"
+	}
+}

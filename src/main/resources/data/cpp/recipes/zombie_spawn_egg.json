@@ -1,0 +1,19 @@
+{
+	"type": "crafting_shaped",
+	"pattern": [
+		"AAA",
+		"ABA",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:rotten_flesh"
+		},
+		"B": {
+			"item": "minecraft:dragon_egg"
+		}
+	},
+	"result": {
+		"item": "minecraft:zombie_spawn_egg"
+	}
+}

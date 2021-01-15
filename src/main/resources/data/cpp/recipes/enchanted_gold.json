@@ -1,0 +1,19 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"AAA",
+		"ABA",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:experience_bottle"
+		},
+		"B": {
+			"item": "minecraft:gold_ingot"
+		}
+	},
+	"result": {
+		"item": "cpp:enchanted_gold"
+	}
+}

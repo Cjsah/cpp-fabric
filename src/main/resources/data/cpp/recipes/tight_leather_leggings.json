@@ -1,0 +1,19 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"AAA",
+		"B B",
+		"A A"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:coal"
+		},
+		"B": {
+			"item": "minecraft:leather"
+		}
+	},
+	"result": {
+		"item": "cpp:tight_leather_leggings"
+	}
+}

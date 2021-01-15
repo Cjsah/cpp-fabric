@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"ACA",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:iron_ingot"
+		},
+		"B": {
+			"item": "minecraft:flint_and_steel"
+		},
+		"C": {
+			"item": "minecraft:lava_bucket"
+		}
+	},
+	"result": {
+		"item": "cpp:dustbin"
+	}
+}

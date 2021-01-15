@@ -1,0 +1,19 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		" A ",
+		"ABA",
+		" A "
+	],
+	"key": {
+		"A": {
+			"item": "cpp:carbon_dust"
+		},
+		"B": {
+			"item": "cpp:iron_dust"
+		}
+	},
+	"result": {
+		"item": "cpp:steel_dust"
+	}
+}

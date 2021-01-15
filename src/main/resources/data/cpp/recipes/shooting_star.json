@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"ACA",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "cpp:wing_of_sky"
+		},
+		"B": {
+			"item": "cpp:broom"
+		},
+		"C": {
+			"item": "minecraft:elytra"
+		}
+	},
+	"result": {
+		"item": "cpp:shooting_star"
+	}
+}

@@ -1,0 +1,20 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:painting"
+		},
+		{
+			"item": "cpp:isorchid"
+		},
+		{
+			"item": "cpp:blackthorn"
+		},
+		{
+			"item": "cpp:trifolium"
+		}
+	],
+	"result": {
+		"item": "cpp:mcmod_logo"
+	}
+}

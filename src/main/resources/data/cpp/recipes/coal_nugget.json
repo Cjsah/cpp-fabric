@@ -1,0 +1,12 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:coal"
+		}
+	],
+	"result": {
+		"item": "cpp:coal_nugget",
+		"count": 8
+	}
+}
