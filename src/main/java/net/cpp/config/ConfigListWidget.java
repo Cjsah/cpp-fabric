@@ -29,19 +29,17 @@ import java.util.Set;
 public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEntry> implements AutoCloseable {
 
     private final CppOptionsGui parent;
-    private Set<String> configKeys = new HashSet<>();
+    private final Set<String> configKeys = new HashSet<>();
     private final Map<Path, NativeImageBackedTexture> configIconsCache = new HashMap<>();
     private List<String> ConfigContainerList = null;
-    private Set<String> addedConfigs = new HashSet<>();
+    private final Set<String> addedConfigs = new HashSet<>();
     private String selectedConfigId = null;
-    private final JsonObject config;
     private boolean scrolling;
 
 
     protected ConfigListWidget(MinecraftClient client, int width, int height, int y1, int y2, int entryHeight, String searchTerm, JsonObject config, CppOptionsGui parent) {
         super(client, width, height, y1, y2, entryHeight);
         this.parent = parent;
-        this.config = config;
         for (Map.Entry<String, JsonElement> i  : config.entrySet()) {
             configKeys.add(i.getKey());
         }
@@ -93,10 +91,6 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
         return super.remove(index);
     }
 
-    public void reloadFilters() {
-        this.filter(this.parent.getSearchInput(), true);
-    }
-
     private List<String> search(String query, List<String> configKeys) {
         return !(query != null && !query.isEmpty()) ? configKeys : searchEach(query, configKeys);
     }
@@ -109,6 +103,9 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
         return result;
     }
 
+    public void reloadFilters() {
+        this.filter(this.parent.getSearchInput(), true);
+    }
 
     private void filter(String searchTerm, boolean refresh) {
         this.clearEntries();
@@ -117,14 +114,9 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
             this.ConfigContainerList = new ArrayList<>();
             this.ConfigContainerList.addAll(this.configKeys);
             this.ConfigContainerList.sort(Comparator.comparing((configLists) -> configLists));
-            ////////////////////////////////////////////////////////////////////////////////////////////
-            System.out.println(this.ConfigContainerList);
-
         }
 
         List<String> matched = this.search(searchTerm, this.ConfigContainerList);
-        System.out.println(matched);
-
 
         for (String key1 : matched) {
             if ((this.parent.getSelectedEntry() == null || this.children().isEmpty()) && (this.getSelected() == null || Objects.equals((this.getSelected()).getKey(), this.parent.getSelectedEntry().getKey()))) {
@@ -142,7 +134,7 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
             if (this.getScrollAmount() > (double)Math.max(0, this.getMaxPosition() - (this.bottom - this.top - 4))) {
                 this.setScrollAmount(Math.max(0, this.getMaxPosition() - (this.bottom - this.top - 4)));
             }
-            this.addEntry(new ConfigListEntry(key1, config.get(key1).getAsJsonObject(), this));
+            this.addEntry(new ConfigListEntry(key1, this));
 
         }
     }
@@ -150,8 +142,8 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
     @Override
     protected void renderList(MatrixStack matrices, int x, int y, int mouseX, int mouseY, float delta) {
         int itemCount = this.getItemCount();
-        Tessellator tessellator_1 = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator_1.getBuffer();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buffer = tessellator.getBuffer();
 
         for(int index = 0; index < itemCount; ++index) {
             int entryTop = this.getRowTop(index) + 2;
@@ -168,19 +160,23 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
                     float float_2 = this.isFocused() ? 1.0F : 0.5F;
                     RenderSystem.color4f(float_2, float_2, float_2, 1.0F);
                     Matrix4f matrix = matrices.peek().getModel();
+                    // 边框
                     buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
                     buffer.vertex(matrix, (float)entryLeft, (float)(entryTop + entryHeight + 2), 0.0F).next();
                     buffer.vertex(matrix, (float)selectionRight, (float)(entryTop + entryHeight + 2), 0.0F).next();
                     buffer.vertex(matrix, (float)selectionRight, (float)(entryTop - 2), 0.0F).next();
                     buffer.vertex(matrix, (float)entryLeft, (float)(entryTop - 2), 0.0F).next();
-                    tessellator_1.draw();
+                    tessellator.draw();
+
                     RenderSystem.color4f(0.0F, 0.0F, 0.0F, 1.0F);
+                    // 背景
                     buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
                     buffer.vertex(matrix, (float)(entryLeft + 1), (float)(entryTop + entryHeight + 1), 0.0F).next();
                     buffer.vertex(matrix, (float)(selectionRight - 1), (float)(entryTop + entryHeight + 1), 0.0F).next();
                     buffer.vertex(matrix, (float)(selectionRight - 1), (float)(entryTop - 1), 0.0F).next();
                     buffer.vertex(matrix, (float)(entryLeft + 1), (float)(entryTop - 1), 0.0F).next();
-                    tessellator_1.draw();
+                    tessellator.draw();
+
                     RenderSystem.enableTexture();
                 }
 
@@ -188,8 +184,6 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
                 entry.render(matrices, index, entryTop, entryLeft, rowWidth, entryHeight, mouseX, mouseY, this.isMouseOver(mouseX, mouseY) && Objects.equals(this.getEntryAtPos(mouseX, mouseY), entry), delta);
             }
         }
-
-
     }
 
     public final ConfigListEntry getEntryAtPos(double x, double y) {
@@ -215,11 +209,6 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
 
     public void select(ConfigListEntry entry) {
         this.setSelected(entry);
-//        if (entry != null) {
-//            ModMetadata metadata = entry.getMetadata();
-//            NarratorManager.INSTANCE.narrate((new TranslatableText("narrator.select", HardcodedUtil.formatFabricModuleName(metadata.getName()))).getString());
-//        }
-
     }
 
     @Override
@@ -265,33 +254,20 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
         return this.width - (Math.max(0, this.getMaxPosition() - (this.bottom - this.top - 4)) > 0 ? 18 : 12);
     }
 
-    public int getTop() {
-        return this.top;
-    }
-
     @Override
     protected int getMaxPosition() {
         return super.getMaxPosition() + 4;
-    }
-
-    public int getDisplayedCountFor(Set<String> set) {
-        int count = 0;
-
-        for (ConfigListEntry configListEntry : this.children()) {
-            if (set.contains(configListEntry.getKey())) {
-                ++count;
-            }
-        }
-
-        return count;
     }
 
     public int getWidth() {
         return this.width;
     }
 
-    public int getDisplayedCount() {
-        return this.children().size();
+    public String getDisplayedCount() {
+        if (this.parent.getSearchInput().isEmpty())
+            return String.valueOf(this.children().size());
+        else
+            return this.children().size() + "/" + this.configKeys.size();
     }
 
     public CppOptionsGui getParent() {
@@ -306,17 +282,4 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
         }
 
     }
-
-    NativeImageBackedTexture getCachedModIcon(Path path) {
-        return this.configIconsCache.get(path);
-    }
-
-    void cacheModIcon(Path path, NativeImageBackedTexture tex) {
-        this.configIconsCache.put(path, tex);
-    }
-
-    public Set<String> getCurrentModSet() {
-        return this.addedConfigs;
-    }
-
 }

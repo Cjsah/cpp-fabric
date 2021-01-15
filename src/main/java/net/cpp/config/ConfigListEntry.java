@@ -2,21 +2,18 @@ package net.cpp.config;
 
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.github.prospector.modmenu.util.BadgeRenderer;
-import io.github.prospector.modmenu.util.HardcodedUtil;
-import io.github.prospector.modmenu.util.RenderUtils;
 import net.cpp.Craftingpp;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget.Entry;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.Item;
 import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Language;
 import net.minecraft.util.registry.Registry;
-import org.apache.logging.log4j.Logger;
 
 
 public class ConfigListEntry extends Entry<ConfigListEntry> {
@@ -24,14 +21,11 @@ public class ConfigListEntry extends Entry<ConfigListEntry> {
     protected Identifier iconLocation;
     protected final MinecraftClient client = MinecraftClient.getInstance();
     public static final Identifier UNKNOWN_ICON = new Identifier("textures/misc/unknown_pack.png");
-    private static final Logger LOGGER = Craftingpp.logger;
     private final String key;
-    private final JsonObject value;
     private final ConfigListWidget list;
 
-    public ConfigListEntry(String key, JsonObject value, ConfigListWidget list) {
+    public ConfigListEntry(String key, ConfigListWidget list) {
         this.key = key;
-        this.value = value;
         this.list = list;
     }
 
@@ -42,9 +36,10 @@ public class ConfigListEntry extends Entry<ConfigListEntry> {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.bindIconTexture();
         RenderSystem.enableBlend();
-        DrawableHelper.drawTexture(matrices, x, y, 0.0F, 0.0F, 32, 32, 32, 32);
+        // 图标
+        DrawableHelper.drawTexture(matrices, x, y, 0.0F, 0.0F, 16, 16, 16, 16);
         RenderSystem.disableBlend();
-        Text name = Registry.ITEM.get(new Identifier(Craftingpp.MOD_ID3, this.key)).getName();
+        Text name = Text.of(key);
         StringVisitable trimmedName = name;
         int maxNameWidth = entryWidth - 32 - 3;
         TextRenderer font = this.client.textRenderer;
@@ -52,25 +47,21 @@ public class ConfigListEntry extends Entry<ConfigListEntry> {
             StringVisitable ellipsis = StringVisitable.plain("...");
             trimmedName = StringVisitable.concat(font.trimToWidth(name, maxNameWidth - font.getWidth(ellipsis)), ellipsis);
         }
-        font.draw(matrices, Language.getInstance().reorder(trimmedName), x + 32 + 3, y + 1, 0xFFFFFF);
-
-        RenderUtils.drawWrappedString(matrices, this.getDescription(), x + 32 + 3 + 4, y + 9 + 2, entryWidth - 32 - 7, 2, 8421504);
-
+        // 名
+        font.draw(matrices, Language.getInstance().reorder(trimmedName), x + 16 + 3, y + 3, 0xFFFFFF);
     }
 
-    public String getDescription() {
-        return this.key;
+    public Text getConfigName() {
+        return getConfigItem().getName();
+    }
+
+    public Item getConfigItem() {
+        return Registry.ITEM.get(new Identifier(Craftingpp.MOD_ID3, this.key));
     }
 
     public void bindIconTexture() {
         if (this.iconLocation == null) {
             this.iconLocation = new Identifier(Craftingpp.MOD_ID3, "textures/item/" + this.key + ".png");
-//            NativeImageBackedTexture icon = this.createIcon();
-//            if (icon != null) {
-//                this.client.getTextureManager().registerTexture(this.iconLocation, icon);
-//            } else {
-//                this.iconLocation = UNKNOWN_ICON;
-//            }
         }
 
         this.client.getTextureManager().bindTexture(this.iconLocation);
@@ -84,10 +75,6 @@ public class ConfigListEntry extends Entry<ConfigListEntry> {
 
     public String getKey() {
         return key;
-    }
-
-    public JsonObject getValue() {
-        return value;
     }
 
     public int getXOffset() {
