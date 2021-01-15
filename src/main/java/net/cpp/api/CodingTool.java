@@ -481,7 +481,7 @@ public class CodingTool {
 		return list;
 	}
 
-	public static void removeEffectExceptHidden(PlayerEntity player, StatusEffect effect, int amplifier, int duration) {
+	public static void removeEffectExceptHidden(LivingEntity player, StatusEffect effect, int amplifier, int duration) {
 		StatusEffectInstance effectInstance = player.getStatusEffect(effect);
 		if (effectInstance != null && effectInstance.getAmplifier() == amplifier && effectInstance.getDuration() <= duration) {
 			CompoundTag tag1 = effectInstance.toTag(new CompoundTag());

@@ -77,7 +77,7 @@ public class Magnet extends Item implements IDefaultTagItem, ITickableInItemFram
 				for (ExperienceOrbEntity orb : player.world.getEntitiesByClass(ExperienceOrbEntity.class, new Box(player.getPos(), player.getPos()).expand(16), orb -> orb.getPos().isInRange(player.getPos(), 16))) {
 					orb.teleport(player.getPos().x, player.getPos().y, player.getPos().z);
 				}
-				break;
+				return true;
 			}
 		}
 		return false;
