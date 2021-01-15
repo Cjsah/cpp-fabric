@@ -24,6 +24,8 @@ dependencies {
 
 	modImplementation "com.google.code.findbugs:jsr305:3.0.2"
 	modImplementation "io.github.prospector:modmenu:2.0.0-beta.1+build.2"
+	modImplementation "me.shedaniel:RoughlyEnoughItems:4.8.1"
+
 //	modCompile "io.github.prospector:modmenu:2.0.0-beta.1+build.2"
 //	modCompile "me.shedaniel:RoughlyEnoughItems:4.8.1"
 }
