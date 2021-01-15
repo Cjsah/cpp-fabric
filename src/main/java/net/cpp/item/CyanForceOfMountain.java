@@ -143,7 +143,7 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppCo
 
     @Override
     public String getConfigName() {
-        return "cyan_force_of_mountains";
+        return "cyan_force_of_mountain";
     }
 
     @Override
