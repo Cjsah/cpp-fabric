@@ -1,0 +1,19 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"A",
+		"A",
+		"B"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:cooked_mutton"
+		},
+		"B": {
+			"item": "minecraft:stick"
+		}
+	},
+	"result": {
+		"item": "cpp:lamb_kebab"
+	}
+}

@@ -1,0 +1,20 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:red_banner"
+		},
+		{
+			"item": "cpp:marigold"
+		},
+		{
+			"item": "minecraft:peony"
+		},
+		{
+			"item": "cpp:burning_chrysanthe"
+		}
+	],
+	"result": {
+		"item": "cpp:china_flag"
+	}
+}

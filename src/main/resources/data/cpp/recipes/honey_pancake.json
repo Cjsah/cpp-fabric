@@ -1,0 +1,26 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:honey_bottle"
+		},
+		{
+			"item": "cpp:butter"
+		},
+		{
+			"item": "minecraft:egg"
+		},
+		{
+			"item": "cpp:blueberry"
+		},
+		{
+			"item": "minecraft:wheat"
+		},
+		{
+			"item": "minecraft:bowl"
+		}
+	],
+	"result": {
+		"item": "cpp:honey_pancake"
+	}
+}

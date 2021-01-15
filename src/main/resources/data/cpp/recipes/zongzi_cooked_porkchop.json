@@ -1,0 +1,17 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "cpp:esparto"
+		},
+		{
+			"item": "cpp:rice_seed"
+		},
+		{
+			"item": "minecraft:cooked_porkchop"
+		}
+	],
+	"result": {
+		"item": "cpp:zongzi_cooked_porkchop"
+	}
+}

@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"BCB",
+		"ABA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:blue_dye"
+		},
+		"B": {
+			"item": "minecraft:coal"
+		},
+		"C": {
+			"item": "cpp:wing_of_sky"
+		}
+	},
+	"result": {
+		"item": "cpp:blue_force_of_sky"
+	}
+}

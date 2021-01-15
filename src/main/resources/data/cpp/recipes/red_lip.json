@@ -1,0 +1,19 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"AAA",
+		"ABA",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:redstone"
+		},
+		"B": {
+			"item": "minecraft:magma_cream"
+		}
+	},
+	"result": {
+		"item": "cpp:red_lip"
+	}
+}

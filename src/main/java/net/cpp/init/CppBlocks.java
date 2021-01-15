@@ -1,7 +1,9 @@
 package net.cpp.init;
 
-import static net.cpp.Craftingpp.*;
+import static net.cpp.Craftingpp.CPP_GROUP_MACHINE;
 import static net.cpp.Craftingpp.CPP_GROUP_MISC;
+import static net.cpp.Craftingpp.CPP_GROUP_PLANT;
+import static net.cpp.Craftingpp.MOD_ID3;
 import static net.minecraft.entity.effect.StatusEffects.BLINDNESS;
 import static net.minecraft.entity.effect.StatusEffects.FIRE_RESISTANCE;
 import static net.minecraft.entity.effect.StatusEffects.GLOWING;
@@ -34,6 +36,7 @@ import net.cpp.block.AllInOneMachineBlock;
 import net.cpp.block.BeaconEnhancerBlock;
 import net.cpp.block.ChestDropperBlock;
 import net.cpp.block.CraftingMachineBlock;
+import net.cpp.block.CustomHeightPlantBlock;
 import net.cpp.block.DustbinBlock;
 import net.cpp.block.EmptyBookshelfBlock;
 import net.cpp.block.FlowerGrass1Block;
@@ -45,12 +48,14 @@ import net.cpp.block.MobProjectorBlock;
 import net.cpp.block.OreLeavesBlock;
 import net.cpp.block.PublicPlantBlock;
 import net.cpp.block.PublicSaplingBlock;
+import net.cpp.block.PublicSkullBlock;
+import net.cpp.block.PublicWallSkullBlock;
 import net.cpp.block.RiceBlock;
 import net.cpp.block.TradeMachineBlock;
-import net.cpp.block.CustomHeightPlantBlock;
 import net.cpp.block.WoolLeavesBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.AbstractBlock.Settings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -59,6 +64,7 @@ import net.minecraft.block.GlassBlock;
 import net.minecraft.block.LeavesBlock;
 import net.minecraft.block.Material;
 import net.minecraft.block.SaplingBlock;
+import net.minecraft.block.SkullBlock.SkullType;
 import net.minecraft.block.sapling.SaplingGenerator;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffect;
@@ -66,8 +72,10 @@ import net.minecraft.item.AliasedBlockItem;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.SkullItem;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
@@ -132,6 +140,7 @@ public final class CppBlocks {
 	public static final Block POINSETTIA = registerPlant("poinsettia");
 	public static final Block CHRISTMAS_TREE = registerBlock("christmas_tree", CustomHeightPlantBlock.of(2, FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS)), CPP_GROUP_PLANT);
 	public static final Block RICE = Registry.register(Registry.BLOCK, new Identifier(MOD_ID3, "rice"), new RiceBlock(FabricBlockSettings.of(Material.PLANT).ticksRandomly().noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS)));
+//	public static final Block ENDERMAN_HEAD = registerBlock("enderman_head", new PublicSkullBlock(null, null), CPP_GROUP_MISC);
 
 	public static final List<Block> FLOWER_GRASSES = ImmutableList.of(LYCORIS_RADIATA, TRIFOLIUM, BLACKTHORN, CATTAIL, MARIGOLD, HIBISCUS, HYACINTH, CALAMUS, WILD_LILIUM, BAUHINIA, FLUFFY_GRASS, GERBERA, ESPARTO, GLOW_FORSYTHIA, GLAZED_SHADE, STELERA, FORAGE_CRYSTAL, ISORCHID, BURNING_CHRYSANTHE, OXALIS, CALLIOPSIS, CYCLAMEN, IRIS, LILIUM_PUMILUM, SNOWDROP, NARCISSUS, COLE_FLOWER, LUPINE, CROCU, PANSY, ARABIA_SPEEDWELL, SILENE_PENDULA, ARTEMISIA_ARGYI);
 
@@ -165,7 +174,7 @@ public final class CppBlocks {
 	private static Block registerSapling(String id, BiFunction<SaplingGenerator, Settings, SaplingBlock> constructor, SaplingGenerator saplingGenerator) {
 		Identifier identifier = new Identifier(Craftingpp.MOD_ID3, id);
 		Block regBlock = Registry.register(Registry.BLOCK, identifier, constructor.apply(saplingGenerator, FabricBlockSettings.of(Material.PLANT).noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.GRASS)));
-		BlockItem item = Registry.register(Registry.ITEM, identifier, new AliasedBlockItem(regBlock, new Item.Settings().group(CPP_GROUP_PLANT)));
+		BlockItem item = Registry.register(Registry.ITEM, identifier, new BlockItem(regBlock, new Item.Settings().group(CPP_GROUP_PLANT)));
 		item.appendBlocks(Item.BLOCK_ITEMS, item);
 		return regBlock;
 	}
@@ -192,6 +201,15 @@ public final class CppBlocks {
 		BlockItem item = Registry.register(Registry.ITEM, identifier, new AliasedBlockItem(regBlock, new Item.Settings().group(CPP_GROUP_PLANT)));
 		item.appendBlocks(Item.BLOCK_ITEMS, item);
 		return regBlock;
+	}
+
+	public static Block registerSkull(String id, SkullType type) {
+		Identifier identifier = new Identifier(Craftingpp.MOD_ID3, id);
+		Block block = Registry.register(Registry.BLOCK, identifier, new PublicSkullBlock(type, AbstractBlock.Settings.of(Material.DECORATION).strength(1.0F)));
+		Block wallBlock = Registry.register(Registry.BLOCK, identifier, new PublicWallSkullBlock(type, AbstractBlock.Settings.of(Material.DECORATION).strength(1.0F)));
+		BlockItem item = Registry.register(Registry.ITEM, identifier, new SkullItem(block, wallBlock, new Item.Settings().group(CPP_GROUP_MISC).rarity(Rarity.UNCOMMON)));
+		item.appendBlocks(Item.BLOCK_ITEMS, item);
+		return block;
 	}
 
 	public static Boolean canSpawnOnLeaves(BlockState state, BlockView world, BlockPos pos, EntityType<?> type) {

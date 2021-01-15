@@ -1,0 +1,23 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "cpp:bottle_of_salt"
+		},
+		{
+			"item": "minecraft:bowl"
+		},
+		{
+			"item": "minecraft:carrot"
+		},
+		{
+			"item": "minecraft:pumpkin"
+		},
+		{
+			"item": "minecraft:potato"
+		}
+	],
+	"result": {
+		"item": "cpp:raw_colorful_vegetable"
+	}
+}

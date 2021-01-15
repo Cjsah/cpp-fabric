@@ -1,0 +1,17 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:feather"
+		},
+		{
+			"item": "minecraft:black_dye"
+		},
+		{
+			"item": "minecraft:painting"
+		}
+	],
+	"result": {
+		"item": "cpp:classical_painting"
+	}
+}

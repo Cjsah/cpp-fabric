@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"BCB",
+		"ABA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:purple_dye"
+		},
+		"B": {
+			"item": "minecraft:diamond"
+		},
+		"C": {
+			"item": "cpp:spirit_of_life"
+		}
+	},
+	"result": {
+		"item": "cpp:purple_force_of_life"
+	}
+}

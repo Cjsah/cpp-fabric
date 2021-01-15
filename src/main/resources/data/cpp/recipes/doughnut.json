@@ -1,0 +1,23 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"BCB",
+		"ABA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:sugar"
+		},
+		"B": {
+			"item": "minecraft:wheat"
+		},
+		"C": {
+			"item": "cpp:butter"
+		}
+	},
+	"result": {
+		"item": "cpp:doughnut",
+		"count": 2
+	}
+}

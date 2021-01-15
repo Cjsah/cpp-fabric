@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"BCB",
+		"ABA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:yellow_dye"
+		},
+		"B": {
+			"item": "minecraft:gold_ingot"
+		},
+		"C": {
+			"item": "cpp:certification_of_earth"
+		}
+	},
+	"result": {
+		"item": "cpp:yellow_force_of_earth"
+	}
+}

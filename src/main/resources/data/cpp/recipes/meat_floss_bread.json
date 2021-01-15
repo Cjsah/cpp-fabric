@@ -1,0 +1,17 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "cpp:bottle_of_salt"
+		},
+		{
+			"item": "minecraft:cooked_chicken"
+		},
+		{
+			"item": "minecraft:wheat"
+		}
+	],
+	"result": {
+		"item": "cpp:meat_floss_bread"
+	}
+}

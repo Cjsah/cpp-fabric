@@ -1,0 +1,24 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:cooked_porkchop"
+		},
+		{
+			"item": "cpp:tomato"
+		},
+		{
+			"item": "minecraft:wheat"
+		},
+		{
+			"item": "cpp:cheese"
+		},
+		{
+			"item": "cpp:ketchup"
+		}
+	],
+	"result": {
+		"item": "cpp:pizza",
+		"count": 4
+	}
+}

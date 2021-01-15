@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		" A ",
+		" A ",
+		"BCB"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:stick"
+		},
+		"B": {
+			"item": "minecraft:firework_rocket"
+		},
+		"C": {
+			"item": "minecraft:hay_block"
+		}
+	},
+	"result": {
+		"item": "cpp:broom"
+	}
+}

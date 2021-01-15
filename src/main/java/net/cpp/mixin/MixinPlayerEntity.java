@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.cpp.api.INutrition;
+import net.cpp.api.ITemperancable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
@@ -23,13 +24,14 @@ import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 
 @Mixin(PlayerEntity.class)
-public abstract class MixinPlayerEntity extends LivingEntity {
+public abstract class MixinPlayerEntity extends LivingEntity implements ITemperancable {
 
 	protected MixinPlayerEntity(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
 	private int weight = 0;
+	protected boolean effectEnabled;
 
 	@Inject(at = @At("RETURN"), method = "tick")
 	public void tick(CallbackInfo info) {
@@ -61,10 +63,19 @@ public abstract class MixinPlayerEntity extends LivingEntity {
 	@Inject(at = @At("HEAD"), method = "writeCustomDataToTag")
 	public void writeCustomDataToTag(CompoundTag tag, CallbackInfo info) {
 		tag.putInt("weight", weight);
+		tag.putBoolean("effectEnabled", effectEnabled);
 	}
 
 	@Inject(at = @At("HEAD"), method = "readCustomDataFromTag")
 	public void readCustomDataFromTag(CompoundTag tag, CallbackInfo info) {
 		weight = tag.getInt("weight");
+		effectEnabled = tag.getBoolean("effectEnabled");
+	}
+	
+	public void setEffectEnabled(boolean effectEnabled) {
+		this.effectEnabled = effectEnabled;
+	}
+	public boolean isEffectEnabled() {
+		return effectEnabled;
 	}
 }

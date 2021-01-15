@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"BCB",
+		"ABA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:orange_dye"
+		},
+		"B": {
+			"item": "minecraft:stick"
+		},
+		"C": {
+			"item": "minecraft:glass_pane"
+		}
+	},
+	"result": {
+		"item": "cpp:orange_framed_glasses"
+	}
+}

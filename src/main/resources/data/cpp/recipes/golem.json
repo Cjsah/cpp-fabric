@@ -1,0 +1,31 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"CDC",
+		"EFE"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:experience_bottle"
+		},
+		"B": {
+			"item": "minecraft:zombie_head"
+		},
+		"C": {
+			"item": "cpp:silicon_plate"
+		},
+		"D": {
+			"item": "minecraft:enchanted_golden_apple"
+		},
+		"E": {
+			"item": "minecraft:armor_stand"
+		},
+		"F": {
+			"item": "minecraft:netherite_boots"
+		}
+	},
+	"result": {
+		"item": "cpp:golem"
+	}
+}

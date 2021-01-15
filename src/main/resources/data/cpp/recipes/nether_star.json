@@ -1,0 +1,20 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		" A ",
+		"ABA",
+		" A "
+	],
+	"key": {
+		"A": {
+			"item": "cpp:sun_shard"
+		},
+		"B": {
+			"item": "minecraft:nether_star"
+		}
+	},
+	"result": {
+		"item": "minecraft:nether_star",
+		"count": 2
+	}
+}

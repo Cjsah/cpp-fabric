@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"BCB",
+		"ABA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:white_dye"
+		},
+		"B": {
+			"item": "minecraft:emerald"
+		},
+		"C": {
+			"item": "minecraft:nether_star"
+		}
+	},
+	"result": {
+		"item": "cpp:white_force_of_lightning"
+	}
+}

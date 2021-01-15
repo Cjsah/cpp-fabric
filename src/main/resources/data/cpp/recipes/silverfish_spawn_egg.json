@@ -1,0 +1,19 @@
+{
+	"type": "crafting_shaped",
+	"pattern": [
+		"AAA",
+		"ABA",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"tag": "minecraft:stone_bricks"
+		},
+		"B": {
+			"item": "minecraft:dragon_egg"
+		}
+	},
+	"result": {
+		"item": "minecraft:silverfish_spawn_egg"
+	}
+}

@@ -1,0 +1,18 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:sugar"
+		},
+		{
+			"item": "minecraft:wheat"
+		},
+		{
+			"item": "minecraft:nether_wart"
+		}
+	],
+	"result": {
+		"item": "cpp:yeast_powder",
+		"count": 3
+	}
+}

@@ -1,0 +1,23 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:honey_bottle"
+		},
+		{
+			"item": "minecraft:crimson_roots"
+		},
+		{
+			"item": "minecraft:sugar"
+		},
+		{
+			"item": "minecraft:nether_wart"
+		},
+		{
+			"item": "minecraft:warped_roots"
+		}
+	],
+	"result": {
+		"item": "cpp:assorted_root_candy"
+	}
+}

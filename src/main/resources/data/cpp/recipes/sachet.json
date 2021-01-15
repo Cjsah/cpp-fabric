@@ -1,0 +1,26 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:red_wool"
+		},
+		{
+			"item": "minecraft:lilac"
+		},
+		{
+			"item": "minecraft:string"
+		},
+		{
+			"item": "cpp:artemisia_argyi"
+		},
+		{
+			"item": "minecraft:redstone"
+		},
+		{
+			"item": "cpp:calamus"
+		}
+	],
+	"result": {
+		"item": "cpp:sachet"
+	}
+}

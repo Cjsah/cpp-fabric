@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"ACA",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "cpp:enchanted_gold"
+		},
+		"B": {
+			"item": "minecraft:anvil"
+		},
+		"C": {
+			"item": "minecraft:barrel"
+		}
+	},
+	"result": {
+		"item": "cpp:golden_anvil"
+	}
+}

@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"BCB",
+		"ABA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:red_dye"
+		},
+		"B": {
+			"item": "minecraft:quartz"
+		},
+		"C": {
+			"item": "cpp:nova_of_fire"
+		}
+	},
+	"result": {
+		"item": "cpp:red_force_of_fire"
+	}
+}

@@ -1,0 +1,14 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:blue_dye"
+		},
+		{
+			"item": "minecraft:rose_bush"
+		}
+	],
+	"result": {
+		"item": "cpp:blue_rose"
+	}
+}

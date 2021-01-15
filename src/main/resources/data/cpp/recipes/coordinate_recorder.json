@@ -1,0 +1,31 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"CDC",
+		"EFE"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:experience_bottle"
+		},
+		"B": {
+			"item": "cpp:enchanted_diamond"
+		},
+		"C": {
+			"item": "cpp:enchanted_gold"
+		},
+		"D": {
+			"item": "minecraft:paper"
+		},
+		"E": {
+			"item": "cpp:enchanted_iron"
+		},
+		"F": {
+			"item": "cpp:silicon_plate"
+		}
+	},
+	"result": {
+		"item": "cpp:coordinate_recorder"
+	}
+}

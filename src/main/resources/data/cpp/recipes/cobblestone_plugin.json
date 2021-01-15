@@ -1,0 +1,31 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"CDC",
+		"EFE"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:experience_bottle"
+		},
+		"B": {
+			"item": "cpp:enchanted_diamond"
+		},
+		"C": {
+			"item": "cpp:enchanted_gold"
+		},
+		"D": {
+			"item": "cpp:empty_plugin"
+		},
+		"E": {
+			"item": "cpp:enchanted_iron"
+		},
+		"F": {
+			"item": "minecraft:stone_pickaxe"
+		}
+	},
+	"result": {
+		"item": "cpp:cobblestone_plugin"
+	}
+}

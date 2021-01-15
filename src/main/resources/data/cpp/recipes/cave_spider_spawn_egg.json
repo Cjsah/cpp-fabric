@@ -1,0 +1,19 @@
+{
+	"type": "crafting_shaped",
+	"pattern": [
+		"AAA",
+		"ABA",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:spider_eye"
+		},
+		"B": {
+			"item": "minecraft:dragon_egg"
+		}
+	},
+	"result": {
+		"item": "minecraft:cave_spider_spawn_egg"
+	}
+}

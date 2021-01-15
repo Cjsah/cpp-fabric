@@ -76,7 +76,7 @@ import net.minecraft.world.World;
 	 }
 
 	 public RecipeSerializer<?> getSerializer() {
-		 return CppRecipes.CPP_CRAFTING_SHAPELESS;
+		 return CppRecipes.CRAFTING_SHAPELESS;
 	 }
 
 	 public static class Serializer implements RecipeSerializer<CppCraftingShapelessRecipe> {

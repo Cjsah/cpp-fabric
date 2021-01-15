@@ -6,17 +6,21 @@ import static net.minecraft.item.Items.SPAWNER;
 
 import java.util.List;
 
-import net.cpp.api.IRitualStackHolder;
 import net.cpp.init.CppItemTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.DispenserBlockEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -30,6 +34,7 @@ public class WandOfTheDarkness extends Item {
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		if (!context.getWorld().isClient) {
 			ServerWorld world = (ServerWorld) context.getWorld();
+			ServerPlayerEntity player = (ServerPlayerEntity) context.getPlayer();
 			BlockPos blockPos = context.getBlockPos();
 			BlockState state = world.getBlockState(blockPos);
 			if (state.isOf(Blocks.DISPENSER)) {
@@ -78,30 +83,21 @@ public class WandOfTheDarkness extends Item {
 								}
 							}
 							if (b2) {
+								context.getPlayer().damage(DamageSource.MAGIC, 12);
 								for (int i = 0; i < 9; i++) {
 									inv.getStack(i).decrement(1);
 								}
 								ItemStack ritualStack = SPAWNER.getDefaultStack();
 								ritualStack.setTag(frameStack.getTag());
-								setRitualStack(itemFrame, ritualStack);
+								Wand.setRitualStack(itemFrame, ritualStack);
+								player.networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.PLAYERS, blockPos.getX() + .5, blockPos.getY() + .5, blockPos.getZ() + .5, 1, 1));
 								return ActionResult.SUCCESS;
 							}
 						}
-
 					}
 				}
 			}
 		}
 		return ActionResult.PASS;
-	}
-
-	public static void setRitualStack(ItemFrameEntity itemFrame, ItemStack ritualStack) {
-		ritualStack.getOrCreateTag().putInt("delay", 120);
-		((IRitualStackHolder) itemFrame).setRitualStack(ritualStack);
-		itemFrame.setInvulnerable(true);
-	}
-
-	static {
-
 	}
 }

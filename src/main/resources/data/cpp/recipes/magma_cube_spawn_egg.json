@@ -1,0 +1,19 @@
+{
+	"type": "crafting_shaped",
+	"pattern": [
+		"AAA",
+		"ABA",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:magma_cream"
+		},
+		"B": {
+			"item": "minecraft:dragon_egg"
+		}
+	},
+	"result": {
+		"item": "minecraft:magma_cube_spawn_egg"
+	}
+}

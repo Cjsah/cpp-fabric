@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"A",
+		"B",
+		"C"
+	],
+	"key": {
+		"A": {
+			"item": "cpp:baked_carrot"
+		},
+		"B": {
+			"item": "minecraft:baked_potato"
+		},
+		"C": {
+			"item": "minecraft:stick"
+		}
+	},
+	"result": {
+		"item": "cpp:vegetable_kebab"
+	}
+}

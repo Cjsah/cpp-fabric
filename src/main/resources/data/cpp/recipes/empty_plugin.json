@@ -1,0 +1,19 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"AAA",
+		"ABA",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:paper"
+		},
+		"B": {
+			"item": "minecraft:redstone"
+		}
+	},
+	"result": {
+		"item": "cpp:empty_plugin"
+	}
+}

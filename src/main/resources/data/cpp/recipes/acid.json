@@ -1,0 +1,23 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:sugar"
+		},
+		{
+			"item": "minecraft:gunpowder"
+		},
+		{
+			"item": "minecraft:rotten_flesh"
+		},
+		{
+			"item": "minecraft:potion"
+		},
+		{
+			"item": "minecraft:glistering_melon_slice"
+		}
+	],
+	"result": {
+		"item": "cpp:acid"
+	}
+}

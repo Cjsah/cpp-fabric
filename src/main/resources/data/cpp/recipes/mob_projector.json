@@ -1,0 +1,28 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"ACA",
+		"DED"
+	],
+	"key": {
+		"A": {
+			"item": "cpp:enchanted_iron"
+		},
+		"B": {
+			"item": "minecraft:spawner"
+		},
+		"C": {
+			"item": "minecraft:barrel"
+		},
+		"D": {
+			"item": "cpp:enchanted_diamond"
+		},
+		"E": {
+			"item": "cpp:spirit_of_life"
+		}
+	},
+	"result": {
+		"item": "cpp:mob_projector"
+	}
+}

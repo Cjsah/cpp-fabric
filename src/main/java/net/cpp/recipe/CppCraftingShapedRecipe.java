@@ -81,7 +81,7 @@ public class CppCraftingShapedRecipe implements ICppCraftingRecipe {
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return CppRecipes.CPP_CRAFTING_SHAPED;
+		return CppRecipes.CRAFTING_SHAPED;
 	}
 
 	private boolean matchesSmall(CraftingInventory inv, int offsetX, int offsetY, boolean bl) {

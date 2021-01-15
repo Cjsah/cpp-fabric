@@ -1,0 +1,19 @@
+{
+	"type": "crafting_shaped",
+	"pattern": [
+		"AB",
+		"BA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:sand"
+		},
+		"B": {
+			"item": "minecraft:cobblestone"
+		}
+	},
+	"result": {
+		"item": "minecraft:gravel",
+		"count": 4
+	}
+}

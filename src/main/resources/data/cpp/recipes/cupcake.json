@@ -1,0 +1,23 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"AAA",
+		"BCB",
+		"BBB"
+	],
+	"key": {
+		"A": {
+			"item": "cpp:cherry"
+		},
+		"B": {
+			"item": "minecraft:paper"
+		},
+		"C": {
+			"item": "minecraft:cake"
+		}
+	},
+	"result": {
+		"item": "cpp:cupcake",
+		"count": 5
+	}
+}

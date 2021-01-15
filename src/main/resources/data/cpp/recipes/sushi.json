@@ -1,0 +1,17 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:dried_kelp"
+		},
+		{
+			"item": "cpp:rice_seed"
+		},
+		{
+			"item": "minecraft:cooked_salmon"
+		}
+	],
+	"result": {
+		"item": "cpp:sushi"
+	}
+}

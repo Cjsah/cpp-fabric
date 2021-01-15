@@ -1,0 +1,17 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "cpp:butter"
+		},
+		{
+			"item": "minecraft:wheat"
+		},
+		{
+			"item": "cpp:yeast_powder"
+		}
+	],
+	"result": {
+		"item": "cpp:croissant"
+	}
+}

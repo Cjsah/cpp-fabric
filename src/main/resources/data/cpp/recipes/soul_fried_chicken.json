@@ -1,0 +1,17 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:soul_sand"
+		},
+		{
+			"item": "minecraft:chicken"
+		},
+		{
+			"item": "minecraft:magma_cream"
+		}
+	],
+	"result": {
+		"item": "cpp:soul_fried_chicken"
+	}
+}

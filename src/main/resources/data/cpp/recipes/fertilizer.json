@@ -1,0 +1,21 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:rotten_flesh"
+		},
+		{
+			"item": "minecraft:bone_meal"
+		},
+		{
+			"item": "minecraft:charcoal"
+		},
+		{
+			"item": "minecraft:gunpowder"
+		}
+	],
+	"result": {
+		"item": "cpp:fertilizer",
+		"count": 4
+	}
+}

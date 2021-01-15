@@ -1,0 +1,20 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:cooked_salmon"
+		},
+		{
+			"item": "minecraft:wheat"
+		},
+		{
+			"item": "minecraft:cooked_porkchop"
+		},
+		{
+			"item": "minecraft:brown_mushroom"
+		}
+	],
+	"result": {
+		"item": "cpp:stargazy_pie"
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:cooked_chicken"
+		},
+		{
+			"item": "minecraft:baked_potato"
+		},
+		{
+			"item": "cpp:lemon"
+		}
+	],
+	"result": {
+		"item": "cpp:christmas_roast_chicken"
+	}
+}

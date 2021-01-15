@@ -1,0 +1,21 @@
+{
+	"type": "cpp:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "cpp:strawberry"
+		},
+		{
+			"item": "minecraft:sweet_berries"
+		},
+		{
+			"item": "minecraft:sugar"
+		},
+		{
+			"item": "cpp:bottle_of_salt"
+		}
+	],
+	"result": {
+		"item": "cpp:blue_berry_jam",
+		"count": 3
+	}
+}

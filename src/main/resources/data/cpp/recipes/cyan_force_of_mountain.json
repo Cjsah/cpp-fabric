@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"BCB",
+		"ABA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:cyan_dye"
+		},
+		"B": {
+			"item": "minecraft:iron_ingot"
+		},
+		"C": {
+			"item": "cpp:limb_of_ridge"
+		}
+	},
+	"result": {
+		"item": "cpp:cyan_force_of_mountain"
+	}
+}

@@ -1,0 +1,16 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"AAA",
+		"AAA",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "cpp:moon_shard"
+		}
+	},
+	"result": {
+		"item": "cpp:moon_stone"
+	}
+}

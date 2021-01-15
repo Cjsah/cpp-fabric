@@ -1,0 +1,22 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"ABA",
+		"BCB",
+		"ABA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:green_dye"
+		},
+		"B": {
+			"item": "minecraft:redstone"
+		},
+		"C": {
+			"item": "cpp:heart_of_crystal"
+		}
+	},
+	"result": {
+		"item": "cpp:green_force_of_water"
+	}
+}

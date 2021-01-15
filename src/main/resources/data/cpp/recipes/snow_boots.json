@@ -1,0 +1,18 @@
+{
+	"type": "cpp:crafting_shaped",
+	"pattern": [
+		"A A",
+		"B B"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:leather"
+		},
+		"B": {
+			"item": "minecraft:brown_dye"
+		}
+	},
+	"result": {
+		"item": "cpp:snow_boots"
+	}
+}
