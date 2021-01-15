@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
+import net.cpp.api.ITickableInItemFrame;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;

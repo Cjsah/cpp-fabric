@@ -15,7 +15,9 @@ public abstract class AExpMachineBlock extends AOutputMachineBlock {
 	public AExpMachineBlock(Settings settings) {
 		super(settings);
 	}
-
+/**
+ * 掉落经验
+ */
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		if (!world.isClient())

@@ -30,6 +30,8 @@ import static net.cpp.init.CppBlocks.WILD_LILIUM;
 import net.cpp.Craftingpp;
 import net.cpp.api.CppFoodOrPotion;
 import net.cpp.block.FlowerGrass1Block;
+import net.cpp.block.entity.AllInOneMachineBlockEntity.Degree;
+import net.cpp.item.AllInOneMachinePlugin;
 import net.cpp.item.AncientScroll;
 import net.cpp.item.AngryHand;
 import net.cpp.item.BlackForceOfMoon;
@@ -404,10 +406,10 @@ public final class CppItems {
 		SPIRIT_OF_LIFE = registerItem("spirit_of_life", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 
 		EMPTY_PLUGIN = registerItem("empty_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		LOW_TEMPERATURE_PLUGIN = registerItem("low_temperature_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		LOW_PRESSURE_PLUGIN = registerItem("low_pressure_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		HIGH_TEMPERATURE_PLUGIN = registerItem("high_temperature_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		HIGH_PRESSURE_PLUGIN = registerItem("high_pressure_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
+		LOW_TEMPERATURE_PLUGIN = registerItem("low_temperature_plugin", new AllInOneMachinePlugin(Degree.LOW, true, new Item.Settings().group(CPP_GROUP_MACHINE)));
+		LOW_PRESSURE_PLUGIN = registerItem("low_pressure_plugin", new AllInOneMachinePlugin(Degree.LOW, false, new Item.Settings().group(CPP_GROUP_MACHINE)));
+		HIGH_TEMPERATURE_PLUGIN = registerItem("high_temperature_plugin", new AllInOneMachinePlugin(Degree.HIGH, true, new Item.Settings().group(CPP_GROUP_MACHINE)));
+		HIGH_PRESSURE_PLUGIN = registerItem("high_pressure_plugin", new AllInOneMachinePlugin(Degree.HIGH, false, new Item.Settings().group(CPP_GROUP_MACHINE)));
 		COBBLESTONE_PLUGIN = registerItem("cobblestone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
 		STONE_PLUGIN = registerItem("stone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
 		BLACKSTONE_PLUGIN = registerItem("blackstone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));

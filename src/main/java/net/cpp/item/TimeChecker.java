@@ -3,6 +3,7 @@ package net.cpp.item;
 import static net.cpp.api.CodingTool.getExperience;
 
 import net.cpp.api.CodingTool;
+import net.cpp.api.ITickableInItemFrame;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;

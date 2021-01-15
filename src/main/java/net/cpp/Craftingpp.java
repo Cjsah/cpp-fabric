@@ -3,10 +3,11 @@ package net.cpp;
 import static net.cpp.api.CppChat.say;
 
 import net.cpp.config.CppConfig;
+import net.cpp.ducktype.IPlayerJoinCallback;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.cpp.api.IPlayerJoinCallback;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppEffects;

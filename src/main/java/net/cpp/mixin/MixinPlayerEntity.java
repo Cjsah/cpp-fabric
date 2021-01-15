@@ -6,8 +6,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.cpp.api.INutrition;
-import net.cpp.api.ITemperancable;
+import net.cpp.ducktype.INutrition;
+import net.cpp.ducktype.ITemperancable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;

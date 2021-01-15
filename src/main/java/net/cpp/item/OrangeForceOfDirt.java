@@ -2,7 +2,7 @@ package net.cpp.item;
 
 import com.google.common.collect.ImmutableList;
 
-import net.cpp.api.IMaterialGetter;
+import net.cpp.ducktype.IMaterialGetter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;

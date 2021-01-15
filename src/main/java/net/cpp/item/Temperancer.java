@@ -1,6 +1,6 @@
 package net.cpp.item;
 
-import net.cpp.api.ITemperancable;
+import net.cpp.ducktype.ITemperancable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

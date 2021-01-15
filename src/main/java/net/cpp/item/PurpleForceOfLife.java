@@ -55,8 +55,8 @@ public class PurpleForceOfLife extends Item {
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
         if (!user.world.isClient) {
-            System.out.println(stack);
-            System.out.println(entity);
+//            System.out.println(stack);
+//            System.out.println(entity);
         }
         return ActionResult.PASS;
     }

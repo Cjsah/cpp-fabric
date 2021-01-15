@@ -114,9 +114,9 @@ import java.util.Set;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
-import net.cpp.gui.handler.MobProjectorScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
+import net.cpp.screen.handler.MobProjectorScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -294,7 +294,7 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 	 * 获取当前的配方代码，用于渲染GUI里的生物
 	 * 
 	 * @return 当前的配方代码
-	 * @see net.cpp.gui.screen.MobProjectorScreen#PICTURES
+	 * @see net.cpp.screen.MobProjectorScreen#PICTURES
 	 */
 	public int getCurrentRecipeCode() {
 		return currentRecipeCode;

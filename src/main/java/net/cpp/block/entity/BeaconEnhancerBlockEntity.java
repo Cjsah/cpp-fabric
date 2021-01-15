@@ -21,10 +21,10 @@ import com.mojang.brigadier.StringReader;
 
 import net.cpp.api.CodingTool;
 import net.cpp.api.CppEffect;
-import net.cpp.gui.handler.BeaconEnhancerScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppEffects;
+import net.cpp.screen.handler.BeaconEnhancerScreenHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BeaconBlockEntity;

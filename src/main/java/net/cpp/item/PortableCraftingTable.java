@@ -1,6 +1,6 @@
 package net.cpp.item;
 
-import net.cpp.gui.handler.PortableCraftingTableScreenHandler;
+import net.cpp.screen.handler.PortableCraftingTableScreenHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
