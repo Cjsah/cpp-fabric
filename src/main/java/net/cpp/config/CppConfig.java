@@ -19,13 +19,13 @@ import net.fabricmc.loader.api.FabricLoader;
 
 
 public class CppConfig {
-    private static final File JSON_PATH = new File(FabricLoader.getInstance().getConfigDir().toFile(), Craftingpp.MOD_ID2);
+    protected static final File JSON_PATH = new File(FabricLoader.getInstance().getConfigDir().toFile(), Craftingpp.MOD_ID2);
 
     private static final Logger logger = LogManager.getLogger(Craftingpp.MOD_ID1);
 
     private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
 
-    private static final JsonObject JSON = new JsonObject();
+    protected final JsonObject JSON = new JsonObject();
 
     public CppConfig() {
         if (!JSON_PATH.isDirectory() && !JSON_PATH.mkdirs()) {
@@ -52,7 +52,7 @@ public class CppConfig {
     }
 
     public JsonObject getConfig(String configName){
-        return JSON.get(configName).getAsJsonObject();
+        return this.JSON.get(configName).getAsJsonObject();
     }
 
     public boolean initConfig (String configName, JsonObject json) {

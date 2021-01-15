@@ -543,7 +543,11 @@
   "tooltip.cpp.enchantment_with_levels": "%s到%s级附魔",
 
   "word.infinite": "∞",
-  
+
+  "config.cpp.title": "Crafting++",
+  "config.cpp.true": "是",
+  "config.cpp.false": "否",
+
   "structure_feature.buried_treasure": "埋藏的宝藏",
   "structure_feature.endcity": "末地城",
   "structure_feature.fortress": "下界要塞",
