@@ -10,6 +10,7 @@ import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.OrderedText;
 
 public class DescriptionListWidget extends EntryListWidget<DescriptionEntry> {
@@ -41,11 +42,7 @@ public class DescriptionListWidget extends EntryListWidget<DescriptionEntry> {
             this.lastSelected = selectedEntry;
             this.clearEntries();
             this.setScrollAmount(-1.7976931348623157E308D);
-//            String description = this.lastSelected.getMetadata().getDescription();
-//            String id = this.lastSelected.getMetadata().getId();
-//            if (description.isEmpty() && HardcodedUtil.getHardcodedDescriptions().containsKey(id)) {
-//                description = HardcodedUtil.getHardcodedDescription(id);
-//            }
+//            String description = this.lastSelected.getDescription();
 //
 //            if (this.lastSelected != null && description != null && !description.isEmpty()) {
 //

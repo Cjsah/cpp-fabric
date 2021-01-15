@@ -10,6 +10,11 @@ import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.StringVisitable;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Language;
+import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.Logger;
 
 import net.cpp.Craftingpp;
@@ -104,6 +109,40 @@ public class CppOptionsGui extends Screen {
         RenderSystem.disableBlend();
         drawTextWithShadow(matrices, this.textRenderer, this.title, this.configList.getWidth() / 2, 8, 16777215);
         super.render(matrices, mouseX, mouseY, delta);
+
+        if (selectedEntry != null) {
+            String key = selectedEntry.getKey();
+            int x = this.rightPaneX;
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            this.selected.bindIconTexture();
+            RenderSystem.enableBlend();
+            drawTexture(matrices, x, this.paneY, 0.0F, 0.0F, 32, 32, 32, 32);
+            RenderSystem.disableBlend();
+            int lineSpacing = 9 + 1;
+            int imageOffset = 36;
+            Text name = Registry.ITEM.get(new Identifier(Craftingpp.MOD_ID3, key)).getName();
+            StringVisitable trimmedName = name;
+            int maxNameWidth = this.width - (x + imageOffset);
+            if (this.textRenderer.getWidth(name) > maxNameWidth) {
+                StringVisitable ellipsis = StringVisitable.plain("...");
+                trimmedName = StringVisitable.concat(this.textRenderer.trimToWidth(name, maxNameWidth - this.textRenderer.getWidth(ellipsis)), ellipsis);
+            }
+
+            this.textRenderer.draw(matrices, Language.getInstance().reorder(trimmedName), (float)(x + imageOffset), (float)(this.paneY + 1), 16777215);
+            if (mouseX > x + imageOffset && mouseY > this.paneY + 1) {
+                int var10001 = this.paneY + 1;
+                if (mouseY < var10001 + 9 && mouseX < x + imageOffset + this.textRenderer.getWidth(trimmedName)) {
+                    this.setTooltip(new TranslatableText("modmenu.modIdToolTip", key));
+                }
+            }
+
+            this.textRenderer.draw(matrices, "v" + key, (float)(x + imageOffset), (float)(this.paneY + 2 + lineSpacing), 8421504);
+
+            if (this.tooltip != null) {
+                this.renderOrderedTooltip(matrices, this.textRenderer.wrapLines(this.tooltip, 2147483647), mouseX, mouseY);
+            }
+        }
+
     }
 
     private boolean updateFiltersX() {
@@ -157,6 +196,16 @@ public class CppOptionsGui extends Screen {
         super.onClose();
         this.configList.close();
         this.client.openScreen(this.screen);
+    }
+
+    void updateSelectedEntry(ConfigListEntry entry) {
+        if (entry != null) {
+            this.selected = entry;
+        }
+    }
+
+    public String getSearchInput() {
+        return this.searchBox.getText();
     }
 
 }
