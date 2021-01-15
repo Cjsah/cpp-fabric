@@ -525,6 +525,10 @@
   "cpp.chat.weight.thin1": "偏瘦",
   "cpp.chat.weight.thin2": "过瘦",
 
+  "cpp.modmenu.title": "Crafting++ 配置",
+  "cpp.modmenu.showing": "当前显示 %s 个配置文件",
+  "cpp.modmenu.reset": "重置",
+
   "tooltip.cpp.gfow.water": "水 %s",
   "tooltip.cpp.gfow.lava": "岩浆 %s",
   "tooltip.cpp.cfom.direction": "方向：%s",

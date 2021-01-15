@@ -3,28 +3,23 @@ package net.cpp.config;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.EntryListWidget;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.OrderedText;
 
-public class DescriptionListWidget extends EntryListWidget<DescriptionEntry> {
+public class ConfigWidget extends EntryListWidget<ConfigEntry> {
     private final CppOptionsGui parent;
-    private final TextRenderer textRenderer;
     private ConfigListEntry lastSelected = null;
 
-    public DescriptionListWidget(MinecraftClient client, int width, int height, int top, int bottom, int entryHeight, CppOptionsGui parent) {
+    public ConfigWidget(MinecraftClient client, int width, int height, int top, int bottom, int entryHeight, CppOptionsGui parent) {
         super(client, width, height, top, bottom, entryHeight);
         this.parent = parent;
-        this.textRenderer = client.textRenderer;
     }
 
-    public DescriptionEntry getSelected() {
+    public ConfigEntry getSelected() {
         return null;
     }
 
@@ -42,14 +37,6 @@ public class DescriptionListWidget extends EntryListWidget<DescriptionEntry> {
             this.lastSelected = selectedEntry;
             this.clearEntries();
             this.setScrollAmount(-1.7976931348623157E308D);
-//            String description = this.lastSelected.getDescription();
-//
-//            if (this.lastSelected != null && description != null && !description.isEmpty()) {
-//
-//                for (OrderedText line : this.textRenderer.wrapLines(new LiteralText(description.replaceAll("\n", "\n\n")), this.getRowWidth())) {
-//                    this.children().add(new DescriptionEntry(line));
-//                }
-//            }
         }
 
         Tessellator tessellator = Tessellator.getInstance();
@@ -85,18 +72,6 @@ public class DescriptionListWidget extends EntryListWidget<DescriptionEntry> {
         RenderSystem.enableAlphaTest();
         RenderSystem.disableBlend();
     }
-
 }
 
-class DescriptionEntry extends EntryListWidget.Entry<DescriptionEntry> {
-    protected OrderedText text;
-
-    public DescriptionEntry(OrderedText text) {
-        this.text = text;
-    }
-
-    public void render(MatrixStack matrices, int index, int y, int x, int itemWidth, int itemHeight, int mouseX, int mouseY, boolean isSelected, float delta) {
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, this.text, (float)x, (float)y, 11184810);
-    }
-}
 
