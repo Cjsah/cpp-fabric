@@ -79,6 +79,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.resource.ServerResourceManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandOutput;
@@ -379,7 +381,7 @@ public class Wand extends Item {
 	}
 
 	public static void setRitualStack(ItemFrameEntity itemFrame, ItemStack ritualStack) {
-		ritualStack.getOrCreateTag().putInt("delay", 120);
+		ritualStack.getOrCreateTag().putInt("delay", 1200);
 		((IRitualStackHolder) itemFrame).setRitualStack(ritualStack);
 		itemFrame.setInvulnerable(true);
 	}
@@ -408,7 +410,7 @@ public class Wand extends Item {
 							} else if (effect == NIGHT_VISION) {
 								player.addStatusEffect(new StatusEffectInstance(effect, 230, 254, true, true));
 							} else {
-								player.addStatusEffect(new StatusEffectInstance(effect, 200, 0, true, true));
+								player.addStatusEffect(new StatusEffectInstance(effect, 20, 0, true, true));
 							}
 							b1 = true;
 						}
@@ -421,6 +423,25 @@ public class Wand extends Item {
 			CodingTool.removeEffectExceptHidden(player, NIGHT_VISION, 254, 210);
 		}
 	}
+
+	public static void tickFrame(ItemFrameEntity frame) {
+		ItemStack ritualStack = ((IRitualStackHolder) frame).getRitualStack();
+		if (!ritualStack.isEmpty()) {
+			int delay = ritualStack.getOrCreateTag().getInt("delay");
+			if (delay-- <= 0) {
+				ritualStack.removeSubTag("delay");
+				frame.setHeldItemStack(ritualStack);
+				ritualStack = ItemStack.EMPTY;
+				frame.setInvulnerable(false);
+			} else {
+				ritualStack.getOrCreateTag().putInt("delay", delay);
+				for (ServerPlayerEntity player : ((ServerWorld) frame.world).getPlayers(player -> player.getPos().isInRange(frame.getPos(), 32))) {
+					player.networkHandler.sendPacket(new ParticleS2CPacket(ParticleTypes.ENCHANT, false, frame.getX(), frame.getY() + 1, frame.getZ(), 0.2f, 0, 0.2f, 1, 1));
+				}
+			}
+		}
+	}
+
 	static {
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			loadRandoms(server);
