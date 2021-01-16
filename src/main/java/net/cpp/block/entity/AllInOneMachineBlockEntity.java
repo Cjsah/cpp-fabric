@@ -1,7 +1,94 @@
 package net.cpp.block.entity;
 
-import static net.cpp.init.CppBlocks.*;
-import static net.cpp.init.CppItems.*;
+import static net.cpp.init.CppBlocks.FRUIT_SAPLING;
+import static net.cpp.init.CppBlocks.ORE_SAPLING;
+import static net.cpp.init.CppBlocks.RARE_EARTH_GLASS;
+import static net.cpp.init.CppBlocks.REINFORCED_GLASS;
+import static net.cpp.init.CppBlocks.SAKURA_SAPLING;
+import static net.cpp.init.CppBlocks.WOOL_SAPLING;
+import static net.cpp.init.CppItems.ACID;
+import static net.cpp.init.CppItems.AGENTIA_OF_BLOOD;
+import static net.cpp.init.CppItems.AGENTIA_OF_BOUNCE;
+import static net.cpp.init.CppItems.AGENTIA_OF_CHAIN;
+import static net.cpp.init.CppItems.AGENTIA_OF_DIRT;
+import static net.cpp.init.CppItems.AGENTIA_OF_EARTH;
+import static net.cpp.init.CppItems.AGENTIA_OF_EXTREMENESS;
+import static net.cpp.init.CppItems.AGENTIA_OF_EYESIGHT;
+import static net.cpp.init.CppItems.AGENTIA_OF_FIRE;
+import static net.cpp.init.CppItems.AGENTIA_OF_FIRE_SHIELD;
+import static net.cpp.init.CppItems.AGENTIA_OF_LIFE;
+import static net.cpp.init.CppItems.AGENTIA_OF_LIGHTNESS;
+import static net.cpp.init.CppItems.AGENTIA_OF_OCEAN;
+import static net.cpp.init.CppItems.AGENTIA_OF_RIDGE;
+import static net.cpp.init.CppItems.AGENTIA_OF_SHARPNESS;
+import static net.cpp.init.CppItems.AGENTIA_OF_SHIELD;
+import static net.cpp.init.CppItems.AGENTIA_OF_SKY;
+import static net.cpp.init.CppItems.AGENTIA_OF_TIDE;
+import static net.cpp.init.CppItems.AGENTIA_OF_TRANSPARENTNESS;
+import static net.cpp.init.CppItems.AGENTIA_OF_WATERLESS;
+import static net.cpp.init.CppItems.ALKALOID;
+import static net.cpp.init.CppItems.ALKALOID_RARE_EARTH;
+import static net.cpp.init.CppItems.AMMONIA_REFRIGERANT;
+import static net.cpp.init.CppItems.APRICOT;
+import static net.cpp.init.CppItems.BANANA;
+import static net.cpp.init.CppItems.BASALT_PLUGIN;
+import static net.cpp.init.CppItems.BIONIC_ACID;
+import static net.cpp.init.CppItems.BLACKSTONE_PLUGIN;
+import static net.cpp.init.CppItems.BLUEBERRY;
+import static net.cpp.init.CppItems.BOTTLE_OF_AIR;
+import static net.cpp.init.CppItems.BOTTLE_OF_SALT;
+import static net.cpp.init.CppItems.CARBON_DUST;
+import static net.cpp.init.CppItems.CERTIFICATION_OF_EARTH;
+import static net.cpp.init.CppItems.CHERRY;
+import static net.cpp.init.CppItems.CHINESE_DATE;
+import static net.cpp.init.CppItems.CINDER;
+import static net.cpp.init.CppItems.COARSE_SILICON;
+import static net.cpp.init.CppItems.COBBLESTONE_PLUGIN;
+import static net.cpp.init.CppItems.COCONUT;
+import static net.cpp.init.CppItems.COLD_DRINK;
+import static net.cpp.init.CppItems.COPPER_DUST;
+import static net.cpp.init.CppItems.DIAMOND_DUST;
+import static net.cpp.init.CppItems.EMERALD_DUST;
+import static net.cpp.init.CppItems.ENCHANTED_DIAMOND;
+import static net.cpp.init.CppItems.ENCHANTED_IRON;
+import static net.cpp.init.CppItems.END_STONE_PLUGIN;
+import static net.cpp.init.CppItems.FERTILIZER;
+import static net.cpp.init.CppItems.GOLDEN_GRAPE;
+import static net.cpp.init.CppItems.GOLD_DUST;
+import static net.cpp.init.CppItems.GRAPE;
+import static net.cpp.init.CppItems.GRAPEFRUIT;
+import static net.cpp.init.CppItems.GREEN_FORCE_OF_WATER;
+import static net.cpp.init.CppItems.HAWTHORN;
+import static net.cpp.init.CppItems.HEART_OF_CRYSTAL;
+import static net.cpp.init.CppItems.IRON_DUST;
+import static net.cpp.init.CppItems.LEMON;
+import static net.cpp.init.CppItems.LIMB_OF_RIDGE;
+import static net.cpp.init.CppItems.LONGAN;
+import static net.cpp.init.CppItems.LOQUAT;
+import static net.cpp.init.CppItems.LYCHEE;
+import static net.cpp.init.CppItems.MANGO;
+import static net.cpp.init.CppItems.NETHERRACK_PLUGIN;
+import static net.cpp.init.CppItems.NOVA_OF_FIRE;
+import static net.cpp.init.CppItems.ORANGE;
+import static net.cpp.init.CppItems.PAYAPA;
+import static net.cpp.init.CppItems.PEACH;
+import static net.cpp.init.CppItems.PEAR;
+import static net.cpp.init.CppItems.PERSIMMON;
+import static net.cpp.init.CppItems.PLUM;
+import static net.cpp.init.CppItems.POMEGRANATE;
+import static net.cpp.init.CppItems.QUARTZ_DUST;
+import static net.cpp.init.CppItems.RARE_EARTH_DUST;
+import static net.cpp.init.CppItems.RARE_EARTH_SALT;
+import static net.cpp.init.CppItems.SILICON_DUST;
+import static net.cpp.init.CppItems.SILICON_PLATE;
+import static net.cpp.init.CppItems.SODA_WATER;
+import static net.cpp.init.CppItems.SOUL_OF_DIRT;
+import static net.cpp.init.CppItems.SPIRIT_OF_LIFE;
+import static net.cpp.init.CppItems.STEEL_DUST;
+import static net.cpp.init.CppItems.STONE_PLUGIN;
+import static net.cpp.init.CppItems.STRAWBERRY;
+import static net.cpp.init.CppItems.TOMATO;
+import static net.cpp.init.CppItems.WING_OF_SKY;
 import static net.minecraft.item.Items.*;
 
 import java.io.File;
@@ -163,7 +250,6 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	public void fromTag(CompoundTag tag) {
 		super.fromTag(tag);
 		Inventories.fromTag(tag, inventory);
-		propertyDelegate.set(4, tag.getInt("temperaturePressure"));
 		for (int i = 0, a = tag.getInt("availabeTemperature"); a > 0 && i < Degree.values().length; i++) {
 			if ((a & 1) == 1)
 				availabeTemperature.add(Degree.values()[i]);
@@ -174,13 +260,14 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 				availabePressure.add(Degree.values()[i]);
 			a >>= 1;
 		}
+		propertyDelegate.set(6, tag.getInt("temperaturePressure"));
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		super.toTag(tag);
 		Inventories.toTag(tag, inventory);
-		tag.putInt("temperaturePressure", propertyDelegate.get(4));
+		tag.putInt("temperaturePressure", propertyDelegate.get(6));
 		int a = 0;
 		for (Degree degree : availabeTemperature) {
 			a |= 1 << degree.ordinal();
@@ -294,8 +381,11 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-		if (stack.getItem() == EXPERIENCE_BOTTLE)
+//		System.out.println(String.format("slot:%d stack:%s", slot, stack));
+		if (stack.isOf(EXPERIENCE_BOTTLE)) {
+//			System.out.println(1);
 			return slot == 0;
+		}
 		return (slot == 1 && stack.getItem() != getStack(2).getItem()) || (slot == 2 && stack.getItem() != getStack(1).getItem());
 	}
 

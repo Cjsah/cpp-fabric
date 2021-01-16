@@ -528,4 +528,12 @@ public class CodingTool {
 			}
 		}
 	}
+
+	public static void actionbar(ServerPlayerEntity player, String translationKey, Object... params) {
+		player.sendMessage(new TranslatableText(translationKey, params), true);
+	}
+
+	public static void tellraw(ServerPlayerEntity player, String translationKey, Object... params) {
+		player.sendMessage(new TranslatableText(translationKey, params), false);
+	}
 }

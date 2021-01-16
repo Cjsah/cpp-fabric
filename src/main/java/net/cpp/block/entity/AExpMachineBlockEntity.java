@@ -46,7 +46,7 @@ public abstract class AExpMachineBlockEntity extends AOutputMachineBlockEntity {
 
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-		return slot == 0 && stack.getItem() == EXPERIENCE_BOTTLE;
+		return slot == 0 && stack.isOf(EXPERIENCE_BOTTLE);
 	}
 
 	public boolean isWorking() {
@@ -83,7 +83,7 @@ public abstract class AExpMachineBlockEntity extends AOutputMachineBlockEntity {
 	}
 
 	/**
-	 * 同步了经验槽
+	 * 同步经验槽
 	 * 
 	 * @author Ph-苯
 	 *
@@ -91,12 +91,12 @@ public abstract class AExpMachineBlockEntity extends AOutputMachineBlockEntity {
 	protected class ExpPropertyDelegate extends OutputDirectionPropertyDelegate {
 		@Override
 		public int size() {
-			return super.size()+3;
+			return super.size() + 3;
 		}
 
 		@Override
 		public void set(int index, int value) {
-			switch (index-super.size()) {
+			switch (index - super.size()) {
 			case 0:
 				workTime = value;
 				break;
@@ -113,7 +113,7 @@ public abstract class AExpMachineBlockEntity extends AOutputMachineBlockEntity {
 
 		@Override
 		public int get(int index) {
-			switch (index-super.size()) {
+			switch (index - super.size()) {
 			case 0:
 				return workTime;
 			case 1:

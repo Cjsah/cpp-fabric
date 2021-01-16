@@ -130,12 +130,6 @@ public class ItemProcessorBlockEntity extends AOutputMachineBlockEntity {
 // 压缩器
 					if (input1.getCount() >= input1.getMaxCount() && (output1.isEmpty() || output1.getCount() < output1.getMaxCount())) {
 						ItemStack output = Compressor.compress(input1);
-//						boolean ed = false;
-//						
-//						if (ed = output1.isEmpty())
-//							blockEntity.setStack(2, output);
-//						else if (ed = ItemStack.areItemsEqual(output1, output) && ItemStack.areTagsEqual(output1, output))
-//							output1.increment(1);
 						if (input1 != output && blockEntity.tryInsert(2, output))
 							input1.decrement(input1.getMaxCount());
 					}

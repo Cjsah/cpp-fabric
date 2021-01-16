@@ -17,7 +17,7 @@ public class ExperienceBottleSlot extends Slot {
 
 	@Override
 	public boolean canInsert(ItemStack stack) {
-		return Items.EXPERIENCE_BOTTLE.equals(stack.getItem());
+		return stack.isOf(Items.EXPERIENCE_BOTTLE);
 	}
 //	@Override
 //	public ItemStack takeStack(int amount) {

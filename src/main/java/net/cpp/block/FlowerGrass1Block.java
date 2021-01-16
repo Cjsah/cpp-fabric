@@ -6,6 +6,7 @@ import java.util.Random;
 import com.google.common.collect.ImmutableList;
 
 import net.cpp.init.CppItems;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Fertilizable;
@@ -80,5 +81,8 @@ public class FlowerGrass1Block extends FlowerBlock implements Fertilizable {
 
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		return AGE_TO_SHAPE.get(state.get(AGE));
+	}
+	public AbstractBlock.OffsetType getOffsetType() {
+		return AbstractBlock.OffsetType.NONE;
 	}
 }

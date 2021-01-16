@@ -64,7 +64,7 @@ public class Magnet extends Item implements IDefaultTagItem, ITickableInItemFram
 
 	@Override
 	public boolean tick(ItemFrameEntity itemFrameEntity) {
-		if (itemFrameEntity.getHeldItemStack().getOrCreateTag().getBoolean("enabled") ^ ((itemFrameEntity.getRotation() & 1) == 0)) {
+		if (itemFrameEntity.getHeldItemStack().getOrCreateTag().getBoolean("enabled") ^ ((itemFrameEntity.getRotation() & 1) != 0)) {
 			CodingTool.attractItems(itemFrameEntity.getPos(), (ServerWorld) itemFrameEntity.world, true, true);
 			return true;
 		}
