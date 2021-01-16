@@ -19,7 +19,7 @@ import net.fabricmc.loader.api.FabricLoader;
 
 
 public class CppConfig {
-    protected final File JSON_PATH = new File(FabricLoader.getInstance().getConfigDir().toFile(), Craftingpp.MOD_ID2);
+    private final File JSON_PATH = new File(FabricLoader.getInstance().getConfigDir().toFile(), Craftingpp.MOD_ID2);
 
     private final Logger logger = LogManager.getLogger(Craftingpp.MOD_ID1);
 
@@ -78,7 +78,7 @@ public class CppConfig {
             logger.error(configName + "is not exists");
         }else {
             try(FileWriter fileWriter = new FileWriter(json_file)) {
-                fileWriter.write(GSON.toJson(json));
+                fileWriter.write(formatJson(json));
                 JSON.add(configName, json);
             }catch (IOException e) {
                 logger.error("Failed to change config file " + json_file);
@@ -86,4 +86,9 @@ public class CppConfig {
             }
         }
     }
+
+    protected String formatJson(JsonObject json) {
+        return GSON.toJson(json);
+    }
+
 }

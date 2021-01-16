@@ -29,11 +29,10 @@ import java.util.Objects;
 public class CppOptionsGui extends Screen {
     private static final Identifier RESET_BUTTON = new Identifier(ModMenu.MOD_ID, "textures/gui/configure_button.png");
     private static final Text RESET_TEXT = new TranslatableText("cpp.modmenu.reset");
-    private static final CppConfig CONFIG = Craftingpp.CONFIG;
     private final Screen screen;
     private TextFieldWidget searchBox;
     private int searchBoxX;
-    private ConfigWidget configWidget;
+    private DescriptionListWidget descriptionListWidget;
     private ConfigListWidget configList;
     private ConfigListEntry selected;
     private double scrollPercent = 0.0D;
@@ -50,14 +49,16 @@ public class CppOptionsGui extends Screen {
         if (this.configList.isMouseOver(mouseX, mouseY)) {
             return this.configList.mouseScrolled(mouseX, mouseY, amount);
         } else {
-            return this.configWidget.isMouseOver(mouseX, mouseY) && this.configWidget.mouseScrolled(mouseX, mouseY, amount);
+            return this.descriptionListWidget.isMouseOver(mouseX, mouseY) && this.descriptionListWidget.mouseScrolled(mouseX, mouseY, amount);
         }
     }
 
+    @Override
     public void tick() {
         this.searchBox.tick();
     }
 
+    @Override
     protected void init() {
         Objects.requireNonNull(this.client).keyboard.setRepeatEvents(true);
         this.paneY = 48;
@@ -66,16 +67,17 @@ public class CppOptionsGui extends Screen {
         int searchBoxWidth = paneWidth - 32 - 22;
         this.searchBoxX = paneWidth / 2 - searchBoxWidth / 2 - 11;
         this.searchBox = new TextFieldWidget(this.textRenderer, searchBoxX, 22, searchBoxWidth, 20, this.searchBox, new TranslatableText("modmenu.search"));
-        this.configList = new ConfigListWidget(this.client, paneWidth, this.height, this.paneY + 19, this.height - 36, 20, this.searchBox.getText(), CONFIG.JSON, this);
+        this.configList = new ConfigListWidget(this.client, paneWidth, this.height, this.paneY + 19, this.height - 36, 20, this.searchBox.getText(), this);
 
         this.configList.setLeftPos(0);
-        this.configWidget = new ConfigWidget(this.client, paneWidth, this.height, this.paneY + 19, this.height - 36, 9 + 1, this);
-        this.configWidget.setLeftPos(this.rightPaneX);
+        this.descriptionListWidget = new DescriptionListWidget(this.client, paneWidth, this.height, this.paneY + 19, this.height - 36, 9 + 1, this);
+        this.descriptionListWidget.setLeftPos(this.rightPaneX);
         this.children.add(this.searchBox);
         this.children.add(this.configList);
-        this.children.add(this.configWidget);
+        this.children.add(this.descriptionListWidget);
         this.addButton(new TexturedButtonWidget(width - 40, paneY - 20, 20, 20, 0, 0, RESET_TEXT, RESET_BUTTON, 32, 64, button -> {
-            CONFIG.changeConfig(selected.getKey(), ((ICppConfig)selected.getConfigItem()).defaultConfig(new JsonObject()));
+            Craftingpp.CONFIG.changeConfig(selected.getKey(), ((ICppConfig)selected.getConfigItem()).defaultConfig(new JsonObject()));
+//            预留, 写完再去掉注释
 //            this.configWidget.refresh();
         }, (buttonWidget, matrices, mouseX, mouseY) -> {
             TexturedButtonWidget button = (TexturedButtonWidget) buttonWidget;
@@ -88,7 +90,7 @@ public class CppOptionsGui extends Screen {
             @Override
             public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 
-                this.active = selected != null && selected.getConfigItem() instanceof ICppConfig && !Objects.equals(CONFIG.JSON.get(selected.getKey()).toString(), ((ICppConfig) selected.getConfigItem()).defaultConfig(new JsonObject()).toString());
+                this.active = selected != null && selected.getConfigItem() instanceof ICppConfig && !Objects.equals(Craftingpp.CONFIG.JSON.get(selected.getKey()).toString(), ((ICppConfig) selected.getConfigItem()).defaultConfig(new JsonObject()).toString());
 
                 super.render(matrices, mouseX, mouseY, delta);
             }
@@ -113,7 +115,7 @@ public class CppOptionsGui extends Screen {
         this.renderBackground(matrices);
         ConfigListEntry selectedEntry = this.selected;
         if (selectedEntry != null) {
-            this.configWidget.render(matrices, mouseX, mouseY, delta);
+            this.descriptionListWidget.render(matrices, mouseX, mouseY, delta);
         }
 
         this.configList.render(matrices, mouseX, mouseY, delta);
@@ -168,6 +170,7 @@ public class CppOptionsGui extends Screen {
         this.scrollPercent = scrollPercent;
     }
 
+    @Override
     public void renderBackground(MatrixStack matrices) {
         int x1 = 0, y1 = 0, x2 = this.width, y2 = this.height;
         Tessellator tessellator = Tessellator.getInstance();
@@ -182,6 +185,7 @@ public class CppOptionsGui extends Screen {
         tessellator.draw();
     }
 
+    @Override
     public void onClose() {
         super.onClose();
         this.configList.close();
