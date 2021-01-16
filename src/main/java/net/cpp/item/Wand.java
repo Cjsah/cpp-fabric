@@ -25,6 +25,12 @@ import static net.minecraft.block.Blocks.GOLD_BLOCK;
 import static net.minecraft.block.Blocks.LAPIS_BLOCK;
 import static net.minecraft.block.Blocks.MAGMA_BLOCK;
 import static net.minecraft.block.Blocks.OBSIDIAN;
+import static net.minecraft.entity.attribute.EntityAttributes.GENERIC_ATTACK_DAMAGE;
+import static net.minecraft.entity.attribute.EntityAttributes.GENERIC_ATTACK_SPEED;
+import static net.minecraft.entity.attribute.EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE;
+import static net.minecraft.entity.attribute.EntityAttributes.GENERIC_LUCK;
+import static net.minecraft.entity.attribute.EntityAttributes.GENERIC_MAX_HEALTH;
+import static net.minecraft.entity.attribute.EntityAttributes.GENERIC_MOVEMENT_SPEED;
 import static net.minecraft.entity.effect.StatusEffects.CONDUIT_POWER;
 import static net.minecraft.entity.effect.StatusEffects.FIRE_RESISTANCE;
 import static net.minecraft.entity.effect.StatusEffects.HASTE;
@@ -54,12 +60,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Multimap;
 
 import net.cpp.api.CodingTool;
 import net.cpp.api.CppEffect;
@@ -76,7 +85,6 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributeModifier.Operation;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.effect.StatusEffect;
@@ -89,7 +97,6 @@ import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.ShieldItem;
 import net.minecraft.item.ToolItem;
 import net.minecraft.item.TridentItem;
 import net.minecraft.nbt.CompoundTag;
@@ -122,9 +129,10 @@ import net.minecraft.world.World;
 
 public class Wand extends Item {
 	public static final Map<Item, StatusEffect> EFFECTS = new HashMap<>();
-	public static final Map<StatusEffect, EquipmentSlot> RIGHT_SLOTS = new HashMap<>();
+	public static final Multimap<StatusEffect, EquipmentSlot> CORRECT_SLOTS = HashMultimap.create();
 	public static final CppEffect MAGNETIC = new CppEffect(StatusEffectType.NEUTRAL, 0);
-	public static final UUID ATTRIBUTE_UUID = new UUID(0x0123456789ABCDEFL, 0x0123456789ABCDEFL);
+	public static final List<UUID> UUIDS = ImmutableList.of(new UUID(0x0123456789ABCDEFL, 1), new UUID(0x0123456789ABCDEFL, 2), new UUID(0x0123456789ABCDEFL, 3), new UUID(0x0123456789ABCDEFL, 4));
+	private static final long HIGH_UUID = 0x0123456789ABCDEFL;
 	private static Map<Item, Integer> randoms = new HashMap<>();
 	private static int tickSpent = 1200;
 	private final int level;
@@ -161,6 +169,7 @@ public class Wand extends Item {
 				if (frame != null) {
 					DispenserBlockEntity blockEntity = (DispenserBlockEntity) world.getBlockEntity(blockPos);
 					boolean failed = true;
+					int tickSpent = 120;// XXX
 					if (baseType == 1) {
 						if (level >= 1 && level <= 3 && checkOblation1(blockEntity, frame)) {
 							failed = false;
@@ -187,7 +196,7 @@ public class Wand extends Item {
 						CodingTool.actionbar(player, "info.cpp.rituals.fail");
 						return ActionResult.FAIL;
 					} else {
-						player.networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, frame.getX(), frame.getY(), frame.getZ(), 5, 1));
+						player.networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_BEACON_POWER_SELECT, SoundCategory.BLOCKS, frame.getX(), frame.getY(), frame.getZ(), 5, 1));
 						CodingTool.tellraw(player, "info.cpp.rituals.start");
 						return ActionResult.SUCCESS;
 					}
@@ -203,17 +212,18 @@ public class Wand extends Item {
 
 	public static boolean checkFrameItem23(ItemStack frameStack) {
 		Item frameItem = frameStack.getItem();
-		return frameItem instanceof ToolItem || frameItem instanceof ShieldItem || frameItem instanceof ArmorItem || frameItem instanceof TridentItem;
+		return frameItem instanceof ToolItem /* || frameItem instanceof ShieldItem */ || frameItem instanceof ArmorItem || frameItem instanceof TridentItem;
 	}
 
+	@Nullable
 	public static EquipmentSlot getSlot(Item item) {
 		if (item instanceof ToolItem || item instanceof TridentItem)
 			return EquipmentSlot.MAINHAND;
-		if (item instanceof ShieldItem)
-			return EquipmentSlot.OFFHAND;
+//		if (item instanceof ShieldItem)
+//			return EquipmentSlot.OFFHAND;
 		if (item instanceof ArmorItem)
 			return ((ArmorItem) item).getSlotType();
-		return EquipmentSlot.MAINHAND;
+		return null;
 	}
 
 	public static void loadRandoms(MinecraftServer server) {
@@ -254,7 +264,7 @@ public class Wand extends Item {
 							}
 						} else {
 							StatusEffect effect = Registry.STATUS_EFFECT.get(new Identifier(id));
-							if (slot == RIGHT_SLOTS.get(effect)) {
+							if (CORRECT_SLOTS.get(effect).contains(slot)) {
 								if (effect == SATURATION) {
 									if (player.world.getTime() % 200 == 0) {
 										player.addStatusEffect(new StatusEffectInstance(effect, 1, 0, true, true));
@@ -284,6 +294,8 @@ public class Wand extends Item {
 				if (iRitualFrame.getRitualTime() > 0) {
 					for (ServerPlayerEntity player : ((ServerWorld) frame.world).getPlayers(player -> player.getPos().isInRange(frame.getPos(), 32))) {
 						player.networkHandler.sendPacket(new ParticleS2CPacket(ParticleTypes.ENCHANT, false, frame.getX(), frame.getY() + 1.1, frame.getZ(), 0f, 0, 0f, 2, 4));
+						if (frame.world.getTime() % 100 == 0)
+							player.networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_BEACON_AMBIENT, SoundCategory.BLOCKS, frame.getX(), frame.getY(), frame.getZ(), 5, 1));
 					}
 					iRitualFrame.setRitualTime(iRitualFrame.getRitualTime() - 1);
 				} else {
@@ -325,9 +337,39 @@ public class Wand extends Item {
 		EFFECTS.put(AGENTIA_OF_TIDE, CONDUIT_POWER);
 		EFFECTS.put(AGENTIA_OF_CHAIN, CppEffects.CHAIN);
 		EFFECTS.put(MAGNET, MAGNETIC);
-		
-		RIGHT_SLOTS.put(SPEED, EquipmentSlot.FEET);
-		RIGHT_SLOTS.put(JUMP_BOOST, EquipmentSlot.FEET);
+
+		CORRECT_SLOTS.put(SPEED, EquipmentSlot.FEET);
+		CORRECT_SLOTS.put(JUMP_BOOST, EquipmentSlot.FEET);
+		CORRECT_SLOTS.put(HASTE, EquipmentSlot.MAINHAND);
+		CORRECT_SLOTS.put(STRENGTH, EquipmentSlot.MAINHAND);
+		CORRECT_SLOTS.put(REGENERATION, EquipmentSlot.HEAD);
+		CORRECT_SLOTS.put(REGENERATION, EquipmentSlot.CHEST);
+		CORRECT_SLOTS.put(REGENERATION, EquipmentSlot.LEGS);
+		CORRECT_SLOTS.put(REGENERATION, EquipmentSlot.FEET);
+		CORRECT_SLOTS.put(RESISTANCE, EquipmentSlot.HEAD);
+		CORRECT_SLOTS.put(RESISTANCE, EquipmentSlot.CHEST);
+		CORRECT_SLOTS.put(RESISTANCE, EquipmentSlot.LEGS);
+		CORRECT_SLOTS.put(RESISTANCE, EquipmentSlot.FEET);
+		CORRECT_SLOTS.put(FIRE_RESISTANCE, EquipmentSlot.HEAD);
+		CORRECT_SLOTS.put(FIRE_RESISTANCE, EquipmentSlot.CHEST);
+		CORRECT_SLOTS.put(FIRE_RESISTANCE, EquipmentSlot.LEGS);
+		CORRECT_SLOTS.put(FIRE_RESISTANCE, EquipmentSlot.FEET);
+		CORRECT_SLOTS.put(INVISIBILITY, EquipmentSlot.HEAD);
+		CORRECT_SLOTS.put(INVISIBILITY, EquipmentSlot.CHEST);
+		CORRECT_SLOTS.put(INVISIBILITY, EquipmentSlot.LEGS);
+		CORRECT_SLOTS.put(INVISIBILITY, EquipmentSlot.FEET);
+		CORRECT_SLOTS.put(WATER_BREATHING, EquipmentSlot.HEAD);
+		CORRECT_SLOTS.put(NIGHT_VISION, EquipmentSlot.HEAD);
+		CORRECT_SLOTS.put(SATURATION, EquipmentSlot.HEAD);
+		CORRECT_SLOTS.put(SLOW_FALLING, EquipmentSlot.FEET);
+		CORRECT_SLOTS.put(CONDUIT_POWER, EquipmentSlot.HEAD);
+		CORRECT_SLOTS.put(CppEffects.CHAIN, EquipmentSlot.MAINHAND);
+		CORRECT_SLOTS.put(MAGNETIC, EquipmentSlot.MAINHAND);
+		CORRECT_SLOTS.put(MAGNETIC, EquipmentSlot.OFFHAND);
+		CORRECT_SLOTS.put(MAGNETIC, EquipmentSlot.HEAD);
+		CORRECT_SLOTS.put(MAGNETIC, EquipmentSlot.CHEST);
+		CORRECT_SLOTS.put(MAGNETIC, EquipmentSlot.LEGS);
+		CORRECT_SLOTS.put(MAGNETIC, EquipmentSlot.FEET);
 	}
 
 	public static boolean checkBase1(World world, BlockPos blockPos) {
@@ -455,7 +497,7 @@ public class Wand extends Item {
 			}
 			ServerPlayerEntity player = (ServerPlayerEntity) frame.world.getClosestPlayer(frame.getX(), frame.getY(), frame.getZ(), 128, false);
 			CodingTool.tellraw(player, "info.cpp.rituals.finish");
-			player.networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_BEACON_POWER_SELECT, SoundCategory.BLOCKS, frame.getX(), frame.getY(), frame.getZ(), 5, 1));
+			player.networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, frame.getX(), frame.getY(), frame.getZ(), 5, 1));
 		}
 	}
 
@@ -478,64 +520,61 @@ public class Wand extends Item {
 		ItemStack frameStack = frame.getHeldItemStack();
 		String s = effect == MAGNETIC ? "cpp:magnetic" : Registry.STATUS_EFFECT.getId(effect).toString();
 		frameStack.getOrCreateTag().putString("statusEffect", s);
+		frame.setHeldItemStack(frameStack);
 		decrease23(inventory);
 	}
 
 	public static void done3(Inventory inventory, ItemFrameEntity frame) {
-		int r = randoms.get(inventory.getStack(4).getItem()) ^ frame.getBlockPos().down().hashCode();
-		double amount = 0;
-		Item frameItem = frame.getHeldItemStack().getItem();
-		EntityAttribute attribute = EntityAttributes.HORSE_JUMP_STRENGTH;
-		if (frameItem instanceof ToolItem || frameItem instanceof TridentItem) {
-			if ((r & 1) == 0) {
-				attribute = EntityAttributes.GENERIC_ATTACK_SPEED;
-				amount = (r >> 1) % 3;
-			} else {
-				attribute = EntityAttributes.GENERIC_ATTACK_DAMAGE;
-				amount = (r >> 1) % 8;
-			}
-		} else {
-			switch (r % 4) {
-			case 0:
-				attribute = EntityAttributes.GENERIC_MAX_HEALTH;
-				amount = (r / 4) % 6;
-				break;
-			case 1:
-				attribute = EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE;
-				amount = (r / 4) % 4;
-				break;
-			case 2:
-				attribute = EntityAttributes.GENERIC_MOVEMENT_SPEED;
-				amount = (r / 4) % 16 / 100.;
-				break;
-			case 3:
-				attribute = EntityAttributes.GENERIC_LUCK;
-				amount = (r / 4) % 3;
-				break;
-			}
-		}
 		ItemStack frameStack = frame.getHeldItemStack();
+		Item frameItem = frameStack.getItem();
 		EquipmentSlot slot = getSlot(frameItem);
 		ListTag attributeModifiers = frameStack.getOrCreateTag().getList("AttributeModifiers", 10);
-		if (attributeModifiers.isEmpty()) {
-			Item rawItem = frameStack.getItem();
-			for (Entry<EntityAttribute, EntityAttributeModifier> entry : rawItem.getAttributeModifiers(slot).entries()) {
-				frameStack.addAttributeModifier(entry.getKey(), entry.getValue(), slot);
-			}
-		} else {
-			for (Iterator<Tag> iterator = attributeModifiers.iterator(); iterator.hasNext();) {
-				Tag tag = iterator.next();
-				if (tag instanceof CompoundTag) {
-					CompoundTag compoundTag = (CompoundTag) tag;
-					if (NbtHelper.toUuid(compoundTag.get("UUID")).equals(ATTRIBUTE_UUID)) {
-						iterator.remove();
-						break;
-					}
+		double attackSpeed = 0, damage = 0, health = 0, resistance = 0, movementSpeed = 0, luck = 0;
+		for (Iterator<Tag> iterator = attributeModifiers.iterator(); iterator.hasNext();) {
+			Tag tag = iterator.next();
+			if (tag instanceof CompoundTag) {
+				CompoundTag compoundTag = (CompoundTag) tag;
+				UUID uuid = NbtHelper.toUuid(compoundTag.get("UUID"));
+				if (uuid.getMostSignificantBits() == HIGH_UUID && uuid.getLeastSignificantBits() > 0 && uuid.getLeastSignificantBits() <= 36) {
+					iterator.remove();
 				}
 			}
-			frameStack.putSubTag("AttributeModifiers", attributeModifiers);
 		}
-		frameStack.addAttributeModifier(attribute, new EntityAttributeModifier(ATTRIBUTE_UUID, "仪式：属性附加", amount, Operation.ADDITION), slot);
+		frameStack.putSubTag("AttributeModifiers", attributeModifiers);
+		if (attributeModifiers.isEmpty()) {
+			for (Entry<EntityAttribute, EntityAttributeModifier> entry : frameItem.getAttributeModifiers(slot).entries()) {
+				EntityAttribute attribute = entry.getKey();
+				EntityAttributeModifier modifier = entry.getValue();
+				Operation operation = modifier.getOperation();
+				double amount = modifier.getValue();
+				if (attribute == GENERIC_ATTACK_SPEED && operation == Operation.ADDITION) {
+					attackSpeed = amount;
+				} else if (attribute == GENERIC_ATTACK_DAMAGE && operation == Operation.ADDITION) {
+					damage = amount;
+				} else if (attribute == GENERIC_MAX_HEALTH && operation == Operation.ADDITION) {
+					health = amount;
+				} else if (attribute == GENERIC_KNOCKBACK_RESISTANCE && operation == Operation.ADDITION) {
+					resistance = amount;
+				} else if (attribute == GENERIC_MOVEMENT_SPEED && operation == Operation.MULTIPLY_BASE) {
+					movementSpeed = amount;
+				} else if (attribute == GENERIC_LUCK && operation == Operation.ADDITION) {
+					luck = amount;
+				} else {
+					frameStack.addAttributeModifier(attribute, modifier, slot);
+				}
+			}
+		}
+		Random random = frame.world.random;
+		if (frameItem instanceof ToolItem || frameItem instanceof TridentItem) {
+			frameStack.addAttributeModifier(GENERIC_ATTACK_SPEED, new EntityAttributeModifier(new UUID(HIGH_UUID, 1 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", attackSpeed + random.nextDouble() * 2, Operation.ADDITION), slot);
+			frameStack.addAttributeModifier(GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(new UUID(HIGH_UUID, 2 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", damage + random.nextDouble() * 8, Operation.ADDITION), slot);
+		} else {
+			frameStack.addAttributeModifier(GENERIC_MAX_HEALTH, new EntityAttributeModifier(new UUID(HIGH_UUID, 3 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", health + random.nextDouble() * 5, Operation.ADDITION), slot);
+			frameStack.addAttributeModifier(GENERIC_KNOCKBACK_RESISTANCE, new EntityAttributeModifier(new UUID(HIGH_UUID, 4 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", resistance + random.nextDouble() * .3, Operation.ADDITION), slot);
+			frameStack.addAttributeModifier(GENERIC_MOVEMENT_SPEED, new EntityAttributeModifier(new UUID(HIGH_UUID, 5 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", movementSpeed + random.nextDouble() * .15, Operation.MULTIPLY_BASE), slot);
+			frameStack.addAttributeModifier(GENERIC_LUCK, new EntityAttributeModifier(new UUID(HIGH_UUID, 6 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", luck + random.nextDouble() * 2, Operation.ADDITION), slot);
+		}
+		frame.setHeldItemStack(frameStack);
 		decrease23(inventory);
 	}
 
