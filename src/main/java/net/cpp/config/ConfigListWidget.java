@@ -1,9 +1,9 @@
 package net.cpp.config;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.prospector.modmenu.mixin.EntryListWidgetAccessor;
+import net.cpp.Craftingpp;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.render.BufferBuilder;
@@ -15,6 +15,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
 
+import javax.annotation.Nonnull;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -37,10 +38,10 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
     private boolean scrolling;
 
 
-    protected ConfigListWidget(MinecraftClient client, int width, int height, int y1, int y2, int entryHeight, String searchTerm, JsonObject config, CppOptionsGui parent) {
+    protected ConfigListWidget(MinecraftClient client, int width, int height, int y1, int y2, int entryHeight, String searchTerm, CppOptionsGui parent) {
         super(client, width, height, y1, y2, entryHeight);
         this.parent = parent;
-        for (Map.Entry<String, JsonElement> i  : config.entrySet()) {
+        for (Map.Entry<String, JsonElement> i  : Craftingpp.CONFIG.JSON.entrySet()) {
             configKeys.add(i.getKey());
         }
 

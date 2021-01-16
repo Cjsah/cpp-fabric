@@ -1,6 +1,5 @@
 package net.cpp.config;
 
-import com.google.gson.JsonObject;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.cpp.Craftingpp;
 import net.minecraft.client.MinecraftClient;
