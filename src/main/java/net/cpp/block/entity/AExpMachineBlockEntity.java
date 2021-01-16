@@ -91,19 +91,19 @@ public abstract class AExpMachineBlockEntity extends AOutputMachineBlockEntity {
 	protected class ExpPropertyDelegate extends OutputDirectionPropertyDelegate {
 		@Override
 		public int size() {
-			return 4;
+			return super.size()+3;
 		}
 
 		@Override
 		public void set(int index, int value) {
-			switch (index) {
-			case 1:
+			switch (index-super.size()) {
+			case 0:
 				workTime = value;
 				break;
-			case 2:
+			case 1:
 				workTimeTotal = value;
 				break;
-			case 3:
+			case 2:
 				expStorage = value;
 				break;
 			default:
@@ -113,12 +113,12 @@ public abstract class AExpMachineBlockEntity extends AOutputMachineBlockEntity {
 
 		@Override
 		public int get(int index) {
-			switch (index) {
-			case 1:
+			switch (index-super.size()) {
+			case 0:
 				return workTime;
-			case 2:
+			case 1:
 				return workTimeTotal;
-			case 3:
+			case 2:
 				return expStorage;
 			default:
 				return super.get(index);

@@ -77,7 +77,7 @@ public class GolemHerderEntity extends AGolemEntity {
 //			}
 			List<AnimalEntity> animals = world.getEntitiesByClass(AnimalEntity.class, new Box(getPos(), getPos()).expand(16), animal -> animal.getBreedingAge() >= 0);
 			int s = animals.size();
-			System.out.println(s);
+//			System.out.println(s);
 			Block block = world.getBlockState(getBlockPos().up(2)).getBlock();
 			for (AnimalEntity animal : animals) {
 //				int c = 0;

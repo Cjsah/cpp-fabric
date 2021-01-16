@@ -1,6 +1,6 @@
 package net.cpp.init;
 
-import net.cpp.gui.handler.*;
+import net.cpp.screen.handler.*;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.SimpleClientHandlerFactory;
 import net.minecraft.block.Block;

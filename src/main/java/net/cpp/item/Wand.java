@@ -50,8 +50,8 @@ import com.google.common.collect.ImmutableList;
 
 import net.cpp.api.CodingTool;
 import net.cpp.api.CppEffect;
-import net.cpp.api.IRitualStackHolder;
-import net.cpp.api.ITemperancable;
+import net.cpp.ducktype.IRitualStackHolder;
+import net.cpp.ducktype.ITemperancable;
 import net.cpp.init.CppEffects;
 import net.cpp.init.CppItemTags;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;

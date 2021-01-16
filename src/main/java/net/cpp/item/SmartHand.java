@@ -1,5 +1,6 @@
 package net.cpp.item;
 
+import net.cpp.api.ITickableInItemFrame;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.item.Item;

@@ -24,12 +24,12 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import net.cpp.block.FlowerGrass1Block;
-import net.cpp.gui.handler.ItemProcessorScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlockTags;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppItems;
 import net.cpp.item.Compressor;
+import net.cpp.screen.handler.ItemProcessorScreenHandler;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

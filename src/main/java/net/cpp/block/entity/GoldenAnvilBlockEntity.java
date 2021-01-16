@@ -15,10 +15,10 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
-import net.cpp.gui.handler.GoldenAnvilScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppItems;
+import net.cpp.screen.handler.GoldenAnvilScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.EntitySelectorReader;
 import net.minecraft.enchantment.Enchantment;

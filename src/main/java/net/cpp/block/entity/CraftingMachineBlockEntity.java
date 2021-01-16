@@ -3,11 +3,11 @@ package net.cpp.block.entity;
 import java.util.Optional;
 
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.cpp.gui.handler.CraftingMachineScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppRecipes;
 import net.cpp.recipe.ICppCraftingRecipe;
+import net.cpp.screen.handler.CraftingMachineScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;

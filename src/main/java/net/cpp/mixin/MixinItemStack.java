@@ -1,6 +1,6 @@
 package net.cpp.mixin;
 
-import net.cpp.item.IDefaultTagItem;
+import net.cpp.api.IDefaultTagItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;

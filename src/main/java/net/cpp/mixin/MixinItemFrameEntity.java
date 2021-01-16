@@ -3,8 +3,8 @@ package net.cpp.mixin;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.cpp.api.IRitualStackHolder;
-import net.cpp.item.ITickableInItemFrame;
+import net.cpp.api.ITickableInItemFrame;
+import net.cpp.ducktype.IRitualStackHolder;
 import net.cpp.item.Wand;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.decoration.AbstractDecorationEntity;

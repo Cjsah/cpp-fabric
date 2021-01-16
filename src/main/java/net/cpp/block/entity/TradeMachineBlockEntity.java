@@ -19,10 +19,10 @@ import java.util.function.Function;
 import com.google.common.collect.ImmutableSet;
 import com.ibm.icu.impl.Pair;
 
-import net.cpp.gui.handler.TradeMachineScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppItems;
+import net.cpp.screen.handler.TradeMachineScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.item.TooltipContext;
@@ -306,7 +306,6 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 
 	public static void tick(World world, BlockPos pos, BlockState state, TradeMachineBlockEntity blockEntity) {
 		if (!world.isClient) {
-			blockEntity.transferExpBottle();
 			if (blockEntity.cooldown > 0)
 				blockEntity.cooldown--;
 			if (blockEntity.cooldown <= 0) {
@@ -332,9 +331,16 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 							blockEntity.emeraldCount -= 10;
 						}
 					}
+					if (blockEntity.expStorage >= 9) {// 在售卖模式下可以把储存的经验转化为附魔之瓶
+						if (blockEntity.tryInsert(0, EXPERIENCE_BOTTLE.getDefaultStack())) {
+							blockEntity.expStorage -= 9;
+						}
+					}
+					blockEntity.output(0);//在售卖模式下可以输出附魔之瓶
 					blockEntity.output(2);
 					blockEntity.output(3);
 				} else {// 交易机向玩家售卖
+					blockEntity.transferExpBottle();// 仅在购买模式下才将附魔之瓶转化为储存的经验
 					if (PLUGIN.contains(blockEntity.getStack(2).getItem()) && !PLACE_TAKERS.contains(blockEntity.getStack(1).getItem())) {
 						int code = blockEntity.getStack(2).getOrCreateTag().getInt("code");
 //						if (blockEntity.getStack(1).isEmpty()) {

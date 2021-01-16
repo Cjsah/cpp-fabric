@@ -16,10 +16,10 @@ import java.util.Random;
 import java.util.Set;
 
 import net.cpp.block.AllInOneMachineBlock;
-import net.cpp.gui.handler.AllInOneMachineScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppItemTags;
+import net.cpp.screen.handler.AllInOneMachineScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -56,23 +56,43 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	 * 可用的温度
 	 */
 	private Set<Degree> availabeTemperature = EnumSet.of(Degree.ORDINARY);
+	protected int availabeTemperatureI = 1;
 	/**
 	 * 可用的压强
 	 */
 	private Set<Degree> availabePressure = EnumSet.of(Degree.ORDINARY);
+	protected int availabePressureI = 1;
 	public final PropertyDelegate propertyDelegate = new ExpPropertyDelegate() {
 
 		@Override
 		public int size() {
-			return 5;
+			return super.size() + 3;
 		}
 
 		@Override
 		public void set(int index, int value) {
-			switch (index) {
-			case 4:
+			switch (index - super.size()) {
+			case 2:
 				setTemperature(Degree.values()[value / 16 % Degree.values().length]);
 				setPressure(Degree.values()[value % 16 % Degree.values().length]);
+				break;
+			case 1:
+				availabeTemperature.clear();
+				for (int i = 0; value > 0 && i < Degree.values().length; i++) {
+					if ((value & 1) == 1)
+						availabeTemperature.add(Degree.values()[i]);
+					value >>= 1;
+				}
+//				availabeTemperatureI = value;
+				break;
+			case 0:
+				availabePressure.clear();
+				for (int i = 0; value > 0 && i < Degree.values().length; i++) {
+					if ((value & 1) == 1)
+						availabePressure.add(Degree.values()[i]);
+					value >>= 1;
+				}
+//				availabePressureI = value;
 				break;
 			default:
 				super.set(index, value);
@@ -81,9 +101,24 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 
 		@Override
 		public int get(int index) {
-			switch (index) {
-			case 4:
+			switch (index - super.size()) {
+			case 2:
 				return temperature.ordinal() * 16 + pressure.ordinal();
+			case 1: {
+				int a = 0;
+				for (Degree degree : availabeTemperature) {
+					a |= 1 << degree.ordinal();
+				}
+
+				return a;
+			}
+			case 0: {
+				int a = 0;
+				for (Degree degree : availabePressure) {
+					a |= 1 << degree.ordinal();
+				}
+				return a;
+			}
 			default:
 				return super.get(index);
 			}
@@ -97,6 +132,10 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	public AllInOneMachineBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(CppBlockEntities.ALL_IN_ONE_MACHINE, blockPos, blockState);
 		setCapacity(5);
+//		availabePressure.add(Degree.LOW);
+//		availabePressure.add(Degree.HIGH);
+//		availabeTemperature.add(Degree.LOW);
+//		availabeTemperature.add(Degree.HIGH);
 	}
 
 	@Override
@@ -303,7 +342,22 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	 * @return
 	 */
 	public boolean addAvailableTemperature(Degree degree) {
+//		System.out.println(availabeTemperature);
 		return availabeTemperature.add(degree);
+//		if (Degree.has(availabeTemperatureI, degree)) {
+//			return false;
+//		}else {
+//			availabeTemperatureI|=Degree.code(degree);
+//			return true;
+//		}
+	}
+
+	public Set<Degree> getAvailabeTemperature() {
+		return EnumSet.copyOf(availabeTemperature);
+	}
+
+	public boolean isAvailabeTemperature(Degree degree) {
+		return availabeTemperature.contains(degree);
 	}
 
 	/**
@@ -347,6 +401,20 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	 */
 	public boolean addAvailablePressure(Degree degree) {
 		return availabePressure.add(degree);
+//		if (Degree.has(availabePressureI, degree)) {
+//			return false;
+//		}else {
+//			availabePressureI|=Degree.code(degree);
+//			return true;
+//		}
+	}
+
+	public Set<Degree> getAvailabePressure() {
+		return EnumSet.copyOf(availabePressure);
+	}
+
+	public boolean isAvailabePressure(Degree degree) {
+		return availabePressure.contains(degree);
 	}
 
 	/**
@@ -543,7 +611,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		}
 		addRecipe(Degree.ORDINARY, Degree.ORDINARY, SAKURA_SAPLING.asItem(), FERTILIZER, new ItemStack(CHERRY), new ItemStack(SAKURA_SAPLING), 2F, 5F, 0F, 4F, 2, 40);
 		{
-			List<Item> plants = CppItemTags.FLOWER_GRASSES.values(), seeds = CppItemTags.FLOWER_GRASS_SEEDS.values();
+			List<Item> plants = CppItemTags.FLOWER_GRASSES_1.values(), seeds = CppItemTags.FLOWER_GRASS_SEEDS.values();
 			for (int i = 0; i < plants.size(); i++) {
 				addRecipe(Degree.ORDINARY, Degree.ORDINARY, seeds.get(i), FERTILIZER, new ItemStack(plants.get(i)), 2, 40);
 				addRecipe(Degree.ORDINARY, Degree.ORDINARY, plants.get(i), FERTILIZER, new ItemStack(plants.get(i), 4), 2, 40);
@@ -599,7 +667,26 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	}
 
 	public enum Degree {
-		ORDINARY, LOW, HIGH
+		ORDINARY, LOW, HIGH;
+		public static int code(Degree degree) {
+			int a = 0;
+			for (int i = values().length - 1; i >= 0; i--) {
+				if (degree == values()[i])
+					a |= 1;
+				a <<= 1;
+			}
+			return a;
+		}
+
+		public static boolean has(int code, Degree degree) {
+			for (int i = 0; i < values().length; i++) {
+				if ((code & 1) == 1 && degree == values()[i]) {
+					return true;
+				}
+				code >>= 1;
+			}
+			return false;
+		}
 	}
 
 	public static class Recipe {

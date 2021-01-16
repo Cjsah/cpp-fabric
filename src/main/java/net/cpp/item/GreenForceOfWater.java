@@ -3,6 +3,7 @@ package net.cpp.item;
 import java.util.List;
 import java.util.Objects;
 
+import net.cpp.api.IDefaultTagItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.advancement.criterion.Criteria;

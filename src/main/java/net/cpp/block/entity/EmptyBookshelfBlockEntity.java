@@ -15,9 +15,9 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 
 import net.cpp.block.EmptyBookshelfBlock;
-import net.cpp.gui.handler.EmptyBookshelfScreenHandler;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
+import net.cpp.screen.handler.EmptyBookshelfScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
