@@ -92,33 +92,71 @@ import static net.cpp.init.CppItems.WING_OF_SKY;
 import static net.minecraft.item.Items.*;
 
 import java.io.File;
+import java.nio.charset.CodingErrorAction;
+import java.security.interfaces.RSAKey;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
+
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSet.Builder;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import com.google.common.collect.Streams;
+import com.google.common.collect.Table;
+import com.google.common.collect.Tables;
+import com.google.common.collect.UnmodifiableIterator;
+
+import net.cpp.api.CodingTool;
 import net.cpp.block.AllInOneMachineBlock;
+import net.cpp.block.FlowerGrass1Block;
 import net.cpp.init.CppBlockEntities;
+import net.cpp.init.CppBlockTags;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppItemTags;
 import net.cpp.screen.handler.AllInOneMachineScreenHandler;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resource.ServerResourceManager;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.CommandOutput;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.tag.ItemTags;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 /**
@@ -128,12 +166,14 @@ import net.minecraft.world.World;
  *
  */
 public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
+	public static final Map<Triple<Degree, Degree, Set<Pair<Item, CompoundTag>>>, Triple<Integer, Integer, Function<BlockEntity, Pair<ItemStack, ItemStack>>>> RECIPES2 = Maps.newHashMap();
+	private static final Map<Set<Item>, Double> ORE_RATES = Maps.newHashMap();
 	/**
 	 * 不被消耗的原料
 	 */
 	public static final Set<Item> UNCONSUMABLE = new HashSet<>(Arrays.asList(LAVA_BUCKET, COBBLESTONE_PLUGIN, STONE_PLUGIN, BLACKSTONE_PLUGIN, NETHERRACK_PLUGIN, END_STONE_PLUGIN, BASALT_PLUGIN, GREEN_FORCE_OF_WATER));
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2 };
-	private static final Map<Integer, Recipe> RECIPES = new HashMap<>();
+	private static final Map<Integer, Recipe> RECIPES = new HashMap<>();// TODO 需要优化和修复
 	private static final Map<Integer, List<Recipe>> RANDOM_RECIPES = new HashMap<>();
 	private int lastTickRecipeCode;
 	private ItemStack[] lastTickOutputs;
@@ -143,12 +183,10 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	 * 可用的温度
 	 */
 	private Set<Degree> availabeTemperature = EnumSet.of(Degree.ORDINARY);
-	protected int availabeTemperatureI = 1;
 	/**
 	 * 可用的压强
 	 */
 	private Set<Degree> availabePressure = EnumSet.of(Degree.ORDINARY);
-	protected int availabePressureI = 1;
 	public final PropertyDelegate propertyDelegate = new ExpPropertyDelegate() {
 
 		@Override
@@ -368,6 +406,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	public void onOpen(PlayerEntity player) {
 //		propertyDelegate.set(3, propertyDelegate.get(3));
 		super.onOpen(player);
+		getResults();
 	}
 
 	/*
@@ -538,9 +577,18 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 
 	private static void addRecipe(Degree temperature, Degree pressure, Item input1, Item input2, ItemStack output1, ItemStack output2, float count1Min, float count1Max, float count2Min, float count2Max, int experience, int time) {
 		RECIPES.put(getHashCode(temperature, pressure, input1, input2), new Recipe(temperature, pressure, input1, input2, output1, output2, count1Min, count1Max, count2Min, count2Max, experience, time));
+
 	}
 
 	static {
+		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+			loadOreRates(server);
+		});
+		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((MinecraftServer server, ServerResourceManager serverResourceManager, boolean success) -> {
+			if (success) {
+				loadOreRates(server);
+			}
+		});
 		Map<Item, ItemStack> oreRateMap = new HashMap<>();
 		oreRateMap.put(COAL_ORE, new ItemStack(COAL));
 		oreRateMap.put(COPPER_ORE, new ItemStack(COPPER_INGOT));
@@ -695,16 +743,16 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, WOOL_SAPLING.asItem(), FERTILIZER);
 			RECIPES.put(c, Recipe.PLACE_TAKER);
 			List<Recipe> list = new ArrayList<>();
-			for (Item item : new Item[] { WHITE_WOOL, ORANGE_WOOL, MAGENTA_WOOL, LIGHT_BLUE_WOOL, YELLOW_WOOL, LIME_WOOL, PINK_WOOL, GRAY_WOOL, LIGHT_GRAY_WOOL, CYAN_WOOL, PURPLE_WOOL, BLUE_WOOL, BROWN_WOOL, GREEN_WOOL, RED_WOOL, BLACK_WOOL })
+			for (Item item : ItemTags.WOOL.values())// FIXME
 				list.add(new Recipe(Degree.ORDINARY, Degree.ORDINARY, WOOL_SAPLING.asItem(), FERTILIZER, new ItemStack(item, 2), new ItemStack(WOOL_SAPLING), 0F, 4F, 2, 40));
 			RANDOM_RECIPES.put(c, list);
 		}
 		addRecipe(Degree.ORDINARY, Degree.ORDINARY, SAKURA_SAPLING.asItem(), FERTILIZER, new ItemStack(CHERRY), new ItemStack(SAKURA_SAPLING), 2F, 5F, 0F, 4F, 2, 40);
 		{
-			List<Item> plants = CppItemTags.FLOWER_GRASSES_1.values(), seeds = CppItemTags.FLOWER_GRASS_SEEDS.values();
-			for (int i = 0; i < plants.size(); i++) {
-				addRecipe(Degree.ORDINARY, Degree.ORDINARY, seeds.get(i), FERTILIZER, new ItemStack(plants.get(i)), 2, 40);
-				addRecipe(Degree.ORDINARY, Degree.ORDINARY, plants.get(i), FERTILIZER, new ItemStack(plants.get(i), 4), 2, 40);
+			List<Block> plants = CppBlockTags.FLOWER_GRASSES_1.values();
+			for (int i = 0; i < plants.size(); i++) {// FIXME
+				addRecipe(Degree.ORDINARY, Degree.ORDINARY, ((FlowerGrass1Block) plants.get(i)).getSeed(), FERTILIZER, new ItemStack(plants.get(i)), 2, 40);
+				addRecipe(Degree.ORDINARY, Degree.ORDINARY, plants.get(i).asItem(), FERTILIZER, new ItemStack(plants.get(i), 4), 2, 40);
 			}
 		}
 		/**
@@ -845,4 +893,67 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		}
 	}
 
+	protected Pair<ItemStack, ItemStack> getResults() {
+		// TODO
+		try {
+			Triple<Integer, Integer, Function<BlockEntity, Pair<ItemStack, ItemStack>>> triple = RECIPES2.get(Triple.of(getTemperature(), getPressure(), ingredients()));
+			if (triple != null) {
+				Function<BlockEntity, Pair<ItemStack, ItemStack>> function = triple.getRight();
+				Pair<ItemStack, ItemStack> pair = function.apply(this);
+				return pair;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public Set<Pair<Item, CompoundTag>> ingredients() {
+		Builder<Pair<Item, CompoundTag>> builder = ImmutableSet.builder();
+		for (int i = 0; i < 2; i++) {
+			if (!getStack(i).isEmpty()) {
+				builder.add(Pair.of(getStack(i).getItem(), getStack(i).getTag()));
+			}
+		}
+		return builder.build();
+	}
+
+	private static Set<Pair<Item, CompoundTag>> ingr(Item item1) {
+		return ImmutableSet.of(Pair.of(item1, null));
+	}
+
+	private static Set<Pair<Item, CompoundTag>> ingr(Item item1, Item item2) {
+		return ImmutableSet.of(Pair.of(item1, null), Pair.of(item2, null));
+	}
+
+	private static Set<Pair<Item, CompoundTag>> ingr(Item item1, CompoundTag tag1, Item item2) {
+		return ImmutableSet.of(Pair.of(item1, tag1), Pair.of(item2, null));
+	}
+
+	private static Set<Pair<Item, CompoundTag>> ingr(Item item1, Item item2, CompoundTag tag2) {
+		return ImmutableSet.of(Pair.of(item1, null), Pair.of(item2, tag2));
+	}
+
+	private static void loadOreRates(MinecraftServer server) {
+		ServerWorld world = server.getWorlds().iterator().next();
+		ServerCommandSource commandSource = new ServerCommandSource(CommandOutput.DUMMY, Vec3d.ZERO, Vec2f.ZERO, world, 4, "更多的合成：多功能一体机：读取矿石倍率", LiteralText.EMPTY, server, null);
+		ImmutableList<Item> ores = Stream.concat(CodingTool.findByKeyword(Registry.ITEM, "_ore").stream(), CppItemTags.ORES.values().stream()).collect(ImmutableList.toImmutableList());
+		for (int i = 0; i < ores.size(); i++) {
+			Item item1 = ores.get(i);
+			String id1 = Registry.ITEM.getId(item1).toString();
+			for (int j = i + 1; j < ores.size(); j++) {
+				Item item2 = ores.get(j);
+				String id2 = Registry.ITEM.getId(item2).toString();
+				double rate = server.getCommandManager().execute(commandSource, String.format("data get storage cpp:constants allInOneMachine.oreRates.%s+%s 10000", id1, id2)) / 10000.;
+				if (rate == 0) {
+					rate = server.getCommandManager().execute(commandSource, String.format("data get storage cpp:constants allInOneMachine.oreRates.%s+%s 10000", id2, id1)) / 10000.;
+					if (rate == 0) {
+						rate = world.random.nextDouble() * 3 + 1;
+						server.getCommandManager().execute(commandSource, String.format("data modify storage cpp:constants allInOneMachine.oreRates.%s+%s set value %f", id1, id2, rate));
+					}
+				}
+				ORE_RATES.put(ImmutableSet.of(item1, item2), rate);
+			}
+		}
+	}
 }

@@ -3,6 +3,7 @@ package net.cpp.init;
 import net.cpp.Craftingpp;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.item.Item;
+import net.minecraft.tag.ItemTags;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 
@@ -15,6 +16,7 @@ public final class CppItemTags {
 	public static final Tag<Item> DROPPABLE_FRUITS = register("droppable_fruits");
 	public static final Tag<Item> RARE_DROPS = register("rare_drops");
 	public static final Tag<Item> AGENTIAS = register("agentias");
+	public static final Tag<Item> ORES = register("ores");
 
 	private CppItemTags() {
 	}

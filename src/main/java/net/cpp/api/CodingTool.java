@@ -5,9 +5,13 @@ import static net.cpp.api.CppChat.say;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
 
 import net.cpp.init.CppItems;
 import net.minecraft.block.Block;
@@ -44,6 +48,8 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.registry.DefaultedRegistry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 public class CodingTool {
@@ -535,5 +541,15 @@ public class CodingTool {
 
 	public static void tellraw(ServerPlayerEntity player, String translationKey, Object... params) {
 		player.sendMessage(new TranslatableText(translationKey, params), false);
+	}
+
+	public static <T> ImmutableList<T> findByKeyword(DefaultedRegistry<T> registry, String keyword) {
+		ImmutableList.Builder<T> builder = ImmutableList.builder();
+		for (Entry<RegistryKey<T>, T> entry : registry.getEntries()) {
+			if (entry.getKey().getValue().getPath().contains(keyword)) {
+				builder.add(entry.getValue());
+			}
+		}
+		return builder.build();
 	}
 }

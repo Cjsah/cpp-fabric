@@ -66,9 +66,9 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Multimap;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 
 import net.cpp.api.CodingTool;
 import net.cpp.api.CppEffect;
@@ -128,11 +128,10 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 public class Wand extends Item {
-	public static final Map<Item, StatusEffect> EFFECTS = new HashMap<>();
-	public static final Multimap<StatusEffect, EquipmentSlot> CORRECT_SLOTS = HashMultimap.create();
 	public static final CppEffect MAGNETIC = new CppEffect(StatusEffectType.NEUTRAL, 0);
-	public static final List<UUID> UUIDS = ImmutableList.of(new UUID(0x0123456789ABCDEFL, 1), new UUID(0x0123456789ABCDEFL, 2), new UUID(0x0123456789ABCDEFL, 3), new UUID(0x0123456789ABCDEFL, 4));
-	private static final long HIGH_UUID = 0x0123456789ABCDEFL;
+	public static final ImmutableMap<Item, StatusEffect> EFFECTS = ImmutableMap.<Item, StatusEffect>builder().put(AGENTIA_OF_AGILENESS, SPEED).put(AGENTIA_OF_BOUNCE, JUMP_BOOST).put(AGENTIA_OF_EXTREMENESS, HASTE).put(AGENTIA_OF_SHARPNESS, STRENGTH).put(AGENTIA_OF_REJUVENESS, REGENERATION).put(AGENTIA_OF_SHIELD, RESISTANCE).put(AGENTIA_OF_FIRE_SHIELD, FIRE_RESISTANCE).put(AGENTIA_OF_TRANSPARENTNESS, INVISIBILITY).put(AGENTIA_OF_WATERLESS, WATER_BREATHING).put(AGENTIA_OF_EYESIGHT, NIGHT_VISION).put(COLD_DRINK, SATURATION).put(AGENTIA_OF_LIGHTNESS, SLOW_FALLING).put(AGENTIA_OF_TIDE, CONDUIT_POWER).put(AGENTIA_OF_CHAIN, CppEffects.CHAIN).put(MAGNET, MAGNETIC).build();
+	public static final ImmutableMultimap<StatusEffect, EquipmentSlot> CORRECT_SLOTS = ImmutableMultimap.<StatusEffect, EquipmentSlot>builder().put(SPEED, EquipmentSlot.FEET).put(JUMP_BOOST, EquipmentSlot.FEET).put(HASTE, EquipmentSlot.MAINHAND).put(STRENGTH, EquipmentSlot.MAINHAND).put(REGENERATION, EquipmentSlot.HEAD).put(REGENERATION, EquipmentSlot.CHEST).put(REGENERATION, EquipmentSlot.LEGS).put(REGENERATION, EquipmentSlot.FEET).put(RESISTANCE, EquipmentSlot.HEAD).put(RESISTANCE, EquipmentSlot.CHEST).put(RESISTANCE, EquipmentSlot.LEGS).put(RESISTANCE, EquipmentSlot.FEET).put(FIRE_RESISTANCE, EquipmentSlot.HEAD).put(FIRE_RESISTANCE, EquipmentSlot.CHEST).put(FIRE_RESISTANCE, EquipmentSlot.LEGS).put(FIRE_RESISTANCE, EquipmentSlot.FEET).put(INVISIBILITY, EquipmentSlot.HEAD).put(INVISIBILITY, EquipmentSlot.CHEST).put(INVISIBILITY, EquipmentSlot.LEGS).put(INVISIBILITY, EquipmentSlot.FEET).put(WATER_BREATHING, EquipmentSlot.HEAD).put(NIGHT_VISION, EquipmentSlot.HEAD).put(SATURATION, EquipmentSlot.HEAD).put(SLOW_FALLING, EquipmentSlot.FEET).put(CONDUIT_POWER, EquipmentSlot.HEAD).put(CppEffects.CHAIN, EquipmentSlot.MAINHAND).put(MAGNETIC, EquipmentSlot.MAINHAND).put(MAGNETIC, EquipmentSlot.OFFHAND).put(MAGNETIC, EquipmentSlot.HEAD).put(MAGNETIC, EquipmentSlot.CHEST).put(MAGNETIC, EquipmentSlot.LEGS).put(MAGNETIC, EquipmentSlot.FEET).build();
+	public static final long HIGH_UUID = 0x0123456789ABCDEFL;
 	private static Map<Item, Integer> randoms = new HashMap<>();
 	private static int tickSpent = 1200;
 	private final int level;
@@ -169,7 +168,6 @@ public class Wand extends Item {
 				if (frame != null) {
 					DispenserBlockEntity blockEntity = (DispenserBlockEntity) world.getBlockEntity(blockPos);
 					boolean failed = true;
-					int tickSpent = 120;// XXX
 					if (baseType == 1) {
 						if (level >= 1 && level <= 3 && checkOblation1(blockEntity, frame)) {
 							failed = false;
@@ -322,54 +320,6 @@ public class Wand extends Item {
 			}
 		});
 
-		EFFECTS.put(AGENTIA_OF_AGILENESS, SPEED);
-		EFFECTS.put(AGENTIA_OF_BOUNCE, JUMP_BOOST);
-		EFFECTS.put(AGENTIA_OF_EXTREMENESS, HASTE);
-		EFFECTS.put(AGENTIA_OF_SHARPNESS, STRENGTH);
-		EFFECTS.put(AGENTIA_OF_REJUVENESS, REGENERATION);
-		EFFECTS.put(AGENTIA_OF_SHIELD, RESISTANCE);
-		EFFECTS.put(AGENTIA_OF_FIRE_SHIELD, FIRE_RESISTANCE);
-		EFFECTS.put(AGENTIA_OF_TRANSPARENTNESS, INVISIBILITY);
-		EFFECTS.put(AGENTIA_OF_WATERLESS, WATER_BREATHING);
-		EFFECTS.put(AGENTIA_OF_EYESIGHT, NIGHT_VISION);
-		EFFECTS.put(COLD_DRINK, SATURATION);
-		EFFECTS.put(AGENTIA_OF_LIGHTNESS, SLOW_FALLING);
-		EFFECTS.put(AGENTIA_OF_TIDE, CONDUIT_POWER);
-		EFFECTS.put(AGENTIA_OF_CHAIN, CppEffects.CHAIN);
-		EFFECTS.put(MAGNET, MAGNETIC);
-
-		CORRECT_SLOTS.put(SPEED, EquipmentSlot.FEET);
-		CORRECT_SLOTS.put(JUMP_BOOST, EquipmentSlot.FEET);
-		CORRECT_SLOTS.put(HASTE, EquipmentSlot.MAINHAND);
-		CORRECT_SLOTS.put(STRENGTH, EquipmentSlot.MAINHAND);
-		CORRECT_SLOTS.put(REGENERATION, EquipmentSlot.HEAD);
-		CORRECT_SLOTS.put(REGENERATION, EquipmentSlot.CHEST);
-		CORRECT_SLOTS.put(REGENERATION, EquipmentSlot.LEGS);
-		CORRECT_SLOTS.put(REGENERATION, EquipmentSlot.FEET);
-		CORRECT_SLOTS.put(RESISTANCE, EquipmentSlot.HEAD);
-		CORRECT_SLOTS.put(RESISTANCE, EquipmentSlot.CHEST);
-		CORRECT_SLOTS.put(RESISTANCE, EquipmentSlot.LEGS);
-		CORRECT_SLOTS.put(RESISTANCE, EquipmentSlot.FEET);
-		CORRECT_SLOTS.put(FIRE_RESISTANCE, EquipmentSlot.HEAD);
-		CORRECT_SLOTS.put(FIRE_RESISTANCE, EquipmentSlot.CHEST);
-		CORRECT_SLOTS.put(FIRE_RESISTANCE, EquipmentSlot.LEGS);
-		CORRECT_SLOTS.put(FIRE_RESISTANCE, EquipmentSlot.FEET);
-		CORRECT_SLOTS.put(INVISIBILITY, EquipmentSlot.HEAD);
-		CORRECT_SLOTS.put(INVISIBILITY, EquipmentSlot.CHEST);
-		CORRECT_SLOTS.put(INVISIBILITY, EquipmentSlot.LEGS);
-		CORRECT_SLOTS.put(INVISIBILITY, EquipmentSlot.FEET);
-		CORRECT_SLOTS.put(WATER_BREATHING, EquipmentSlot.HEAD);
-		CORRECT_SLOTS.put(NIGHT_VISION, EquipmentSlot.HEAD);
-		CORRECT_SLOTS.put(SATURATION, EquipmentSlot.HEAD);
-		CORRECT_SLOTS.put(SLOW_FALLING, EquipmentSlot.FEET);
-		CORRECT_SLOTS.put(CONDUIT_POWER, EquipmentSlot.HEAD);
-		CORRECT_SLOTS.put(CppEffects.CHAIN, EquipmentSlot.MAINHAND);
-		CORRECT_SLOTS.put(MAGNETIC, EquipmentSlot.MAINHAND);
-		CORRECT_SLOTS.put(MAGNETIC, EquipmentSlot.OFFHAND);
-		CORRECT_SLOTS.put(MAGNETIC, EquipmentSlot.HEAD);
-		CORRECT_SLOTS.put(MAGNETIC, EquipmentSlot.CHEST);
-		CORRECT_SLOTS.put(MAGNETIC, EquipmentSlot.LEGS);
-		CORRECT_SLOTS.put(MAGNETIC, EquipmentSlot.FEET);
 	}
 
 	public static boolean checkBase1(World world, BlockPos blockPos) {
