@@ -5,6 +5,7 @@ import java.util.List;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
+import net.cpp.api.IDefaultTagItem;
 import net.cpp.ducktype.IMultiple;
 import net.cpp.item.CompressedItem;
 import net.fabricmc.api.EnvType;
@@ -15,6 +16,7 @@ import net.minecraft.entity.projectile.thrown.ExperienceBottleEntity;
 import net.minecraft.item.ExperienceBottleItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
@@ -27,7 +29,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 @Mixin(ExperienceBottleItem.class)
-public class MixinExperienceBottleItem extends Item {
+public class MixinExperienceBottleItem extends Item implements IDefaultTagItem {
 
 	public MixinExperienceBottleItem(Settings settings) {
 		super(settings);
@@ -73,5 +75,11 @@ public class MixinExperienceBottleItem extends Item {
 	public Text getName(ItemStack stack) {
 		int multiple = stack.getOrCreateTag().getByte("multiple");
 		return multiple == 0 ? super.getName(stack) : new TranslatableText("tooltip.cpp.compressed").formatted(Formatting.DARK_AQUA).append(((MutableText)super.getName(stack)).formatted(stack.getRarity().formatting));
+	}
+	
+	@Override
+	public CompoundTag modifyDefaultTag(CompoundTag tag) {
+		tag.putByte("multiple", (byte) 0);
+		return tag;
 	}
 }

@@ -1,5 +1,6 @@
 package net.cpp.item;
 
+import static net.cpp.init.CppItemTags.RARE_DROPS;
 import static net.cpp.init.CppItems.AGENTIA_OF_AGILENESS;
 import static net.cpp.init.CppItems.AGENTIA_OF_BOUNCE;
 import static net.cpp.init.CppItems.AGENTIA_OF_CHAIN;
@@ -13,8 +14,23 @@ import static net.cpp.init.CppItems.AGENTIA_OF_SHIELD;
 import static net.cpp.init.CppItems.AGENTIA_OF_TIDE;
 import static net.cpp.init.CppItems.AGENTIA_OF_TRANSPARENTNESS;
 import static net.cpp.init.CppItems.AGENTIA_OF_WATERLESS;
+import static net.cpp.init.CppItems.BROKEN_SPAWNER;
 import static net.cpp.init.CppItems.COLD_DRINK;
 import static net.cpp.init.CppItems.MAGNET;
+import static net.cpp.init.CppItems.SHARD_OF_THE_DARKNESS;
+import static net.minecraft.block.Blocks.BEDROCK;
+import static net.minecraft.block.Blocks.DISPENSER;
+import static net.minecraft.block.Blocks.EMERALD_BLOCK;
+import static net.minecraft.block.Blocks.GOLD_BLOCK;
+import static net.minecraft.block.Blocks.LAPIS_BLOCK;
+import static net.minecraft.block.Blocks.MAGMA_BLOCK;
+import static net.minecraft.block.Blocks.OBSIDIAN;
+import static net.minecraft.entity.attribute.EntityAttributes.GENERIC_ATTACK_DAMAGE;
+import static net.minecraft.entity.attribute.EntityAttributes.GENERIC_ATTACK_SPEED;
+import static net.minecraft.entity.attribute.EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE;
+import static net.minecraft.entity.attribute.EntityAttributes.GENERIC_LUCK;
+import static net.minecraft.entity.attribute.EntityAttributes.GENERIC_MAX_HEALTH;
+import static net.minecraft.entity.attribute.EntityAttributes.GENERIC_MOVEMENT_SPEED;
 import static net.minecraft.entity.effect.StatusEffects.CONDUIT_POWER;
 import static net.minecraft.entity.effect.StatusEffects.FIRE_RESISTANCE;
 import static net.minecraft.entity.effect.StatusEffects.HASTE;
@@ -36,6 +52,7 @@ import static net.minecraft.item.Items.ENCHANTED_BOOK;
 import static net.minecraft.item.Items.EXPERIENCE_BOTTLE;
 import static net.minecraft.item.Items.GOLD_INGOT;
 import static net.minecraft.item.Items.LAPIS_LAZULI;
+import static net.minecraft.item.Items.SPAWNER;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,21 +60,24 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 
 import net.cpp.api.CodingTool;
 import net.cpp.api.CppEffect;
-import net.cpp.ducktype.IRitualStackHolder;
 import net.cpp.ducktype.ITemperancable;
 import net.cpp.init.CppEffects;
 import net.cpp.init.CppItemTags;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.DispenserBlockEntity;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentLevelEntry;
@@ -66,18 +86,17 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributeModifier.Operation;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.ShieldItem;
 import net.minecraft.item.ToolItem;
 import net.minecraft.item.TridentItem;
 import net.minecraft.nbt.CompoundTag;
@@ -86,7 +105,6 @@ import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
-import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.resource.ServerResourceManager;
 import net.minecraft.server.MinecraftServer;
@@ -97,7 +115,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -111,10 +128,12 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 public class Wand extends Item {
-	public static final Map<Item, StatusEffect> EFFECTS = new HashMap<>();
 	public static final CppEffect MAGNETIC = new CppEffect(StatusEffectType.NEUTRAL, 0);
-	public static final UUID ATTRIBUTE_UUID = new UUID(0x0123456789ABCDEFL, 0x0123456789ABCDEFL);
+	public static final ImmutableMap<Item, StatusEffect> EFFECTS = ImmutableMap.<Item, StatusEffect>builder().put(AGENTIA_OF_AGILENESS, SPEED).put(AGENTIA_OF_BOUNCE, JUMP_BOOST).put(AGENTIA_OF_EXTREMENESS, HASTE).put(AGENTIA_OF_SHARPNESS, STRENGTH).put(AGENTIA_OF_REJUVENESS, REGENERATION).put(AGENTIA_OF_SHIELD, RESISTANCE).put(AGENTIA_OF_FIRE_SHIELD, FIRE_RESISTANCE).put(AGENTIA_OF_TRANSPARENTNESS, INVISIBILITY).put(AGENTIA_OF_WATERLESS, WATER_BREATHING).put(AGENTIA_OF_EYESIGHT, NIGHT_VISION).put(COLD_DRINK, SATURATION).put(AGENTIA_OF_LIGHTNESS, SLOW_FALLING).put(AGENTIA_OF_TIDE, CONDUIT_POWER).put(AGENTIA_OF_CHAIN, CppEffects.CHAIN).put(MAGNET, MAGNETIC).build();
+	public static final ImmutableMultimap<StatusEffect, EquipmentSlot> CORRECT_SLOTS = ImmutableMultimap.<StatusEffect, EquipmentSlot>builder().put(SPEED, EquipmentSlot.FEET).put(JUMP_BOOST, EquipmentSlot.FEET).put(HASTE, EquipmentSlot.MAINHAND).put(STRENGTH, EquipmentSlot.MAINHAND).put(REGENERATION, EquipmentSlot.HEAD).put(REGENERATION, EquipmentSlot.CHEST).put(REGENERATION, EquipmentSlot.LEGS).put(REGENERATION, EquipmentSlot.FEET).put(RESISTANCE, EquipmentSlot.HEAD).put(RESISTANCE, EquipmentSlot.CHEST).put(RESISTANCE, EquipmentSlot.LEGS).put(RESISTANCE, EquipmentSlot.FEET).put(FIRE_RESISTANCE, EquipmentSlot.HEAD).put(FIRE_RESISTANCE, EquipmentSlot.CHEST).put(FIRE_RESISTANCE, EquipmentSlot.LEGS).put(FIRE_RESISTANCE, EquipmentSlot.FEET).put(INVISIBILITY, EquipmentSlot.HEAD).put(INVISIBILITY, EquipmentSlot.CHEST).put(INVISIBILITY, EquipmentSlot.LEGS).put(INVISIBILITY, EquipmentSlot.FEET).put(WATER_BREATHING, EquipmentSlot.HEAD).put(NIGHT_VISION, EquipmentSlot.HEAD).put(SATURATION, EquipmentSlot.HEAD).put(SLOW_FALLING, EquipmentSlot.FEET).put(CONDUIT_POWER, EquipmentSlot.HEAD).put(CppEffects.CHAIN, EquipmentSlot.MAINHAND).put(MAGNETIC, EquipmentSlot.MAINHAND).put(MAGNETIC, EquipmentSlot.OFFHAND).put(MAGNETIC, EquipmentSlot.HEAD).put(MAGNETIC, EquipmentSlot.CHEST).put(MAGNETIC, EquipmentSlot.LEGS).put(MAGNETIC, EquipmentSlot.FEET).build();
+	public static final long HIGH_UUID = 0x0123456789ABCDEFL;
 	private static Map<Item, Integer> randoms = new HashMap<>();
+	private static int tickSpent = 1200;
 	private final int level;
 
 	public Wand(int level, Settings settings) {
@@ -130,297 +149,56 @@ public class Wand extends Item {
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		if (!context.getWorld().isClient) {
-			int suc = 0;
 			ServerWorld world = (ServerWorld) context.getWorld();
 			ServerPlayerEntity player = (ServerPlayerEntity) context.getPlayer();
 			BlockPos blockPos = context.getBlockPos();
 			BlockState state = world.getBlockState(blockPos);
-			if (state.isOf(Blocks.DISPENSER)) {
-				int type = 1;
-				for1: for (int i = -1; i < 2; i++) {
-					for (int j = -1; j < 2; j++) {
-						Block block = world.getBlockState(blockPos.add(i, -1, j)).getBlock();
-						if (i == 0 && j == 0) {
-							if (block != Blocks.LAPIS_BLOCK) {
-								type = 0;
-								break for1;
-							}
-						} else if (((i + j) & 1) == 0) {
-							if (block != Blocks.EMERALD_BLOCK) {
-								type = 0;
-								break for1;
-							}
-						} else {
-							if (block != Blocks.GOLD_BLOCK) {
-								type = 0;
-								break for1;
-							}
-						}
+			{
+				ItemFrameEntity frame = null;
+				int baseType = 0;
+				if (state.isOf(DISPENSER)) {
+					if (checkBase1(world, blockPos)) {
+						frame = getFrame(world, blockPos);
+						baseType = 1;
+					} else if (checkBase2(world, blockPos)) {
+						frame = getFrame(world, blockPos);
+						baseType = 2;
 					}
 				}
-				if (type == 0) {
-					type = 2;
-					for1: for (int i = -1; i < 2; i++) {
-						for (int j = -1; j < 2; j++) {
-							Block block = world.getBlockState(blockPos.add(i, -1, j)).getBlock();
-							if (i == 0 && j == 0) {
-								if (block != Blocks.BEDROCK) {
-									type = 0;
-									break for1;
-								}
-							} else if (((i + j) & 1) == 0) {
-								if (block != Blocks.OBSIDIAN) {
-									type = 0;
-									break for1;
-								}
-							} else {
-								if (block != Blocks.MAGMA_BLOCK) {
-									type = 0;
-									break for1;
-								}
-							}
+				if (frame != null) {
+					DispenserBlockEntity blockEntity = (DispenserBlockEntity) world.getBlockEntity(blockPos);
+					boolean failed = true;
+					if (baseType == 1) {
+						if (level >= 1 && level <= 3 && checkOblation1(blockEntity, frame)) {
+							failed = false;
+							IRitualFrame.setTypeTime(frame, 1, tickSpent);
+						} else if (level >= 2 && level <= 3 && checkOblation2(blockEntity, frame)) {
+							failed = false;
+							IRitualFrame.setTypeTime(frame, 2, tickSpent);
+						} else if (level == 3 && checkOblation3(blockEntity, frame)) {
+							failed = false;
+							IRitualFrame.setTypeTime(frame, 3, tickSpent);
+						}
+					} else if (baseType == 2) {
+						if (level == 16 && checkOblation4(blockEntity, frame)) {
+							failed = false;
+							player.damage(DamageSource.MAGIC, 12);
+							IRitualFrame.setTypeTime(frame, 4, tickSpent);
+						} else if (level >= 2 && level <= 3 && checkOblation5(blockEntity, frame)) {
+							failed = false;
+							player.damage(DamageSource.MAGIC, 5);
+							IRitualFrame.setTypeTime(frame, 5, tickSpent);
 						}
 					}
-				}
-				if (type > 0) {
-					List<ItemFrameEntity> itemFrames = world.getEntitiesByClass(ItemFrameEntity.class, new Box(blockPos.up()), itemFrame -> itemFrame.getRotationClient().x == -90 && !itemFrame.getHeldItemStack().isEmpty());
-					if (!itemFrames.isEmpty()) {
-						ItemFrameEntity itemFrame = itemFrames.get(0);
-						ItemStack frameStack = itemFrame.getHeldItemStack();
-						DispenserBlockEntity inv = (DispenserBlockEntity) world.getBlockEntity(blockPos);
-						int level = ((Wand) context.getStack().getItem()).getLevel();
-						if (type == 1) {
-							if (inv.getStack(0).isOf(EXPERIENCE_BOTTLE)) {
-								if (level >= 1 && frameStack.isOf(BOOK)) {
-									boolean b2 = true;
-									for (int i = 0; i < 9; i++) {
-										ItemStack stack = inv.getStack(i);
-										if ((i & 1) == 0 && i != 4) {
-											if (!stack.isOf(EXPERIENCE_BOTTLE) || stack.getCount() < 16) {
-												b2 = false;
-												break;
-											}
-										} else if (i >= 3 && i <= 5) {
-											if (!stack.isOf(LAPIS_LAZULI)) {
-												b2 = false;
-												break;
-											}
-										} else {
-											if (!stack.isIn(CppItemTags.RARE_DROPS)) {
-												b2 = false;
-												break;
-											}
-										}
-									}
-									if (b2) {
-										if (level < 1) {
-											suc = 1 << 2 | 0b10;
-										} else {
-											ItemStack stack1 = inv.getStack(1).getItem().getDefaultStack();
-											ItemStack stack2 = inv.getStack(7).getItem().getDefaultStack();
-											for (int i = 0; i < 9; i++) {
-												ItemStack stack = inv.getStack(i);
-												if ((i & 1) == 0 && i != 4) {
-													stack.decrement(16);
-												} else {
-													stack.decrement(1);
-												}
-											}
-											Set<Entry<RegistryKey<Enchantment>, Enchantment>> entries = Registry.ENCHANTMENT.getEntries();
-											int r = (randoms.get(stack1.getItem()) + randoms.get(stack2.getItem()) * CppItemTags.RARE_DROPS.values().size()) % entries.size();
-											Iterator<Entry<RegistryKey<Enchantment>, Enchantment>> iterator = entries.iterator();
-											while (--r > 0) {
-												iterator.next();
-											}
-											Enchantment enchantment = iterator.next().getValue();
-											ItemStack enchantedBook = ENCHANTED_BOOK.getDefaultStack();
-											EnchantedBookItem.addEnchantment(enchantedBook, new EnchantmentLevelEntry(enchantment, enchantment.getMaxLevel()));
-											setRitualStack(itemFrame, enchantedBook);
-											suc = 1;
-										}
-									}
-								}
-							} else if (inv.getStack(0).isOf(GOLD_INGOT)) {
-								Item frameItem = frameStack.getItem();
-								if (checkFrameItem23(frameItem)) {
-									boolean b2 = true;
-									for (int i = 0; i < 9; i++) {
-										ItemStack stack = inv.getStack(i);
-										if ((i & 1) != 0) {
-											if (!stack.isOf(EXPERIENCE_BOTTLE) || stack.getCount() < 16) {
-												b2 = false;
-												break;
-											}
-										} else if ((i & 1) == 0 && i != 4) {
-											if (!stack.isOf(GOLD_INGOT)) {
-												b2 = false;
-												break;
-											}
-										} else {
-											if (!stack.isIn(CppItemTags.RARE_DROPS)) {
-												b2 = false;
-												break;
-											}
-										}
-									}
-									if (b2) {
-										if (level < 3) {
-											suc = 3 << 2 | 0b10;
-										} else {
-											ItemStack stack1 = inv.getStack(4).getItem().getDefaultStack();
-											for (int i = 0; i < 9; i++) {
-												ItemStack stack = inv.getStack(i);
-												if ((i & 1) != 0) {
-													stack.decrement(16);
-												} else {
-													stack.decrement(1);
-												}
-											}
-											int r = randoms.get(stack1.getItem()) ^ blockPos.hashCode();
-											double amount = 0;
-											EntityAttribute attribute = EntityAttributes.HORSE_JUMP_STRENGTH;
-											if (frameItem instanceof ToolItem || frameItem instanceof TridentItem) {
-												if ((r & 1) == 0) {
-													attribute = EntityAttributes.GENERIC_ATTACK_SPEED;
-													amount = (r >> 1) % 3;
-												} else {
-													attribute = EntityAttributes.GENERIC_ATTACK_DAMAGE;
-													amount = (r >> 1) % 8;
-												}
-											} else {
-												switch (r % 4) {
-												case 0:
-													attribute = EntityAttributes.GENERIC_MAX_HEALTH;
-													amount = (r / 4) % 6;
-													break;
-												case 1:
-													attribute = EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE;
-													amount = (r / 4) % 4;
-													break;
-												case 2:
-													attribute = EntityAttributes.GENERIC_MOVEMENT_SPEED;
-													amount = (r / 4) % 16 / 100.;
-													break;
-												case 3:
-													attribute = EntityAttributes.GENERIC_LUCK;
-													amount = (r / 4) % 3;
-													break;
-												}
-											}
-											ItemStack modifiedStack = frameStack.copy();
-											EquipmentSlot slot = getSlot(frameItem);
-											ListTag attributeModifiers = modifiedStack.getOrCreateTag().getList("AttributeModifiers", 10);
-											if (attributeModifiers.isEmpty()) {
-												Item rawItem = modifiedStack.getItem();
-												for (Entry<EntityAttribute, EntityAttributeModifier> entry : rawItem.getAttributeModifiers(slot).entries()) {
-													modifiedStack.addAttributeModifier(entry.getKey(), entry.getValue(), slot);
-												}
-											} else {
-												for (Iterator<Tag> iterator = attributeModifiers.iterator(); iterator.hasNext();) {
-													Tag tag = iterator.next();
-													if (tag instanceof CompoundTag) {
-														CompoundTag compoundTag = (CompoundTag) tag;
-														if (NbtHelper.toUuid(compoundTag.get("UUID")).equals(ATTRIBUTE_UUID)) {
-															iterator.remove();
-															break;
-														}
-													}
-												}
-												modifiedStack.putSubTag("AttributeModifiers", attributeModifiers);
-											}
-											modifiedStack.addAttributeModifier(attribute, new EntityAttributeModifier(ATTRIBUTE_UUID, "仪式：属性附加", amount, Operation.ADDITION), slot);
-											setRitualStack(itemFrame, modifiedStack);
-											suc = 1;
-										}
-									}
-								}
-							} else if (inv.getStack(1).isOf(EXPERIENCE_BOTTLE)) {
-								Item frameItem = frameStack.getItem();
-								if (checkFrameItem23(frameItem)) {
-									boolean b2 = true;
-									for (int i = 0; i < 9; i++) {
-										ItemStack stack = inv.getStack(i);
-										if ((i & 1) != 0) {
-											if (!stack.isOf(EXPERIENCE_BOTTLE) || stack.getCount() < 16) {
-												b2 = false;
-												break;
-											}
-										} else if (i == 4) {
-											if (!stack.isIn(CppItemTags.RARE_DROPS)) {
-												b2 = false;
-												break;
-											}
-										} else {
-											if (!checkPotion(stack.getItem()) || !ItemStack.areItemsEqual(inv.getStack(0), stack)) {
-												b2 = false;
-												break;
-											}
-										}
-									}
-									if (b2) {
-										if (level < 2) {
-											suc = 2 << 2 | 0b10;
-										} else {
-											StatusEffect effect = EFFECTS.get(inv.getStack(0).getItem());
-											for (int i = 0; i < 9; i++) {
-												ItemStack stack = inv.getStack(i);
-												if ((i & 1) != 0) {
-													stack.decrement(16);
-												} else {
-													stack.decrement(1);
-												}
-											}
-											ItemStack modifiedStack = frameStack.copy();
-											String s = effect == MAGNETIC ? "cpp:magnetic" : Registry.STATUS_EFFECT.getId(effect).toString();
-											modifiedStack.getOrCreateTag().putString("statusEffect", s);
-											setRitualStack(itemFrame, modifiedStack);
-											suc = 1;
-										}
-									}
-								}
-							}
-						} else if (type == 2) {
-							if (frameStack.isOf(AMETHYST_BLOCK)) {
-								boolean b2 = true;
-								for (int i = 0; i < 9; i++) {
-									ItemStack stack = inv.getStack(i);
-									if (i != 4) {
-										if (!stack.isOf(AMETHYST_SHARD)) {
-											b2 = false;
-											break;
-										}
-									} else {
-										if (!stack.isIn(CppItemTags.RARE_DROPS)) {
-											b2 = false;
-											break;
-										}
-									}
-								}
-								if (b2) {
-									if (level < 2) {
-										suc = 2 << 2 | 0b10;
-									} else {
-										context.getPlayer().damage(DamageSource.MAGIC, 5);
-										for (int i = 0; i < 9; i++) {
-											inv.getStack(i).decrement(1);
-										}
-										Wand.setRitualStack(itemFrame, BUDDING_AMETHYST.getDefaultStack());
-										suc = 1;
-									}
-								}
-							}
-						}
+					if (failed) {
+						CodingTool.actionbar(player, "info.cpp.rituals.fail");
+						return ActionResult.FAIL;
+					} else {
+						player.networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_BEACON_POWER_SELECT, SoundCategory.BLOCKS, frame.getX(), frame.getY(), frame.getZ(), 5, 1));
+						CodingTool.tellraw(player, "info.cpp.rituals.start");
+						return ActionResult.SUCCESS;
 					}
 				}
-			}
-			if (suc == 1) {
-				player.networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.PLAYERS, blockPos.getX() + .5, blockPos.getY() + .5, blockPos.getZ() + .5, 1, 1));
-				return ActionResult.SUCCESS;
-			} else if ((suc & 0b10) == 0b10) {
-				player.networkHandler.sendPacket(new TitleS2CPacket(TitleS2CPacket.Action.ACTIONBAR, new TranslatableText("chat.cpp.wand_level_error", suc >> 2, level)));
-				return ActionResult.CONSUME;
-			} else {
-				return ActionResult.PASS;
 			}
 		}
 		return ActionResult.PASS;
@@ -430,22 +208,20 @@ public class Wand extends Item {
 		return level;
 	}
 
-	public static boolean checkFrameItem23(Item frameItem) {
-		return frameItem instanceof ToolItem || frameItem instanceof ShieldItem || frameItem instanceof ArmorItem || frameItem instanceof TridentItem;
+	public static boolean checkFrameItem23(ItemStack frameStack) {
+		Item frameItem = frameStack.getItem();
+		return frameItem instanceof ToolItem /* || frameItem instanceof ShieldItem */ || frameItem instanceof ArmorItem || frameItem instanceof TridentItem;
 	}
 
-	public static boolean checkPotion(Item item) {
-		return EFFECTS.containsKey(item);
-	}
-
+	@Nullable
 	public static EquipmentSlot getSlot(Item item) {
 		if (item instanceof ToolItem || item instanceof TridentItem)
 			return EquipmentSlot.MAINHAND;
-		if (item instanceof ShieldItem)
-			return EquipmentSlot.OFFHAND;
+//		if (item instanceof ShieldItem)
+//			return EquipmentSlot.OFFHAND;
 		if (item instanceof ArmorItem)
 			return ((ArmorItem) item).getSlotType();
-		return EquipmentSlot.MAINHAND;
+		return null;
 	}
 
 	public static void loadRandoms(MinecraftServer server) {
@@ -469,12 +245,6 @@ public class Wand extends Item {
 		}
 	}
 
-	public static void setRitualStack(ItemFrameEntity itemFrame, ItemStack ritualStack) {
-		ritualStack.getOrCreateTag().putInt("delay", 1200);
-		((IRitualStackHolder) itemFrame).setRitualStack(ritualStack);
-		itemFrame.setInvulnerable(true);
-	}
-
 	public static void tickEffect(PlayerEntity player) {
 		if (((ITemperancable) player).isEffectEnabled() && player.world.getTime() % 20 == 0) {
 			for (EquipmentSlot slot : EquipmentSlot.values()) {
@@ -484,26 +254,28 @@ public class Wand extends Item {
 				if (slot == getSlot(stack.getItem())) {
 					String id = stack.getOrCreateTag().getString("statusEffect");
 					if (id.length() != 0) {
-						boolean b1 = false;
+						boolean effected = false;
 						if ("cpp:magnetic".equals(id)) {
 							if (!player.world.isClient) {
 								Magnet.tick((ServerPlayerEntity) player);
-								b1 = true;
+								effected = true;
 							}
 						} else {
 							StatusEffect effect = Registry.STATUS_EFFECT.get(new Identifier(id));
-							if (effect == SATURATION) {
-								if (player.world.getTime() % 200 == 0) {
-									player.addStatusEffect(new StatusEffectInstance(effect, 1, 0, true, true));
+							if (CORRECT_SLOTS.get(effect).contains(slot)) {
+								if (effect == SATURATION) {
+									if (player.world.getTime() % 200 == 0) {
+										player.addStatusEffect(new StatusEffectInstance(effect, 1, 0, true, true));
+									}
+								} else if (effect == NIGHT_VISION) {
+									player.addStatusEffect(new StatusEffectInstance(effect, 230, 254, true, true));
+								} else {
+									player.addStatusEffect(new StatusEffectInstance(effect, 20, 0, true, true));
 								}
-							} else if (effect == NIGHT_VISION) {
-								player.addStatusEffect(new StatusEffectInstance(effect, 230, 254, true, true));
-							} else {
-								player.addStatusEffect(new StatusEffectInstance(effect, 20, 0, true, true));
+								effected = true;
 							}
-							b1 = true;
 						}
-						if (b1) {
+						if (effected) {
 							player.addExperience(-1);
 						}
 					}
@@ -514,22 +286,26 @@ public class Wand extends Item {
 	}
 
 	public static void tickFrame(ItemFrameEntity frame) {
-		ItemStack ritualStack = ((IRitualStackHolder) frame).getRitualStack();
-		if (!ritualStack.isEmpty()) {
-			int delay = ritualStack.getOrCreateTag().getInt("delay");
-			if (delay-- <= 0) {
-				ritualStack.removeSubTag("delay");
-				frame.setHeldItemStack(ritualStack);
-				((IRitualStackHolder) frame).setRitualStack(ItemStack.EMPTY);
-				frame.setInvulnerable(false);
-				for (ServerPlayerEntity player : ((ServerWorld) frame.world).getPlayers(player -> player.getPos().isInRange(frame.getPos(), 32))) {
-					player.networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_BEACON_POWER_SELECT, SoundCategory.PLAYERS, frame.getX(), frame.getY(), frame.getZ(), 5, 1));
+		IRitualFrame iRitualFrame = (IRitualFrame) frame;
+		if (iRitualFrame.getRitualType() > 0) {
+			if (checkOblation(frame)) {
+				if (iRitualFrame.getRitualTime() > 0) {
+					for (ServerPlayerEntity player : ((ServerWorld) frame.world).getPlayers(player -> player.getPos().isInRange(frame.getPos(), 32))) {
+						player.networkHandler.sendPacket(new ParticleS2CPacket(ParticleTypes.ENCHANT, false, frame.getX(), frame.getY() + 1.1, frame.getZ(), 0f, 0, 0f, 2, 4));
+						if (frame.world.getTime() % 100 == 0)
+							player.networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_BEACON_AMBIENT, SoundCategory.BLOCKS, frame.getX(), frame.getY(), frame.getZ(), 5, 1));
+					}
+					iRitualFrame.setRitualTime(iRitualFrame.getRitualTime() - 1);
+				} else {
+					done(frame);
+					iRitualFrame.setRitualType(0);
 				}
 			} else {
-				ritualStack.getOrCreateTag().putInt("delay", delay);
-				for (ServerPlayerEntity player : ((ServerWorld) frame.world).getPlayers(player -> player.getPos().isInRange(frame.getPos(), 32))) {
-					player.networkHandler.sendPacket(new ParticleS2CPacket(ParticleTypes.ENCHANT, false, frame.getX(), frame.getY() + 1, frame.getZ(), 0.2f, 0, 0.2f, 1, 1));
-				}
+				ServerPlayerEntity player = (ServerPlayerEntity) frame.world.getClosestPlayer(frame.getX(), frame.getY(), frame.getZ(), 128, false);
+				CodingTool.tellraw(player, "info.cpp.rituals.break");
+				player.networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_BEACON_DEACTIVATE, SoundCategory.BLOCKS, frame.getX(), frame.getY(), frame.getZ(), 5, 1));
+				iRitualFrame.setRitualType(0);
+				iRitualFrame.setRitualTime(0);
 			}
 		}
 	}
@@ -544,20 +320,223 @@ public class Wand extends Item {
 			}
 		});
 
-		EFFECTS.put(AGENTIA_OF_AGILENESS, SPEED);
-		EFFECTS.put(AGENTIA_OF_BOUNCE, JUMP_BOOST);
-		EFFECTS.put(AGENTIA_OF_EXTREMENESS, HASTE);
-		EFFECTS.put(AGENTIA_OF_SHARPNESS, STRENGTH);
-		EFFECTS.put(AGENTIA_OF_REJUVENESS, REGENERATION);
-		EFFECTS.put(AGENTIA_OF_SHIELD, RESISTANCE);
-		EFFECTS.put(AGENTIA_OF_FIRE_SHIELD, FIRE_RESISTANCE);
-		EFFECTS.put(AGENTIA_OF_TRANSPARENTNESS, INVISIBILITY);
-		EFFECTS.put(AGENTIA_OF_WATERLESS, WATER_BREATHING);
-		EFFECTS.put(AGENTIA_OF_EYESIGHT, NIGHT_VISION);
-		EFFECTS.put(COLD_DRINK, SATURATION);
-		EFFECTS.put(AGENTIA_OF_LIGHTNESS, SLOW_FALLING);
-		EFFECTS.put(AGENTIA_OF_TIDE, CONDUIT_POWER);
-		EFFECTS.put(AGENTIA_OF_CHAIN, CppEffects.CHAIN);
-		EFFECTS.put(MAGNET, MAGNETIC);
+	}
+
+	public static boolean checkBase1(World world, BlockPos blockPos) {
+		return world.getBlockState(blockPos.down()).isOf(LAPIS_BLOCK) && world.getBlockState(blockPos.add(1, -1, 0)).isOf(GOLD_BLOCK) && world.getBlockState(blockPos.add(-1, -1, 0)).isOf(GOLD_BLOCK) && world.getBlockState(blockPos.add(0, -1, 1)).isOf(GOLD_BLOCK) && world.getBlockState(blockPos.add(0, -1, -1)).isOf(GOLD_BLOCK) && world.getBlockState(blockPos.add(1, -1, 1)).isOf(EMERALD_BLOCK) && world.getBlockState(blockPos.add(1, -1, -1)).isOf(EMERALD_BLOCK) && world.getBlockState(blockPos.add(-1, -1, 1)).isOf(EMERALD_BLOCK) && world.getBlockState(blockPos.add(-1, -1, -1)).isOf(EMERALD_BLOCK);
+	}
+
+	public static boolean checkBase2(World world, BlockPos blockPos) {
+		return world.getBlockState(blockPos.down()).isOf(BEDROCK) && world.getBlockState(blockPos.add(1, -1, 0)).isOf(MAGMA_BLOCK) && world.getBlockState(blockPos.add(-1, -1, 0)).isOf(MAGMA_BLOCK) && world.getBlockState(blockPos.add(0, -1, 1)).isOf(MAGMA_BLOCK) && world.getBlockState(blockPos.add(0, -1, -1)).isOf(MAGMA_BLOCK) && world.getBlockState(blockPos.add(1, -1, 1)).isOf(OBSIDIAN) && world.getBlockState(blockPos.add(1, -1, -1)).isOf(OBSIDIAN) && world.getBlockState(blockPos.add(-1, -1, 1)).isOf(OBSIDIAN) && world.getBlockState(blockPos.add(-1, -1, -1)).isOf(OBSIDIAN);
+	}
+
+	@Nullable
+	public static ItemFrameEntity getFrame(World world, BlockPos blockPos) {
+		List<ItemFrameEntity> itemFrames = world.getEntitiesByClass(ItemFrameEntity.class, new Box(blockPos.up()), itemFrame -> itemFrame.getRotationClient().x == -90 && !itemFrame.getHeldItemStack().isEmpty());
+		if (!itemFrames.isEmpty()) {
+			return itemFrames.get(0);
+		}
+		return null;
+	}
+
+	public static boolean checkOblation(ItemFrameEntity frame) {
+		IRitualFrame iRitualFrame = (IRitualFrame) frame;
+		BlockEntity blockEntity0 = frame.world.getBlockEntity(frame.getBlockPos().down());
+		if (blockEntity0 instanceof DispenserBlockEntity) {
+			DispenserBlockEntity blockEntity = (DispenserBlockEntity) blockEntity0;
+			switch (iRitualFrame.getRitualType()) {
+			case 1:
+				return checkOblation1(blockEntity, frame);
+			case 2:
+				return checkOblation2(blockEntity, frame);
+			case 3:
+				return checkOblation3(blockEntity, frame);
+			case 4:
+				return checkOblation4(blockEntity, frame);
+			case 5:
+				return checkOblation5(blockEntity, frame);
+			default:
+				return false;
+			}
+		}
+		return false;
+	}
+
+	public static boolean checkOblation1(Inventory inventory, ItemFrameEntity frame) {
+		return frame.getHeldItemStack().isOf(BOOK) && inventory.getStack(0).isOf(EXPERIENCE_BOTTLE) && inventory.getStack(0).getCount() >= 16 && inventory.getStack(2).isOf(EXPERIENCE_BOTTLE) && inventory.getStack(2).getCount() >= 16 && inventory.getStack(6).isOf(EXPERIENCE_BOTTLE) && inventory.getStack(6).getCount() >= 16 && inventory.getStack(8).isOf(EXPERIENCE_BOTTLE) && inventory.getStack(8).getCount() >= 16 && inventory.getStack(1).isIn(RARE_DROPS) && inventory.getStack(7).isIn(RARE_DROPS) && inventory.getStack(3).isOf(LAPIS_LAZULI) && inventory.getStack(4).isOf(LAPIS_LAZULI) && inventory.getStack(5).isOf(LAPIS_LAZULI);
+	}
+
+	public static boolean checkOblation2(Inventory inventory, ItemFrameEntity frame) {
+		return checkFrameItem23(frame.getHeldItemStack()) && inventory.getStack(1).isOf(EXPERIENCE_BOTTLE) && inventory.getStack(1).getCount() >= 16 && inventory.getStack(3).isOf(EXPERIENCE_BOTTLE) && inventory.getStack(3).getCount() >= 16 && inventory.getStack(5).isOf(EXPERIENCE_BOTTLE) && inventory.getStack(5).getCount() >= 16 && inventory.getStack(7).isOf(EXPERIENCE_BOTTLE) && inventory.getStack(7).getCount() >= 16 && inventory.getStack(4).isIn(RARE_DROPS) && EFFECTS.containsKey(inventory.getStack(0).getItem()) && ItemStack.areItemsEqual(inventory.getStack(0), inventory.getStack(2)) && ItemStack.areItemsEqual(inventory.getStack(0), inventory.getStack(6)) && ItemStack.areItemsEqual(inventory.getStack(0), inventory.getStack(8));
+	}
+
+	public static boolean checkOblation3(Inventory inventory, ItemFrameEntity frame) {
+		return checkFrameItem23(frame.getHeldItemStack()) && inventory.getStack(1).isOf(EXPERIENCE_BOTTLE) && inventory.getStack(1).getCount() >= 16 && inventory.getStack(3).isOf(EXPERIENCE_BOTTLE) && inventory.getStack(3).getCount() >= 16 && inventory.getStack(5).isOf(EXPERIENCE_BOTTLE) && inventory.getStack(5).getCount() >= 16 && inventory.getStack(7).isOf(EXPERIENCE_BOTTLE) && inventory.getStack(7).getCount() >= 16 && inventory.getStack(4).isIn(RARE_DROPS) && inventory.getStack(0).isOf(GOLD_INGOT) && inventory.getStack(2).isOf(GOLD_INGOT) && inventory.getStack(6).isOf(GOLD_INGOT) && inventory.getStack(8).isOf(GOLD_INGOT);
+	}
+
+	public static boolean checkOblation4(Inventory inventory, ItemFrameEntity frame) {
+		return frame.getHeldItemStack().isOf(BROKEN_SPAWNER) && inventory.getStack(0).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(1).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(2).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(3).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(5).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(6).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(7).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(8).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(4).isIn(RARE_DROPS);
+	}
+
+	public static boolean checkOblation5(Inventory inventory, ItemFrameEntity frame) {
+		return frame.getHeldItemStack().isOf(AMETHYST_BLOCK) && inventory.getStack(0).isOf(AMETHYST_SHARD) && inventory.getStack(1).isOf(AMETHYST_SHARD) && inventory.getStack(2).isOf(AMETHYST_SHARD) && inventory.getStack(3).isOf(AMETHYST_SHARD) && inventory.getStack(5).isOf(AMETHYST_SHARD) && inventory.getStack(6).isOf(AMETHYST_SHARD) && inventory.getStack(7).isOf(AMETHYST_SHARD) && inventory.getStack(8).isOf(AMETHYST_SHARD) && inventory.getStack(4).isIn(RARE_DROPS);
+	}
+
+	public static interface IRitualFrame {
+		void setRitualType(int type);
+
+		int getRitualType();
+
+		void setRitualTime(int time);
+
+		int getRitualTime();
+
+		static void setTypeTime(ItemFrameEntity frame, int type, int time) {
+			((Wand.IRitualFrame) frame).setRitualType(type);
+			((Wand.IRitualFrame) frame).setRitualTime(time);
+		}
+	}
+
+	public static void decrease1(Inventory inventory) {
+		for (int i = 0; i < 9; i++) {
+			if ((i & 1) == 0 && i != 4) {
+				inventory.getStack(i).decrement(16);
+			} else {
+				inventory.getStack(i).decrement(1);
+			}
+		}
+	}
+
+	public static void decrease23(Inventory inventory) {
+		for (int i = 0; i < 9; i++) {
+			if ((i & 1) != 0) {
+				inventory.getStack(i).decrement(16);
+			} else {
+				inventory.getStack(i).decrement(1);
+			}
+		}
+	}
+
+	public static void decrease45(Inventory inventory) {
+		for (int i = 0; i < 9; i++) {
+			inventory.getStack(i).decrement(1);
+		}
+	}
+
+	public static void done(ItemFrameEntity frame) {
+		IRitualFrame iRitualFrame = (IRitualFrame) frame;
+		BlockEntity blockEntity0 = frame.world.getBlockEntity(frame.getBlockPos().down());
+		if (blockEntity0 instanceof DispenserBlockEntity) {
+			DispenserBlockEntity blockEntity = (DispenserBlockEntity) blockEntity0;
+			switch (iRitualFrame.getRitualType()) {
+			case 1:
+				done1(blockEntity, frame);
+				break;
+			case 2:
+				done2(blockEntity, frame);
+				break;
+			case 3:
+				done3(blockEntity, frame);
+				break;
+			case 4:
+				done4(blockEntity, frame);
+				break;
+			case 5:
+				done5(blockEntity, frame);
+				break;
+			}
+			ServerPlayerEntity player = (ServerPlayerEntity) frame.world.getClosestPlayer(frame.getX(), frame.getY(), frame.getZ(), 128, false);
+			CodingTool.tellraw(player, "info.cpp.rituals.finish");
+			player.networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, frame.getX(), frame.getY(), frame.getZ(), 5, 1));
+		}
+	}
+
+	public static void done1(Inventory inventory, ItemFrameEntity frame) {
+		Set<Entry<RegistryKey<Enchantment>, Enchantment>> entries = Registry.ENCHANTMENT.getEntries();
+		int r = (randoms.get(inventory.getStack(1).getItem()) + randoms.get(inventory.getStack(7).getItem()) * CppItemTags.RARE_DROPS.values().size()) % entries.size();
+		Iterator<Entry<RegistryKey<Enchantment>, Enchantment>> iterator = entries.iterator();
+		while (--r > 0) {
+			iterator.next();
+		}
+		Enchantment enchantment = iterator.next().getValue();
+		ItemStack enchantedBook = ENCHANTED_BOOK.getDefaultStack();
+		EnchantedBookItem.addEnchantment(enchantedBook, new EnchantmentLevelEntry(enchantment, enchantment.getMaxLevel()));
+		frame.setHeldItemStack(enchantedBook);
+		decrease1(inventory);
+	}
+
+	public static void done2(Inventory inventory, ItemFrameEntity frame) {
+		StatusEffect effect = EFFECTS.get(inventory.getStack(0).getItem());
+		ItemStack frameStack = frame.getHeldItemStack();
+		String s = effect == MAGNETIC ? "cpp:magnetic" : Registry.STATUS_EFFECT.getId(effect).toString();
+		frameStack.getOrCreateTag().putString("statusEffect", s);
+		frame.setHeldItemStack(frameStack);
+		decrease23(inventory);
+	}
+
+	public static void done3(Inventory inventory, ItemFrameEntity frame) {
+		ItemStack frameStack = frame.getHeldItemStack();
+		Item frameItem = frameStack.getItem();
+		EquipmentSlot slot = getSlot(frameItem);
+		ListTag attributeModifiers = frameStack.getOrCreateTag().getList("AttributeModifiers", 10);
+		double attackSpeed = 0, damage = 0, health = 0, resistance = 0, movementSpeed = 0, luck = 0;
+		for (Iterator<Tag> iterator = attributeModifiers.iterator(); iterator.hasNext();) {
+			Tag tag = iterator.next();
+			if (tag instanceof CompoundTag) {
+				CompoundTag compoundTag = (CompoundTag) tag;
+				UUID uuid = NbtHelper.toUuid(compoundTag.get("UUID"));
+				if (uuid.getMostSignificantBits() == HIGH_UUID && uuid.getLeastSignificantBits() > 0 && uuid.getLeastSignificantBits() <= 36) {
+					iterator.remove();
+				}
+			}
+		}
+		frameStack.putSubTag("AttributeModifiers", attributeModifiers);
+		if (attributeModifiers.isEmpty()) {
+			for (Entry<EntityAttribute, EntityAttributeModifier> entry : frameItem.getAttributeModifiers(slot).entries()) {
+				EntityAttribute attribute = entry.getKey();
+				EntityAttributeModifier modifier = entry.getValue();
+				Operation operation = modifier.getOperation();
+				double amount = modifier.getValue();
+				if (attribute == GENERIC_ATTACK_SPEED && operation == Operation.ADDITION) {
+					attackSpeed = amount;
+				} else if (attribute == GENERIC_ATTACK_DAMAGE && operation == Operation.ADDITION) {
+					damage = amount;
+				} else if (attribute == GENERIC_MAX_HEALTH && operation == Operation.ADDITION) {
+					health = amount;
+				} else if (attribute == GENERIC_KNOCKBACK_RESISTANCE && operation == Operation.ADDITION) {
+					resistance = amount;
+				} else if (attribute == GENERIC_MOVEMENT_SPEED && operation == Operation.MULTIPLY_BASE) {
+					movementSpeed = amount;
+				} else if (attribute == GENERIC_LUCK && operation == Operation.ADDITION) {
+					luck = amount;
+				} else {
+					frameStack.addAttributeModifier(attribute, modifier, slot);
+				}
+			}
+		}
+		Random random = frame.world.random;
+		if (frameItem instanceof ToolItem || frameItem instanceof TridentItem) {
+			frameStack.addAttributeModifier(GENERIC_ATTACK_SPEED, new EntityAttributeModifier(new UUID(HIGH_UUID, 1 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", attackSpeed + random.nextDouble() * 2, Operation.ADDITION), slot);
+			frameStack.addAttributeModifier(GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(new UUID(HIGH_UUID, 2 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", damage + random.nextDouble() * 8, Operation.ADDITION), slot);
+		} else {
+			frameStack.addAttributeModifier(GENERIC_MAX_HEALTH, new EntityAttributeModifier(new UUID(HIGH_UUID, 3 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", health + random.nextDouble() * 5, Operation.ADDITION), slot);
+			frameStack.addAttributeModifier(GENERIC_KNOCKBACK_RESISTANCE, new EntityAttributeModifier(new UUID(HIGH_UUID, 4 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", resistance + random.nextDouble() * .3, Operation.ADDITION), slot);
+			frameStack.addAttributeModifier(GENERIC_MOVEMENT_SPEED, new EntityAttributeModifier(new UUID(HIGH_UUID, 5 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", movementSpeed + random.nextDouble() * .15, Operation.MULTIPLY_BASE), slot);
+			frameStack.addAttributeModifier(GENERIC_LUCK, new EntityAttributeModifier(new UUID(HIGH_UUID, 6 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", luck + random.nextDouble() * 2, Operation.ADDITION), slot);
+		}
+		frame.setHeldItemStack(frameStack);
+		decrease23(inventory);
+	}
+
+	public static void done4(Inventory inventory, ItemFrameEntity frame) {
+		ItemStack newStack = SPAWNER.getDefaultStack();
+		newStack.setTag(frame.getHeldItemStack().getTag());
+		frame.setHeldItemStack(newStack);
+		decrease45(inventory);
+	}
+
+	public static void done5(Inventory inventory, ItemFrameEntity frame) {
+		frame.setHeldItemStack(BUDDING_AMETHYST.getDefaultStack());
+		decrease45(inventory);
 	}
 }

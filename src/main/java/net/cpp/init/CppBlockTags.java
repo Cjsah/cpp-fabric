@@ -10,6 +10,7 @@ public final class CppBlockTags {
 	public static final Tag<Block> FLOWER_GRASSES = register("flower_grasses");
 	public static final Tag<Block> FLOWER_GRASSES_1 = register("flower_grasses_1");
 	public static final Tag<Block> FLOWER_GRASSES_2 = register("flower_grasses_2");
+	public static final Tag<Block> ORES = register("ores");
 	private CppBlockTags() {
 	}
 
