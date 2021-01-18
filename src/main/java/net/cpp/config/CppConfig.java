@@ -25,7 +25,7 @@ public class CppConfig {
 
     private final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
 
-    protected final JsonObject JSON = new JsonObject();
+    private final JsonObject JSON = new JsonObject();
 
     public CppConfig() {
         if (!JSON_PATH.isDirectory() && !JSON_PATH.mkdirs()) {
@@ -72,7 +72,7 @@ public class CppConfig {
         }
     }
 
-    public void changeConfig(String configName, JsonObject json) {
+    protected void changeConfig(String configName, JsonObject json) {
         File json_file = new File(JSON_PATH, configName + ".json");
         if (!json_file.exists()) {
             logger.error(configName + "is not exists");
@@ -89,6 +89,10 @@ public class CppConfig {
 
     protected String formatJson(JsonObject json) {
         return GSON.toJson(json);
+    }
+
+    protected JsonObject getJson() {
+        return this.JSON;
     }
 
 }

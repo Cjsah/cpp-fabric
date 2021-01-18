@@ -527,9 +527,15 @@
   "cpp.chat.weight.thin1": "偏瘦",
   "cpp.chat.weight.thin2": "过瘦",
 
-  "cpp.modmenu.title": "Crafting++ 配置",
-  "cpp.modmenu.showing": "当前显示 %s 个配置文件",
-  "cpp.modmenu.reset": "重置",
+  "modmenu.cpp.title": "Crafting++ 配置",
+  "modmenu.cpp.showing": "当前显示 %s 个配置文件",
+  "modmenu.cpp.setting": "设置",
+  "modmenu.cpp.reset": "重置",
+
+  "config.cpp.notSupport": "不支持的配置文件",
+  "config.cpp.NeedXp": "需要经验",
+  "config.cpp.StartLevel": "初始等级",
+  "config.cpp.CanBreak": "可以破坏的方块",
 
   "tooltip.cpp.gfow.water": "水 %s",
   "tooltip.cpp.gfow.lava": "岩浆 %s",
@@ -550,10 +556,6 @@
 
   "word.infinite": "∞",
 
-  "config.cpp.title": "Crafting++",
-  "config.cpp.true": "是",
-  "config.cpp.false": "否",
-
   "structure_feature.buried_treasure": "埋藏的宝藏",
   "structure_feature.endcity": "末地城",
   "structure_feature.fortress": "下界要塞",
@@ -572,7 +574,7 @@
   "structure_feature.nether_fossil": "下界化石",
   "structure_feature.bastion_remnant": "堡垒遗迹",
   "structure_feature.ruined_portal": "废弃传送门",
-  
+
   "loot_table.minecraft.gameplay/piglin_bartering": "猪灵交易表"
 
 }

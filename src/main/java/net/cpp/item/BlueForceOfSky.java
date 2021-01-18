@@ -38,7 +38,7 @@ public class BlueForceOfSky extends Item implements ICppConfig {
             if (user.isCreative()) {
                 changeWeather(world, user, this);
                 return TypedActionResult.success(user.getStackInHand(hand));
-            }else if (!config.get("needXp").getAsBoolean() || user.experienceLevel >= 1) {
+            }else if (!config.get("NeedXp").getAsBoolean() || user.experienceLevel >= 1) {
                 changeWeather(world, user, this);
                 user.addExperience(-9);
                 return TypedActionResult.success(user.getStackInHand(hand));
@@ -71,7 +71,7 @@ public class BlueForceOfSky extends Item implements ICppConfig {
 
     @Override
     public JsonObject defaultConfig(JsonObject json) {
-        json.addProperty("needXp", true);
+        json.addProperty("NeedXp", true);
         return json;
     }
 }

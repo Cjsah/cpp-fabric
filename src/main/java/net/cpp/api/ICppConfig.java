@@ -9,8 +9,12 @@ public interface ICppConfig {
 
     JsonObject defaultConfig(JsonObject json);
 
+    default JsonObject getDefaultConfig() {
+        return defaultConfig(new JsonObject());
+    }
+
     default JsonObject getConfig() {
-        if (Craftingpp.CONFIG.initConfig(this.getConfigName(), this.defaultConfig(new JsonObject()))) {
+        if (Craftingpp.CONFIG.initConfig(this.getConfigName(), this.getDefaultConfig())) {
             return Craftingpp.CONFIG.getConfig(this.getConfigName());
         }
         return null;
