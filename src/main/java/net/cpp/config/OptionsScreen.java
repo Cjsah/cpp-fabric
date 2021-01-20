@@ -1,6 +1,5 @@
 package net.cpp.config;
 
-import com.google.gson.JsonObject;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.prospector.modmenu.ModMenu;
 import net.cpp.api.ICppConfig;
@@ -17,8 +16,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.StringVisitable;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Language;
-
-import net.cpp.Craftingpp;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
@@ -26,9 +23,9 @@ import net.minecraft.text.TranslatableText;
 
 import java.util.Objects;
 
-public class CppOptionsGui extends Screen {
-    private static final Identifier RESET_BUTTON = new Identifier(ModMenu.MOD_ID, "textures/gui/configure_button.png");
-    private static final Text RESET_TEXT = new TranslatableText("cpp.modmenu.reset");
+public class OptionsScreen extends Screen {
+    private static final Identifier SETTING_BUTTON = new Identifier(ModMenu.MOD_ID, "textures/gui/configure_button.png");
+    private static final Text SETTING_TEXT = new TranslatableText("modmenu.cpp.setting");
     private final Screen screen;
     private TextFieldWidget searchBox;
     private int searchBoxX;
@@ -39,8 +36,8 @@ public class CppOptionsGui extends Screen {
     private int paneY;
     private int rightPaneX;
 
-    public CppOptionsGui(Screen screen) {
-        super(new TranslatableText("cpp.modmenu.title"));
+    public OptionsScreen(Screen screen) {
+        super(new TranslatableText("modmenu.cpp.title"));
         this.screen = screen;
     }
 
@@ -75,22 +72,24 @@ public class CppOptionsGui extends Screen {
         this.children.add(this.searchBox);
         this.children.add(this.configList);
         this.children.add(this.descriptionListWidget);
-        this.addButton(new TexturedButtonWidget(width - 40, paneY - 20, 20, 20, 0, 0, RESET_TEXT, RESET_BUTTON, 32, 64, button -> {
-            Craftingpp.CONFIG.changeConfig(selected.getKey(), ((ICppConfig)selected.getConfigItem()).defaultConfig(new JsonObject()));
-//            预留, 写完再去掉注释
-//            this.configWidget.refresh();
+        // 设置
+        this.addButton(new TexturedButtonWidget(width - 40, paneY - 20, 20, 20, 0, 0, SETTING_TEXT, SETTING_BUTTON, 32, 64, button -> {
+            //screen
+            if (this.selected != null) {
+                this.client.openScreen(new ConfigScreen(this, this.selected.getKey(), ((ICppConfig)selected.getConfigItem()).getDefaultConfig()));
+            }
         }, (buttonWidget, matrices, mouseX, mouseY) -> {
             TexturedButtonWidget button = (TexturedButtonWidget) buttonWidget;
             if (button.isJustHovered()) {
-                this.renderTooltip(matrices, RESET_TEXT, mouseX, mouseY);
+                this.renderTooltip(matrices, SETTING_TEXT, mouseX, mouseY);
             } else if (button.isFocusedButNotHovered()) {
-                this.renderTooltip(matrices, RESET_TEXT, button.x, button.y);
+                this.renderTooltip(matrices, SETTING_TEXT, button.x, button.y);
             }
         }) {
             @Override
             public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 
-                this.active = selected != null && selected.getConfigItem() instanceof ICppConfig && !Objects.equals(Craftingpp.CONFIG.JSON.get(selected.getKey()).toString(), ((ICppConfig) selected.getConfigItem()).defaultConfig(new JsonObject()).toString());
+                this.active = selected != null;
 
                 super.render(matrices, mouseX, mouseY, delta);
             }
@@ -106,11 +105,6 @@ public class CppOptionsGui extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        return super.keyPressed(keyCode, scanCode, modifiers) || this.searchBox.keyPressed(keyCode, scanCode, modifiers);
-    }
-
-    @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices);
         ConfigListEntry selectedEntry = this.selected;
@@ -123,7 +117,7 @@ public class CppOptionsGui extends Screen {
         RenderSystem.disableBlend();
         drawTextWithShadow(matrices, this.textRenderer, this.title, this.configList.getWidth() / 2 - 40, 8, 16777215);
         super.render(matrices, mouseX, mouseY, delta);
-        this.configList.reloadFilters();
+//        this.configList.reloadFilters();
 
         this.textRenderer.draw(matrices, getConfigCountText(), (float)this.searchBoxX, 52.0F, 16777215);
 
@@ -154,12 +148,17 @@ public class CppOptionsGui extends Screen {
 
     }
 
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        return super.keyPressed(keyCode, scanCode, modifiers) || this.searchBox.keyPressed(keyCode, scanCode, modifiers);
+    }
+
     ConfigListEntry getSelectedEntry() {
         return this.selected;
     }
 
     private Text getConfigCountText() {
-        return new TranslatableText("cpp.modmenu.showing", this.configList.getDisplayedCount());
+        return new TranslatableText("modmenu.cpp.showing", this.configList.getDisplayedCount());
     }
 
     double getScrollPercent() {

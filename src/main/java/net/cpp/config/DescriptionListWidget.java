@@ -10,18 +10,43 @@ import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
-
+import net.minecraft.util.Language;
 
 public class DescriptionListWidget extends EntryListWidget<DescriptionListWidget.DescriptionEntry> {
-    private final CppOptionsGui parent;
+    private final OptionsScreen parent;
     private ConfigListEntry lastSelected = null;
+    private boolean scrolling;
 
-    public DescriptionListWidget(MinecraftClient client, int width, int height, int top, int bottom, int entryHeight, CppOptionsGui parent) {
+    public DescriptionListWidget(MinecraftClient client, int width, int height, int top, int bottom, int entryHeight, OptionsScreen parent) {
         super(client, width, height, top, bottom, entryHeight);
         this.parent = parent;
+
+        this.filter();
+        this.setScrollAmount(parent.getScrollPercent() * (double)Math.max(0, this.getMaxPosition() - (this.bottom - this.top - 4)));
+    }
+
+    private void filter() {
+        if (this.getScrollAmount() > (double)Math.max(0, this.getMaxPosition() - (this.bottom - this.top - 4))) {
+            this.setScrollAmount(Math.max(0, this.getMaxPosition() - (this.bottom - this.top - 4)));
+        }
+    }
+
+    @Override
+    public void setScrollAmount(double amount) {
+        super.setScrollAmount(amount);
+        int denominator = Math.max(0, this.getMaxPosition() - (this.bottom - this.top - 4));
+        if (denominator <= 0) {
+            this.parent.updateScrollPercent(0.0D);
+        } else {
+            this.parent.updateScrollPercent(this.getScrollAmount() / (double)Math.max(0, this.getMaxPosition() - (this.bottom - this.top - 4)));
+        }
+    }
+
+    @Override
+    protected void updateScrollingState(double mouseX, double mouseY, int button) {
+        super.updateScrollingState(mouseX, mouseY, button);
+        this.scrolling = button == 0 && mouseX >= (double)this.getScrollbarPositionX() && mouseX < (double)(this.getScrollbarPositionX() + 6);
     }
 
     @Override
@@ -47,35 +72,9 @@ public class DescriptionListWidget extends EntryListWidget<DescriptionListWidget
             this.clearEntries();
             this.setScrollAmount(-1.7976931348623157E308D);
 
-            for (OrderedText line : this.client.textRenderer.wrapLines(new LiteralText(Craftingpp.CONFIG.formatJson(Craftingpp.CONFIG.getConfig(selectedEntry.getKey()))), this.getRowWidth())) {
-                this.children().add(new DescriptionListWidget.DescriptionEntry(line));
+            for (String line : Craftingpp.CONFIG.formatJson(Craftingpp.CONFIG.getConfig(selectedEntry.getKey())).split("\n")) {
+                this.children().add(new DescriptionListWidget.DescriptionEntry(Text.of(line), this));
             }
-
-
-//            this.children().add(new DescriptionListWidget.DescriptionEntry(
-//                    new LiteralText(Craftingpp.CONFIG.formatJson(Craftingpp.CONFIG.getConfig(selectedEntry.getKey())))
-//            ));
-
-//            for (Map.Entry<String, JsonElement> kv : Craftingpp.CONFIG.getConfig(selectedEntry.getKey()).entrySet()) {
-//                this.children().add(new DescriptionListWidget.DescriptionEntry(new LiteralText(kv.toString())));
-//            }
-
-
-//            this.children().add(new DescriptionListWidget.DescriptionEntry((OrderedText) new LiteralText(kv.toString())));
-//            JsonElement value = kv.getValue();
-//            if (value.isJsonArray()) {
-//
-//            } else if (value.isJsonObject()) {
-//
-//            } else if (value.isJsonPrimitive()) {
-//                if (value.getAsJsonPrimitive().isBoolean()) {
-//
-//                } else if (value.getAsJsonPrimitive().isNumber()) {
-//
-//                } else if (value.getAsJsonPrimitive().isString()) {
-//
-//                }
-//            }
         }
 
         Tessellator tessellator = Tessellator.getInstance();
@@ -97,15 +96,19 @@ public class DescriptionListWidget extends EntryListWidget<DescriptionListWidget
         bufferBuilder.vertex(this.right, (this.bottom - 4), 0.0D).texture(1.0F, 0.0F).color(0, 0, 0, 0).next();
         bufferBuilder.vertex(this.left, (this.bottom - 4), 0.0D).texture(0.0F, 0.0F).color(0, 0, 0, 0).next();
         tessellator.draw();
+
+
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
         bufferBuilder.vertex(this.left, this.bottom, 0.0D).color(0, 0, 0, 128).next();
         bufferBuilder.vertex(this.right, this.bottom, 0.0D).color(0, 0, 0, 128).next();
         bufferBuilder.vertex(this.right, this.top, 0.0D).color(0, 0, 0, 128).next();
         bufferBuilder.vertex(this.left, this.top, 0.0D).color(0, 0, 0, 128).next();
         tessellator.draw();
+
         int k = this.getRowLeft();
         int l = this.top + 4 - (int)this.getScrollAmount();
         this.renderList(matrices, k, l, mouseX, mouseY, delta);
+
         RenderSystem.enableTexture();
         RenderSystem.shadeModel(7424);
         RenderSystem.enableAlphaTest();
@@ -114,15 +117,17 @@ public class DescriptionListWidget extends EntryListWidget<DescriptionListWidget
 
     static class DescriptionEntry extends EntryListWidget.Entry<DescriptionListWidget.DescriptionEntry>{
 
-        protected OrderedText text;
+        private final Text text;
+        private final DescriptionListWidget parent;
 
-        public DescriptionEntry(OrderedText text) {
+        public DescriptionEntry(Text text, DescriptionListWidget parent) {
             this.text = text;
+            this.parent = parent;
         }
 
         @Override
         public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, this.text, (float)x, (float)y, 11184810);
+            if (y > 68 && y < parent.height - 45) MinecraftClient.getInstance().textRenderer.draw(matrices, Language.getInstance().reorder(this.text), (float)x, (float)y, 11184810);
         }
     }
 }

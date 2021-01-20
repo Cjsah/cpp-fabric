@@ -15,7 +15,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
 
-import javax.annotation.Nonnull;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -29,7 +28,7 @@ import java.util.Set;
 
 public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEntry> implements AutoCloseable {
 
-    private final CppOptionsGui parent;
+    private final OptionsScreen parent;
     private final Set<String> configKeys = new HashSet<>();
     private final Map<Path, NativeImageBackedTexture> configIconsCache = new HashMap<>();
     private List<String> ConfigContainerList = null;
@@ -38,16 +37,14 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
     private boolean scrolling;
 
 
-    protected ConfigListWidget(MinecraftClient client, int width, int height, int y1, int y2, int entryHeight, String searchTerm, CppOptionsGui parent) {
+    protected ConfigListWidget(MinecraftClient client, int width, int height, int y1, int y2, int entryHeight, String searchTerm, OptionsScreen parent) {
         super(client, width, height, y1, y2, entryHeight);
         this.parent = parent;
-        for (Map.Entry<String, JsonElement> i  : Craftingpp.CONFIG.JSON.entrySet()) {
+        for (Map.Entry<String, JsonElement> i  : Craftingpp.CONFIG.getJson().entrySet()) {
             configKeys.add(i.getKey());
         }
-
         this.filter(searchTerm, false);
         this.setScrollAmount(parent.getScrollPercent() * (double)Math.max(0, this.getMaxPosition() - (this.bottom - this.top - 4)));
-
     }
 
     @Override
@@ -104,6 +101,7 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
         return result;
     }
 
+    // 加了排序功能后使用
     public void reloadFilters() {
         this.filter(this.parent.getSearchInput(), true);
     }
@@ -271,7 +269,7 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
             return this.children().size() + "/" + this.configKeys.size();
     }
 
-    public CppOptionsGui getParent() {
+    public OptionsScreen getParent() {
         return this.parent;
     }
 
