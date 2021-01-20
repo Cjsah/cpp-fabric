@@ -53,13 +53,13 @@ public class BlueForceOfSky extends Item implements ICppConfig {
 		boolean thundering = world.getLevelProperties().isThundering();
 		user.incrementStat(Stats.USED.getOrCreateStat(item));
 		if (thundering) {
-			((ServerWorld) world).setWeather(6000 + world.random.nextInt(72000), 0, false, false);
+			((ServerWorld) world).setWeather(6000 + world.random.nextInt(72000 * 2), 0, false, false);
 			say(user, new TranslatableText("commands.weather.set.clear"));
 		} else if (raining) {
-			((ServerWorld) world).setWeather(0, 6000 + world.random.nextInt(72000), true, true);
+			((ServerWorld) world).setWeather(0, 6000 + world.random.nextInt(72000 * 2), true, true);
 			say(user, new TranslatableText("commands.weather.set.thunder"));
 		} else {
-			((ServerWorld) world).setWeather(0, 6000 + world.random.nextInt(72000), true, false);
+			((ServerWorld) world).setWeather(0, 6000 + world.random.nextInt(72000 * 2), true, false);
 			say(user, new TranslatableText("commands.weather.set.rain"));
 		}
 	}

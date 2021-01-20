@@ -1,0 +1,13 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "high",
+	"pressure": "ordinary",
+	"ingredients": [
+		"glass_bottle", "sand"
+	],
+	"experience": 4,
+	"time": 10,
+	"products": [
+		"cpp:bottle_of_salt"
+	]
+}

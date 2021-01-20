@@ -63,7 +63,7 @@ public class PortableCraftingMachineScreenHandler extends ScreenHandler {
 		if (!world.isClient) {
 			ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
 			ItemStack itemStack = ItemStack.EMPTY;
-			Optional<ICppCraftingRecipe> optional = world.getServer().getRecipeManager().getFirstMatch(CppRecipes.CRAFTING, craftingInventory, world);
+			Optional<ICppCraftingRecipe> optional = world.getServer().getRecipeManager().getFirstMatch(CppRecipes.CRAFTING_TYPE, craftingInventory, world);
 			if (optional.isPresent()) {
 				ICppCraftingRecipe craftingRecipe = optional.get();
 				if (resultInventory.shouldCraftRecipe(world, serverPlayerEntity, craftingRecipe)) {

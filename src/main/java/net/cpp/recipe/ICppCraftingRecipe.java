@@ -3,6 +3,8 @@ package net.cpp.recipe;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
+
+import net.cpp.init.CppBlocks;
 import net.cpp.init.CppRecipes;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
@@ -15,8 +17,14 @@ import net.minecraft.util.registry.Registry;
 
 public interface ICppCraftingRecipe extends Recipe<CraftingInventory> {
 	default RecipeType<?> getType() {
-		return CppRecipes.CRAFTING;
+		return CppRecipes.CRAFTING_TYPE;
 	}
+
+	@Override
+	default ItemStack getRecipeKindIcon() {
+		return CppBlocks.CRAFTING_MACHINE.asItem().getDefaultStack();
+	}
+
 	static ItemStack getItemStack(JsonObject json) {
 		String string = JsonHelper.getString(json, "item");
 		Item item = Registry.ITEM.getOrEmpty(new Identifier(string)).orElseThrow(() -> {

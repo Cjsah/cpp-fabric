@@ -55,7 +55,7 @@ public class CppCraftingResultSlot extends Slot {
 
 	public ItemStack onTakeItem(PlayerEntity player, ItemStack stack) {
 		this.onCrafted(stack);
-		DefaultedList<ItemStack> defaultedList = player.world.getRecipeManager().getRemainingStacks(CppRecipes.CRAFTING, this.input, player.world);
+		DefaultedList<ItemStack> defaultedList = player.world.getRecipeManager().getRemainingStacks(CppRecipes.CRAFTING_TYPE, this.input, player.world);
 
 		for (int i = 0; i < defaultedList.size(); ++i) {
 			ItemStack itemStack = this.input.getStack(i);

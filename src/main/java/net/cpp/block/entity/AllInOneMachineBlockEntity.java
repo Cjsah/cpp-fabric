@@ -99,7 +99,6 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -110,6 +109,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
+import org.spongepowered.asm.mixin.Debug;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
@@ -130,6 +130,9 @@ import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlockTags;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppItemTags;
+import net.cpp.init.CppRecipes;
+import net.cpp.item.RedForceOfFire;
+import net.cpp.recipe.AllInOneMachineRecipe;
 import net.cpp.screen.handler.AllInOneMachineScreenHandler;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.block.Block;
@@ -151,6 +154,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.text.LiteralText;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -166,17 +170,16 @@ import net.minecraft.world.World;
  *
  */
 public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
-	public static final Map<Triple<Degree, Degree, Set<Pair<Item, CompoundTag>>>, Triple<Integer, Integer, Function<BlockEntity, Pair<ItemStack, ItemStack>>>> RECIPES2 = Maps.newHashMap();
-	private static final Map<Set<Item>, Double> ORE_RATES = Maps.newHashMap();
-	/**
-	 * 不被消耗的原料
-	 */
-	public static final Set<Item> UNCONSUMABLE = new HashSet<>(Arrays.asList(LAVA_BUCKET, COBBLESTONE_PLUGIN, STONE_PLUGIN, BLACKSTONE_PLUGIN, NETHERRACK_PLUGIN, END_STONE_PLUGIN, BASALT_PLUGIN, GREEN_FORCE_OF_WATER));
+	@Deprecated
+	public static final Map<Triple<Degree, Degree, Set<Item>>, AllInOneMachineRecipe> RECIPES2 = Maps.newHashMap();
+	private static final Map<Item, Double> ORE_BASIC_COUNTS = Maps.newLinkedHashMap();
+	private static final Map<Set<Item>, Double> ORE_RATES = Maps.newLinkedHashMap();
+	private static final Map<Set<Item>, AllInOneMachineRecipe> ORE_RECIPES = Maps.newLinkedHashMap();
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2 };
-	private static final Map<Integer, Recipe> RECIPES = new HashMap<>();// TODO 需要优化和修复
+	@Deprecated
+	private static final Map<Integer, Recipe> RECIPES = new HashMap<>();
+	@Deprecated
 	private static final Map<Integer, List<Recipe>> RANDOM_RECIPES = new HashMap<>();
-	private int lastTickRecipeCode;
-	private ItemStack[] lastTickOutputs;
 	private Degree temperature = Degree.ORDINARY;
 	private Degree pressure = Degree.ORDINARY;
 	/**
@@ -327,74 +330,42 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	public static void tick(World world, BlockPos pos, BlockState state, AllInOneMachineBlockEntity blockEntity) {
 		if (!world.isClient) {
 			blockEntity.transferExpBottle();
-			boolean reciped = false;// 有配方吗？
-			if (!blockEntity.getStack(1 + 0).isEmpty() && !blockEntity.getStack(1 + 1).isEmpty()) {
-				int code = getHashCode(blockEntity.temperature, blockEntity.pressure, blockEntity.getStack(1 + 0).getItem(), blockEntity.getStack(1 + 1).getItem());
-				Recipe recipe = RECIPES.get(code);
-				if (recipe != null) {
-
-					// 防止哈希码出错，再检查一遍
-					if ((recipe.temperature == blockEntity.temperature && recipe.pressure == blockEntity.pressure)
-
-							// 无序配方的检查
-							&& (recipe.input1 == blockEntity.getStack(1).getItem() && recipe.input2 == blockEntity.getStack(2).getItem() || recipe.input1 == blockEntity.getStack(2).getItem() && recipe.input2 == blockEntity.getStack(1).getItem())
-
-							// 酿造配方需要检测药水的NBT
-							&& (blockEntity.temperature != Degree.ORDINARY || blockEntity.pressure != Degree.LOW || blockEntity.getStack(1).getTag() != null && "minecraft:awkward".equals(blockEntity.getStack(1).getTag().getString("Potion")) || blockEntity.getStack(2).getTag() != null && "minecraft:awkward".equals(blockEntity.getStack(2).getTag().getString("Potion")))) {
-						reciped = true;// 确定有配方了
-						blockEntity.workTimeTotal = recipe.time;
-						if (blockEntity.expStorage >= recipe.experience) {
-							if (RANDOM_RECIPES.containsKey(code)) {// 若为随机配方，则从配方列表中随机抽取一个配方
-								List<Recipe> list = RANDOM_RECIPES.get(code);
-								recipe = list.get((int) (Math.random() * list.size()));
-							}
-
-							// 如果上次的配方代号与这次相同，则不重新获取产物，
-							// 防止有随机数量的输出的配方因为阻塞而不断刷新随机数量
-							ItemStack[] outputs;
-							if (blockEntity.lastTickRecipeCode != code) {
-								blockEntity.lastTickOutputs = recipe.output();
-								blockEntity.lastTickRecipeCode = code;
-							}
-							outputs = blockEntity.lastTickOutputs;
-
-							if (blockEntity.canInsert(3, outputs[0]) && blockEntity.canInsert(4, outputs[1])) {
-								if (blockEntity.workTime >= blockEntity.workTimeTotal) {
-									for (int i = 0; i < 2; i++) {
-										if (!UNCONSUMABLE.contains(blockEntity.getStack(i + 1).getItem())) {// 有些物品不消耗
-											blockEntity.getStack(i + 1).decrement(1);
-										}
-										blockEntity.insert(i + 3, outputs[i]);
-									}
-									blockEntity.expStorage -= recipe.experience;
-									blockEntity.workTime = 0;
-
-									// 成功产出后刷新成品，防止有随机数量的配方每次的成品相同
-									blockEntity.lastTickOutputs = recipe.output();
-								} else {
-									blockEntity.workTime++;
-								}
+			AllInOneMachineRecipe recipe = null;
+			if (blockEntity.getTemperature() == Degree.HIGH && blockEntity.getPressure() == Degree.HIGH && (recipe = ORE_RECIPES.get(blockEntity.ingredient())) != null) {
+				if (!recipe.matches(blockEntity, world))
+					recipe = null;
+			} else {
+				recipe = blockEntity.getRecipe();
+			}
+//			System.out.println(recipe);
+			if (recipe != null) {
+//				System.out.println(recipe.ingredient);
+				blockEntity.workTimeTotal = recipe.time;
+				if (CodingTool.canInsert(recipe.maximize(blockEntity), blockEntity, 3, 5)) {
+					if (blockEntity.workTime >= blockEntity.workTimeTotal) {
+						blockEntity.workTime = 0;
+						blockEntity.expStorage -= recipe.experience;
+						for (int i = 1; i < 3; i++) {
+							if (!AllInOneMachineRecipe.UNCONSUMABLE.contains(blockEntity.getStack(i).getItem())) {
+								blockEntity.getStack(i).decrement(1);
 							}
 						}
-
+//						System.out.println(recipe.produce(blockEntity));
+						CodingTool.insert(recipe.produce(blockEntity), blockEntity, 3, 5);
+					} else {
+						blockEntity.workTime++;
 					}
 				}
-			}
-			if (!reciped) {// 如果没有配方，数据清零
-				blockEntity.workTime = 0;
+			} else {
 				blockEntity.workTimeTotal = 0;
-				blockEntity.lastTickRecipeCode = 0;
-				blockEntity.lastTickOutputs = null;
+				blockEntity.workTime = 0;
 			}
-//			for (int i = 0; i < 2; i++) {// 输出成品栏的物品
-//				if (!blockEntity.getStack(i + 3).isEmpty()) {
-//					blockEntity.setStack(i + 3, blockEntity.output(blockEntity.getStack(i + 3)));
-//				}
-//			}
+
 			// 输出成品栏的物品
 			blockEntity.output(3);
 			blockEntity.output(4);
 			world.setBlockState(pos, blockEntity.getCachedState().with(AllInOneMachineBlock.WORKING, blockEntity.isWorking()));// 更新方块状态
+
 		}
 	}
 
@@ -406,7 +377,8 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	public void onOpen(PlayerEntity player) {
 //		propertyDelegate.set(3, propertyDelegate.get(3));
 		super.onOpen(player);
-		getResults();
+//		System.out.println(ORE_RECIPES);
+//		test();
 	}
 
 	/*
@@ -546,6 +518,14 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		return availabePressure.contains(degree);
 	}
 
+	public AllInOneMachineRecipe getRecipe() {
+		if (!getWorld().isClient) {
+			return getWorld().getServer().getRecipeManager().getFirstMatch(CppRecipes.ALL_IN_ONE_MACHINE_TYPE, this, world).orElse(null);
+		}
+		return null;
+	}
+
+	@Deprecated
 	/**
 	 * 根据原料和温度压强计算哈希码，便于查找配方
 	 * 
@@ -559,34 +539,43 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		return (input1.hashCode() ^ input2.hashCode()) * 256 + temperature.ordinal() * 16 + pressure.ordinal();
 	}
 
+	@Deprecated
 	private static void addRecipe(Degree temperature, Degree pressure, Item input1, Item input2, ItemStack output1, ItemStack output2, int experience, int time) {
 		addRecipe(temperature, pressure, input1, input2, output1, output2, output2.getCount(), output2.getCount(), experience, time);
 	}
 
+	@Deprecated
 	private static void addRecipe(Degree temperature, Degree pressure, Item input1, Item input2, ItemStack output1, int experience, int time) {
 		addRecipe(temperature, pressure, input1, input2, output1, ItemStack.EMPTY, 0, experience, time);
 	}
 
+	@Deprecated
 	private static void addRecipe(Degree temperature, Degree pressure, Item input1, Item input2, ItemStack output1, ItemStack output2, float count2, int experience, int time) {
 		addRecipe(temperature, pressure, input1, input2, output1, output2, count2, count2 + 1, experience, time);
 	}
 
+	@Deprecated
 	private static void addRecipe(Degree temperature, Degree pressure, Item input1, Item input2, ItemStack output1, ItemStack output2, float count2Min, float count2Max, int experience, int time) {
 		addRecipe(temperature, pressure, input1, input2, output1, output2, output1.getCount(), output1.getCount(), count2Min, count2Max, experience, time);
 	}
 
+	@Deprecated
 	private static void addRecipe(Degree temperature, Degree pressure, Item input1, Item input2, ItemStack output1, ItemStack output2, float count1Min, float count1Max, float count2Min, float count2Max, int experience, int time) {
 		RECIPES.put(getHashCode(temperature, pressure, input1, input2), new Recipe(temperature, pressure, input1, input2, output1, output2, count1Min, count1Max, count2Min, count2Max, experience, time));
-
+//		RECIPES2.put(Triple.of(temperature, pressure, ingredient(input1, input2)), new AllInOneMachineRecipe(new Identifier(, )));
 	}
 
 	static {
+		{
+			ORE_BASIC_COUNTS.put(LAPIS_ORE, 6.);
+			ORE_BASIC_COUNTS.put(REDSTONE_ORE, 5.);
+		}
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			loadOreRates(server);
+			load(server);
 		});
 		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((MinecraftServer server, ServerResourceManager serverResourceManager, boolean success) -> {
 			if (success) {
-				loadOreRates(server);
+				load(server);
 			}
 		});
 		Map<Item, ItemStack> oreRateMap = new HashMap<>();
@@ -827,6 +816,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		}
 	}
 
+	@Deprecated
 	public static class Recipe {
 		public static final Recipe PLACE_TAKER = new Recipe(null, null, AIR, AIR, ItemStack.EMPTY, ItemStack.EMPTY, 0, 0, 0, 0);
 		public final Degree temperature;
@@ -893,51 +883,47 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		}
 	}
 
-	protected Pair<ItemStack, ItemStack> getResults() {
-		// TODO
+	@Debug
+	protected void test() {
 		try {
-			Triple<Integer, Integer, Function<BlockEntity, Pair<ItemStack, ItemStack>>> triple = RECIPES2.get(Triple.of(getTemperature(), getPressure(), ingredients()));
-			if (triple != null) {
-				Function<BlockEntity, Pair<ItemStack, ItemStack>> function = triple.getRight();
-				Pair<ItemStack, ItemStack> pair = function.apply(this);
-				return pair;
-			}
+//			System.out.println(new Function<Integer, Boolean>() {
+//
+//				@Override
+//				public Boolean apply(Integer t) {
+//					// TODO 自动生成的方法存根
+//					return false;
+//				}
+//
+//			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
 	}
 
-	public Set<Pair<Item, CompoundTag>> ingredients() {
-		Builder<Pair<Item, CompoundTag>> builder = ImmutableSet.builder();
-		for (int i = 0; i < 2; i++) {
+	public Set<Item> ingredient() {
+		Builder<Item> builder = ImmutableSet.builder();
+		for (int i = 1; i < 3; i++) {
 			if (!getStack(i).isEmpty()) {
-				builder.add(Pair.of(getStack(i).getItem(), getStack(i).getTag()));
+				builder.add(getStack(i).getItem());
 			}
 		}
 		return builder.build();
 	}
 
-	private static Set<Pair<Item, CompoundTag>> ingr(Item item1) {
-		return ImmutableSet.of(Pair.of(item1, null));
+	@Deprecated
+	public static Set<Item> ingredient(Item item1, Item item2) {
+		if (item2 == null)
+			return ImmutableSet.of(item1);
+		return ImmutableSet.of(item1, item2);
 	}
 
-	private static Set<Pair<Item, CompoundTag>> ingr(Item item1, Item item2) {
-		return ImmutableSet.of(Pair.of(item1, null), Pair.of(item2, null));
-	}
-
-	private static Set<Pair<Item, CompoundTag>> ingr(Item item1, CompoundTag tag1, Item item2) {
-		return ImmutableSet.of(Pair.of(item1, tag1), Pair.of(item2, null));
-	}
-
-	private static Set<Pair<Item, CompoundTag>> ingr(Item item1, Item item2, CompoundTag tag2) {
-		return ImmutableSet.of(Pair.of(item1, null), Pair.of(item2, tag2));
-	}
-
-	private static void loadOreRates(MinecraftServer server) {
+	private static void load(MinecraftServer server) {
 		ServerWorld world = server.getWorlds().iterator().next();
+		// 读取矿石倍率，生成矿石配方
+		ORE_RATES.clear();
+		ORE_RECIPES.clear();
 		ServerCommandSource commandSource = new ServerCommandSource(CommandOutput.DUMMY, Vec3d.ZERO, Vec2f.ZERO, world, 4, "更多的合成：多功能一体机：读取矿石倍率", LiteralText.EMPTY, server, null);
-		ImmutableList<Item> ores = Stream.concat(CodingTool.findByKeyword(Registry.ITEM, "_ore").stream(), CppItemTags.ORES.values().stream()).collect(ImmutableList.toImmutableList());
+		ImmutableList<Item> ores = ImmutableList.<Item>builder().addAll(ImmutableSet.<Item>builder().addAll(CodingTool.findByKeyword(Registry.ITEM, "_ore")).addAll(CppItemTags.ORES.values()).build()).build();
 		for (int i = 0; i < ores.size(); i++) {
 			Item item1 = ores.get(i);
 			String id1 = Registry.ITEM.getId(item1).toString();
@@ -952,7 +938,9 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 						server.getCommandManager().execute(commandSource, String.format("data modify storage cpp:constants allInOneMachine.oreRates.%s+%s set value %f", id1, id2, rate));
 					}
 				}
-				ORE_RATES.put(ImmutableSet.of(item1, item2), rate);
+				Set<Item> set = ImmutableSet.of(item1, item2);
+				ORE_RATES.put(set, rate);
+				ORE_RECIPES.put(set, new AllInOneMachineRecipe(new Identifier(String.format("cpp:all_in_one_machine/%s_and%s", Registry.ITEM.getId(item1).getPath(), Registry.ITEM.getId(item2).getPath())), Degree.HIGH, Degree.HIGH, ImmutableList.of(Pair.of(item1, null), Pair.of(item2, null)), 4, 200, ImmutableList.of(Pair.of(ImmutableList.of(RedForceOfFire.smelt(item1.getDefaultStack(), server, null).getItem()), ORE_BASIC_COUNTS.getOrDefault(item1, 1.) * rate), Pair.of(ImmutableList.of(RedForceOfFire.smelt(item2.getDefaultStack(), server, null).getItem()), ORE_BASIC_COUNTS.getOrDefault(item2, 1.) * rate))));
 			}
 		}
 	}

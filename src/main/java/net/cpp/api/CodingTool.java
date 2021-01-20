@@ -11,6 +11,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.common.collect.ImmutableList.Builder;
 
 import net.cpp.init.CppItems;
@@ -551,5 +552,58 @@ public class CodingTool {
 			}
 		}
 		return builder.build();
+	}
+
+	public static boolean canInsert(List<ItemStack> items, Inventory inventory, int beginIndex, int endIndex) {
+		List<ItemStack> copy = Lists.newArrayListWithCapacity(endIndex - beginIndex);
+		for (int i = beginIndex; i < endIndex; i++) {
+			copy.add(inventory.getStack(i).copy());
+		}
+		for (ItemStack stack : items) {
+			for (int i = 0; i < copy.size() && !stack.isEmpty(); i++) {
+				if (copy.get(i).isEmpty()) {
+					copy.set(i, stack.copy());
+					stack.decrement(stack.getCount());
+				} else {
+					ItemStack stack2 = copy.get(i);
+					if (equal(stack, stack2)) {
+						int c = Math.min(stack.getCount(), stack2.getMaxCount() - stack2.getCount());
+						stack.decrement(c);
+						stack2.increment(c);
+					}
+				}
+			}
+			if (!stack.isEmpty()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static void insert(List<ItemStack> items, Inventory inventory, int beginIndex, int endIndex) {
+		for (ItemStack stack : items) {
+			for (int i = beginIndex; i < endIndex && !stack.isEmpty(); i++) {
+				if (inventory.getStack(i).isEmpty()) {
+					inventory.setStack(i, stack.copy());
+					stack.decrement(stack.getCount());
+				} else {
+					ItemStack stack2 = inventory.getStack(i);
+					if (equal(stack, stack2)) {
+						int c = Math.min(stack.getCount(), stack2.getMaxCount() - stack2.getCount());
+						stack.decrement(c);
+						stack2.increment(c);
+					}
+				}
+			}
+		}
+	}
+
+	public static boolean tryInsert(List<Item> items, Inventory inventory, int beginIndex, int endIndex) {
+		// TODO
+		return true;
+	}
+
+	public static boolean equal(ItemStack stack1, ItemStack stack2) {
+		return ItemStack.areItemsEqual(stack1, stack2) && ItemStack.areTagsEqual(stack1, stack2);
 	}
 }
