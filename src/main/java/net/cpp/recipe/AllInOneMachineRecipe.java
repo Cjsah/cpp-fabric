@@ -300,7 +300,7 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 				if (jse.isJsonObject()) {
 					JsonObject itemAndCount = jse.getAsJsonObject();
 					if (itemAndCount.has("tag")) {
-						list = ServerTagManagerHolder.getTagManager().method_33166(Registry.ITEM_KEY, new Identifier(itemAndCount.get("tag").getAsString()), id -> new JsonSyntaxException("Unknown item tag '" + id + "'")).values();
+						list = ServerTagManagerHolder.getTagManager().getTag(Registry.ITEM_KEY, new Identifier(itemAndCount.get("tag").getAsString()), id -> new JsonSyntaxException("Unknown item tag '" + id + "'")).values();
 					} else {
 						ImmutableList.Builder<Item> itemsBuilder = ImmutableList.builder();
 						JsonElement jsonItem = itemAndCount.get("item");
