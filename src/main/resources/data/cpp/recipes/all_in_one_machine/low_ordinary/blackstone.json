@@ -1,0 +1,17 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "low",
+	"pressure": "ordinary",
+	"ingredients": [
+		"minecraft:lava_bucket",
+		"cpp:blackstone_plugin"
+	],
+	"experience": 1,
+	"time": 20,
+	"products": [
+		{
+			"item": "minecraft:blackstone",
+			"count": 4
+		}
+	]
+}

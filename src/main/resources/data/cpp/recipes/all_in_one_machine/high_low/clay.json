@@ -1,0 +1,14 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "high",
+	"pressure": "low",
+	"ingredients": [
+		"minecraft:slime_ball",
+		"minecraft:dirt"
+	],
+	"experience": 4,
+	"time": 200,
+	"products": [
+		"minecraft:clay"
+	]
+}

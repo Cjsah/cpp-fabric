@@ -1,0 +1,14 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "high",
+	"pressure": "low",
+	"ingredients": [
+		"cpp:coarse_silicon",
+		"cpp:bottle_of_air"
+	],
+	"experience": 4,
+	"time": 200,
+	"products": [
+		"cpp:silicon_dust"
+	]
+}

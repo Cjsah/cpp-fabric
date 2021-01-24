@@ -1,0 +1,17 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "ordinary",
+	"pressure": "ordinary",
+	"ingredients": [
+		"minecraft:cactus",
+		"cpp:fertilizer"
+	],
+	"experience": 2,
+	"time": 40,
+	"products": [
+		{
+			"item": "minecraft:cactus",
+			"count": 4
+		}
+	]
+}

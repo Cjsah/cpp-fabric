@@ -3,10 +3,13 @@
 	"temperature": "high",
 	"pressure": "ordinary",
 	"ingredients": [
-		"glass_bottle", "sand"
+		"minecraft:glass_bottle",
+		{
+			"tag": "sand"
+		}
 	],
 	"experience": 4,
-	"time": 10,
+	"time": 200,
 	"products": [
 		"cpp:bottle_of_salt"
 	]

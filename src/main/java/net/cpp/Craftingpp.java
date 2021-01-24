@@ -12,6 +12,7 @@ import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppEffects;
 import net.cpp.init.CppEntities;
+import net.cpp.init.CppFeatures;
 import net.cpp.init.CppItems;
 import net.cpp.init.CppLootTableFunctions;
 import net.cpp.init.CppRecipes;
@@ -59,7 +60,7 @@ public class Craftingpp implements ModInitializer {
 		CppEffects.register();
 		CppLootTableFunctions.register();
 		CppEntities.register();
-
+		CppFeatures.loadClass();
 		IPlayerJoinCallback.EVENT.register((player, server) -> {
 			if (!player.world.isClient)
 				say(player, new TranslatableText("misc.cpp1", new TranslatableText("chat.cpp.load1"), new TranslatableText("chat.cpp.load2").setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.cjsah.net/ruhuasiyu/"))).formatted(Formatting.GOLD)));

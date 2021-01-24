@@ -1,0 +1,17 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "ordinary",
+	"pressure": "ordinary",
+	"ingredients": [
+		"minecraft:brown_mushroom",
+		"cpp:fertilizer"
+	],
+	"experience": 2,
+	"time": 40,
+	"products": [
+		{
+			"item": "minecraft:brown_mushroom",
+			"count": 4
+		}
+	]
+}

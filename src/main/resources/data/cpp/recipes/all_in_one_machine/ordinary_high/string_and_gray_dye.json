@@ -1,0 +1,18 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "ordinary",
+	"pressure": "high",
+	"ingredients": [
+		"minecraft:gray_wool",
+		"minecraft:flint"
+	],
+	"experience": 1,
+	"time": 50,
+	"products": [
+		{
+			"item": "minecraft:string",
+			"count": 4
+		},
+		"minecraft:gray_dye"
+	]
+}

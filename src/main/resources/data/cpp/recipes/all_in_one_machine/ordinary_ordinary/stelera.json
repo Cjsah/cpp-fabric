@@ -1,0 +1,14 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "ordinary",
+	"pressure": "ordinary",
+	"ingredients": [
+		"cpp:stelera_seed",
+		"cpp:fertilizer"
+	],
+	"experience": 2,
+	"time": 40,
+	"products": [
+		"cpp:stelera"
+	]
+}

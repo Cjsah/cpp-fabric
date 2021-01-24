@@ -1,0 +1,14 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "ordinary",
+	"pressure": "low",
+	"ingredients": [
+		"minecraft:blaze_powder",
+		"minecraft:potion"
+	],
+	"experience": 4,
+	"time": 200,
+	"products": [
+		"cpp:agentia_of_blood"
+	]
+}

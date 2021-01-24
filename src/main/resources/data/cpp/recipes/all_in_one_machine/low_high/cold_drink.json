@@ -1,0 +1,14 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "low",
+	"pressure": "high",
+	"ingredients": [
+		"minecraft:honey_bottle",
+		"cpp:lemon"
+	],
+	"experience": 2,
+	"time": 100,
+	"products": [
+		"cpp:cold_drink"
+	]
+}

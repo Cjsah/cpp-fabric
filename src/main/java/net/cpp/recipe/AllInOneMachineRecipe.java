@@ -9,13 +9,9 @@ import static net.cpp.init.CppItems.NETHERRACK_PLUGIN;
 import static net.cpp.init.CppItems.STONE_PLUGIN;
 import static net.minecraft.item.Items.LAVA_BUCKET;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -27,15 +23,15 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
 
+import net.cpp.api.CodingTool;
+import net.cpp.block.OreLeavesBlock;
 import net.cpp.block.entity.AllInOneMachineBlockEntity;
 import net.cpp.block.entity.AllInOneMachineBlockEntity.Degree;
 import net.cpp.init.CppBlocks;
+import net.cpp.init.CppItems;
 import net.cpp.init.CppRecipes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -45,8 +41,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
-import net.minecraft.tag.ServerTagManagerHolder;
-import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
@@ -57,7 +51,7 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 	public final Identifier id;
 	public final Degree temperature;
 	public final Degree pressure;
-	public final List<Pair<Item, String>> ingredient;
+	public final List<Pair<List<Item>, String>> ingredient;
 	public final int experience;
 	public final int time;
 	public final List<Pair<List<Item>, Double>> products;
@@ -66,7 +60,7 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 	 */
 	public static final Set<Item> UNCONSUMABLE = new HashSet<>(Arrays.asList(LAVA_BUCKET, COBBLESTONE_PLUGIN, STONE_PLUGIN, BLACKSTONE_PLUGIN, NETHERRACK_PLUGIN, END_STONE_PLUGIN, BASALT_PLUGIN, GREEN_FORCE_OF_WATER));
 
-	public AllInOneMachineRecipe(Identifier id, Degree temperature, Degree pressure, List<Pair<Item, String>> ingredient, int experience, int time, List<Pair<List<Item>, Double>> products) {
+	public AllInOneMachineRecipe(Identifier id, Degree temperature, Degree pressure, List<Pair<List<Item>, String>> ingredient, int experience, int time, List<Pair<List<Item>, Double>> products) {
 		this.id = id;
 		this.temperature = temperature;
 		this.pressure = pressure;
@@ -83,7 +77,7 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 	public boolean matches(AllInOneMachineBlockEntity blockEntity, World world) {
 		if (temperature != blockEntity.getTemperature() || pressure != blockEntity.getPressure() || experience > blockEntity.getExpStorage())
 			return false;
-		List<Pair<Item, String>> ingredient = Lists.newLinkedList(this.ingredient);
+		List<Pair<List<Item>, String>> ingredient = Lists.newLinkedList(this.ingredient);
 		List<Pair<Item, CompoundTag>> input = Lists.newLinkedList();
 		for (int i = 1; i < 3; i++) {
 			ItemStack stack = blockEntity.getStack(i);
@@ -93,20 +87,20 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 		}
 		if (ingredient.size() != input.size())
 			return false;
-		Comparator<Pair<Item, ?>> comparator = (a, b) -> Integer.compare(Item.getRawId(a.getLeft()), Item.getRawId(b.getLeft()));
-		Collections.sort(ingredient, comparator);
-		Collections.sort(input, comparator);
-		Iterator<Pair<Item, String>> ite1 = ingredient.iterator();
-		Iterator<Pair<Item, CompoundTag>> ite2 = input.iterator();
-		while (ite1.hasNext()) {
-			String potion = ite1.next().getRight();
-			if (potion == null)
-				continue;
-			CompoundTag tag = ite2.next().getRight();
-			if (!tag.getString("Potion").equals(potion))
-				return false;
+		for1: for (Pair<Item, CompoundTag> pair1 : input) {
+			Iterator<Pair<List<Item>, String>> ite = ingredient.iterator();
+			while (ite.hasNext()) {
+				Pair<List<Item>, String> pair2 = ite.next();
+				if (pair2.getLeft().contains(pair1.getLeft())) {
+					String potion = pair2.getRight();
+					if (potion == null || pair1.getRight().getString("Potion").equals(potion)) {
+						ite.remove();
+						continue for1;
+					}
+				}
+			}
 		}
-		return true;
+		return ingredient.isEmpty();
 	}
 
 	/**
@@ -129,8 +123,7 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 	@Deprecated
 	@Override
 	public ItemStack getOutput() {
-//		System.out.println(produce(null));
-		return products.isEmpty() ? ItemStack.EMPTY : produce(null).get(0);
+		return products.isEmpty() ? ItemStack.EMPTY : maximize(null).get(0);
 	}
 
 	@Override
@@ -169,16 +162,26 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 	 */
 	public List<ItemStack> produce(@Nullable AllInOneMachineBlockEntity blockEntity) {
 		List<ItemStack> list = Lists.newLinkedList();
-		for (Pair<List<Item>, Double> pair : products) {
-			list.add(new ItemStack(random(pair.getLeft()), floats(pair.getRight())));
+		if ("cpp:ores_and_ore_sapling".equals(id.toString())) {
+			list.add(new ItemStack(OreLeavesBlock.randomOre(), 2));
+			list.add(new ItemStack(CppBlocks.ORE_SAPLING, floats(1.5)));
+		} else {
+			for (Pair<List<Item>, Double> pair : products) {
+				list.add(new ItemStack(random(pair.getLeft()), floats(pair.getRight())));
+			}
 		}
 		return list;
 	}
 
 	public List<ItemStack> maximize(@Nullable AllInOneMachineBlockEntity blockEntity) {
 		List<ItemStack> list = Lists.newLinkedList();
-		for (Pair<List<Item>, Double> pair : products) {
-			list.add(new ItemStack(random(pair.getLeft()), (int) Math.ceil(pair.getRight())));
+		if ("cpp:ores_and_ore_sapling".equals(id.toString())) {
+			list.add(new ItemStack(OreLeavesBlock.randomOre(), 2));
+			list.add(new ItemStack(CppBlocks.ORE_SAPLING, 2));
+		} else {
+			for (Pair<List<Item>, Double> pair : products) {
+				list.add(new ItemStack(random(pair.getLeft()), (int) Math.ceil(pair.getRight())));
+			}
 		}
 		return list;
 	}
@@ -267,23 +270,31 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 			if (jsonObject.has("pressure")) {
 				pressure = Degree.valueOf(jsonObject.get("pressure").getAsString().toUpperCase());
 			}
-			ImmutableList.Builder<Pair<Item, String>> ingredientBuilder = ImmutableList.builder();
+			ImmutableList.Builder<Pair<List<Item>, String>> ingredientBuilder = ImmutableList.builder();
 			for (JsonElement jse : JsonHelper.getArray(jsonObject, "ingredients")) {
-				Item item;
+				ImmutableList.Builder<Item> itemsBuilder = ImmutableList.builder();
 				String potion = null;
 				if (jse.isJsonObject()) {
 					JsonObject obj = jse.getAsJsonObject();
-					JsonElement itemId = obj.get("item");
-					item = Registry.ITEM.get(new Identifier(itemId.getAsString()));
+					if (obj.has("tag")) {
+						itemsBuilder.addAll(CodingTool.getTag(obj.get("tag").getAsString(), Registry.ITEM_KEY).values());
+					} else {
+						JsonElement jsonItemId = obj.get("item");
+						if (jsonItemId.isJsonArray()) {
+							for (JsonElement jse2 : jsonItemId.getAsJsonArray()) {
+								itemsBuilder.add(Registry.ITEM.get(new Identifier(jse2.getAsString())));
+							}
+						} else {
+							itemsBuilder.add(Registry.ITEM.get(new Identifier(jsonItemId.getAsString())));
+						}
+					}
 					if (obj.has("potion")) {
 						potion = obj.get("potion").getAsString();
 					}
 				} else {
-					item = Registry.ITEM.get(new Identifier(jse.getAsString()));
+					itemsBuilder.add(Registry.ITEM.get(new Identifier(jse.getAsString())));
 				}
-				if (item != Items.AIR) {
-					ingredientBuilder.add(Pair.of(item, potion));
-				}
+				ingredientBuilder.add(Pair.of(itemsBuilder.build(), potion));
 			}
 			int experience = 1;
 			if (jsonObject.has("experience")) {
@@ -300,7 +311,7 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 				if (jse.isJsonObject()) {
 					JsonObject itemAndCount = jse.getAsJsonObject();
 					if (itemAndCount.has("tag")) {
-						list = ServerTagManagerHolder.getTagManager().method_33166(Registry.ITEM_KEY, new Identifier(itemAndCount.get("tag").getAsString()), id -> new JsonSyntaxException("Unknown item tag '" + id + "'")).values();
+						list = CodingTool.getTag(itemAndCount.get("tag").getAsString(), Registry.ITEM_KEY).values();
 					} else {
 						ImmutableList.Builder<Item> itemsBuilder = ImmutableList.builder();
 						JsonElement jsonItem = itemAndCount.get("item");
@@ -328,8 +339,8 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 			packetByteBuf.writeByte(recipe.temperature.ordinal());
 			packetByteBuf.writeByte(recipe.pressure.ordinal());
 			packetByteBuf.writeInt(recipe.ingredient.size());
-			for (Pair<Item, String> pair : recipe.ingredient) {
-				packetByteBuf.writeInt(Item.getRawId(pair.getLeft()));
+			for (Pair<List<Item>, String> pair : recipe.ingredient) {
+				writeItems(pair.getLeft(), packetByteBuf);
 				if (pair.getRight() == null) {
 					packetByteBuf.writeBoolean(false);
 				} else {
@@ -341,10 +352,7 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 			packetByteBuf.writeVarInt(recipe.time);
 			packetByteBuf.writeInt(recipe.products.size());
 			for (Pair<List<Item>, Double> pair : recipe.products) {
-				packetByteBuf.writeInt(pair.getLeft().size());
-				for (Item item : pair.getLeft()) {
-					packetByteBuf.writeInt(Item.getRawId(item));
-				}
+				writeItems(pair.getLeft(), packetByteBuf);
 				packetByteBuf.writeDouble(pair.getRight());
 			}
 		}
@@ -353,16 +361,16 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 			Degree temperature = Degree.values()[packetByteBuf.readByte()];
 			Degree pressure = Degree.values()[packetByteBuf.readByte()];
 			int ingredientSize = packetByteBuf.readInt();
-			ImmutableList.Builder<Pair<Item, String>> ingredientBuilder = ImmutableList.builder();
+			ImmutableList.Builder<Pair<List<Item>, String>> ingredientBuilder = ImmutableList.builder();
 			for (int i = 0; i < ingredientSize; i++) {
-				Item item = Item.byRawId(packetByteBuf.readInt());
+				List<Item> items = readItems(packetByteBuf);
 				String potion;
 				if (packetByteBuf.readBoolean()) {
 					potion = packetByteBuf.readString();
 				} else {
 					potion = null;
 				}
-				ingredientBuilder.add(Pair.of(item, potion));
+				ingredientBuilder.add(Pair.of(items, potion));
 			}
 			int experience = packetByteBuf.readVarInt();
 			int time = packetByteBuf.readVarInt();
@@ -381,6 +389,21 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 			return new AllInOneMachineRecipe(identifier, temperature, pressure, ingredientBuilder.build(), experience, time, productsBuilder.build());
 		}
 
+		public static void writeItems(List<Item> items, PacketByteBuf packetByteBuf) {
+			packetByteBuf.writeInt(items.size());
+			for (Item item : items) {
+				packetByteBuf.writeInt(Item.getRawId(item));
+			}
+		}
+
+		public static List<Item> readItems(PacketByteBuf packetByteBuf) {
+			int size = packetByteBuf.readInt();
+			List<Item> items = Lists.newArrayListWithCapacity(size);
+			for (int i = 0; i < size; i++) {
+				items.add(Item.byRawId(packetByteBuf.readInt()));
+			}
+			return items;
+		}
 	}
 
 }

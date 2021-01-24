@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+
+import com.google.common.collect.Maps;
+
 import static net.minecraft.block.Blocks.*;
 
 import net.cpp.init.CppBlocks;
@@ -18,7 +21,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.WorldAccess;
 
 public class OreLeavesBlock extends LeavesBlock {
-	public static final Map<Block, Integer> ORES = new HashMap<>();
+	private static final Map<Block, Integer> ORES = Maps.newLinkedHashMap();
 	private static int weights;
 	public static int speed = 3600;
 
@@ -87,7 +90,7 @@ public class OreLeavesBlock extends LeavesBlock {
 		return updateDistanceFromLogs(getDefaultState().with(PERSISTENT, true), ctx.getWorld(), ctx.getBlockPos());
 	}
 
-	protected static Block randomOre() {
+	public static Block randomOre() {
 		int r = (int) (Math.random() * weights);
 		for (Entry<Block, Integer> entry : ORES.entrySet()) {
 			if (r < entry.getValue()) {

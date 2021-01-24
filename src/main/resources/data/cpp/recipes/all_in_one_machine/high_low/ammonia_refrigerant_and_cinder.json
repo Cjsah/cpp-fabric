@@ -1,0 +1,15 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "high",
+	"pressure": "low",
+	"ingredients": [
+		"cpp:alkaloid",
+		"cpp:fertilizer"
+	],
+	"experience": 4,
+	"time": 200,
+	"products": [
+		"cpp:ammonia_refrigerant",
+		"cpp:cinder"
+	]
+}

@@ -1,0 +1,21 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "ordinary",
+	"pressure": "ordinary",
+	"ingredients": [
+		"cpp:sakura_sapling",
+		"cpp:fertilizer"
+	],
+	"experience": 2,
+	"time": 40,
+	"products": [
+		{
+			"item": "cpp:cherry",
+			"count": 3
+		},
+		{
+			"item": "cpp:sakura_sapling",
+			"count": 1.5
+		}
+	]
+}

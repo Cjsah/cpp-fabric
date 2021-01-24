@@ -1,0 +1,14 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "high",
+	"pressure": "low",
+	"ingredients": [
+		"cpp:alkaloid_rare_earth",
+		"cpp:bionic_acid"
+	],
+	"experience": 4,
+	"time": 200,
+	"products": [
+		"cpp:rare_earth_dust"
+	]
+}

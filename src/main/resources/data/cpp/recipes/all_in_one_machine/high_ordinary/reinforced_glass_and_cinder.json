@@ -1,0 +1,20 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "high",
+	"pressure": "ordinary",
+	"ingredients": [
+		"cpp:steel_dust",
+		{
+			"tag": "sand"
+		}
+	],
+	"experience": 4,
+	"time": 200,
+	"products": [
+		"cpp:reinforced_glass",
+		{
+			"item": "cpp:cinder",
+			"count": 0.2
+		}
+	]
+}

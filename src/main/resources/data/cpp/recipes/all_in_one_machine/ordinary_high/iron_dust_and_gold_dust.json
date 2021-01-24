@@ -1,0 +1,21 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "ordinary",
+	"pressure": "high",
+	"ingredients": [
+		"minecraft:iron_ore",
+		"minecraft:flint"
+	],
+	"experience": 4,
+	"time": 200,
+	"products": [
+		{
+			"item": "cpp:iron_dust",
+			"count": 2
+		},
+		{
+			"item": "cpp:gold_dust",
+			"count": 0.1
+		}
+	]
+}

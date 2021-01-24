@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.collect.ImmutableList.Builder;
+import com.google.gson.JsonSyntaxException;
 
 import net.cpp.init.CppItems;
 import net.minecraft.block.Block;
@@ -44,12 +44,16 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.tag.ServerTagManagerHolder;
+import net.minecraft.tag.Tag;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.DefaultedRegistry;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
@@ -598,12 +602,11 @@ public class CodingTool {
 		}
 	}
 
-	public static boolean tryInsert(List<Item> items, Inventory inventory, int beginIndex, int endIndex) {
-		// TODO
-		return true;
-	}
-
 	public static boolean equal(ItemStack stack1, ItemStack stack2) {
 		return ItemStack.areItemsEqual(stack1, stack2) && ItemStack.areTagsEqual(stack1, stack2);
+	}
+
+	public static <T> Tag<T> getTag(String id, RegistryKey<Registry<T>> registryKey) {
+		return ServerTagManagerHolder.getTagManager().method_33166(registryKey, new Identifier(id), id1 -> new JsonSyntaxException("Unknown item tag '" + id1 + "'"));
 	}
 }

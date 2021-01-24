@@ -49,7 +49,8 @@ public class EmptyBookshelfBlockEntity extends AMachineBlockEntity implements Si
 	}
 
 	public static void tick(World world, BlockPos pos, BlockState state, EmptyBookshelfBlockEntity blockEntity) {
-		if (!world.isClient) {
+		if (!world.isClient /*&& blockEntity.lootTableId == null*/) {
+
 			boolean bookshelf = true;
 			int bookState = 0;
 			for (int i = 0; i < 3; i++) {

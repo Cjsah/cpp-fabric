@@ -35,7 +35,8 @@ public class CompressedItem extends Item {
 		tooltip.add(new TranslatableText("tooltip.cpp.multiple", tag.getByte("multiple")).formatted(Formatting.DARK_AQUA));
 		List<Text> itemTooltip = ItemStack.fromTag(tag.getCompound("item")).getTooltip(null, context);
 		tooltip.addAll(itemTooltip);
-		tooltip.add(LiteralText.EMPTY);
+		if (context.isAdvanced())
+			tooltip.add(LiteralText.EMPTY);
 	}
 
 	@Override

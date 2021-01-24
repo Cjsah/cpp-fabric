@@ -1,0 +1,18 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "ordinary",
+	"pressure": "high",
+	"ingredients": [
+		"minecraft:redstone_ore",
+		"minecraft:flint"
+	],
+	"experience": 4,
+	"time": 200,
+	"products": [
+		"minecraft:redstone_block",
+		{
+			"item": "minecraft:lapis_lazuli",
+			"count": 3
+		}
+	]
+}

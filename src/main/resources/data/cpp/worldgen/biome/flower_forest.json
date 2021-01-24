@@ -1,0 +1,105 @@
+{
+	"effects": {
+		"mood_sound": {
+			"sound": "minecraft:ambient.cave",
+			"tick_delay": 6000,
+			"block_search_extent": 8,
+			"offset": 2.0
+		},
+		"sky_color": 8103167,
+		"fog_color": 12638463,
+		"water_color": 4445678,
+		"water_fog_color": 270131
+	},
+	"surface_builder": "minecraft:grass",
+	"carvers": {
+	},
+	"features": [
+		[],
+		[
+			"minecraft:lake_water"
+		],
+		[],
+		[
+			"minecraft:amethyst_geode"
+		],
+		[],
+		[],
+		[
+			"minecraft:disk_sand",
+			"minecraft:disk_clay",
+			"minecraft:disk_gravel"
+		],
+		[],
+		[
+			"minecraft:forest_flower_vegetation_common",
+			"cpp:forest_flower_trees",
+			"minecraft:flower_forest",
+			"minecraft:patch_grass_badlands",
+			"minecraft:brown_mushroom_normal",
+			"minecraft:red_mushroom_normal",
+			"minecraft:patch_sugar_cane",
+			"minecraft:patch_pumpkin",
+			"minecraft:patch_melon"
+		],
+		[
+			"minecraft:freeze_top_layer"
+		]
+	],
+	"starts": [
+		"minecraft:ruined_portal",
+		"cpp:structures"
+	],
+	"spawners": {
+		"monster": [],
+		"creature": [
+			{
+				"type": "minecraft:sheep",
+				"weight": 12,
+				"minCount": 4,
+				"maxCount": 4
+			},
+			{
+				"type": "minecraft:pig",
+				"weight": 10,
+				"minCount": 4,
+				"maxCount": 4
+			},
+			{
+				"type": "minecraft:chicken",
+				"weight": 10,
+				"minCount": 4,
+				"maxCount": 4
+			},
+			{
+				"type": "minecraft:cow",
+				"weight": 8,
+				"minCount": 4,
+				"maxCount": 4
+			},
+			{
+				"type": "minecraft:mooshroom",
+				"weight": 1,
+				"minCount": 4,
+				"maxCount": 4
+			},
+			{
+				"type": "minecraft:rabbit",
+				"weight": 4,
+				"minCount": 2,
+				"maxCount": 3
+			}
+		],
+		"ambient": [],
+		"water_creature": [],
+		"water_ambient": [],
+		"misc": []
+	},
+	"spawn_costs": {},
+	"precipitation": "rain",
+	"temperature": 1.3,
+	"downfall": 0.8,
+	"category": "forest",
+	"depth": 0.1,
+	"scale": 0.4
+}

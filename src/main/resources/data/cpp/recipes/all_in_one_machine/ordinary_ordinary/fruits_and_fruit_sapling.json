@@ -1,0 +1,21 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "ordinary",
+	"pressure": "ordinary",
+	"ingredients": [
+		"cpp:fruit_sapling",
+		"cpp:fertilizer"
+	],
+	"experience": 2,
+	"time": 40,
+	"products": [
+		{
+			"tag": "cpp:droppable_fruits",
+			"count": 2
+		},
+		{
+			"item": "cpp:fruit_sapling",
+			"count": 1.5
+		}
+	]
+}

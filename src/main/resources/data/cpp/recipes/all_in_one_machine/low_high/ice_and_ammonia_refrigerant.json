@@ -1,0 +1,15 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "low",
+	"pressure": "high",
+	"ingredients": [
+		"cpp:green_force_of_water",
+		"cpp:ammonia_refrigerant"
+	],
+	"experience": 1,
+	"time": 20,
+	"products": [
+		"minecraft:ice",
+		"cpp:ammonia_refrigerant"
+	]
+}

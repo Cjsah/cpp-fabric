@@ -1,0 +1,21 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "ordinary",
+	"pressure": "ordinary",
+	"ingredients": [
+		"cpp:wool_sapling",
+		"cpp:fertilizer"
+	],
+	"experience": 2,
+	"time": 40,
+	"products": [
+		{
+			"tag": "wool",
+			"count": 2
+		},
+		{
+			"item": "cpp:wool_sapling",
+			"count": 1.5
+		}
+	]
+}

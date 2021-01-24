@@ -1,0 +1,14 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "high",
+	"pressure": "low",
+	"ingredients": [
+		"minecraft:clay_ball",
+		"cpp:bottle_of_salt"
+	],
+	"experience": 4,
+	"time": 200,
+	"products": [
+		"cpp:rare_earth_salt"
+	]
+}

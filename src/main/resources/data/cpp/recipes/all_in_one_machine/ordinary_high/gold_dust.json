@@ -1,0 +1,14 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "ordinary",
+	"pressure": "high",
+	"ingredients": [
+		"minecraft:gold_ingot",
+		"minecraft:flint"
+	],
+	"experience": 1,
+	"time": 50,
+	"products": [
+		"cpp:gold_dust"
+	]
+}

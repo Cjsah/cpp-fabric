@@ -1,0 +1,77 @@
+{
+	"pools": [
+		{
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:map",
+					"functions": [
+						{
+							"function": "minecraft:exploration_map",
+							"destination": "buried_treasure",
+							"decoration": "red_x",
+							"zoom": 1,
+							"skip_existing_chunks": true
+						},
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{display:{MapColor:11830110,Name:'[{\"italic\":false,\"translate\":\"structure_feature.buried_treasure\"},{\"translate\":\"item.cpp.explorer_map\"}]'}}"
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:map",
+					"functions": [
+						{
+							"function": "minecraft:exploration_map",
+							"destination": "ocean_ruin",
+							"decoration": "red_x",
+							"zoom": 1,
+							"skip_existing_chunks": true
+						},
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{display:{MapColor:13081344,Name:'[{\"italic\":false,\"translate\":\"structure_feature.ocean_ruin\"},{\"translate\":\"item.cpp.explorer_map\"}]'}}"
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:map",
+					"functions": [
+						{
+							"function": "minecraft:exploration_map",
+							"destination": "shipwreck",
+							"decoration": "red_x",
+							"zoom": 1,
+							"skip_existing_chunks": true
+						},
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{display:{MapColor:7100513,Name:'[{\"italic\":false,\"translate\":\"structure_feature.shipwreck\"},{\"translate\":\"item.cpp.explorer_map\"}]'}}"
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:map",
+					"functions": [
+						{
+							"function": "minecraft:exploration_map",
+							"destination": "ruined_portal",
+							"decoration": "red_x",
+							"zoom": 1,
+							"skip_existing_chunks": true
+						},
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{display:{MapColor:3544084,Name:'[{\"italic\":false,\"translate\":\"structure_feature.ruined_portal\"},{\"translate\":\"item.cpp.explorer_map\"}]'}}"
+						}
+					]
+				}
+			]
+		}
+	]
+}

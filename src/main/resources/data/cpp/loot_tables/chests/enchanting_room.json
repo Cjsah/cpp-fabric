@@ -1,0 +1,138 @@
+{
+	"pools": [
+		{
+			"rolls": {
+				"type": "minecraft:uniform",
+				"min": 1.0,
+				"max": 3.0
+			},
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:book",
+					"weight": 20,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"type": "minecraft:uniform",
+								"min": 1.0,
+								"max": 3.0
+							}
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:paper",
+					"weight": 20,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"type": "minecraft:uniform",
+								"min": 2.0,
+								"max": 7.0
+							}
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:map",
+					"weight": 10
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:compass",
+					"weight": 10
+				},
+				{
+					"type": "minecraft:loot_table",
+					"name": "cpp:chests/exploration_map_in_flower",
+					"weight": 10
+				},
+				{
+					"type": "minecraft:item",
+					"name": "cpp:ancient_scroll",
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{enchantment:'fortune'}"
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "cpp:ancient_scroll",
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{enchantment:'looting'}"
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "cpp:ancient_scroll",
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{enchantment:'sweeping'}"
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "cpp:ancient_scroll",
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{enchantment:'lure'}"
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "cpp:ancient_scroll",
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{enchantment:'unbreaking'}"
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "cpp:ancient_scroll",
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{enchantment:'respiration'}"
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "cpp:ancient_scroll",
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{enchantment:'sharpness'}"
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "cpp:ancient_scroll",
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{enchantment:'power'}"
+						}
+					]
+				}
+			]
+		}
+	]
+}

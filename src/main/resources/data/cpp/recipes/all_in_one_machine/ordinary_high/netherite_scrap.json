@@ -1,0 +1,17 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "ordinary",
+	"pressure": "high",
+	"ingredients": [
+		"minecraft:ancient_debris",
+		"minecraft:flint"
+	],
+	"experience": 4,
+	"time": 200,
+	"products": [
+		{
+			"item": "minecraft:netherite_scrap",
+			"count": 2
+		}
+	]
+}

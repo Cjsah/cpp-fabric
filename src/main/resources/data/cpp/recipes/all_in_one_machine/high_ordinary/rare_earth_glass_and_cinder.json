@@ -1,0 +1,20 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "high",
+	"pressure": "ordinary",
+	"ingredients": [
+		"cpp:rare_earth_dust",
+		{
+			"tag": "sand"
+		}
+	],
+	"experience": 4,
+	"time": 200,
+	"products": [
+		"cpp:rare_earth_glass",
+		{
+			"item": "cpp:cinder",
+			"count": 0.2
+		}
+	]
+}

@@ -1,0 +1,17 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "ordinary",
+	"pressure": "high",
+	"ingredients": [
+		"minecraft:soul_sand",
+		"minecraft:dirt"
+	],
+	"experience": 1,
+	"time": 20,
+	"products": [
+		{
+			"item": "minecraft:soul_soil",
+			"count": 2
+		}
+	]
+}

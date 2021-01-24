@@ -1,0 +1,20 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "high",
+	"pressure": "ordinary",
+	"ingredients": [
+		"cpp:copper_dust",
+		{
+			"tag": "sand"
+		}
+	],
+	"experience": 1,
+	"time": 50,
+	"products": [
+		"minecraft:copper_ingot",
+		{
+			"item": "cpp:cinder",
+			"count": 0.2
+		}
+	]
+}

@@ -92,36 +92,25 @@ import static net.cpp.init.CppItems.WING_OF_SKY;
 import static net.minecraft.item.Items.*;
 
 import java.io.File;
-import java.nio.charset.CodingErrorAction;
-import java.security.interfaces.RSAKey;
+import java.io.FileWriter;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
-import org.spongepowered.asm.mixin.Debug;
 
-import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSet.Builder;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.google.common.collect.Streams;
-import com.google.common.collect.Table;
-import com.google.common.collect.Tables;
-import com.google.common.collect.UnmodifiableIterator;
 
 import net.cpp.api.CodingTool;
 import net.cpp.block.AllInOneMachineBlock;
@@ -137,8 +126,6 @@ import net.cpp.screen.handler.AllInOneMachineScreenHandler;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -375,10 +362,57 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 
 	@Override
 	public void onOpen(PlayerEntity player) {
-//		propertyDelegate.set(3, propertyDelegate.get(3));
 		super.onOpen(player);
-//		System.out.println(ORE_RECIPES);
-//		test();
+		if (!player.world.isClient&&player.world.isClient) {
+			try {
+				for (Recipe recipe : RECIPES.values()) {
+					if (recipe == null || recipe.temperature == Degree.HIGH && recipe.pressure == Degree.HIGH) {
+						continue;
+					}
+					File file = new File(String.format("D:\\CCC\\Documents\\编程\\Minecraft Mod\\更多的合成 FabricMod 开发中\\src\\main\\resources\\data\\cpp\\recipes\\all_in_one_machine\\%s_%s\\%s%s.json", recipe.temperature.toString().toLowerCase(), recipe.pressure.toString().toLowerCase(), Registry.ITEM.getId(recipe.output1.getItem()).getPath(), recipe.output2.isEmpty() ? "" : "_and_" + Registry.ITEM.getId(recipe.output2.getItem()).getPath()));
+					if (!file.getParentFile().exists()) {
+						file.getParentFile().mkdir();
+					}
+					FileWriter fw = new FileWriter(file);
+					fw.write(String.format("{\r\n	\"type\": \"cpp:all_in_one_machine\",\r\n	\"temperature\": \"%s\",\r\n	\"pressure\": \"%s\",\r\n	\"ingredients\": [\r\n		\"%s\"", recipe.temperature.toString().toLowerCase(), recipe.pressure.toString().toLowerCase(), Registry.ITEM.getId(recipe.input1)));
+					if (recipe.input2 != AIR) {
+						fw.write(String.format(",%n		\"%s\"\r\n	],%n", Registry.ITEM.getId(recipe.input2)));
+					}
+					fw.write(String.format("	\"experience\": %d,%n", recipe.experience));
+					fw.write(String.format("	\"time\": %d,%n", recipe.time));
+					fw.write("	\"products\": [\r\n		");
+					double c1 ;
+					if (recipe.count1Max == recipe.count1Min) {
+						c1 = recipe.count1Max;
+					}else {
+						c1 = (recipe.count1Max + recipe.count1Min-1) / 2;
+					}
+					if (c1 == 1) {
+						fw.write(String.format("\"%s\"", Registry.ITEM.getId(recipe.output1.getItem())));
+					} else {
+						fw.write(String.format("{\r\n			\"item\": \"%s\",\r\n			\"count\": %s\r\n		}", Registry.ITEM.getId(recipe.output1.getItem()), new BigDecimal(c1).stripTrailingZeros().toPlainString()));
+					}
+					if (!recipe.output2.isEmpty()) {
+						double c2 ;
+						if (recipe.count2Max == recipe.count2Min) {
+							c2 = recipe.count2Max;
+						}else {
+							c2 = (recipe.count2Max + recipe.count2Min-1) / 2;
+						}
+						if (c2 == 1) {
+							fw.write(String.format(",%n		\"%s\"", Registry.ITEM.getId(recipe.output2.getItem())));
+						} else {
+							fw.write(String.format(",%n		{\r\n			\"item\": \"%s\",\r\n			\"count\": %s\r\n		}", Registry.ITEM.getId(recipe.output2.getItem()), new BigDecimal(c2).setScale(2, RoundingMode.HALF_EVEN).stripTrailingZeros().toPlainString()));
+						}
+					}
+					fw.write("\r\n	]\r\n}");
+					fw.close();
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/*
@@ -562,7 +596,6 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	@Deprecated
 	private static void addRecipe(Degree temperature, Degree pressure, Item input1, Item input2, ItemStack output1, ItemStack output2, float count1Min, float count1Max, float count2Min, float count2Max, int experience, int time) {
 		RECIPES.put(getHashCode(temperature, pressure, input1, input2), new Recipe(temperature, pressure, input1, input2, output1, output2, count1Min, count1Max, count2Min, count2Max, experience, time));
-//		RECIPES2.put(Triple.of(temperature, pressure, ingredient(input1, input2)), new AllInOneMachineRecipe(new Identifier(, )));
 	}
 
 	static {
@@ -732,14 +765,14 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 			int c = getHashCode(Degree.ORDINARY, Degree.ORDINARY, WOOL_SAPLING.asItem(), FERTILIZER);
 			RECIPES.put(c, Recipe.PLACE_TAKER);
 			List<Recipe> list = new ArrayList<>();
-			for (Item item : ItemTags.WOOL.values())// FIXME
+			for (Item item : ItemTags.WOOL.values())
 				list.add(new Recipe(Degree.ORDINARY, Degree.ORDINARY, WOOL_SAPLING.asItem(), FERTILIZER, new ItemStack(item, 2), new ItemStack(WOOL_SAPLING), 0F, 4F, 2, 40));
 			RANDOM_RECIPES.put(c, list);
 		}
 		addRecipe(Degree.ORDINARY, Degree.ORDINARY, SAKURA_SAPLING.asItem(), FERTILIZER, new ItemStack(CHERRY), new ItemStack(SAKURA_SAPLING), 2F, 5F, 0F, 4F, 2, 40);
 		{
 			List<Block> plants = CppBlockTags.FLOWER_GRASSES_1.values();
-			for (int i = 0; i < plants.size(); i++) {// FIXME
+			for (int i = 0; i < plants.size(); i++) {
 				addRecipe(Degree.ORDINARY, Degree.ORDINARY, ((FlowerGrass1Block) plants.get(i)).getSeed(), FERTILIZER, new ItemStack(plants.get(i)), 2, 40);
 				addRecipe(Degree.ORDINARY, Degree.ORDINARY, plants.get(i).asItem(), FERTILIZER, new ItemStack(plants.get(i), 4), 2, 40);
 			}
@@ -791,6 +824,9 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		addRecipe(Degree.LOW, Degree.LOW, GREEN_FORCE_OF_WATER, AMMONIA_REFRIGERANT, new ItemStack(SNOW_BLOCK), new ItemStack(AMMONIA_REFRIGERANT), 1, 20);
 		addRecipe(Degree.LOW, Degree.LOW, WATER_BUCKET, AMMONIA_REFRIGERANT, new ItemStack(POWDER_SNOW_BUCKET), new ItemStack(AMMONIA_REFRIGERANT), 1, 20);
 
+		{
+
+		}
 	}
 
 	public enum Degree {
@@ -818,7 +854,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 
 	@Deprecated
 	public static class Recipe {
-		public static final Recipe PLACE_TAKER = new Recipe(null, null, AIR, AIR, ItemStack.EMPTY, ItemStack.EMPTY, 0, 0, 0, 0);
+		public static final Recipe PLACE_TAKER = new Recipe(Degree.ORDINARY, Degree.ORDINARY, AIR, AIR, ItemStack.EMPTY, ItemStack.EMPTY, 0, 0, 0, 0);
 		public final Degree temperature;
 		public final Degree pressure;
 		public final Item input1, input2;
@@ -835,7 +871,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		}
 
 		public Recipe(Degree temperature, Degree pressure, Item input1, Item input2, ItemStack output1, ItemStack output2, float count2Min, float count2Max, int experience, int time) {
-			this(temperature, pressure, input1, input2, output1, output2, output1.getCount(), output1.getCount(), count2Min, count2Max, experience, time);
+			this(temperature, pressure, input1, input2, output1, output2, output1.getCount(), output2.getCount(), count2Min, count2Max, experience, time);
 		}
 
 		public Recipe(Degree temperature, Degree pressure, Item input1, Item input2, ItemStack output1, ItemStack output2, float count1Min, float count1Max, float count2Min, float count2Max, int experience, int time) {
@@ -883,23 +919,6 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		}
 	}
 
-	@Debug
-	protected void test() {
-		try {
-//			System.out.println(new Function<Integer, Boolean>() {
-//
-//				@Override
-//				public Boolean apply(Integer t) {
-//					// TODO 自动生成的方法存根
-//					return false;
-//				}
-//
-//			});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public Set<Item> ingredient() {
 		Builder<Item> builder = ImmutableSet.builder();
 		for (int i = 1; i < 3; i++) {
@@ -940,7 +959,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 				}
 				Set<Item> set = ImmutableSet.of(item1, item2);
 				ORE_RATES.put(set, rate);
-				ORE_RECIPES.put(set, new AllInOneMachineRecipe(new Identifier(String.format("cpp:all_in_one_machine/%s_and%s", Registry.ITEM.getId(item1).getPath(), Registry.ITEM.getId(item2).getPath())), Degree.HIGH, Degree.HIGH, ImmutableList.of(Pair.of(item1, null), Pair.of(item2, null)), 4, 200, ImmutableList.of(Pair.of(ImmutableList.of(RedForceOfFire.smelt(item1.getDefaultStack(), server, null).getItem()), ORE_BASIC_COUNTS.getOrDefault(item1, 1.) * rate), Pair.of(ImmutableList.of(RedForceOfFire.smelt(item2.getDefaultStack(), server, null).getItem()), ORE_BASIC_COUNTS.getOrDefault(item2, 1.) * rate))));
+				ORE_RECIPES.put(set, new AllInOneMachineRecipe(new Identifier(String.format("cpp:all_in_one_machine/%s_and%s", Registry.ITEM.getId(item1).getPath(), Registry.ITEM.getId(item2).getPath())), Degree.HIGH, Degree.HIGH, ImmutableList.of(Pair.of(ImmutableList.of(item1), null), Pair.of(ImmutableList.of(item2), null)), 4, 200, ImmutableList.of(Pair.of(ImmutableList.of(RedForceOfFire.smelt(item1.getDefaultStack(), server, null).getItem()), ORE_BASIC_COUNTS.getOrDefault(item1, 1.) * rate), Pair.of(ImmutableList.of(RedForceOfFire.smelt(item2.getDefaultStack(), server, null).getItem()), ORE_BASIC_COUNTS.getOrDefault(item2, 1.) * rate))));
 			}
 		}
 	}

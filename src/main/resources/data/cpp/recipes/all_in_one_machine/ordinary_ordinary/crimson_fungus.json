@@ -1,0 +1,21 @@
+{
+	"type": "cpp:all_in_one_machine",
+	"temperature": "ordinary",
+	"pressure": "ordinary",
+	"ingredients": [
+		"minecraft:crimson_fungus",
+		"cpp:fertilizer"
+	],
+	"experience": 2,
+	"time": 40,
+	"products": [
+		{
+			"item": ["crimson_stem", "nether_wart_block"],
+			"count": 3
+		},
+		{
+			"item": "minecraft:crimson_fungus",
+			"count": 1.5
+		}
+	]
+}

@@ -41,6 +41,7 @@ import net.cpp.block.DustbinBlock;
 import net.cpp.block.EmptyBookshelfBlock;
 import net.cpp.block.FlowerGrass1Block;
 import net.cpp.block.FlowerGrass2Block;
+import net.cpp.block.FlowerPortalBlock;
 import net.cpp.block.FruitLeavesBlock;
 import net.cpp.block.GoldenAnvilBlock;
 import net.cpp.block.ItemProcessorBlock;
@@ -51,6 +52,7 @@ import net.cpp.block.PublicSaplingBlock;
 import net.cpp.block.PublicSkullBlock;
 import net.cpp.block.PublicWallSkullBlock;
 import net.cpp.block.RiceBlock;
+import net.cpp.block.StructureGenerationBlock;
 import net.cpp.block.TradeMachineBlock;
 import net.cpp.block.WoolLeavesBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -140,6 +142,8 @@ public final class CppBlocks {
 	public static final Block POINSETTIA = registerPlant("poinsettia");
 	public static final Block CHRISTMAS_TREE = registerBlock("christmas_tree", CustomHeightPlantBlock.of(2, FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS)), CPP_GROUP_PLANT);
 	public static final Block RICE = Registry.register(Registry.BLOCK, new Identifier(MOD_ID3, "rice"), new RiceBlock(FabricBlockSettings.of(Material.PLANT).ticksRandomly().noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS)));
+	public static final Block FLOWER_PORTAL = Registry.register(Registry.BLOCK, new Identifier(MOD_ID3, "flower_portal"), new FlowerPortalBlock(FabricBlockSettings.of(Material.PORTAL).noCollision().ticksRandomly().strength(-1.0F).sounds(BlockSoundGroup.GLASS).luminance(15)));
+	public static final Block STRUCTURE_GENERATOR = Registry.register(Registry.BLOCK, new Identifier(MOD_ID3, "structure_generator"), new StructureGenerationBlock(FabricBlockSettings.of(Material.AIR).noCollision().dropsNothing().air().nonOpaque()));
 //	public static final Block ENDERMAN_HEAD = registerBlock("enderman_head", new PublicSkullBlock(null, null), CPP_GROUP_MISC);
 
 	public static final List<Block> FLOWER_GRASSES = ImmutableList.of(LYCORIS_RADIATA, TRIFOLIUM, BLACKTHORN, CATTAIL, MARIGOLD, HIBISCUS, HYACINTH, CALAMUS, WILD_LILIUM, BAUHINIA, FLUFFY_GRASS, GERBERA, ESPARTO, GLOW_FORSYTHIA, GLAZED_SHADE, STELERA, FORAGE_CRYSTAL, ISORCHID, BURNING_CHRYSANTHE, OXALIS, CALLIOPSIS, CYCLAMEN, IRIS, LILIUM_PUMILUM, SNOWDROP, NARCISSUS, COLE_FLOWER, LUPINE, CROCU, PANSY, ARABIA_SPEEDWELL, SILENE_PENDULA, ARTEMISIA_ARGYI);
