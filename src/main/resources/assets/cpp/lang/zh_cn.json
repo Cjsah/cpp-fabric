@@ -537,6 +537,8 @@
   "config.cpp.StartLevel": "初始等级",
   "config.cpp.CanBreak": "可以破坏的方块",
 
+  "newWorld.cpp.title": "空岛世界",
+
   "tooltip.cpp.gfow.water": "水 %s",
   "tooltip.cpp.gfow.lava": "岩浆 %s",
   "tooltip.cpp.cfom.direction": "方向：%s",

@@ -19,6 +19,7 @@
 		"MixinLivingEntity",
 		"MixinPlayerEntity",
 		"MixinPlayerManager",
+		"MixinPresetsScreen",
 		"MixinServerPlayerEntity",
 		"MixinSilverfishEntity",
 		"MixinSpiderEntity"
