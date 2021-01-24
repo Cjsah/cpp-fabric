@@ -607,6 +607,6 @@ public class CodingTool {
 	}
 
 	public static <T> Tag<T> getTag(String id, RegistryKey<Registry<T>> registryKey) {
-		return ServerTagManagerHolder.getTagManager().method_33166(registryKey, new Identifier(id), id1 -> new JsonSyntaxException("Unknown item tag '" + id1 + "'"));
+		return ServerTagManagerHolder.getTagManager().getTag(registryKey, new Identifier(id), id1 -> new JsonSyntaxException("Unknown item tag '" + id1 + "'"));
 	}
 }
