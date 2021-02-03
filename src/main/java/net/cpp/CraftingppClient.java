@@ -1,12 +1,21 @@
 package net.cpp;
 
-import static net.cpp.init.CppBlocks.*;
+import static net.cpp.init.CppBlocks.BLUE_ROSE;
+import static net.cpp.init.CppBlocks.CHRISTMAS_TREE;
+import static net.cpp.init.CppBlocks.FRUIT_SAPLING;
 import static net.cpp.init.CppBlocks.ORE_SAPLING;
+import static net.cpp.init.CppBlocks.POINSETTIA;
+import static net.cpp.init.CppBlocks.RICE;
 import static net.cpp.init.CppBlocks.SAKURA_SAPLING;
 import static net.cpp.init.CppBlocks.WOOL_SAPLING;
 
 import net.cpp.entity.AGolemEntity;
-import net.cpp.entity.render.GolemRenderer;
+import net.cpp.entity.render.DarkChickenEntityRenderer;
+import net.cpp.entity.render.DarkCowEntityRenderer;
+import net.cpp.entity.render.DarkMooshroomEntityRenderer;
+import net.cpp.entity.render.DarkPigEntityRenderer;
+import net.cpp.entity.render.DarkSheepEntityRenderer;
+import net.cpp.entity.render.GolemEntityRenderer;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppEntities;
 import net.cpp.init.CppPredicates;
@@ -52,10 +61,15 @@ public class CraftingppClient implements ClientModInitializer {
 		ScreenRegistry.register(CppScreenHandler.COLOR_PALETTE, ColorPaletteScreen::new);
 
 		for (EntityType<? extends AGolemEntity> type : CppEntities.GOLEMS) {
-			EntityRendererRegistry.INSTANCE.register(type, ctx -> new GolemRenderer(ctx, type));
+			EntityRendererRegistry.INSTANCE.register(type, ctx -> new GolemEntityRenderer(ctx, type));
 		}
+		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_COW, ctx -> new DarkCowEntityRenderer(ctx));
+		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_MOOSHROOM, ctx -> new DarkMooshroomEntityRenderer(ctx));
+		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_SHEEP, ctx -> new DarkSheepEntityRenderer(ctx));
+		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_PIG, ctx -> new DarkPigEntityRenderer(ctx));
+		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_CHICKEN, ctx -> new DarkChickenEntityRenderer(ctx));
 
-		BlockRenderLayerMapImpl.INSTANCE.putBlocks(RenderLayer.getCutout(), FRUIT_SAPLING, ORE_SAPLING, SAKURA_SAPLING, WOOL_SAPLING, BLUE_ROSE, POINSETTIA, CHRISTMAS_TREE,RICE);
+		BlockRenderLayerMapImpl.INSTANCE.putBlocks(RenderLayer.getCutout(), FRUIT_SAPLING, ORE_SAPLING, SAKURA_SAPLING, WOOL_SAPLING, BLUE_ROSE, POINSETTIA, CHRISTMAS_TREE, RICE);
 		for (Block block : CppBlocks.FLOWER_GRASSES)
 			BlockRenderLayerMapImpl.INSTANCE.putBlock(block, RenderLayer.getCutout());
 	}

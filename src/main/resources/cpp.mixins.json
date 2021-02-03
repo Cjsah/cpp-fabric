@@ -4,8 +4,12 @@
     "package": "net.cpp.mixin",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
+		"MixinAbstractSkeletonEntity",
 		"MixinBeeEntity",
 		"MixinBlock",
+		"MixinChickenEntity",
+		"MixinCowEntity",
+		"MixinCreeperEntity",
 		"MixinEndermiteEntity",
 		"MixinEntityModelLoader",
 		"MixinExperienceBottleEntity",
@@ -17,12 +21,17 @@
 		"MixinItemStack",
 		"MixinLeavesBlock",
 		"MixinLivingEntity",
+		"MixinMooshroomEntity",
+		"MixinPigEntity",
 		"MixinPlayerEntity",
 		"MixinPlayerManager",
 		"MixinPresetsScreen",
+		"MixinRabbitEntity",
 		"MixinServerPlayerEntity",
+		"MixinSheepEntity",
 		"MixinSilverfishEntity",
-		"MixinSpiderEntity"
+		"MixinSpiderEntity",
+		"MixinZombieEntity"
     ],
     "injectors": {
         "defaultRequire": 1

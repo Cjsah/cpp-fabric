@@ -1,13 +1,11 @@
 package net.cpp;
-
 import static net.cpp.api.CppChat.say;
-
-import net.cpp.config.CppConfig;
-import net.cpp.ducktype.IPlayerJoinCallback;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.cpp.config.CppConfig;
+import net.cpp.ducktyping.IPlayerJoinCallback;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppEffects;
@@ -18,6 +16,7 @@ import net.cpp.init.CppLootTableFunctions;
 import net.cpp.init.CppRecipes;
 import net.cpp.init.CppScreenHandler;
 import net.cpp.init.CppStats;
+import net.cpp.misc.AttachAttributesLootFunction;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
@@ -59,8 +58,9 @@ public class Craftingpp implements ModInitializer {
 		CppStats.register();
 		CppEffects.register();
 		CppLootTableFunctions.register();
-		CppEntities.register();
+		CppEntities.loadClass();
 		CppFeatures.loadClass();
+		AttachAttributesLootFunction.loadClass();
 		IPlayerJoinCallback.EVENT.register((player, server) -> {
 			if (!player.world.isClient)
 				say(player, new TranslatableText("misc.cpp1", new TranslatableText("chat.cpp.load1"), new TranslatableText("chat.cpp.load2").setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.cjsah.net/ruhuasiyu/"))).formatted(Formatting.GOLD)));

@@ -1,0 +1,28 @@
+[
+	{
+		"function": "minecraft:enchant_with_levels",
+		"treasure": true,
+		"levels": {
+			"type": "uniform",
+			"min": 10,
+			"max": 30
+		}
+	},
+	{
+		"function": "minecraft:set_damage",
+		"damage": {
+			"type": "uniform",
+			"min": 0.01,
+			"max": 0.10
+		}
+	},
+	{	
+		"conditions": [
+			{
+				"condition": "minecraft:random_chance",
+				"chance": 0.2
+			}
+		],
+		"function": "cpp:attach_attributes"
+	}
+]

@@ -211,7 +211,7 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 								if (blockEntity.getMobEffect() != ATTRACTING)
 									e.addStatusEffect(new StatusEffectInstance(blockEntity.mobEffect, 400, 0, true, true));
 								else {
-									e.teleport(pos.getX() + .5, pos.getY() + 1, pos.getZ() + .5);
+									e.teleport(pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5);
 								}
 							}
 						} catch (Throwable e) {

@@ -72,7 +72,7 @@ import com.google.common.collect.ImmutableMultimap;
 
 import net.cpp.api.CodingTool;
 import net.cpp.api.CppEffect;
-import net.cpp.ducktype.ITemperancable;
+import net.cpp.ducktyping.ITemperancable;
 import net.cpp.init.CppEffects;
 import net.cpp.init.CppItemTags;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -475,10 +475,26 @@ public class Wand extends Item {
 	}
 
 	public static void done3(Inventory inventory, ItemFrameEntity frame) {
-		ItemStack frameStack = frame.getHeldItemStack();
-		Item frameItem = frameStack.getItem();
-		EquipmentSlot slot = getSlot(frameItem);
-		ListTag attributeModifiers = frameStack.getOrCreateTag().getList("AttributeModifiers", 10);
+		attachAttibutes(frame.getHeldItemStack(), frame.world.random);
+		decrease23(inventory);
+	}
+
+	public static void done4(Inventory inventory, ItemFrameEntity frame) {
+		ItemStack newStack = SPAWNER.getDefaultStack();
+		newStack.setTag(frame.getHeldItemStack().getTag());
+		frame.setHeldItemStack(newStack);
+		decrease45(inventory);
+	}
+
+	public static void done5(Inventory inventory, ItemFrameEntity frame) {
+		frame.setHeldItemStack(BUDDING_AMETHYST.getDefaultStack());
+		decrease45(inventory);
+	}
+	
+	public static ItemStack attachAttibutes(ItemStack stack, Random random) {
+		Item item = stack.getItem();
+		EquipmentSlot slot = getSlot(item);
+		ListTag attributeModifiers = stack.getOrCreateTag().getList("AttributeModifiers", 10);
 		double attackSpeed = 0, damage = 0, health = 0, resistance = 0, movementSpeed = 0, luck = 0;
 		for (Iterator<Tag> iterator = attributeModifiers.iterator(); iterator.hasNext();) {
 			Tag tag = iterator.next();
@@ -490,9 +506,9 @@ public class Wand extends Item {
 				}
 			}
 		}
-		frameStack.putSubTag("AttributeModifiers", attributeModifiers);
+		stack.putSubTag("AttributeModifiers", attributeModifiers);
 		if (attributeModifiers.isEmpty()) {
-			for (Entry<EntityAttribute, EntityAttributeModifier> entry : frameItem.getAttributeModifiers(slot).entries()) {
+			for (Entry<EntityAttribute, EntityAttributeModifier> entry : item.getAttributeModifiers(slot).entries()) {
 				EntityAttribute attribute = entry.getKey();
 				EntityAttributeModifier modifier = entry.getValue();
 				Operation operation = modifier.getOperation();
@@ -510,33 +526,19 @@ public class Wand extends Item {
 				} else if (attribute == GENERIC_LUCK && operation == Operation.ADDITION) {
 					luck = amount;
 				} else {
-					frameStack.addAttributeModifier(attribute, modifier, slot);
+					stack.addAttributeModifier(attribute, modifier, slot);
 				}
 			}
 		}
-		Random random = frame.world.random;
-		if (frameItem instanceof ToolItem || frameItem instanceof TridentItem) {
-			frameStack.addAttributeModifier(GENERIC_ATTACK_SPEED, new EntityAttributeModifier(new UUID(HIGH_UUID, 1 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", attackSpeed + random.nextDouble() * 2, Operation.ADDITION), slot);
-			frameStack.addAttributeModifier(GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(new UUID(HIGH_UUID, 2 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", damage + random.nextDouble() * 8, Operation.ADDITION), slot);
+		if (item instanceof ToolItem || item instanceof TridentItem) {
+			stack.addAttributeModifier(GENERIC_ATTACK_SPEED, new EntityAttributeModifier(new UUID(HIGH_UUID, 1 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", attackSpeed + random.nextDouble() * 2, Operation.ADDITION), slot);
+			stack.addAttributeModifier(GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(new UUID(HIGH_UUID, 2 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", damage + random.nextDouble() * 8, Operation.ADDITION), slot);
 		} else {
-			frameStack.addAttributeModifier(GENERIC_MAX_HEALTH, new EntityAttributeModifier(new UUID(HIGH_UUID, 3 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", health + random.nextDouble() * 5, Operation.ADDITION), slot);
-			frameStack.addAttributeModifier(GENERIC_KNOCKBACK_RESISTANCE, new EntityAttributeModifier(new UUID(HIGH_UUID, 4 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", resistance + random.nextDouble() * .3, Operation.ADDITION), slot);
-			frameStack.addAttributeModifier(GENERIC_MOVEMENT_SPEED, new EntityAttributeModifier(new UUID(HIGH_UUID, 5 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", movementSpeed + random.nextDouble() * .15, Operation.MULTIPLY_BASE), slot);
-			frameStack.addAttributeModifier(GENERIC_LUCK, new EntityAttributeModifier(new UUID(HIGH_UUID, 6 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", luck + random.nextDouble() * 2, Operation.ADDITION), slot);
+			stack.addAttributeModifier(GENERIC_MAX_HEALTH, new EntityAttributeModifier(new UUID(HIGH_UUID, 3 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", health + random.nextDouble() * 5, Operation.ADDITION), slot);
+			stack.addAttributeModifier(GENERIC_KNOCKBACK_RESISTANCE, new EntityAttributeModifier(new UUID(HIGH_UUID, 4 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", resistance + random.nextDouble() * .3, Operation.ADDITION), slot);
+			stack.addAttributeModifier(GENERIC_MOVEMENT_SPEED, new EntityAttributeModifier(new UUID(HIGH_UUID, 5 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", movementSpeed + random.nextDouble() * .15, Operation.MULTIPLY_BASE), slot);
+			stack.addAttributeModifier(GENERIC_LUCK, new EntityAttributeModifier(new UUID(HIGH_UUID, 6 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", luck + random.nextDouble() * 2, Operation.ADDITION), slot);
 		}
-		frame.setHeldItemStack(frameStack);
-		decrease23(inventory);
-	}
-
-	public static void done4(Inventory inventory, ItemFrameEntity frame) {
-		ItemStack newStack = SPAWNER.getDefaultStack();
-		newStack.setTag(frame.getHeldItemStack().getTag());
-		frame.setHeldItemStack(newStack);
-		decrease45(inventory);
-	}
-
-	public static void done5(Inventory inventory, ItemFrameEntity frame) {
-		frame.setHeldItemStack(BUDDING_AMETHYST.getDefaultStack());
-		decrease45(inventory);
+		return stack;
 	}
 }

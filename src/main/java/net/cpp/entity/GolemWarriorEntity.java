@@ -7,7 +7,6 @@ import net.cpp.item.AngryHand;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
@@ -20,7 +19,7 @@ import net.minecraft.world.World;
 public class GolemWarriorEntity extends AGolemEntity {
 	private PlayerEntity player;
 
-	public GolemWarriorEntity(EntityType<? extends LivingEntity> entityType, World world) {
+	public GolemWarriorEntity(EntityType<? extends GolemWarriorEntity> entityType, World world) {
 		super(entityType, world);
 	}
 

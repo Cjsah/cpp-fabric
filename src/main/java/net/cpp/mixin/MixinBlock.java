@@ -2,7 +2,7 @@ package net.cpp.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.cpp.ducktype.IMaterialGetter;
+import net.cpp.ducktyping.IMaterialGetter;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;

@@ -2,7 +2,6 @@ package net.cpp.block.entity;
 
 import static net.minecraft.item.Items.EXPERIENCE_BOTTLE;
 
-import net.cpp.init.CppFeatures;
 import net.cpp.item.CompressedItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;

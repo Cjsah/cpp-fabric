@@ -1,4 +1,4 @@
-package net.cpp.ducktype;
+package net.cpp.ducktyping;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;

@@ -1,4 +1,4 @@
-package net.cpp.ducktype;
+package net.cpp.ducktyping;
 
 public interface ITemperancable {
 	void setEffectEnabled(boolean effectEnabled);

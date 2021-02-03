@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
 import net.cpp.api.IDefaultTagItem;
-import net.cpp.ducktype.IMultiple;
+import net.cpp.ducktyping.IMultiple;
 import net.cpp.item.CompressedItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

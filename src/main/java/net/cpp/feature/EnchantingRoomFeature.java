@@ -1,4 +1,4 @@
-package net.cpp.structure;
+package net.cpp.feature;
 
 import static net.cpp.Craftingpp.MOD_ID3;
 

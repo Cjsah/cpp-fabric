@@ -48,7 +48,7 @@
 	],
 	"starts": [
 		"minecraft:ruined_portal",
-		"cpp:structures"
+		"cpp:enchanting_room"
 	],
 	"spawners": {
 		"monster": [],

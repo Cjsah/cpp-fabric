@@ -1,0 +1,43 @@
+{
+	"pools": [
+		{
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "minecraft:empty",
+					"weight": 250
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:leather",
+					"weight": 200
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:gold_ingot",
+					"weight": 150
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:chain",
+					"weight": 150
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:iron_ingot",
+					"weight": 200
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:diamond",
+					"weight": 45
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:netherite_ingot",
+					"weight": 5
+				}
+			]
+		}
+	]
+}

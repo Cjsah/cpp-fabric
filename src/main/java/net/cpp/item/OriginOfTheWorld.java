@@ -10,8 +10,6 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import static net.cpp.api.CodingTool.getExperience;
-
 public class OriginOfTheWorld extends Item {
 	public OriginOfTheWorld(Settings settings) {
 		super(settings);

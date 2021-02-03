@@ -9,7 +9,7 @@ import java.util.Objects;
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 
-import net.cpp.ducktype.INutrition;
+import net.cpp.ducktyping.INutrition;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.advancement.criterion.Criteria;

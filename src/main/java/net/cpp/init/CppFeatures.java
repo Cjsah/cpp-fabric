@@ -1,6 +1,6 @@
 package net.cpp.init;
 
-import net.cpp.structure.EnchantingRoomFeature;
+import net.cpp.feature.EnchantingRoomFeature;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.structure.v1.FabricStructureBuilder;
@@ -8,6 +8,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep.Feature;
 import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
@@ -23,11 +24,11 @@ public final class CppFeatures {
 		{
 			EnchantingRoomFeature feature = new EnchantingRoomFeature(DefaultFeatureConfig.CODEC);
 			ConfiguredStructureFeature<DefaultFeatureConfig, ? extends StructureFeature<DefaultFeatureConfig>> configuredStructure = feature.configure(new DefaultFeatureConfig());
-			ENCHANTING_ROOM_FEATURE = FabricStructureBuilder.create(new Identifier("cpp:enchanting_room"), feature).step(Feature.SURFACE_STRUCTURES).defaultConfig(32, 8, 12345).superflatFeature(configuredStructure).register();
+			ENCHANTING_ROOM_FEATURE = FabricStructureBuilder.create(EnchantingRoomFeature.Generator.STRUCTURE_ID, feature).step(Feature.SURFACE_STRUCTURES).defaultConfig(1, 1, 12345).superflatFeature(configuredStructure).register();
 			ENCHANTING_ROOM_CONFIGURED = ENCHANTING_ROOM_FEATURE.configure(DefaultFeatureConfig.DEFAULT);
-			RegistryKey<ConfiguredStructureFeature<?, ?>> myConfigured = RegistryKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_WORLDGEN, new Identifier("cpp", "enchanting_room"));
+			RegistryKey<ConfiguredStructureFeature<?, ?>> myConfigured = RegistryKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_WORLDGEN, EnchantingRoomFeature.Generator.STRUCTURE_ID);
 			BuiltinRegistries.add(BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, myConfigured.getValue(), ENCHANTING_ROOM_CONFIGURED);
-			BiomeModifications.addStructure(BiomeSelectors.all(), myConfigured);
+			
 		}
 	}
 }

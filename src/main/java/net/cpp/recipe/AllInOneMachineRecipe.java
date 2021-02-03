@@ -31,7 +31,6 @@ import net.cpp.block.OreLeavesBlock;
 import net.cpp.block.entity.AllInOneMachineBlockEntity;
 import net.cpp.block.entity.AllInOneMachineBlockEntity.Degree;
 import net.cpp.init.CppBlocks;
-import net.cpp.init.CppItems;
 import net.cpp.init.CppRecipes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -153,8 +152,13 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 
 	@Override
 	public DefaultedList<ItemStack> getRemainingStacks(AllInOneMachineBlockEntity inventory) {
-		// TODO 自动生成的方法存根
-		return Recipe.super.getRemainingStacks(inventory);
+		DefaultedList<ItemStack> list = DefaultedList.ofSize(2, ItemStack.EMPTY);
+		for (int i = 1; i < 3; i++) {
+			if (UNCONSUMABLE.contains(inventory.getStack(i).getItem())) {
+				list.set(i - 1, inventory.getStack(i));
+			}
+		}
+		return list;
 	}
 
 	/*

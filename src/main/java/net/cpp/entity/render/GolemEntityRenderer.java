@@ -10,18 +10,21 @@ import net.cpp.entity.GolemHerderEntity;
 import net.cpp.entity.GolemMinerEntity;
 import net.cpp.entity.GolemWarriorEntity;
 import net.cpp.init.CppEntities;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.entity.EntityRendererFactory.Context;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.Identifier;
 
-public class GolemRenderer extends LivingEntityRenderer<AGolemEntity, GolemModel> {
+@Environment(EnvType.CLIENT)
+public class GolemEntityRenderer extends LivingEntityRenderer<AGolemEntity, GolemEntityModel> {
 	public static final Map<EntityType<? extends AGolemEntity>, EntityModelLayer> LAYERS = new HashMap<>();
 	public static final Map<Class<? extends AGolemEntity>, Identifier> TEXTURES = new HashMap<>();
 
-	public GolemRenderer(Context ctx, EntityType<? extends AGolemEntity> type) {
-		super(ctx, new GolemModel(ctx.getPart(LAYERS.get(type))), .5f);
+	public GolemEntityRenderer(Context ctx, EntityType<? extends AGolemEntity> type) {
+		super(ctx, new GolemEntityModel(ctx.getPart(LAYERS.get(type))), .5f);
 	}
 
 	@Override

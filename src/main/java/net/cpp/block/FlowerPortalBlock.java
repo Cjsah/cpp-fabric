@@ -30,19 +30,18 @@ public class FlowerPortalBlock extends Block {
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (!world.isClient) {
 //			CppDimensionTypes.register(world.getServer());
-			ServerWorld world2;
-			if (world.getDimension() ==  CppDimensionTypes.getFLOWER() ) {
-				world2 = world.getServer().getWorld(World.OVERWORLD);
-//				System.out.println(1);
-			} else {
-				world2 = world.getServer().getWorld(CppWorlds.FLOWER_KEY);
-			}
-			if (world2 != null) {
-				FabricDimensionInternals.changeDimension(entity, world2, new TeleportTarget(entity.getPos(), entity.getVelocity(), entity.yaw, entity.pitch));
-//				entity.moveToWorld(world2);
-			} else {
-//				System.out.println(CppWorlds.FLOWER_KEY);
-//				System.out.println(world.getServer().getWorldRegistryKeys());
+			if (CppDimensionTypes.getFlower() != null) {
+				ServerWorld world2;
+				if (world.getDimension() == CppDimensionTypes.getFlower()) {
+					world2 = world.getServer().getWorld(World.OVERWORLD);
+				} else {
+					world2 = world.getServer().getWorld(CppWorlds.FLOWER_KEY);
+				}
+				if (world2 != null) {
+					FabricDimensionInternals.changeDimension(entity, world2, new TeleportTarget(entity.getPos(), entity.getVelocity(), entity.yaw, entity.pitch));
+				}
+			}else {
+				LOGGER.error("无法找到花世界维度");
 			}
 		}
 	}

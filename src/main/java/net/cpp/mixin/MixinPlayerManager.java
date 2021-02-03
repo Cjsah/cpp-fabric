@@ -1,6 +1,6 @@
 package net.cpp.mixin;
 
-import net.cpp.ducktype.IPlayerJoinCallback;
+import net.cpp.ducktyping.IPlayerJoinCallback;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;

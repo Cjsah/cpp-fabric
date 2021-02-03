@@ -3,7 +3,7 @@ package net.cpp.mixin;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
-import net.cpp.ducktype.IMultiple;
+import net.cpp.ducktyping.IMultiple;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.projectile.thrown.ExperienceBottleEntity;

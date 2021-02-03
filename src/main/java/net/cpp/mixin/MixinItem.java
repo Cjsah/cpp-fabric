@@ -1,6 +1,6 @@
 package net.cpp.mixin;
 
-import net.cpp.ducktype.INutrition;
+import net.cpp.ducktyping.INutrition;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
