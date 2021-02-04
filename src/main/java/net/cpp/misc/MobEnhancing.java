@@ -3,8 +3,6 @@ package net.cpp.misc;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.ws.Holder;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 
@@ -133,6 +131,16 @@ public class MobEnhancing {
 					}
 				}
 			}
+		}
+	}
+
+	public static class Holder<T> {
+		public T value;
+		public Holder() {
+
+		}
+		public Holder(T value) {
+			this.value = value;
 		}
 	}
 }
