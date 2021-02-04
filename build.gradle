@@ -10,6 +10,13 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+// 发布时注释掉
+repositories {
+	maven {
+		url 'https://masa.dy.fi/maven'
+	}
+}
+
 dependencies {
 	//to change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -24,6 +31,9 @@ dependencies {
 
 	modImplementation "com.google.code.findbugs:jsr305:3.0.2"
 	modImplementation "io.github.prospector:modmenu:2.0.0-beta.1+build.2"
+
+	// 发布时注释掉
+	modImplementation "carpet:fabric-carpet:${project.minecraft_version}-1.4.25+v210203"
 //	modImplementation "me.shedaniel:RoughlyEnoughItems:5.8.9"
 
 }
