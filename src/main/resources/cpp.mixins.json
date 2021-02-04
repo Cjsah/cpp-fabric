@@ -10,6 +10,7 @@
 		"MixinChickenEntity",
 		"MixinCowEntity",
 		"MixinCreeperEntity",
+		"MixinEnderDragonFight",
 		"MixinEndermiteEntity",
 		"MixinEntityModelLoader",
 		"MixinExperienceBottleEntity",
@@ -31,6 +32,8 @@
 		"MixinSheepEntity",
 		"MixinSilverfishEntity",
 		"MixinSpiderEntity",
+		"MixinWanderingTraderEntity",
+		"MixinVillagerEntity",
 		"MixinZombieEntity"
     ],
     "injectors": {

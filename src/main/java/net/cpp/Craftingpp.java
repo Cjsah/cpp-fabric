@@ -4,6 +4,8 @@ import static net.cpp.api.CppChat.say;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.common.collect.ImmutableMap;
+
 import net.cpp.config.CppConfig;
 import net.cpp.ducktyping.IPlayerJoinCallback;
 import net.cpp.init.CppBlockEntities;
@@ -17,16 +19,19 @@ import net.cpp.init.CppRecipes;
 import net.cpp.init.CppScreenHandler;
 import net.cpp.init.CppStats;
 import net.cpp.misc.AttachAttributesLootFunction;
+import net.cpp.mixin.MixinWanderingTraderEntity;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.village.TradeOffers;
 
 public class Craftingpp implements ModInitializer {
 
@@ -68,6 +73,5 @@ public class Craftingpp implements ModInitializer {
 		});
 	}
 	
-	static {
-	}
+	
 }
