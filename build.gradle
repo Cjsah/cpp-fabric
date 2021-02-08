@@ -31,10 +31,10 @@ dependencies {
 
 	modImplementation "com.google.code.findbugs:jsr305:3.0.2"
 	modImplementation "io.github.prospector:modmenu:2.0.0-beta.1+build.2"
+//	modImplementation "me.shedaniel:RoughlyEnoughItems:5.8.9"
 
 	// 发布时注释掉
-	modImplementation "carpet:fabric-carpet:${project.minecraft_version}-1.4.25+v210203"
-//	modImplementation "me.shedaniel:RoughlyEnoughItems:5.8.9"
+	modImplementation "carpet:fabric-carpet:21w05a-1.4.25+v210203"
 
 }
 
