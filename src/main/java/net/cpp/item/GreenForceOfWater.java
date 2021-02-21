@@ -87,7 +87,7 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
                             FluidDrainable fluidDrainable = (FluidDrainable) blockState.getBlock();
                             ItemStack itemStack2 = fluidDrainable.tryDrainFluid(world, blockPos, blockState);
                             if (!itemStack2.isEmpty()) {
-                                fluidDrainable.getDrainSound().ifPresent((sound) -> ((ServerPlayerEntity)user).networkHandler.sendPacket(new PlaySoundS2CPacket(sound, SoundCategory.PLAYERS, user.getX(), user.getY(), user.getZ(), 1.0F, 1.0F)));
+                                fluidDrainable.getBucketFillSound().ifPresent((sound) -> ((ServerPlayerEntity)user).networkHandler.sendPacket(new PlaySoundS2CPacket(sound, SoundCategory.PLAYERS, user.getX(), user.getY(), user.getZ(), 1.0F, 1.0F)));
                                 world.emitGameEvent(user, GameEvent.FLUID_PICKUP, blockPos);
                                 Fluid fluid = itemStack2.getItem() == Items.WATER_BUCKET ? Fluids.WATER : Fluids.LAVA;
                                 Criteria.FILLED_BUCKET.trigger((ServerPlayerEntity) user, itemStack2);

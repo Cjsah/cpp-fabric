@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "cpp:block/block_breaker"
+    }
+  }
+}

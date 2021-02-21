@@ -15,6 +15,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonSyntaxException;
 
 import net.cpp.init.CppItems;
+import net.fabricmc.loader.util.sat4j.core.Vec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -42,6 +43,7 @@ import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.tag.ServerTagManagerHolder;
@@ -608,5 +610,13 @@ public class CodingTool {
 
 	public static <T> Tag<T> getTag(String id, RegistryKey<Registry<T>> registryKey) {
 		return ServerTagManagerHolder.getTagManager().getTag(registryKey, new Identifier(id), id1 -> new JsonSyntaxException("Unknown item tag '" + id1 + "'"));
+	}
+
+	public static void playSound(World world, PlaySoundS2CPacket packet) {
+		if (!world.isClient()) {
+			for (PlayerEntity player: world.getPlayers(TargetPredicate.DEFAULT, null, new Box(packet.getX(),packet.getY(),packet.getZ(),packet.getX(),packet.getY(),packet.getZ()).expand(packet.getVolume() * 16))) {
+				((ServerPlayerEntity)player).networkHandler.sendPacket(packet);
+			}
+		}
 	}
 }

@@ -10,7 +10,7 @@ import net.minecraft.util.registry.Registry;
 public final class CppBlockEntities {
 	public static final BlockEntityType<CraftingMachineBlockEntity> CRAFTING_MACHINE = registerBlockEntityType(CraftingMachineBlockEntity::new, CppBlocks.CRAFTING_MACHINE);
 	public static final BlockEntityType<AllInOneMachineBlockEntity> ALL_IN_ONE_MACHINE = registerBlockEntityType(AllInOneMachineBlockEntity::new, CppBlocks.ALL_IN_ONE_MACHINE);
-	public static final BlockEntityType<ItemProcessorBlockEntity> ITEM_PROCESSER = registerBlockEntityType(ItemProcessorBlockEntity::new, CppBlocks.ITEM_PROCESSER);
+	public static final BlockEntityType<ItemProcessorBlockEntity> ITEM_PROCESSER = registerBlockEntityType(ItemProcessorBlockEntity::new, CppBlocks.ITEM_PROCESSOR);
 	public static final BlockEntityType<MobProjectorBlockEntity> MOB_PROJECTOR = registerBlockEntityType(MobProjectorBlockEntity::new, CppBlocks.MOB_PROJECTOR);
 	public static final BlockEntityType<BeaconEnhancerBlockEntity> BEACON_ENHANCER = registerBlockEntityType(BeaconEnhancerBlockEntity::new, CppBlocks.BEACON_ENHANCER);
 	public static final BlockEntityType<TradeMachineBlockEntity> TRADE_MACHINE = registerBlockEntityType(TradeMachineBlockEntity::new, CppBlocks.TRADE_MACHINE);
@@ -18,6 +18,7 @@ public final class CppBlockEntities {
 	public static final BlockEntityType<DustbinBlockEntity> DUSTBIN = registerBlockEntityType(DustbinBlockEntity::new, CppBlocks.DUSTBIN);
 	public static final BlockEntityType<ChestDropperBlockEntity> CHEST_DROPPER = registerBlockEntityType(ChestDropperBlockEntity::new, CppBlocks.CHEST_DROPPER);
 	public static final BlockEntityType<EmptyBookshelfBlockEntity> EMPTY_BOOKSHELF = registerBlockEntityType(EmptyBookshelfBlockEntity::new, CppBlocks.EMPTY_BOOKSHELF);
+	public static final BlockEntityType<BlockBreakerBlockEntity> BLOCK_BREAKER = registerBlockEntityType(BlockBreakerBlockEntity::new, CppBlocks.BLOCK_BREAKER);
 
 	public static void register() {
 	}

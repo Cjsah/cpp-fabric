@@ -2,10 +2,15 @@ package net.cpp.item;
 
 import net.cpp.block.entity.AllInOneMachineBlockEntity;
 import net.cpp.block.entity.AllInOneMachineBlockEntity.Degree;
+import net.fabricmc.fabric.api.loot.v1.FabricLootSupplierBuilder;
+import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.loot.LootManager;
+import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 public class AllInOneMachinePlugin extends Item {

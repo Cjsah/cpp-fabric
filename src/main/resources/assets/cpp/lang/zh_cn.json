@@ -465,7 +465,7 @@
   "block.cpp.crafting_machine": "合成器",
   "block.cpp.all_in_one_machine": "多功能一体机",
   "block.cpp.trade_machine": "交易机",
-  "block.cpp.item_processer": "物品处理机",
+  "block.cpp.item_processor": "物品处理机",
   "block.cpp.mob_projector": "生物投影仪",
   "block.cpp.beacon_enhancer": "信标增强器",
   "block.cpp.golden_anvil": "金砧",

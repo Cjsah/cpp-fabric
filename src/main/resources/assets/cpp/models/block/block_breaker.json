@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "cpp:block/block_breaker_side",
+        "down": "cpp:block/block_breaker_bottom",
+        "up": "cpp:block/block_breaker_top",
+        "north": "cpp:block/block_breaker_side",
+        "east": "cpp:block/block_breaker_side",
+        "south": "cpp:block/block_breaker_side",
+        "west": "cpp:block/block_breaker_side"
+    }
+}

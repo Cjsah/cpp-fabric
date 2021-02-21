@@ -1,0 +1,74 @@
+package net.cpp.block.entity;
+
+import net.cpp.init.CppBlockEntities;
+import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
+
+public class BlockBreakerBlockEntity extends BlockEntity {
+    private int time;
+    private String fluid = "";
+    public BlockBreakerBlockEntity(BlockPos pos, BlockState state) {
+        super(CppBlockEntities.BLOCK_BREAKER, pos, state);
+    }
+
+    @Override
+    public void fromTag(CompoundTag tag) {
+        super.fromTag(tag);
+        time=tag.getInt("time");
+        fluid= tag.getString("fluid");
+    }
+
+    @Override
+    public CompoundTag toTag(CompoundTag tag) {
+        tag.putInt("time",time);
+        tag.putString("fluid",fluid);
+        return super.toTag(tag);
+    }
+
+    public static void tick(World world, BlockPos pos, BlockState state, BlockBreakerBlockEntity blockEntity) {
+        if (world.getBlockState(pos.up()).isOf( Blocks.CAULDRON)){
+            if (!"".equals(blockEntity.fluid)) {
+                if (blockEntity.time <= 0) {
+                    switch (blockEntity.fluid) {
+                        case "water":
+                            world.setBlockState(pos.up(), Blocks.WATER_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, 3));
+                            break;
+                        case "lava":
+                            world.setBlockState(pos.up(), Blocks.LAVA_CAULDRON.getDefaultState());
+                            break;
+                    }
+                    blockEntity.fluid = "";
+                } else {
+                    blockEntity.time--;
+                }
+            } else {
+                for (ItemEntity itemEntity: world.getEntitiesByClass(ItemEntity.class, new Box(pos.up()), itemEntity -> true)) {
+                    ItemStack stack = itemEntity.getStack();
+                    if (stack.getCount() >= 4) {
+                        if (stack.isOf(Items.SNOWBALL)) {
+                            stack.decrement(4);
+                            blockEntity.fluid="water";
+                            blockEntity.time=1200;
+                            break;
+                        } else if (stack.isOf(Items.COBBLESTONE)) {
+                            stack.decrement(4);
+                            blockEntity.fluid="lava";
+                            blockEntity.time=1200;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

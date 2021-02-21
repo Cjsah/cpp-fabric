@@ -1,7 +1,0 @@
-{
-  "variants": {
-    "": {
-      "model": "cpp:block/item_processer"
-    }
-  }
-}

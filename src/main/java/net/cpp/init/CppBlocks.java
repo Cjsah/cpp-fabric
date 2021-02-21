@@ -32,29 +32,7 @@ import com.google.common.collect.ImmutableList;
 
 import net.cpp.Craftingpp;
 import net.cpp.api.SimpleSaplingGenerator;
-import net.cpp.block.AllInOneMachineBlock;
-import net.cpp.block.BeaconEnhancerBlock;
-import net.cpp.block.ChestDropperBlock;
-import net.cpp.block.CraftingMachineBlock;
-import net.cpp.block.CustomHeightPlantBlock;
-import net.cpp.block.DustbinBlock;
-import net.cpp.block.EmptyBookshelfBlock;
-import net.cpp.block.FlowerGrass1Block;
-import net.cpp.block.FlowerGrass2Block;
-import net.cpp.block.FlowerPortalBlock;
-import net.cpp.block.FruitLeavesBlock;
-import net.cpp.block.GoldenAnvilBlock;
-import net.cpp.block.ItemProcessorBlock;
-import net.cpp.block.MobProjectorBlock;
-import net.cpp.block.OreLeavesBlock;
-import net.cpp.block.PublicPlantBlock;
-import net.cpp.block.PublicSaplingBlock;
-import net.cpp.block.PublicSkullBlock;
-import net.cpp.block.PublicWallSkullBlock;
-import net.cpp.block.RiceBlock;
-import net.cpp.block.StructureGenerationBlock;
-import net.cpp.block.TradeMachineBlock;
-import net.cpp.block.WoolLeavesBlock;
+import net.cpp.block.*;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.AbstractBlock;
@@ -86,7 +64,7 @@ public final class CppBlocks {
 	public static final Block CRAFTING_MACHINE = registerMachine("crafting_machine", new CraftingMachineBlock());
 	public static final Block ALL_IN_ONE_MACHINE = registerMachine("all_in_one_machine", new AllInOneMachineBlock());
 	public static final Block TRADE_MACHINE = registerMachine("trade_machine", new TradeMachineBlock());
-	public static final Block ITEM_PROCESSER = registerMachine("item_processer", new ItemProcessorBlock());
+	public static final Block ITEM_PROCESSOR = registerMachine("item_processor", new ItemProcessorBlock());
 	public static final Block MOB_PROJECTOR = registerMachine("mob_projector", new MobProjectorBlock());
 	public static final Block BEACON_ENHANCER = registerMachine("beacon_enhancer", new BeaconEnhancerBlock());
 	public static final Block GOLDEN_ANVIL = registerMachine("golden_anvil", new GoldenAnvilBlock());
@@ -133,7 +111,7 @@ public final class CppBlocks {
 	public static final Block NARCISSUS = registerFlowerGrass("narcissus");
 	public static final Block COLE_FLOWER = registerFlowerGrass("cole_flower");
 	public static final Block LUPINE = registerFlowerGrass("lupine");
-	public static final Block CROCU = registerFlowerGrass("crocu");
+	public static final Block CROCUS = registerFlowerGrass("crocus");
 	public static final Block PANSY = registerFlowerGrass("pansy");
 	public static final Block ARABIA_SPEEDWELL = registerFlowerGrass("arabia_speedwell");
 	public static final Block SILENE_PENDULA = registerFlowerGrass("silene_pendula");
@@ -144,9 +122,11 @@ public final class CppBlocks {
 	public static final Block RICE = Registry.register(Registry.BLOCK, new Identifier(MOD_ID3, "rice"), new RiceBlock(FabricBlockSettings.of(Material.PLANT).ticksRandomly().noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS)));
 	public static final Block FLOWER_PORTAL = Registry.register(Registry.BLOCK, new Identifier(MOD_ID3, "flower_portal"), new FlowerPortalBlock(FabricBlockSettings.of(Material.PORTAL).noCollision().ticksRandomly().strength(-1.0F).sounds(BlockSoundGroup.GLASS).luminance(15)));
 	public static final Block STRUCTURE_GENERATOR = Registry.register(Registry.BLOCK, new Identifier(MOD_ID3, "structure_generator"), new StructureGenerationBlock(FabricBlockSettings.of(Material.AIR).noCollision().dropsNothing().air().nonOpaque()));
+	public static final Block BLOCK_BREAKER = registerBlock(BlockBreakerBlock.ID, new BlockBreakerBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(3.5F)), CPP_GROUP_MACHINE);
+	public static final Block FERMENTER = registerBlock("fermenter", new FermenterBlock(FabricBlockSettings.of(Material.WOOD).strength(0.6F).sounds(BlockSoundGroup.WOOD)), CPP_GROUP_MACHINE);
 //	public static final Block ENDERMAN_HEAD = registerBlock("enderman_head", new PublicSkullBlock(null, null), CPP_GROUP_MISC);
 
-	public static final List<Block> FLOWER_GRASSES = ImmutableList.of(LYCORIS_RADIATA, TRIFOLIUM, BLACKTHORN, CATTAIL, MARIGOLD, HIBISCUS, HYACINTH, CALAMUS, WILD_LILIUM, BAUHINIA, FLUFFY_GRASS, GERBERA, ESPARTO, GLOW_FORSYTHIA, GLAZED_SHADE, STELERA, FORAGE_CRYSTAL, ISORCHID, BURNING_CHRYSANTHE, OXALIS, CALLIOPSIS, CYCLAMEN, IRIS, LILIUM_PUMILUM, SNOWDROP, NARCISSUS, COLE_FLOWER, LUPINE, CROCU, PANSY, ARABIA_SPEEDWELL, SILENE_PENDULA, ARTEMISIA_ARGYI);
+	public static final List<Block> FLOWER_GRASSES = ImmutableList.of(LYCORIS_RADIATA, TRIFOLIUM, BLACKTHORN, CATTAIL, MARIGOLD, HIBISCUS, HYACINTH, CALAMUS, WILD_LILIUM, BAUHINIA, FLUFFY_GRASS, GERBERA, ESPARTO, GLOW_FORSYTHIA, GLAZED_SHADE, STELERA, FORAGE_CRYSTAL, ISORCHID, BURNING_CHRYSANTHE, OXALIS, CALLIOPSIS, CYCLAMEN, IRIS, LILIUM_PUMILUM, SNOWDROP, NARCISSUS, COLE_FLOWER, LUPINE, CROCUS, PANSY, ARABIA_SPEEDWELL, SILENE_PENDULA, ARTEMISIA_ARGYI);
 
 	public static void register() {
 	}

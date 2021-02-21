@@ -81,7 +81,7 @@ public class ItemProcessorBlockEntity extends AOutputMachineBlockEntity {
 	public final PropertyDelegate propertyDelegate = new OutputDirectionPropertyDelegate();
 
 	public ItemProcessorBlockEntity() {
-		this(BlockPos.ORIGIN, CppBlocks.ITEM_PROCESSER.getDefaultState());
+		this(BlockPos.ORIGIN, CppBlocks.ITEM_PROCESSOR.getDefaultState());
 	}
 
 	public ItemProcessorBlockEntity(BlockPos blockPos, BlockState blockState) {

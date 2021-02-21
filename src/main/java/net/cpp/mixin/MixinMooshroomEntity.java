@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 @Mixin(MooshroomEntity.class)
 public abstract class MixinMooshroomEntity extends CowEntity {
-	protected MixinMooshroomEntity(EntityType<? extends CowEntity> entityType, World world) {
+	public MixinMooshroomEntity(EntityType<? extends CowEntity> entityType, World world) {
 		super(entityType, world);
 	}
 

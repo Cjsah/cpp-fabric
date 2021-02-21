@@ -26,6 +26,7 @@ import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.registry.DynamicRegistryManager;
+import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.biome.Biome;
@@ -48,13 +49,14 @@ public class EnchantingRoomFeature extends StructureFeature<DefaultFeatureConfig
 			super(structureFeature, chunkX, chunkZ, blockBox, references, seed);
 		}
 
-		public void init(DynamicRegistryManager dynamicRegistryManager, ChunkGenerator chunkGenerator, StructureManager structureManager, int chunkX, int chunkZ, Biome biome, DefaultFeatureConfig defaultFeatureConfig) {
+		@Override
+		public void init(DynamicRegistryManager registryManager, ChunkGenerator chunkGenerator, StructureManager manager, int chunkX, int chunkZ, Biome biome, DefaultFeatureConfig config, HeightLimitView heightLimitView) {
 			int x = ChunkSectionPos.getBlockCoord(chunkX);
 			int z = ChunkSectionPos.getBlockCoord(chunkZ);
-			int y = chunkGenerator.getHeight(x, z, Heightmap.Type.WORLD_SURFACE_WG);
+			int y = chunkGenerator.getHeight(x, z, Heightmap.Type.WORLD_SURFACE_WG, heightLimitView);
 			BlockPos blockPos = new BlockPos(x, y, z);
 			BlockRotation blockRotation = BlockRotation.random(random);
-			Generator.addPieces(structureManager, blockPos, blockRotation, this.children);
+			Generator.addPieces(manager, blockPos, blockRotation, this.children);
 			this.setBoundingBoxFromChildren();
 		}
 	}

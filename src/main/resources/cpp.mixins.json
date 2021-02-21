@@ -4,7 +4,6 @@
     "package": "net.cpp.mixin",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
-		"MixinAbstractSkeletonEntity",
 		"MixinBeeEntity",
 		"MixinBlock",
 		"MixinChickenEntity",
@@ -22,7 +21,6 @@
 		"MixinItemStack",
 		"MixinLeavesBlock",
 		"MixinLivingEntity",
-		"MixinMooshroomEntity",
 		"MixinPigEntity",
 		"MixinPlayerEntity",
 		"MixinPlayerManager",
@@ -36,6 +34,10 @@
 		"MixinVillagerEntity",
 		"MixinZombieEntity"
     ],
+	"暂时排除": [
+		"MixinAbstractSkeletonEntity",
+		"MixinMooshroomEntity"
+	],
     "injectors": {
         "defaultRequire": 1
     }

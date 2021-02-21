@@ -16,6 +16,7 @@ public final class CppStats {
 	public static final Identifier INTERACT_WITH_DUSTBIN = registerStats("interact_with_dustbin");
 	public static final Identifier INTERACT_WITH_CHEST_DROPPER = registerStats("interact_with_chest_dropper");
 	public static final Identifier INTERACT_WITH_EMPTY_BOOKSHELF = registerStats("interact_with_empty_bookshelf");
+	public static final Identifier INTERACT_WITH_BLOCK_BREAKER = registerStats("interact_with_block_breaker");
 
 	public static void register() {
 	}
