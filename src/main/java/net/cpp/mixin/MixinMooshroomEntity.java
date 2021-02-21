@@ -27,6 +27,7 @@ public abstract class MixinMooshroomEntity extends CowEntity {
 	@Shadow
 	public abstract MooshroomEntity createChild(ServerWorld serverWorld, PassiveEntity passiveEntity);
 
+	@Override
 	public void tick() {
 		super.tick();
 		if (!world.isClient && world.getTime() % 100 == 0 && world.getLightLevel(getBlockPos()) <= 7 && getServer().getPredicateManager().get(new Identifier("cpp:dark_animal")).test(new LootContext.Builder((ServerWorld) world).random(world.random).build(LootContextTypes.EMPTY))) {
