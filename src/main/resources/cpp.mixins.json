@@ -32,9 +32,7 @@
 		"MixinSpiderEntity",
 		"MixinWanderingTraderEntity",
 		"MixinVillagerEntity",
-		"MixinZombieEntity"
-    ],
-	"暂时排除": [
+		"MixinZombieEntity",
 		"MixinAbstractSkeletonEntity",
 		"MixinMooshroomEntity"
 	],

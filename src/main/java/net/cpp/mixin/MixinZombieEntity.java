@@ -18,7 +18,7 @@ public abstract class MixinZombieEntity extends HostileEntity {
 		super(entityType, world);
 	}
 
-	@Inject(at = @At("RETURN"), method = { "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)Lnet/minecraft/entity/mob/ZombieEntity;" })
+	@Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V")
 	public void enhance(CallbackInfo info) {
 		MobEnhancing.equipArmor(this);
 		MobEnhancing.equipWeapon(this);

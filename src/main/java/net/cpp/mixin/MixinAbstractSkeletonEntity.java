@@ -19,7 +19,7 @@ public abstract class MixinAbstractSkeletonEntity extends HostileEntity {
 		super(entityType, world);
 	}
 
-	@Inject(at = @At("RETURN"), method = { "<init>(net/minecraft/entity/EntityType;net/minecraft/world/World;)net/minecraft/entity/mob/AbstractSkeletonEntity;" })
+	@Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V")
 	public void enhance(CallbackInfo info) {
 		MobEnhancing.equipArmor(this);
 		if ((Class<?>) getClass() == WitherSkeletonEntity.class) {

@@ -1,14 +1,10 @@
 package net.cpp.block;
 
 import com.google.common.collect.Maps;
-import javafx.geometry.Pos;
 import net.cpp.Craftingpp;
 import net.cpp.api.CodingTool;
-import net.cpp.block.entity.AllInOneMachineBlockEntity;
-import net.cpp.block.entity.BeaconEnhancerBlockEntity;
 import net.cpp.block.entity.BlockBreakerBlockEntity;
 import net.cpp.init.CppBlockEntities;
-import net.cpp.init.CppBlocks;
 import net.cpp.init.CppStats;
 import net.minecraft.block.*;
 
@@ -19,17 +15,11 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.PistonBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.LootTables;
 import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -40,7 +30,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import net.minecraft.world.event.listener.GameEventListener;
 
 import javax.annotation.Nullable;
 import java.util.Map;
