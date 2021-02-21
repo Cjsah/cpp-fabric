@@ -2,7 +2,11 @@ package net.cpp.island;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -10,19 +14,20 @@ import net.minecraft.world.World;
  * 回字形分配岛屿
  */
 public class allocationIsland {
-    private static int islandID = 1;
+    private int islandID = 1;
     // 圈数
-    private static int around = 1;
+    private int around = 1;
 
 
-    public static void allocation(World world, PlayerEntity player) {
+    public void allocation(World world, PlayerEntity player) {
         BlockPos pos = getPos();
         world.setBlockState(pos, Blocks.BEDROCK.getDefaultState());
-        BlockState chest = Blocks.CHEST.getDefaultState();
-
-        // 不会往箱子里填东西.....
-
-        world.setBlockState(pos.add(0, 1, 0), chest);
+        world.setBlockState(pos.add(0, 1, 0), Blocks.CHEST.getDefaultState());
+        LootableContainerBlockEntity blockEntity = (LootableContainerBlockEntity) world.getBlockEntity(pos.add(0, 1, 0));
+        assert blockEntity != null;
+        blockEntity.setStack(0, new ItemStack(Items.OAK_SAPLING, 4));
+        blockEntity.setStack(1, new ItemStack(Items.DIRT, 1));
+        blockEntity.setStack(2, new ItemStack(Items.BONE_MEAL, 16));
 
         // player设为已拥有岛屿
 
@@ -30,30 +35,30 @@ public class allocationIsland {
 
     }
 
-    private static BlockPos getPos() {
-        if (islandID > getCount(around)) around++;
+    private BlockPos getPos() {
+        if (this.islandID > getCount(this.around)) this.around++;
 
-        int aroundId = islandID - getCount(around - 1);
-        int length = around * 2 + 1;
+        int aroundId = this.islandID - getCount(this.around - 1);
+        int length = this.around * 2 + 1;
 
-        islandID++;
+        this.islandID++;
 
         if (aroundId <= length) {
-            return createPos(-around, aroundId - around - 1);
+            return createPos(-this.around, aroundId - this.around - 1);
         }else if (aroundId <= length * 2 - 2) {
-            return createPos(aroundId - length - around, around);
+            return createPos(aroundId - length - this.around, this.around);
         }else if (aroundId <= length * 3 - 2) {
-            return createPos(around, length - aroundId + around * 3);
+            return createPos(this.around, length - aroundId + this.around * 3);
         }else {
-            return createPos(length - aroundId + around * 5, -around);
+            return createPos(length - aroundId + this.around * 5, -this.around);
         }
     }
 
-    private static int getCount(int around) {
+    private int getCount(int around) {
         return around * (around + 1) / 2 * 8;
     }
 
-    private static BlockPos createPos(int x, int z) {
+    private BlockPos createPos(int x, int z) {
         return new BlockPos(x * 1000, 62, z * 1000);
     }
 
