@@ -1,0 +1,64 @@
+{
+	"pools": [
+		{
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:dead_bush",
+					"weight": 32
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:iron_nugget",
+					"weight": 24,
+					"functions":[
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"type": "minecraft:uniform",
+								"min": 1,
+								"max": 4
+							}
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:gold_nugget",
+					"weight": 16,
+					"functions":[
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"type": "minecraft:uniform",
+								"min": 1,
+								"max": 4
+							}
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:bone_meal",
+					"weight": 10
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:redstone",
+					"weight": 10
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:gunpowder",
+					"weight": 6
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:blaze_powder",
+					"weight": 2
+				}
+			]
+		}
+	]
+}

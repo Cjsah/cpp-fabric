@@ -1,0 +1,43 @@
+{
+	"pools": [
+		{
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:quartz",
+					"weight": 55
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:clay_ball",
+					"weight": 20
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:nether_wart",
+					"weight": 9
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:blaze_powder",
+					"weight": 5
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:twisting_vines",
+					"weight": 5
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:weeping_vines",
+					"weight": 5
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:ghast_tear"
+				}
+			]
+		}
+	]
+}
