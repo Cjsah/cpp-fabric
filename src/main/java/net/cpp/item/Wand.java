@@ -14,7 +14,7 @@ import static net.cpp.init.CppItems.AGENTIA_OF_SHIELD;
 import static net.cpp.init.CppItems.AGENTIA_OF_TIDE;
 import static net.cpp.init.CppItems.AGENTIA_OF_TRANSPARENTNESS;
 import static net.cpp.init.CppItems.AGENTIA_OF_WATERLESS;
-import static net.cpp.init.CppItems.BROKEN_SPAWNER;
+import static net.cpp.init.CppBlocks.BROKEN_SPAWNER;
 import static net.cpp.init.CppItems.COLD_DRINK;
 import static net.cpp.init.CppItems.MAGNET;
 import static net.cpp.init.CppItems.SHARD_OF_THE_DARKNESS;
@@ -311,9 +311,7 @@ public class Wand extends Item {
 	}
 
 	static {
-		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			loadRandoms(server);
-		});
+		ServerLifecycleEvents.SERVER_STARTED.register(Wand::loadRandoms);
 		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((MinecraftServer server, ServerResourceManager serverResourceManager, boolean success) -> {
 			if (success) {
 				loadRandoms(server);
@@ -375,14 +373,14 @@ public class Wand extends Item {
 	}
 
 	public static boolean checkOblation4(Inventory inventory, ItemFrameEntity frame) {
-		return frame.getHeldItemStack().isOf(BROKEN_SPAWNER) && inventory.getStack(0).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(1).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(2).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(3).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(5).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(6).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(7).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(8).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(4).isIn(RARE_DROPS);
+		return frame.getHeldItemStack().isOf(BROKEN_SPAWNER.asItem()) && inventory.getStack(0).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(1).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(2).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(3).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(5).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(6).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(7).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(8).isOf(SHARD_OF_THE_DARKNESS) && inventory.getStack(4).isIn(RARE_DROPS);
 	}
 
 	public static boolean checkOblation5(Inventory inventory, ItemFrameEntity frame) {
 		return frame.getHeldItemStack().isOf(AMETHYST_BLOCK) && inventory.getStack(0).isOf(AMETHYST_SHARD) && inventory.getStack(1).isOf(AMETHYST_SHARD) && inventory.getStack(2).isOf(AMETHYST_SHARD) && inventory.getStack(3).isOf(AMETHYST_SHARD) && inventory.getStack(5).isOf(AMETHYST_SHARD) && inventory.getStack(6).isOf(AMETHYST_SHARD) && inventory.getStack(7).isOf(AMETHYST_SHARD) && inventory.getStack(8).isOf(AMETHYST_SHARD) && inventory.getStack(4).isIn(RARE_DROPS);
 	}
 
-	public static interface IRitualFrame {
+	public interface IRitualFrame {
 		void setRitualType(int type);
 
 		int getRitualType();

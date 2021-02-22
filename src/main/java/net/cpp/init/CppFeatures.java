@@ -17,9 +17,7 @@ import net.minecraft.world.gen.feature.StructureFeature;
 public final class CppFeatures {
 	public static final EnchantingRoomFeature ENCHANTING_ROOM_FEATURE;
 	public static final ConfiguredStructureFeature<?, ?> ENCHANTING_ROOM_CONFIGURED;
-	public static void loadClass() {
-		
-	}
+	public static void loadClass() {}
 	static {
 		{
 			EnchantingRoomFeature feature = new EnchantingRoomFeature(DefaultFeatureConfig.CODEC);

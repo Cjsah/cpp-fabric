@@ -20,8 +20,7 @@ public final class CppBlockEntities {
 	public static final BlockEntityType<EmptyBookshelfBlockEntity> EMPTY_BOOKSHELF = registerBlockEntityType(EmptyBookshelfBlockEntity::new, CppBlocks.EMPTY_BOOKSHELF);
 	public static final BlockEntityType<BlockBreakerBlockEntity> BLOCK_BREAKER = registerBlockEntityType(BlockBreakerBlockEntity::new, CppBlocks.BLOCK_BREAKER);
 
-	public static void register() {
-	}
+	public static void loadClass() {}
 
 	private static <T extends BlockEntity> BlockEntityType<T> registerBlockEntityType(FabricBlockEntityTypeBuilder.Factory<T> factory, Block block) {
 		return Registry.register(Registry.BLOCK_ENTITY_TYPE, Registry.BLOCK.getId(block).toString(), FabricBlockEntityTypeBuilder.create(factory, block).build());

@@ -29,9 +29,7 @@ public class AttachAttributesLootFunction extends ConditionalLootFunction {
 		return Wand.attachAttibutes(stack, context.getRandom());
 	}
 
-	public static void loadClass() {
-
-	}
+	public static void loadClass() {}
 
 	public static class Serializer extends ConditionalLootFunction.Serializer<AttachAttributesLootFunction> {
 

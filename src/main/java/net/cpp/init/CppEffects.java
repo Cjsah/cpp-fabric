@@ -15,7 +15,13 @@ public final class CppEffects {
 
 	public static final StatusEffect CHAIN = register("chain", new CppEffect(StatusEffectType.NEUTRAL, 11250603));
 
-	public static void register() {
+	public static void loadClass() {}
+
+	private static <T extends StatusEffect> StatusEffect register(String name, T effectClass) {
+		return Registry.register(Registry.STATUS_EFFECT, new Identifier(Craftingpp.MOD_ID3, name), effectClass);
+	}
+
+	static {
 		// 连环药水效果
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
 			if (player.getStatusEffect(CppEffects.CHAIN) != null && ChainProcessor.canChain(player.getMainHandStack().getItem(), state) && player.getMainHandStack().getDamage() + 1 < player.getMainHandStack().getMaxDamage()) {
@@ -24,9 +30,5 @@ public final class CppEffects {
 			}
 			return true;
 		});
-	}
-
-	private static <T extends StatusEffect> StatusEffect register(String name, T effectClass) {
-		return Registry.register(Registry.STATUS_EFFECT, new Identifier(Craftingpp.MOD_ID3, name), effectClass);
 	}
 }
