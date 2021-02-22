@@ -24,7 +24,11 @@ public class AllInOneMachineBlock extends AExpMachineBlock {
 	public AllInOneMachineBlock() {
 		setDefaultState(stateManager.getDefaultState().with(WORKING, false));
 	}
-
+	
+	public AllInOneMachineBlock(Settings settings) {
+		super(settings);
+	}
+	
 	/*
 	 * 以下是AMachineBlock的方法
 	 */

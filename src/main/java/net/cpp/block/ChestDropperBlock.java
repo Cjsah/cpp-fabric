@@ -14,7 +14,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ChestDropperBlock extends AMachineBlock {
-
+	
+	public ChestDropperBlock(Settings settings) {super(settings);
+	}
+	
 	@Nullable
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new ChestDropperBlockEntity(pos, state);

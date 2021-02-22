@@ -61,18 +61,20 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
 
 public final class CppBlocks {
-	public static final Block CRAFTING_MACHINE = registerMachine("crafting_machine", new CraftingMachineBlock());
-	public static final Block ALL_IN_ONE_MACHINE = registerMachine("all_in_one_machine", new AllInOneMachineBlock());
-	public static final Block TRADE_MACHINE = registerMachine("trade_machine", new TradeMachineBlock());
-	public static final Block ITEM_PROCESSOR = registerMachine("item_processor", new ItemProcessorBlock());
-	public static final Block MOB_PROJECTOR = registerMachine("mob_projector", new MobProjectorBlock());
-	public static final Block BEACON_ENHANCER = registerMachine("beacon_enhancer", new BeaconEnhancerBlock());
-	public static final Block GOLDEN_ANVIL = registerMachine("golden_anvil", new GoldenAnvilBlock());
-	public static final Block DUSTBIN = registerMachine("dustbin", new DustbinBlock());
-	public static final Block CHEST_DROPPER = registerMachine("chest_dropper", new ChestDropperBlock());
-	public static final Block EMPTY_BOOKSHELF = registerMachine("empty_bookshelf", new EmptyBookshelfBlock());
-	public static final Block RARE_EARTH_GLASS = registerBlock("rare_earth_glass", new GlassBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5.0F, 6.0F).sounds(BlockSoundGroup.METAL).nonOpaque()), CPP_GROUP_MISC);
-	public static final Block REINFORCED_GLASS = registerBlock("reinforced_glass", new GlassBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(50.0F, 3600000.0F).sounds(BlockSoundGroup.METAL).nonOpaque()), CPP_GROUP_MISC);
+	public static final AbstractBlock.Settings FURNACE_SETTINGS = AbstractBlock.Settings.of(Material.STONE).requiresTool().strength(3.5F);
+	public static final AbstractBlock.Settings BARREL_SETTINGS = AbstractBlock.Settings.of(Material.WOOD).strength(2.5F).sounds(BlockSoundGroup.WOOD);
+	public static final Block CRAFTING_MACHINE = registerMachine("crafting_machine", new CraftingMachineBlock(BARREL_SETTINGS));
+	public static final Block ALL_IN_ONE_MACHINE = registerMachine("all_in_one_machine", new AllInOneMachineBlock(FURNACE_SETTINGS));
+	public static final Block TRADE_MACHINE = registerMachine("trade_machine", new TradeMachineBlock(BARREL_SETTINGS));
+	public static final Block ITEM_PROCESSOR = registerMachine("item_processor", new ItemProcessorBlock(FURNACE_SETTINGS));
+	public static final Block MOB_PROJECTOR = registerMachine("mob_projector", new MobProjectorBlock(FURNACE_SETTINGS));
+	public static final Block BEACON_ENHANCER = registerMachine("beacon_enhancer", new BeaconEnhancerBlock(FURNACE_SETTINGS));
+	public static final Block GOLDEN_ANVIL = registerMachine("golden_anvil", new GoldenAnvilBlock(FURNACE_SETTINGS));
+	public static final Block DUSTBIN = registerMachine("dustbin", new DustbinBlock(FURNACE_SETTINGS));
+	public static final Block CHEST_DROPPER = registerMachine("chest_dropper", new ChestDropperBlock(BARREL_SETTINGS));
+	public static final Block EMPTY_BOOKSHELF = registerMachine("empty_bookshelf", new EmptyBookshelfBlock(BARREL_SETTINGS));
+	public static final Block RARE_EARTH_GLASS = registerBlock("rare_earth_glass", new GlassBlock(FabricBlockSettings.of(Material.GLASS).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5.0F, 6.0F).sounds(BlockSoundGroup.GLASS).nonOpaque()), CPP_GROUP_MISC);
+	public static final Block REINFORCED_GLASS = registerBlock("reinforced_glass", new GlassBlock(FabricBlockSettings.of(Material.GLASS).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(50.0F, 3600000.0F).sounds(BlockSoundGroup.GLASS).nonOpaque()), CPP_GROUP_MISC);
 	public static final Block MOON_STONE = registerBlock("moon_stone", new Block(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5.0F, 6.0F).sounds(BlockSoundGroup.METAL)), CPP_GROUP_MISC);
 	public static final Block SUN_STONE = registerBlock("sun_stone", new Block(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL)), CPP_GROUP_MISC);
 	public static final Block BROKEN_SPAWNER = registerBlock("broken_spawner", new Block(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5.0F).sounds(BlockSoundGroup.METAL).nonOpaque()), CPP_GROUP_MISC);
@@ -130,7 +132,8 @@ public final class CppBlocks {
 	public static final List<Block> FLOWER_GRASSES = ImmutableList.of(LYCORIS_RADIATA, TRIFOLIUM, BLACKTHORN, CATTAIL, MARIGOLD, HIBISCUS, HYACINTH, CALAMUS, WILD_LILIUM, BAUHINIA, FLUFFY_GRASS, GERBERA, ESPARTO, GLOW_FORSYTHIA, GLAZED_SHADE, STELERA, FORAGE_CRYSTAL, ISORCHID, BURNING_CHRYSANTHE, OXALIS, CALLIOPSIS, CYCLAMEN, IRIS, LILIUM_PUMILUM, SNOWDROP, NARCISSUS, COLE_FLOWER, LUPINE, CROCUS, PANSY, ARABIA_SPEEDWELL, SILENE_PENDULA, ARTEMISIA_ARGYI);
 
 	public static void loadClass() {}
-
+	
+	
 	private static Block registerMachine(String id, Block block) {
 		Identifier identifier = new Identifier(Craftingpp.MOD_ID3, id);
 		Block regBlock = Registry.register(Registry.BLOCK, identifier, block);

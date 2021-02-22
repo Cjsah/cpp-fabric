@@ -1,14 +1,5 @@
 package net.cpp;
 
-import static net.cpp.init.CppBlocks.BLUE_ROSE;
-import static net.cpp.init.CppBlocks.CHRISTMAS_TREE;
-import static net.cpp.init.CppBlocks.FRUIT_SAPLING;
-import static net.cpp.init.CppBlocks.ORE_SAPLING;
-import static net.cpp.init.CppBlocks.POINSETTIA;
-import static net.cpp.init.CppBlocks.RICE;
-import static net.cpp.init.CppBlocks.SAKURA_SAPLING;
-import static net.cpp.init.CppBlocks.WOOL_SAPLING;
-
 import net.cpp.entity.AGolemEntity;
 import net.cpp.entity.render.DarkChickenEntityRenderer;
 import net.cpp.entity.render.DarkCowEntityRenderer;
@@ -37,17 +28,20 @@ import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.impl.blockrenderlayer.BlockRenderLayerMapImpl;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.gui.screen.ingame.CraftingScreen;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.EntityType;
 
+import static net.cpp.init.CppBlocks.*;
+
 @Environment(EnvType.CLIENT)
 public class CraftingppClient implements ClientModInitializer {
-
+	
 	@Override
 	public void onInitializeClient() {
 		CppPredicates.register();
-
+		
 		ScreenRegistry.register(CppScreenHandler.CRAFTING_MACHINE, CraftingMachineScreen::new);
 		ScreenRegistry.register(CppScreenHandler.ALL_IN_ONE_MACHINE, AllInOneMachineScreen::new);
 		ScreenRegistry.register(CppScreenHandler.ITEM_PROCESSOR, ItemProcessorScreen::new);
@@ -59,19 +53,20 @@ public class CraftingppClient implements ClientModInitializer {
 		ScreenRegistry.register(CppScreenHandler.GOLDEN_ANVIL, GoldenAnvilScreen::new);
 		ScreenRegistry.register(CppScreenHandler.EMPTY_BOOKSHELF, EmptyBookshelfScreen::new);
 		ScreenRegistry.register(CppScreenHandler.COLOR_PALETTE, ColorPaletteScreen::new);
-
+		
 		for (EntityType<? extends AGolemEntity> type : CppEntities.GOLEMS) {
 			EntityRendererRegistry.INSTANCE.register(type, ctx -> new GolemEntityRenderer(ctx, type));
 		}
-		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_COW, ctx -> new DarkCowEntityRenderer(ctx));
-		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_MOOSHROOM, ctx -> new DarkMooshroomEntityRenderer(ctx));
-		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_SHEEP, ctx -> new DarkSheepEntityRenderer(ctx));
-		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_PIG, ctx -> new DarkPigEntityRenderer(ctx));
-		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_CHICKEN, ctx -> new DarkChickenEntityRenderer(ctx));
-
+		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_COW, DarkCowEntityRenderer::new);
+		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_MOOSHROOM, DarkMooshroomEntityRenderer::new);
+		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_SHEEP, DarkSheepEntityRenderer::new);
+		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_PIG, DarkPigEntityRenderer::new);
+		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_CHICKEN, DarkChickenEntityRenderer::new);
+		
 		BlockRenderLayerMapImpl.INSTANCE.putBlocks(RenderLayer.getCutout(), FRUIT_SAPLING, ORE_SAPLING, SAKURA_SAPLING, WOOL_SAPLING, BLUE_ROSE, POINSETTIA, CHRISTMAS_TREE, RICE);
+		BlockRenderLayerMapImpl.INSTANCE.putBlocks(RenderLayer.getTranslucent(), RARE_EARTH_GLASS, REINFORCED_GLASS);
 		for (Block block : CppBlocks.FLOWER_GRASSES)
 			BlockRenderLayerMapImpl.INSTANCE.putBlock(block, RenderLayer.getCutout());
 	}
-
+	
 }

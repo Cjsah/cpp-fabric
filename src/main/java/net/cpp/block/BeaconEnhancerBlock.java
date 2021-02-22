@@ -20,7 +20,10 @@ public class BeaconEnhancerBlock extends AOutputMachineBlock {
 	public BeaconEnhancerBlock() {
 		super(Settings.of(Material.WOOD).blockVision((state, world, pos) -> false));
 	}
-
+	
+	public BeaconEnhancerBlock(Settings settings) {super(settings);
+	}
+	
 	/*
 	 * 以下是AMachineBlock的方法
 	 */

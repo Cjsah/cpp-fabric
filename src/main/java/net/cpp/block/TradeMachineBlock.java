@@ -14,6 +14,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class TradeMachineBlock extends AExpMachineBlock {
+	public TradeMachineBlock(Settings settings) {
+		super(settings);
+	}
+	
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new TradeMachineBlockEntity(pos, state);

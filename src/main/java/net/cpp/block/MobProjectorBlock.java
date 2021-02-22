@@ -14,10 +14,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class MobProjectorBlock extends AExpMachineBlock {
-
+	
 	public MobProjectorBlock() {
 	}
-
+	
+	public MobProjectorBlock(Settings settings) {
+		super(settings);
+	}
+	
 	/*
 	 * 以下是AMachineBlock的方法
 	 */
@@ -25,7 +29,7 @@ public class MobProjectorBlock extends AExpMachineBlock {
 	public Identifier getStatIdentifier() {
 		return CppStats.INTERACT_WITH_MOB_PROJECTOR;
 	}
-
+	
 	/*
 	 * 以下是BlockEntityProvider的方法
 	 */
@@ -33,11 +37,12 @@ public class MobProjectorBlock extends AExpMachineBlock {
 	public BlockEntity createBlockEntity(BlockPos blockPos, BlockState blockState) {
 		return new MobProjectorBlockEntity(blockPos, blockState);
 	}
+	
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
 		return checkType(world, type, CppBlockEntities.MOB_PROJECTOR);
 	}
-
+	
 	@Nullable
 	protected static <T extends BlockEntity> BlockEntityTicker<T> checkType(World world, BlockEntityType<T> givenType, BlockEntityType<? extends MobProjectorBlockEntity> expectedType) {
 		return world.isClient ? null : checkType(givenType, expectedType, MobProjectorBlockEntity::tick);

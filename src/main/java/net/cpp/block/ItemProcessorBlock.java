@@ -14,7 +14,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemProcessorBlock extends AOutputMachineBlock {
-
+	
+	public ItemProcessorBlock(Settings settings) {
+		super(settings);
+	}
+	
 	@Override
 	public Identifier getStatIdentifier() {
 		return CppStats.INTERACT_WITH_ITEM_PROCESSOR;

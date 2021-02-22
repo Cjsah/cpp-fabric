@@ -22,7 +22,10 @@ public class EmptyBookshelfBlock extends AMachineBlock {
 	public EmptyBookshelfBlock() {
 		setDefaultState(stateManager.getDefaultState().with(BOOK_STATE, 0));
 	}
-
+	
+	public EmptyBookshelfBlock(Settings settings) {super(settings);
+	}
+	
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new EmptyBookshelfBlockEntity(pos, state);
 	}

@@ -14,6 +14,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class CraftingMachineBlock extends AOutputMachineBlock {
+	
+	public CraftingMachineBlock(Settings settings) {
+		super(settings);
+	}
+	
 	/*
 	 * 以下是AMachineBlock的方法
 	 */

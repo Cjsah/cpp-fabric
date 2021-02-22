@@ -1,5 +1,6 @@
 package net.cpp.block;
 
+import net.cpp.init.CppBlocks;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
@@ -24,7 +25,7 @@ import net.minecraft.world.World;
 
 public abstract class AMachineBlock extends BlockWithEntity {
 	public AMachineBlock() {
-		this(Settings.of(Material.WOOD).strength(2.5F).sounds(BlockSoundGroup.WOOD));
+		this(CppBlocks.BARREL_SETTINGS);
 	}
 
 	public AMachineBlock(Settings settings) {

@@ -61,7 +61,6 @@ public class Craftingpp implements ModInitializer {
 		CppScreenHandler.loadClass();
 		CppRecipes.loadClass();
 		CppStats.loadClass();
-		CppEffects.loadClass();
 		CppLootTableFunctions.loadClass();
 		CppEntities.loadClass();
 		CppFeatures.loadClass();

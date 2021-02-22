@@ -14,8 +14,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class GoldenAnvilBlock extends AExpMachineBlock {
-
-    @Override
+	
+	public GoldenAnvilBlock(Settings settings) {super(settings);
+	}
+	
+	@Override
     public BlockEntity createBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new GoldenAnvilBlockEntity(blockPos, blockState);
     }
