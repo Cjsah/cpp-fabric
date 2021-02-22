@@ -23,8 +23,7 @@ public final class CppScreenHandler {
 	public static final ScreenHandlerType<EmptyBookshelfScreenHandler> EMPTY_BOOKSHELF = register(CppBlocks.EMPTY_BOOKSHELF,EmptyBookshelfScreenHandler::new);
 	public static final ScreenHandlerType<ColorPaletteScreenHandler> COLOR_PALETTE = register(CppItems.COLOR_PALETTE,ColorPaletteScreenHandler::new);
 
-	public static void register() {
-	}
+	public static void loadClass() {}
 
 	private static <T extends ScreenHandler> ScreenHandlerType<T> register(Block block, SimpleClientHandlerFactory<T> factory) {
 		return ScreenHandlerRegistry.registerSimple(Registry.BLOCK.getId(block), factory);

@@ -29,6 +29,7 @@ import static net.cpp.init.CppBlocks.WILD_LILIUM;
 
 import net.cpp.Craftingpp;
 import net.cpp.api.CppFoodOrPotion;
+import net.cpp.api.CppVaccine;
 import net.cpp.block.FlowerGrass1Block;
 import net.cpp.block.entity.AllInOneMachineBlockEntity.Degree;
 import net.cpp.item.AllInOneMachinePlugin;
@@ -304,6 +305,12 @@ public final class CppItems {
 	public static final Item AGENTIA_OF_EARTH;
 	public static final Item AGENTIA_OF_FIRE;
 	public static final Item AGENTIA_OF_LIFE;
+	// 疫苗
+	public static final Item VACCINE_OF_POISON;
+	public static final Item VACCINE_OF_BLINDNESS;
+	public static final Item VACCINE_OF_MINING_FATIGUE;
+	public static final Item VACCINE_OF_WITHER;
+	public static final Item VACCINE_OF_DARKNESS;
 	// 植物
 	public static final Item LYCORIS_RADIATA_SEEDS;
 	public static final Item TRIFOLIUM_SEEDS;
@@ -390,7 +397,6 @@ public final class CppItems {
 	public static final Item BLACK_SIGN;
 	public static final Item GLASS_SIGN;
 
-	public static final Item BROKEN_SPAWNER = registerItem("broken_spawner", new Item(new Settings().group(CPP_GROUP_MISC)));
 	public static final Item RECIPE_CREATOR = registerItem("recipe_creator", new RecipeCreator());
 
 	public static final Item COMPRESSED_ITEM;
@@ -611,6 +617,12 @@ public final class CppItems {
 		AGENTIA_OF_FIRE = registerItem("agentia_of_fire", new CppFoodOrPotion(UseAction.DRINK, 0, new Item.Settings().group(CPP_GROUP_MISC).food((new FoodComponent.Builder()).hunger(6).saturationModifier(0.3F).alwaysEdible().statusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 14400, 0), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 7200, 1), 1.0F).build()).maxCount(16)));
 		AGENTIA_OF_LIFE = registerItem("agentia_of_life", new CppFoodOrPotion(UseAction.DRINK, 0, new Item.Settings().group(CPP_GROUP_MISC).food((new FoodComponent.Builder()).hunger(6).saturationModifier(0.3F).alwaysEdible().statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 3600, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 1, 3), 1.0F).build()).maxCount(16)));
 
+		VACCINE_OF_POISON = registerItem("vaccine_of_position", new CppVaccine(new Item.Settings().group(CPP_GROUP_MISC)));
+		VACCINE_OF_BLINDNESS = registerItem("vaccine_of_blindness", new CppVaccine(new Item.Settings().group(CPP_GROUP_MISC)));
+		VACCINE_OF_MINING_FATIGUE = registerItem("vaccine_of_mining_fatigue", new CppVaccine(new Item.Settings().group(CPP_GROUP_MISC)));
+		VACCINE_OF_WITHER = registerItem("vaccine_of_wither", new CppVaccine(new Item.Settings().group(CPP_GROUP_MISC)));
+		VACCINE_OF_DARKNESS = registerItem("vaccine_of_darkness", new CppVaccine(new Item.Settings().group(CPP_GROUP_MISC)));
+
 		LYCORIS_RADIATA_SEEDS = registerSeeds(LYCORIS_RADIATA);
 		TRIFOLIUM_SEEDS = registerSeeds(TRIFOLIUM);
 		BLACKTHORN_SEEDS = registerSeeds(BLACKTHORN);
@@ -709,7 +721,6 @@ public final class CppItems {
 		return item;
 	}
 
-	public static void register() {
-	}
+	public static void loadClass() {}
 
 }

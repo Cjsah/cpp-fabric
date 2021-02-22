@@ -15,7 +15,6 @@ public final class CppRecipes {
 	public static final RecipeType<AllInOneMachineRecipe> ALL_IN_ONE_MACHINE_TYPE = RecipeType.register("cpp:all_in_one_machine");
 	public static final RecipeSerializer<AllInOneMachineRecipe> ALL_IN_ONE_MACHINE_SERIALIZER = RecipeSerializer.register("cpp:all_in_one_machine", new AllInOneMachineRecipe.Serializer());
 
-	public static void register() {
-	}
+	public static void loadClass() {}
 
 }

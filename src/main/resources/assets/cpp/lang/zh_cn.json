@@ -460,7 +460,6 @@
   "item.cpp.coral_block": "珊瑚块",
   "item.cpp.dye_stick": "染色棒",
   "item.cpp.dye": "染料",
-  "item.cpp.broken_spawner": "破损刷怪笼",
 
   "block.cpp.crafting_machine": "合成器",
   "block.cpp.all_in_one_machine": "多功能一体机",
@@ -474,6 +473,7 @@
   "block.cpp.empty_bookshelf": "空书架",
   "block.cpp.moon_stone": "月石",
   "block.cpp.sun_stone": "日石",
+  "block.cpp.broken_spawner": "破损的刷怪笼",
   "block.cpp.rare_earth_glass": "稀土玻璃",
   "block.cpp.reinforced_glass": "钢化玻璃",
   "block.cpp.fruit_leaves": "水果树树叶",

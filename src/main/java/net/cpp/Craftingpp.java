@@ -55,14 +55,14 @@ public class Craftingpp implements ModInitializer {
 
 		logger.info("welcome to use cpp");
 
-		CppBlocks.register();
-		CppItems.register();
-		CppBlockEntities.register();
-		CppScreenHandler.register();
-		CppRecipes.register();
-		CppStats.register();
-		CppEffects.register();
-		CppLootTableFunctions.register();
+		CppBlocks.loadClass();
+		CppItems.loadClass();
+		CppBlockEntities.loadClass();
+		CppScreenHandler.loadClass();
+		CppRecipes.loadClass();
+		CppStats.loadClass();
+		CppEffects.loadClass();
+		CppLootTableFunctions.loadClass();
 		CppEntities.loadClass();
 		CppFeatures.loadClass();
 		AttachAttributesLootFunction.loadClass();

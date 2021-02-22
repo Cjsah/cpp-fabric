@@ -75,7 +75,7 @@ public class FlowerGrass1Block extends FlowerBlock implements Fertilizable {
 
 	public Item getSeed() {
 		if (seed == null)
-			CppItems.register();
+			CppItems.loadClass();
 		return seed;
 	}
 

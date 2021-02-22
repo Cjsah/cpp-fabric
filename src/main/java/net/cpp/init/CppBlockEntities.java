@@ -21,8 +21,7 @@ public final class CppBlockEntities {
 	public static final BlockEntityType<BlockBreakerBlockEntity> BLOCK_BREAKER = registerBlockEntityType(BlockBreakerBlockEntity::new, CppBlocks.BLOCK_BREAKER);
 	public static final BlockEntityType<FermenterBlockEntity> FERMENTER = registerBlockEntityType(FermenterBlockEntity::new, CppBlocks.FERMENTER);
 
-	public static void register() {
-	}
+	public static void loadClass() {}
 
 	private static <T extends BlockEntity> BlockEntityType<T> registerBlockEntityType(FabricBlockEntityTypeBuilder.Factory<T> factory, Block block) {
 		return Registry.register(Registry.BLOCK_ENTITY_TYPE, Registry.BLOCK.getId(block).toString(), FabricBlockEntityTypeBuilder.create(factory, block).build());

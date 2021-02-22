@@ -42,11 +42,9 @@ public final class CppEntities {
 	public static final EntityType<DarkPigEntity> DARK_PIG = registerDark("dark_pig", DarkPigEntity::new, PigEntity.createPigAttributes(), builder -> builder.setDimensions(0.9F, 0.9F));
 	public static final EntityType<DarkChickenEntity> DARK_CHICKEN = registerDark("dark_chicken", DarkChickenEntity::new, ChickenEntity.createChickenAttributes(), builder -> builder.setDimensions(0.4F, 0.7F));
 
-	private CppEntities() {
-	}
+	private CppEntities() {}
 
-	public static void loadClass() {
-	}
+	public static void loadClass() {}
 
 	static <T extends LivingEntity> EntityType<T> registerGolem(String id, EntityType.EntityFactory<T> factory) {
 		EntityType<T> type = register(id, EntityType.Builder.create(factory, SpawnGroup.MISC));

@@ -1,6 +1,3 @@
 {
-	"parent": "block/cube_all",
-    "textures": {
-        "all": "cpp:item/broken_spawner"
-    }
+    "parent": "cpp:block/broken_spawner"
 }

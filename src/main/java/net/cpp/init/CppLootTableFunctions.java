@@ -18,5 +18,5 @@ public class CppLootTableFunctions {
         return Registry.register(Registry.LOOT_FUNCTION_TYPE, new Identifier(Craftingpp.MOD_ID3, id), new LootFunctionType(jsonSerializer));
     }
 
-    public static void register() {}
+    public static void loadClass() {}
 }
