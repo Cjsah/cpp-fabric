@@ -19,6 +19,7 @@ public final class CppBlockEntities {
 	public static final BlockEntityType<ChestDropperBlockEntity> CHEST_DROPPER = registerBlockEntityType(ChestDropperBlockEntity::new, CppBlocks.CHEST_DROPPER);
 	public static final BlockEntityType<EmptyBookshelfBlockEntity> EMPTY_BOOKSHELF = registerBlockEntityType(EmptyBookshelfBlockEntity::new, CppBlocks.EMPTY_BOOKSHELF);
 	public static final BlockEntityType<BlockBreakerBlockEntity> BLOCK_BREAKER = registerBlockEntityType(BlockBreakerBlockEntity::new, CppBlocks.BLOCK_BREAKER);
+	public static final BlockEntityType<FermenterBlockEntity> FERMENTER = registerBlockEntityType(FermenterBlockEntity::new, CppBlocks.FERMENTER);
 
 	public static void register() {
 	}

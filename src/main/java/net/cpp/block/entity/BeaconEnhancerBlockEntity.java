@@ -61,9 +61,8 @@ import net.minecraft.world.World;
 
 /**
  * 信标增强器方块实体
- * 
- * @author Ph-苯
  *
+ * @author Ph-苯
  */
 public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScreenHandlerFactory {
 	public static final StatusEffect ATTRACTING = new CppEffect(StatusEffectType.HARMFUL, 0);
@@ -80,54 +79,54 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 	protected ServerCommandSource serverCommandSource;
 	private int cooldown = 160;
 	public final PropertyDelegate propertyDelegate = new PropertyDelegate() {
-
+		
 		@Override
 		public int size() {
 			return 3;
 		}
-
+		
 		@Override
 		public void set(int index, int value) {
 			switch (index) {
-			case 0:
-				playerEffectCode = value % AVAILABLE_PLAYER_EFFECTS.size();
-				playerEffect = AVAILABLE_PLAYER_EFFECTS.get(playerEffectCode);
-				break;
-			case 1:
-				mobEffectCode = value % AVAILABLE_MOB_EFFECTS.size();
-				mobEffect = AVAILABLE_MOB_EFFECTS.get(mobEffectCode);
-				break;
-			case 2:
-				onlyAdverse = value != 0;
-				break;
-			default:
-				break;
+				case 0:
+					playerEffectCode = value % AVAILABLE_PLAYER_EFFECTS.size();
+					playerEffect = AVAILABLE_PLAYER_EFFECTS.get(playerEffectCode);
+					break;
+				case 1:
+					mobEffectCode = value % AVAILABLE_MOB_EFFECTS.size();
+					mobEffect = AVAILABLE_MOB_EFFECTS.get(mobEffectCode);
+					break;
+				case 2:
+					onlyAdverse = value != 0;
+					break;
+				default:
+					break;
 			}
 		}
-
+		
 		@Override
 		public int get(int index) {
 			switch (index) {
-			case 0:
-				return playerEffectCode;
-			case 1:
-				return mobEffectCode;
-			case 2:
-				return onlyAdverse ? 1 : 0;
-			default:
-				return -1;
+				case 0:
+					return playerEffectCode;
+				case 1:
+					return mobEffectCode;
+				case 2:
+					return onlyAdverse ? 1 : 0;
+				default:
+					return -1;
 			}
 		}
 	};
-
+	
 	public BeaconEnhancerBlockEntity() {
 		this(BlockPos.ORIGIN, CppBlocks.BEACON_ENHANCER.getDefaultState());
 	}
-
+	
 	public BeaconEnhancerBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(CppBlockEntities.BEACON_ENHANCER, blockPos, blockState);
 	}
-
+	
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		tag.putInt("playerEffect", playerEffectCode);
@@ -135,10 +134,10 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 		tag.putBoolean("onlyAdverse", onlyAdverse);
 		return super.toTag(tag);
 	}
-
+	
 	/**
 	 * 获取服务端命令源，用于构建目标选择器
-	 * 
+	 *
 	 * @return 服务端命令源
 	 */
 	protected ServerCommandSource getServerCommandSource() {
@@ -146,7 +145,7 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 			serverCommandSource = new ServerCommandSource(CommandOutput.DUMMY, Vec3d.of(pos), Vec2f.ZERO, (ServerWorld) world, 4, "", LiteralText.EMPTY, world.getServer(), null);
 		return serverCommandSource;
 	}
-
+	
 	@Override
 	public void fromTag(CompoundTag tag) {
 		playerEffectCode = tag.getInt("playerEffect");
@@ -156,7 +155,7 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 		onlyAdverse = tag.getBoolean("onlyAdverse");
 		super.fromTag(tag);
 	}
-
+	
 	public static void tick(World world, BlockPos pos, BlockState state, BeaconEnhancerBlockEntity blockEntity) {
 		if (!world.isClient) {
 			if (++blockEntity.timeCounter >= blockEntity.cooldown) {
@@ -168,11 +167,12 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 					blockEntity.cooldown = 160 - level * 20;
 					// 仅当信标激活时才工作
 					if (level >= 0) {
-
+						
 						// 是否正确摆放了日石和月石
 						boolean sunMoonStone = level >= 4;
 						if (sunMoonStone) {
-							for1: for (int i = 0; i < 3; i++) {
+							for1:
+							for (int i = 0; i < 3; i++) {
 								for (int j = 0; j < 3; j++) {
 									Block block = world.getBlockState(pos.down(2).east(i - 1).south(j - 1)).getBlock();
 									if (sunMoonStone = (i + j & 1) == 1 ? block != CppBlocks.SUN_STONE : block != CppBlocks.MOON_STONE)
@@ -186,7 +186,7 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 							List<? extends Entity> entities0 = new EntitySelectorReader(new StringReader(String.format("@e[distance=..%d]", sunMoonStone ? 128 : 10 * (level + 1)))).read().getEntities(blockEntity.getServerCommandSource());
 							List<MobEntity> entities = new LinkedList<MobEntity>();
 							// 把entities里的非生物实体和玩家去除
-							for (Iterator<? extends Entity> iterator = entities0.iterator(); iterator.hasNext();) {
+							for (Iterator<? extends Entity> iterator = entities0.iterator(); iterator.hasNext(); ) {
 								Entity e = iterator.next();
 								if (e instanceof MobEntity) {
 									if (!blockEntity.onlyAdverse || !(e instanceof GolemEntity && !(e instanceof ShulkerEntity) || (e instanceof PassiveEntity && !(e instanceof HoglinEntity)) || e instanceof AmbientEntity))
@@ -195,7 +195,7 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 							}
 							// 施加状态效果
 							for (PlayerEntity e : players) {
-
+								
 								if (blockEntity.playerEffect == StatusEffects.NIGHT_VISION) {
 									e.addStatusEffect(new StatusEffectInstance(blockEntity.playerEffect, 400, 253, true, true));
 								} else {
@@ -222,57 +222,57 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 			}
 		}
 	}
-
+	
 	@Override
 	public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
 		return new BeaconEnhancerScreenHandler(syncId, inv, this);
 	}
-
+	
 	public Text getDisplayName() {
 		return new TranslatableText(getCachedState().getBlock().getTranslationKey());
 	}
-
+	
 	/**
 	 * 获取当前施加于玩家的状态效果
-	 * 
+	 *
 	 * @return 施加于玩家的状态效果
 	 */
 	public StatusEffect getPlayerEffect() {
 		return playerEffect;
 	}
-
+	
 	/**
 	 * 切换施加于玩家的状态效果
 	 */
 	public void shiftPlayerEffect() {
 		propertyDelegate.set(0, playerEffectCode + 1);
 	}
-
+	
 	/**
 	 * 获取当前施加于生物的状态效果
-	 * 
+	 *
 	 * @return 施加于生物的状态效果
 	 */
 	public StatusEffect getMobEffect() {
 		return mobEffect;
 	}
-
+	
 	/**
 	 * 切换施加于生物的状态效果
 	 */
 	public void shiftMobEffect() {
 		propertyDelegate.set(1, mobEffectCode + 1);
 	}
-
+	
 	/**
 	 * 查看当前施加于生物的状态效果是否仅仅施加于敌对生物
-	 * 
+	 *
 	 * @return 施加于生物的状态效果仅仅施加于敌对生物
 	 */
 	public boolean isOnlyAdverse() {
 		return onlyAdverse;
 	}
-
+	
 	/**
 	 * 切换施加于生物的状态效果是否仅仅施加于敌对生物
 	 */

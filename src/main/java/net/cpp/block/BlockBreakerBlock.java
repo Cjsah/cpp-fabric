@@ -70,14 +70,15 @@ public class BlockBreakerBlock extends BlockWithEntity {
         if (PRODUCES.containsKey(block)) {
             if (!world.isClient()){
                 Pair<Block, Identifier> pair = PRODUCES.get(block);
-                CodingTool.playSound(world,new PlaySoundS2CPacket(block.getSoundGroup(block.getDefaultState()).getBreakSound(), SoundCategory.BLOCKS, pos.getX(), pos.getY(), pos.getZ(), 1, 1) );
+//                CodingTool.playSound(world,new PlaySoundS2CPacket(block.getSoundGroup(block.getDefaultState()).getBreakSound(), SoundCategory.BLOCKS, pos.getX(), pos.getY(), pos.getZ(), 1, 1) );
                 if (pair.getLeft()!=null){
+                    world.breakBlock(pos.up(),false);
                     world.setBlockState(pos.up(),pair.getLeft().getDefaultState());
                 } else {
                     Identifier lootTableId = pair.getRight();
                     Vec3d vec3d = new Vec3d(pos.getX()+0.5, pos.getY()+1,pos.getZ()+0.5);
                     CodingTool.drop(world, vec3d, world.getServer().getLootManager().getTable(lootTableId).generateLoot((new LootContext.Builder((ServerWorld) world)).random(world.random).build(LootContextTypes.EMPTY)));
-                    world.removeBlock(pos.up(), false);
+                    world.breakBlock(pos.up(),false);
                 }
             }
             return true;

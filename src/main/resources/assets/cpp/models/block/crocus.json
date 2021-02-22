@@ -1,6 +1,6 @@
 {
 	"parent": "block/cross",
 	"textures": {
-		"cross": "cpp:block/crocu"
+		"cross": "cpp:block/crocus"
 	}
 }

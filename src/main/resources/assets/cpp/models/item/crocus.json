@@ -1,6 +1,6 @@
 {
 	"parent": "item/handheld",
 	"textures": {
-		"layer0": "cpp:block/crocu"
+		"layer0": "cpp:block/crocus"
 	}
 }
