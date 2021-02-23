@@ -18,6 +18,8 @@ import net.cpp.api.CodingTool;
 import net.cpp.init.CppScreenHandler;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.block.entity.MobSpawnerBlockEntity;
+import net.minecraft.client.render.block.entity.MobSpawnerBlockEntityRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;

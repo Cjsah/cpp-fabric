@@ -1,0 +1,23 @@
+{
+	"pools": [
+		{
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "item",
+					"name": "apple",
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"type": "binomial",
+								"n": 3,
+								"p": 0.5
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}
