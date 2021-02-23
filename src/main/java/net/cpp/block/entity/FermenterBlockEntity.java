@@ -1,25 +1,18 @@
 package net.cpp.block.entity;
 
-import net.cpp.block.FermenterBlock;
 import net.cpp.init.CppBlockEntities;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ComposterBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.Objects;
 
-import static net.minecraft.block.ComposterBlock.ITEM_TO_LEVEL_INCREASE_CHANCE;
-import static net.minecraft.block.ComposterBlock.LEVEL;
 @Deprecated
 public class FermenterBlockEntity extends BlockEntity implements SidedInventory {
 	private ItemStack stack = ItemStack.EMPTY;

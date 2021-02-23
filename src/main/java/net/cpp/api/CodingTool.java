@@ -15,7 +15,6 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonSyntaxException;
 
 import net.cpp.init.CppItems;
-import net.fabricmc.loader.util.sat4j.core.Vec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -162,15 +161,16 @@ public class CodingTool {
 		return new UUID(mostSigBits, leastSigBits);
 	}
 
-	/**
-	 * 获取某个玩家的当前等级的经验值
-	 *
-	 * @author Cjsah
-	 * @param player 被获取经验值的玩家
-	 * @return 当前等级的经验值
-	 */
-	public static int getExperience(PlayerEntity player) {
-		return Math.round(player.experienceProgress * player.getNextLevelExperience());
+	public static String ticksToTime(int ticks) {
+		int seconds = (int) Math.ceil((double) ticks / 20D);
+		int hours = seconds / 60 / 60;
+		int minutes = (seconds - (hours * 60 * 60)) / 60;
+		seconds = seconds - (hours * 60 * 60) - (minutes * 60);
+		return String.format("%s:%s:%s", addZero(hours), addZero(minutes), addZero(seconds));
+	}
+
+	private static String addZero(int num) {
+		return num < 10 ? "0" + num : String.valueOf(num);
 	}
 
 	/**
@@ -421,7 +421,6 @@ public class CodingTool {
 	 * 
 	 * @param stack 工具
 	 * @param state 方块
-	 * @return
 	 */
 	public static boolean canHarvest(ItemStack stack, BlockState state) {
 		return !state.isToolRequired() || stack.isSuitableFor(state);
@@ -434,7 +433,6 @@ public class CodingTool {
 	 * @param state 方块
 	 * @param world 世界
 	 * @param pos   位置
-	 * @return
 	 */
 	public static boolean canHarvest(ItemStack stack, BlockState state, World world, BlockPos pos) {
 //		System.out.println(state.getBlock() + ": " + state.getHardness(world, pos));
@@ -496,7 +494,7 @@ public class CodingTool {
 	 */
 	public static int collectExpOrbs(World world, Vec3d pos, double radius, boolean globe) {
 		int exp = 0;
-		for (ExperienceOrbEntity orb : world.getEntitiesByClass(ExperienceOrbEntity.class, new Box(pos, pos).expand(radius), orb -> globe ? orb.getPos().isInRange(pos, radius) : true)) {
+		for (ExperienceOrbEntity orb : world.getEntitiesByClass(ExperienceOrbEntity.class, new Box(pos, pos).expand(radius), orb -> !globe || orb.getPos().isInRange(pos, radius))) {
 			exp += orb.getExperienceAmount();
 			orb.discard();
 		}
@@ -510,7 +508,7 @@ public class CodingTool {
 	 * @return 附魔之瓶列表，每个物品叠不会超过最大堆叠数量，并且只有最后一个可能没有到达最大堆叠
 	 */
 	public static List<ItemStack> expToBottle(int exp) {
-		List<ItemStack> list = new LinkedList<ItemStack>();
+		List<ItemStack> list = new LinkedList<>();
 		int c1 = exp / 9 + (Math.random() < (exp % 9) / 9. ? 1 : 0);
 		int c2 = Items.EXPERIENCE_BOTTLE.getMaxCount();
 		while (c1 >= c2) {

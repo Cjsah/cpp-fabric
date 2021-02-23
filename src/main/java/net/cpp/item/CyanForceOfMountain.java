@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static net.cpp.api.CppChat.say;
-import static net.cpp.api.CodingTool.getExperience;
 
 public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppConfig {
 
@@ -85,7 +84,7 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppCo
                     if (fill(world, user, blockPos, tag))
                         user.incrementStat(Stats.USED.getOrCreateStat(this));
                     return TypedActionResult.success(user.getStackInHand(hand));
-                }else if (getExperience(user) >= 4) {
+                }else if (user.totalExperience >= 4) {
                     if (fill(world, user, blockPos, tag)) {
                         user.addExperience(-4);
                         user.incrementStat(Stats.USED.getOrCreateStat(this));

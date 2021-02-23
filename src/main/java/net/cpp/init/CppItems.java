@@ -617,11 +617,11 @@ public final class CppItems {
 		AGENTIA_OF_FIRE = registerItem("agentia_of_fire", new CppFoodOrPotion(UseAction.DRINK, 0, new Item.Settings().group(CPP_GROUP_MISC).food((new FoodComponent.Builder()).hunger(6).saturationModifier(0.3F).alwaysEdible().statusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 14400, 0), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 7200, 1), 1.0F).build()).maxCount(16)));
 		AGENTIA_OF_LIFE = registerItem("agentia_of_life", new CppFoodOrPotion(UseAction.DRINK, 0, new Item.Settings().group(CPP_GROUP_MISC).food((new FoodComponent.Builder()).hunger(6).saturationModifier(0.3F).alwaysEdible().statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 3600, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 1, 3), 1.0F).build()).maxCount(16)));
 
-		VACCINE_OF_POISON = registerItem("vaccine_of_position", new CppVaccine(new Item.Settings().group(CPP_GROUP_MISC)));
-		VACCINE_OF_BLINDNESS = registerItem("vaccine_of_blindness", new CppVaccine(new Item.Settings().group(CPP_GROUP_MISC)));
-		VACCINE_OF_MINING_FATIGUE = registerItem("vaccine_of_mining_fatigue", new CppVaccine(new Item.Settings().group(CPP_GROUP_MISC)));
-		VACCINE_OF_WITHER = registerItem("vaccine_of_wither", new CppVaccine(new Item.Settings().group(CPP_GROUP_MISC)));
-		VACCINE_OF_DARKNESS = registerItem("vaccine_of_darkness", new CppVaccine(new Item.Settings().group(CPP_GROUP_MISC)));
+		VACCINE_OF_POISON = registerItem("vaccine_of_position", new CppVaccine(CppVaccine.Effect.POISON, new Item.Settings().group(CPP_GROUP_MISC).maxCount(16)));
+		VACCINE_OF_BLINDNESS = registerItem("vaccine_of_blindness", new CppVaccine(CppVaccine.Effect.BLINDNESS, new Item.Settings().group(CPP_GROUP_MISC).maxCount(16)));
+		VACCINE_OF_MINING_FATIGUE = registerItem("vaccine_of_mining_fatigue", new CppVaccine(CppVaccine.Effect.MINING_FATIGUE, new Item.Settings().group(CPP_GROUP_MISC).maxCount(16)));
+		VACCINE_OF_WITHER = registerItem("vaccine_of_wither", new CppVaccine(CppVaccine.Effect.WITHER, new Item.Settings().group(CPP_GROUP_MISC).maxCount(16)));
+		VACCINE_OF_DARKNESS = registerItem("vaccine_of_darkness", new CppVaccine(CppVaccine.Effect.DARKNESS, new Item.Settings().group(CPP_GROUP_MISC).maxCount(16)));
 
 		LYCORIS_RADIATA_SEEDS = registerSeeds(LYCORIS_RADIATA);
 		TRIFOLIUM_SEEDS = registerSeeds(TRIFOLIUM);

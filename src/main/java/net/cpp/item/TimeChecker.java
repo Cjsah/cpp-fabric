@@ -1,7 +1,5 @@
 package net.cpp.item;
 
-import static net.cpp.api.CodingTool.getExperience;
-
 import net.cpp.api.CodingTool;
 import net.cpp.api.ITickableInItemFrame;
 import net.minecraft.entity.decoration.ItemFrameEntity;
@@ -27,7 +25,7 @@ public class TimeChecker extends Item implements ITickableInItemFrame {
 				((ServerWorld) world).setTimeOfDay(world.getTimeOfDay() + 1200L);
 				user.incrementStat(Stats.USED.getOrCreateStat(this));
 				return TypedActionResult.success(item);
-			} else if (getExperience(user) >= 4) {
+			} else if (user.totalExperience >= 4) {
 				user.addExperience(-4);
 				((ServerWorld) world).setTimeOfDay(world.getTimeOfDay() + 1200L);
 				user.incrementStat(Stats.USED.getOrCreateStat(this));

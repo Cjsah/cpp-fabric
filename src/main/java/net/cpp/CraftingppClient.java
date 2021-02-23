@@ -28,7 +28,6 @@ import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.impl.blockrenderlayer.BlockRenderLayerMapImpl;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.gui.screen.ingame.CraftingScreen;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.EntityType;
@@ -63,7 +62,7 @@ public class CraftingppClient implements ClientModInitializer {
 		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_PIG, DarkPigEntityRenderer::new);
 		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_CHICKEN, DarkChickenEntityRenderer::new);
 		
-		BlockRenderLayerMapImpl.INSTANCE.putBlocks(RenderLayer.getCutout(), FRUIT_SAPLING, ORE_SAPLING, SAKURA_SAPLING, WOOL_SAPLING, BLUE_ROSE, POINSETTIA, CHRISTMAS_TREE, RICE);
+		BlockRenderLayerMapImpl.INSTANCE.putBlocks(RenderLayer.getCutout(), FRUIT_SAPLING, ORE_SAPLING, SAKURA_SAPLING, WOOL_SAPLING, BLUE_ROSE, POINSETTIA, CHRISTMAS_TREE, RICE, BROKEN_SPAWNER);
 		BlockRenderLayerMapImpl.INSTANCE.putBlocks(RenderLayer.getTranslucent(), RARE_EARTH_GLASS, REINFORCED_GLASS);
 		for (Block block : CppBlocks.FLOWER_GRASSES)
 			BlockRenderLayerMapImpl.INSTANCE.putBlock(block, RenderLayer.getCutout());

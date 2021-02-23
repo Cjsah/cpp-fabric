@@ -363,56 +363,56 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	@Override
 	public void onOpen(PlayerEntity player) {
 		super.onOpen(player);
-		if (!player.world.isClient&&player.world.isClient) {
-			try {
-				for (Recipe recipe : RECIPES.values()) {
-					if (recipe == null || recipe.temperature == Degree.HIGH && recipe.pressure == Degree.HIGH) {
-						continue;
-					}
-					File file = new File(String.format("D:\\CCC\\Documents\\编程\\Minecraft Mod\\更多的合成 FabricMod 开发中\\src\\main\\resources\\data\\cpp\\recipes\\all_in_one_machine\\%s_%s\\%s%s.json", recipe.temperature.toString().toLowerCase(), recipe.pressure.toString().toLowerCase(), Registry.ITEM.getId(recipe.output1.getItem()).getPath(), recipe.output2.isEmpty() ? "" : "_and_" + Registry.ITEM.getId(recipe.output2.getItem()).getPath()));
-					if (!file.getParentFile().exists()) {
-						file.getParentFile().mkdir();
-					}
-					FileWriter fw = new FileWriter(file);
-					fw.write(String.format("{\r\n	\"type\": \"cpp:all_in_one_machine\",\r\n	\"temperature\": \"%s\",\r\n	\"pressure\": \"%s\",\r\n	\"ingredients\": [\r\n		\"%s\"", recipe.temperature.toString().toLowerCase(), recipe.pressure.toString().toLowerCase(), Registry.ITEM.getId(recipe.input1)));
-					if (recipe.input2 != AIR) {
-						fw.write(String.format(",%n		\"%s\"\r\n	],%n", Registry.ITEM.getId(recipe.input2)));
-					}
-					fw.write(String.format("	\"experience\": %d,%n", recipe.experience));
-					fw.write(String.format("	\"time\": %d,%n", recipe.time));
-					fw.write("	\"products\": [\r\n		");
-					double c1 ;
-					if (recipe.count1Max == recipe.count1Min) {
-						c1 = recipe.count1Max;
-					}else {
-						c1 = (recipe.count1Max + recipe.count1Min-1) / 2;
-					}
-					if (c1 == 1) {
-						fw.write(String.format("\"%s\"", Registry.ITEM.getId(recipe.output1.getItem())));
-					} else {
-						fw.write(String.format("{\r\n			\"item\": \"%s\",\r\n			\"count\": %s\r\n		}", Registry.ITEM.getId(recipe.output1.getItem()), new BigDecimal(c1).stripTrailingZeros().toPlainString()));
-					}
-					if (!recipe.output2.isEmpty()) {
-						double c2 ;
-						if (recipe.count2Max == recipe.count2Min) {
-							c2 = recipe.count2Max;
-						}else {
-							c2 = (recipe.count2Max + recipe.count2Min-1) / 2;
-						}
-						if (c2 == 1) {
-							fw.write(String.format(",%n		\"%s\"", Registry.ITEM.getId(recipe.output2.getItem())));
-						} else {
-							fw.write(String.format(",%n		{\r\n			\"item\": \"%s\",\r\n			\"count\": %s\r\n		}", Registry.ITEM.getId(recipe.output2.getItem()), new BigDecimal(c2).setScale(2, RoundingMode.HALF_EVEN).stripTrailingZeros().toPlainString()));
-						}
-					}
-					fw.write("\r\n	]\r\n}");
-					fw.close();
-
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+//		if (!player.world.isClient&&player.world.isClient) {
+//			try {
+//				for (Recipe recipe : RECIPES.values()) {
+//					if (recipe == null || recipe.temperature == Degree.HIGH && recipe.pressure == Degree.HIGH) {
+//						continue;
+//					}
+//					File file = new File(String.format("D:\\CCC\\Documents\\编程\\Minecraft Mod\\更多的合成 FabricMod 开发中\\src\\main\\resources\\data\\cpp\\recipes\\all_in_one_machine\\%s_%s\\%s%s.json", recipe.temperature.toString().toLowerCase(), recipe.pressure.toString().toLowerCase(), Registry.ITEM.getId(recipe.output1.getItem()).getPath(), recipe.output2.isEmpty() ? "" : "_and_" + Registry.ITEM.getId(recipe.output2.getItem()).getPath()));
+//					if (!file.getParentFile().exists()) {
+//						file.getParentFile().mkdir();
+//					}
+//					FileWriter fw = new FileWriter(file);
+//					fw.write(String.format("{\r\n	\"type\": \"cpp:all_in_one_machine\",\r\n	\"temperature\": \"%s\",\r\n	\"pressure\": \"%s\",\r\n	\"ingredients\": [\r\n		\"%s\"", recipe.temperature.toString().toLowerCase(), recipe.pressure.toString().toLowerCase(), Registry.ITEM.getId(recipe.input1)));
+//					if (recipe.input2 != AIR) {
+//						fw.write(String.format(",%n		\"%s\"\r\n	],%n", Registry.ITEM.getId(recipe.input2)));
+//					}
+//					fw.write(String.format("	\"experience\": %d,%n", recipe.experience));
+//					fw.write(String.format("	\"time\": %d,%n", recipe.time));
+//					fw.write("	\"products\": [\r\n		");
+//					double c1 ;
+//					if (recipe.count1Max == recipe.count1Min) {
+//						c1 = recipe.count1Max;
+//					}else {
+//						c1 = (recipe.count1Max + recipe.count1Min-1) / 2;
+//					}
+//					if (c1 == 1) {
+//						fw.write(String.format("\"%s\"", Registry.ITEM.getId(recipe.output1.getItem())));
+//					} else {
+//						fw.write(String.format("{\r\n			\"item\": \"%s\",\r\n			\"count\": %s\r\n		}", Registry.ITEM.getId(recipe.output1.getItem()), new BigDecimal(c1).stripTrailingZeros().toPlainString()));
+//					}
+//					if (!recipe.output2.isEmpty()) {
+//						double c2 ;
+//						if (recipe.count2Max == recipe.count2Min) {
+//							c2 = recipe.count2Max;
+//						}else {
+//							c2 = (recipe.count2Max + recipe.count2Min-1) / 2;
+//						}
+//						if (c2 == 1) {
+//							fw.write(String.format(",%n		\"%s\"", Registry.ITEM.getId(recipe.output2.getItem())));
+//						} else {
+//							fw.write(String.format(",%n		{\r\n			\"item\": \"%s\",\r\n			\"count\": %s\r\n		}", Registry.ITEM.getId(recipe.output2.getItem()), new BigDecimal(c2).setScale(2, RoundingMode.HALF_EVEN).stripTrailingZeros().toPlainString()));
+//						}
+//					}
+//					fw.write("\r\n	]\r\n}");
+//					fw.close();
+//
+//				}
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
 	}
 
 	/*
