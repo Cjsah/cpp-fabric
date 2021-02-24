@@ -1,12 +1,11 @@
 package net.cpp.api;
 
+import net.cpp.vaccine.VaccineInstance;
+import net.cpp.vaccine.Vaccines;
+
 public interface IPlayerVaccine {
 
-    default void addVaccine(CppVaccine.Effect vaccine) {
-        this.addVaccine(vaccine, vaccine.getDuration());
-    }
+    void addVaccine(VaccineInstance vaccine);
 
-    void addVaccine(CppVaccine.Effect vaccine, int duration);
-
-    void removeVaccine(CppVaccine.Effect vaccine);
+    void removeVaccine(Vaccines vaccine);
 }

@@ -1,7 +1,8 @@
 package net.cpp.mixin;
 
-import net.cpp.api.CppVaccine;
 import net.cpp.api.IPlayerVaccine;
+import net.cpp.vaccine.VaccineInstance;
+import net.cpp.vaccine.Vaccines;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,6 +23,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 @Mixin(PlayerEntity.class)
@@ -33,17 +35,10 @@ public abstract class MixinPlayerEntity extends LivingEntity implements ITempera
 
 	private int weight = 0;
 	protected boolean effectEnabled;
-	private final Map<Byte, Integer> vaccines = new HashMap<>();
+	private final Map<Vaccines, VaccineInstance> vaccines = new HashMap<>();
 
 	@Inject(at = @At("RETURN"), method = "tick")
 	public void tick(CallbackInfo info) {
-		for (Map.Entry<Byte, Integer> index : this.vaccines.entrySet()) {
-			if (index.getValue() - 1 <= 0) {
-				this.vaccines.remove(index.getKey());
-			}else {
-				this.vaccines.put(index.getKey(), index.getValue() - 1);
-			}
-		}
 		if (!this.world.isClient) {
 			int value = weight / 100;
 			if (value > 0) {
@@ -52,7 +47,9 @@ public abstract class MixinPlayerEntity extends LivingEntity implements ITempera
 				this.applyStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 2, -value - 1, false, false));
 			}
 		}
+		this.vaccines.entrySet().removeIf(entry -> !entry.getValue().updateDuration());
 	}
+
 
 	@Inject(at = @At("HEAD"), method = "eatFood")
 	public void eatFood(World world, ItemStack stack, CallbackInfoReturnable<ItemStack> info) {
@@ -73,18 +70,15 @@ public abstract class MixinPlayerEntity extends LivingEntity implements ITempera
 		weight = tag.getInt("weight");
 		effectEnabled = tag.getBoolean("effectEnabled");
 		for (Tag index : tag.getList("Vaccines", 10)) {
-			CompoundTag compoundTag = (CompoundTag) index;
-			this.vaccines.put(compoundTag.getByte("Id"), compoundTag.getInt("Duration"));
+			VaccineInstance vaccine = VaccineInstance.fromTag((CompoundTag) index);
+			this.vaccines.put(vaccine.getVaccine(), vaccine);
 		}
 	}
 
 	private ListTag saveToListTag() {
 		ListTag list = new ListTag();
-		for (Map.Entry<Byte, Integer> index : this.vaccines.entrySet()) {
-			CompoundTag tag = new CompoundTag();
-			tag.putByte("Id", index.getKey());
-			tag.putInt("Duration", index.getValue());
-			list.add(tag);
+		for (Map.Entry<Vaccines, VaccineInstance> index : this.vaccines.entrySet()) {
+			list.add(index.getValue().toTag(new CompoundTag()));
 		}
 		return list;
 	}
@@ -97,13 +91,13 @@ public abstract class MixinPlayerEntity extends LivingEntity implements ITempera
 	}
 
 	@Override
-	public void addVaccine(CppVaccine.Effect vaccine, int duration) {
-		if (this.vaccines.containsKey(vaccine.getRawId()) && this.vaccines.get(vaccine.getRawId()) >= duration) return;
-		this.vaccines.put(vaccine.getRawId(), duration);
+	public void addVaccine(VaccineInstance vaccine) {
+		if (this.vaccines.containsKey(vaccine.getVaccine()) && this.vaccines.get(vaccine.getVaccine()).getDuration() >= vaccine.getDuration()) return;
+		this.vaccines.put(vaccine.getVaccine(), vaccine);
 	}
 
 	@Override
-	public void removeVaccine(CppVaccine.Effect vaccine) {
-		this.vaccines.remove(vaccine.getRawId());
+	public void removeVaccine(Vaccines vaccine) {
+		this.vaccines.remove(vaccine);
 	}
 }

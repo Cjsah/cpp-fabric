@@ -1,6 +1,6 @@
 package net.cpp.mixin;
 
-import net.cpp.misc.ICppGameHud;
+import net.cpp.misc.CppGameHud;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
 import org.objectweb.asm.Opcodes;
@@ -10,13 +10,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(InGameHud.class)
-public class MixinInCppGameHud implements ICppGameHud {
-
-
-//    @Inject(method="renderStatusEffectOverlay", at=@At("RETURN"))
-//    private void afterRenderStatusEffects(MatrixStack stack, CallbackInfo info) {
-//        gui.afterRenderStatusEffects(stack, 0);
-//    }
+public class MixinInCppGameHud{
+    CppGameHud GUI = new CppGameHud();
 
     @Inject(method="render", at=@At(
             value="FIELD",

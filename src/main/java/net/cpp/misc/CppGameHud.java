@@ -16,7 +16,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Language;
 
-public class EffectGameHud extends DrawableHelper {
+public class CppGameHud extends DrawableHelper {
 
     private static final MinecraftClient client = MinecraftClient.getInstance();
     private static final Identifier HUD_ICON = new Identifier(Craftingpp.MOD_ID3, "textures/gui/effect_hud.png");

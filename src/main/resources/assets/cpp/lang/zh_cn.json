@@ -215,6 +215,7 @@
   "item.cpp.agentia_of_earth": "大地药剂",
   "item.cpp.agentia_of_fire": "火焰药剂",
   "item.cpp.agentia_of_life": "生命药剂",
+  "item.cpp.vaccine": "疫苗",
   "item.cpp.lycoris_radiata_seed": "彼岸花种子",
   "item.cpp.trifolium_seed": "白车轴种子",
   "item.cpp.blackthorn_seed": "黑荆棘种子",
@@ -501,9 +502,8 @@
   "gui.low_pressure": "低压",
   "gui.click_to_take_out": "点击取出",
 
-  "container.cpp.crafting_machine": "合成器",
-
   "effect.cpp.chain": "连环",
+  "effect.cpp.darkness": "黑暗",
 
   "chat.cpp.title": "[Crafting++]",
   "chat.cpp.load1": "模组《更多的合成》已成功加载，更多内容请",
@@ -545,6 +545,7 @@
   "tooltip.cpp.coordinate": "坐标：%s",
   "tooltip.cpp.coordinate_absent": "缺少坐标！",
   "tooltip.cpp.erasure": "消音了%s个实体",
+  "tooltip.cpp.vaccine": "免疫 %s (%s)",
   "tooltip.cpp.prise": "价格：%s%s",
   "tooltip.cpp.cooldown": "冷却：%s刻",
   "tooltip.cpp.random": "随机",
