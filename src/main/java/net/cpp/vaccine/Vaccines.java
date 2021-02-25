@@ -3,11 +3,11 @@ package net.cpp.vaccine;
 import javax.annotation.Nullable;
 
 public enum Vaccines {
-    POISON("minecraft:poison", (byte) 0, 200),
-    BLINDNESS("minecraft:blindness", (byte) 1, 200),
-    MINING_FATIGUE("minecraft:mining_fatigue", (byte) 2, 200),
-    WITHER("minecraft:wither", (byte) 3, 200),
-    DARKNESS("cpp:darkness", (byte) 4, 600);
+    POISON("minecraft:poison", (byte) 0, 10800),
+    BLINDNESS("minecraft:blindness", (byte) 1, 10800),
+    MINING_FATIGUE("minecraft:mining_fatigue", (byte) 2, 10800),
+    WITHER("minecraft:wither", (byte) 3, 10800),
+    DARKNESS("cpp:darkness", (byte) 4, 43200);
 
     private final byte rawId;
     private final String name;
