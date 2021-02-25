@@ -77,7 +77,7 @@ public final class CppBlocks {
 	public static final Block REINFORCED_GLASS = registerBlock("reinforced_glass", new GlassBlock(FabricBlockSettings.of(Material.GLASS).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(50.0F, 3600000.0F).sounds(BlockSoundGroup.GLASS).nonOpaque()), CPP_GROUP_MISC);
 	public static final Block MOON_STONE = registerBlock("moon_stone", new Block(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5.0F, 6.0F).sounds(BlockSoundGroup.METAL)), CPP_GROUP_MISC);
 	public static final Block SUN_STONE = registerBlock("sun_stone", new Block(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL)), CPP_GROUP_MISC);
-	public static final Block BROKEN_SPAWNER = registerBlock("broken_spawner", new Block(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5.0F).sounds(BlockSoundGroup.METAL).nonOpaque()), CPP_GROUP_MISC);
+	public static final Block BROKEN_SPAWNER = registerBlock("broken_spawner", new BrokenSpawnerBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5.0F).sounds(BlockSoundGroup.METAL).nonOpaque()), CPP_GROUP_MISC);
 	public static final Block FRUIT_LEAVES = registerLeaves("fruit_leaves", FruitLeavesBlock::new);
 	public static final Block ORE_LEAVES = registerLeaves("ore_leaves", OreLeavesBlock::new);
 	public static final Block WOOL_LEAVES = registerLeaves("wool_leaves", WoolLeavesBlock::new);

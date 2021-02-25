@@ -71,7 +71,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 
 import net.cpp.api.CodingTool;
-import net.cpp.api.CppEffect;
+import net.cpp.api.Effect;
 import net.cpp.ducktyping.ITemperancable;
 import net.cpp.init.CppEffects;
 import net.cpp.init.CppItemTags;
@@ -128,7 +128,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 public class Wand extends Item {
-	public static final CppEffect MAGNETIC = new CppEffect(StatusEffectType.NEUTRAL, 0);
+	public static final Effect MAGNETIC = new Effect(StatusEffectType.NEUTRAL, 0);
 	public static final ImmutableMap<Item, StatusEffect> EFFECTS = ImmutableMap.<Item, StatusEffect>builder().put(AGENTIA_OF_AGILENESS, SPEED).put(AGENTIA_OF_BOUNCE, JUMP_BOOST).put(AGENTIA_OF_EXTREMENESS, HASTE).put(AGENTIA_OF_SHARPNESS, STRENGTH).put(AGENTIA_OF_REJUVENESS, REGENERATION).put(AGENTIA_OF_SHIELD, RESISTANCE).put(AGENTIA_OF_FIRE_SHIELD, FIRE_RESISTANCE).put(AGENTIA_OF_TRANSPARENTNESS, INVISIBILITY).put(AGENTIA_OF_WATERLESS, WATER_BREATHING).put(AGENTIA_OF_EYESIGHT, NIGHT_VISION).put(COLD_DRINK, SATURATION).put(AGENTIA_OF_LIGHTNESS, SLOW_FALLING).put(AGENTIA_OF_TIDE, CONDUIT_POWER).put(AGENTIA_OF_CHAIN, CppEffects.CHAIN).put(MAGNET, MAGNETIC).build();
 	public static final ImmutableMultimap<StatusEffect, EquipmentSlot> CORRECT_SLOTS = ImmutableMultimap.<StatusEffect, EquipmentSlot>builder().put(SPEED, EquipmentSlot.FEET).put(JUMP_BOOST, EquipmentSlot.FEET).put(HASTE, EquipmentSlot.MAINHAND).put(STRENGTH, EquipmentSlot.MAINHAND).put(REGENERATION, EquipmentSlot.HEAD).put(REGENERATION, EquipmentSlot.CHEST).put(REGENERATION, EquipmentSlot.LEGS).put(REGENERATION, EquipmentSlot.FEET).put(RESISTANCE, EquipmentSlot.HEAD).put(RESISTANCE, EquipmentSlot.CHEST).put(RESISTANCE, EquipmentSlot.LEGS).put(RESISTANCE, EquipmentSlot.FEET).put(FIRE_RESISTANCE, EquipmentSlot.HEAD).put(FIRE_RESISTANCE, EquipmentSlot.CHEST).put(FIRE_RESISTANCE, EquipmentSlot.LEGS).put(FIRE_RESISTANCE, EquipmentSlot.FEET).put(INVISIBILITY, EquipmentSlot.HEAD).put(INVISIBILITY, EquipmentSlot.CHEST).put(INVISIBILITY, EquipmentSlot.LEGS).put(INVISIBILITY, EquipmentSlot.FEET).put(WATER_BREATHING, EquipmentSlot.HEAD).put(NIGHT_VISION, EquipmentSlot.HEAD).put(SATURATION, EquipmentSlot.HEAD).put(SLOW_FALLING, EquipmentSlot.FEET).put(CONDUIT_POWER, EquipmentSlot.HEAD).put(CppEffects.CHAIN, EquipmentSlot.MAINHAND).put(MAGNETIC, EquipmentSlot.MAINHAND).put(MAGNETIC, EquipmentSlot.OFFHAND).put(MAGNETIC, EquipmentSlot.HEAD).put(MAGNETIC, EquipmentSlot.CHEST).put(MAGNETIC, EquipmentSlot.LEGS).put(MAGNETIC, EquipmentSlot.FEET).build();
 	public static final long HIGH_UUID = 0x0123456789ABCDEFL;

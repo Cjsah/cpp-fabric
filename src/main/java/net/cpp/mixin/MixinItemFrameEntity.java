@@ -3,7 +3,7 @@ package net.cpp.mixin;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.cpp.api.ITickableInItemFrame;
+import net.cpp.ducktyping.ITickableInItemFrame;
 import net.cpp.item.Wand;
 import net.cpp.item.Wand.IRitualFrame;
 import net.minecraft.entity.EntityType;

@@ -215,6 +215,7 @@
   "item.cpp.agentia_of_earth": "大地药剂",
   "item.cpp.agentia_of_fire": "火焰药剂",
   "item.cpp.agentia_of_life": "生命药剂",
+  "item.cpp.vaccine": "疫苗",
   "item.cpp.lycoris_radiata_seed": "彼岸花种子",
   "item.cpp.trifolium_seed": "白车轴种子",
   "item.cpp.blackthorn_seed": "黑荆棘种子",
@@ -486,6 +487,12 @@
   "block.cpp.sakura_sapling": "樱花树树苗",
   "block.cpp.rice": "稻谷",
 
+  "entity.cpp.dark_cow": "黑暗牛",
+  "entity.cpp.dark_mooshroom": "黑暗哞菇",
+  "entity.cpp.dark_sheep": "黑暗羊",
+  "entity.cpp.dark_pig": "黑暗猪",
+  "entity.cpp.dark_chicken": "黑暗鸡",
+
   "gui.click_to_shift": "点击切换",
   "gui.output_to_east": "向东输出",
   "gui.output_to_west": "向西输出",
@@ -501,9 +508,8 @@
   "gui.low_pressure": "低压",
   "gui.click_to_take_out": "点击取出",
 
-  "container.cpp.crafting_machine": "合成器",
-
   "effect.cpp.chain": "连环",
+  "effect.cpp.darkness": "黑暗",
 
   "chat.cpp.title": "[Crafting++]",
   "chat.cpp.load1": "模组《更多的合成》已成功加载，更多内容请",
@@ -518,14 +524,8 @@
   "chat.cpp.time.normal": "设置作物生长速度为默认值",
   "chat.cpp.time.uncycle": "停止了日月循环",
   "chat.cpp.time.cycle": "开启了日月循环",
-  "chat.cpp.weight": "你的体重指数为%s, %s",
   "chat.cpp.effect": "附加效果%s",
   "chat.cpp.wand_level_error": "该仪式需要%s级法杖，但你只有%s级",
-  "cpp.chat.weight.normal": "正常",
-  "cpp.chat.weight.fat1": "偏胖",
-  "cpp.chat.weight.fat2": "过胖",
-  "cpp.chat.weight.thin1": "偏瘦",
-  "cpp.chat.weight.thin2": "过瘦",
 
   "modmenu.cpp.title": "Crafting++ 配置",
   "modmenu.cpp.showing": "当前显示 %s 个配置文件",
@@ -551,6 +551,7 @@
   "tooltip.cpp.coordinate": "坐标：%s",
   "tooltip.cpp.coordinate_absent": "缺少坐标！",
   "tooltip.cpp.erasure": "消音了%s个实体",
+  "tooltip.cpp.vaccine": "免疫 %s (%s)",
   "tooltip.cpp.prise": "价格：%s%s",
   "tooltip.cpp.cooldown": "冷却：%s刻",
   "tooltip.cpp.random": "随机",

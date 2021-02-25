@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.cpp.api.CodingTool;
 import net.cpp.api.IDefaultTagItem;
-import net.cpp.api.ITickableInItemFrame;
+import net.cpp.ducktyping.ITickableInItemFrame;
 import net.cpp.init.CppItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

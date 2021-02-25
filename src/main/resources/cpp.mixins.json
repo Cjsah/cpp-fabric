@@ -36,6 +36,9 @@
 		"MixinAbstractSkeletonEntity",
 		"MixinMooshroomEntity"
 	],
+	"client": [
+		"MixinInCppGameHud"
+	],
     "injectors": {
         "defaultRequire": 1
     }

@@ -83,7 +83,7 @@ public class CppFoodOrPotion extends Item implements INutrition {
         StatusEffect statusEffect;
         if (!list2.isEmpty()) {
             for(var5 = list2.iterator(); var5.hasNext(); tooltip.add(mutableText.formatted(statusEffect.getType().getFormatting()))) {
-                StatusEffectInstance statusEffectInstance = (StatusEffectInstance)var5.next();
+                StatusEffectInstance statusEffectInstance = var5.next();
                 mutableText = new TranslatableText(statusEffectInstance.getTranslationKey());
                 statusEffect = statusEffectInstance.getEffectType();
                 Map<EntityAttribute, EntityAttributeModifier> map = statusEffect.getAttributeModifiers();
@@ -92,7 +92,7 @@ public class CppFoodOrPotion extends Item implements INutrition {
                     for (Map.Entry<EntityAttribute, EntityAttributeModifier> entry : map.entrySet()) {
                         EntityAttributeModifier entityAttributeModifier = entry.getValue();
                         EntityAttributeModifier entityAttributeModifier2 = new EntityAttributeModifier(entityAttributeModifier.getName(), statusEffect.adjustModifierAmount(statusEffectInstance.getAmplifier(), entityAttributeModifier), entityAttributeModifier.getOperation());
-                        list3.add(new Pair<EntityAttribute, EntityAttributeModifier>(entry.getKey(), entityAttributeModifier2));
+                        list3.add(new Pair<>(entry.getKey(), entityAttributeModifier2));
                     }
                 }
 

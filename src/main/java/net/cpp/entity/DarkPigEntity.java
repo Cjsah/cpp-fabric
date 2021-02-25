@@ -2,15 +2,15 @@ package net.cpp.entity;
 
 import java.util.EnumSet;
 
+import net.cpp.dark.DarkAnimalsFollowTargetGoal;
+import net.cpp.dark.DarkAnimalsLookAtEntityGoal;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.FollowTargetGoal;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.RevengeGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -44,10 +44,10 @@ public class DarkPigEntity extends HostileEntity {
 		goalSelector.add(2, new IgniteGoal(this));
 		this.goalSelector.add(4, new MeleeAttackGoal(this, 1.0D, false));
 		this.goalSelector.add(5, new WanderAroundFarGoal(this, 0.8D));
-		this.goalSelector.add(6, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.add(6, new DarkAnimalsLookAtEntityGoal(this, PlayerEntity.class, 8.0F));
 		this.goalSelector.add(6, new LookAroundGoal(this));
-		this.targetSelector.add(1, new FollowTargetGoal<PlayerEntity>(this, PlayerEntity.class, true));
-		this.targetSelector.add(2, new RevengeGoal(this, new Class[0]));
+		this.targetSelector.add(1, new DarkAnimalsFollowTargetGoal<>(this, PlayerEntity.class, true));
+		this.targetSelector.add(2, new RevengeGoal(this));
 	}
 
 	public void writeCustomDataToTag(CompoundTag tag) {
