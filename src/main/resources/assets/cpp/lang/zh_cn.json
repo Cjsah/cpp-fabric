@@ -487,6 +487,12 @@
   "block.cpp.sakura_sapling": "樱花树树苗",
   "block.cpp.rice": "稻谷",
 
+  "entity.cpp.dark_cow": "黑暗牛",
+  "entity.cpp.dark_mooshroom": "黑暗哞菇",
+  "entity.cpp.dark_sheep": "黑暗羊",
+  "entity.cpp.dark_pig": "黑暗猪",
+  "entity.cpp.dark_chicken": "黑暗鸡",
+
   "gui.click_to_shift": "点击切换",
   "gui.output_to_east": "向东输出",
   "gui.output_to_west": "向西输出",
