@@ -54,9 +54,11 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 /**
@@ -65,7 +67,12 @@ import net.minecraft.world.World;
  * @author Ph-苯
  */
 public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScreenHandlerFactory {
-	public static final StatusEffect ATTRACTING = new CppEffect(StatusEffectType.HARMFUL, 0);
+	public static final StatusEffect ATTRACTING = new CppEffect(StatusEffectType.HARMFUL, 0) {
+		@Override
+		protected String loadTranslationKey() {
+			return "effect.cpp.attracting";
+		}
+	};
 	public static final List<StatusEffect> AVAILABLE_PLAYER_EFFECTS = Collections.unmodifiableList(Arrays.asList(FIRE_RESISTANCE, NIGHT_VISION, WATER_BREATHING, INVISIBILITY, SATURATION, CppEffects.CHAIN));
 	public static final List<StatusEffect> AVAILABLE_MOB_EFFECTS = Collections.unmodifiableList(Arrays.asList(WEAKNESS, SLOWNESS, GLOWING, POISON, WITHER, ATTRACTING));
 	/** 当前选择的状态效果 */

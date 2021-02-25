@@ -6,6 +6,7 @@ import static net.cpp.api.CodingTool.y;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.cpp.init.CppBlocks;
 import net.cpp.screen.handler.TradeMachineScreenHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
@@ -13,9 +14,10 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class TradeMachineScreen extends AExpMachineScreen<TradeMachineScreenHandler> {
-	public static final Identifier BACKGROUND = new Identifier("cpp:textures/gui/trade_machine.png");
+	public static final Identifier BACKGROUND = getBackgroundByName(Registry.BLOCK.getId(CppBlocks.TRADE_MACHINE).getPath());
 	public static final int MODE_BUTTON_SYNC_ID = nextSyncId();
 	/**
 	 * 交易模式按钮，点击切换模式

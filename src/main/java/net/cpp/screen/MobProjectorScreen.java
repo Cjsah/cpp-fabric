@@ -5,15 +5,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.cpp.api.CodingTool;
+import net.cpp.init.CppBlocks;
 import net.cpp.screen.handler.MobProjectorScreenHandler;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class MobProjectorScreen extends AExpMachineScreen<MobProjectorScreenHandler> {
-	public static final Identifier BACKGROUND = new Identifier("cpp:textures/gui/mob_projector.png");
-	public static final Identifier FLASH = new Identifier("cpp:textures/gui/mob_projector_flash.png");
+	public static final Identifier BACKGROUND = getBackgroundByName(Registry.BLOCK.getId(CppBlocks.MOB_PROJECTOR).getPath());
+	public static final Identifier FLASH = getBackgroundByName("mob_projector_flash");
 	/**
 	 * 生成过程中显示的图片
 	 */

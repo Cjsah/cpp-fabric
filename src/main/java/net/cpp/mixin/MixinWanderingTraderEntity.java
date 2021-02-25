@@ -46,7 +46,7 @@ public abstract class MixinWanderingTraderEntity extends MerchantEntity {
 	@Inject(at = @At("RETURN"), method = { "<init>" })
 	public void init(CallbackInfo info) {
 		if (!world.isClient) {
-			offers.clear();
+		
 
 		}
 	}

@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.cpp.api.CodingTool;
+import net.cpp.init.CppBlocks;
 import net.cpp.screen.handler.BeaconEnhancerScreenHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -17,10 +18,11 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHandler> {
 	public static final int PLAYER_EFFECT_BUTTON_SYNC_ID = CodingTool.nextSyncId(), MOB_EFFECT_BUTTON_SYNC_ID = CodingTool.nextSyncId(), ONLY_ADVERSE_BUTTON_SYNC_ID = CodingTool.nextSyncId();
-	public static final Identifier BACKGROUND = new Identifier("cpp:textures/gui/beacon_enhancer.png");
+	public static final Identifier BACKGROUND = AMachineScreen.getBackgroundByName(Registry.BLOCK.getId(CppBlocks.BEACON_ENHANCER).getPath());
 	public static final List<Identifier> PLAYER_EFFECT_TEXTURES, MOB_EFFECT_TEXTURES;
 	public static final List<Text> ONLY_ADVERSE_TEXTS = ImmutableList.of(new TranslatableText("gui.all_living"), new TranslatableText("gui.only_adverse"));
 	/**
@@ -117,7 +119,7 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 			tempList = new ArrayList<Identifier>();
 			for (String s : new String[] { "weakness", "slowness", "glowing", "poison", "wither" })
 				tempList.add(new Identifier(String.format("textures/mob_effect/%s.png", s)));
-			tempList.add(new Identifier("cpp:textures/gui/attract.png"));
+			tempList.add(AMachineScreen.getBackgroundByName("attract"));
 			MOB_EFFECT_TEXTURES = Collections.unmodifiableList(tempList);
 		}
 	}
