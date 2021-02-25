@@ -1,6 +1,6 @@
 package net.cpp.item;
 
-import net.cpp.api.ITickableInItemFrame;
+import net.cpp.ducktyping.ITickableInItemFrame;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;

@@ -1,4 +1,4 @@
-package net.cpp.api;
+package net.cpp.ducktyping;
 
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.util.math.Vec3d;

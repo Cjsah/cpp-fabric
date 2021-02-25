@@ -1,4 +1,4 @@
-package net.cpp.api;
+package net.cpp.misc;
 
 import static net.minecraft.block.Blocks.ANCIENT_DEBRIS;
 import static net.minecraft.block.Blocks.CLAY;

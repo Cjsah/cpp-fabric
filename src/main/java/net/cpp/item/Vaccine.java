@@ -1,27 +1,36 @@
 package net.cpp.item;
 
 import net.cpp.api.CodingTool;
-import net.cpp.api.IPlayerVaccine;
+import net.cpp.ducktyping.IPlayerVaccine;
 import net.cpp.vaccine.VaccineInstance;
 import net.cpp.vaccine.Vaccines;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsage;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public class Vaccine extends Item {
     private final Vaccines vaccine;
@@ -66,5 +75,18 @@ public class Vaccine extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         return ItemUsage.consumeHeldItem(world, user, hand);
+    }
+
+    public static Collection<StatusEffect> getVaccineEffects(LivingEntity user) {
+        Collection<StatusEffect> list = new ArrayList<>();
+        if (user instanceof ServerPlayerEntity) {
+            CompoundTag playerTag = new CompoundTag();
+            user.writeCustomDataToTag(playerTag);
+            for (Tag vaccine : playerTag.getList("Vaccines", 10)) {
+                StatusEffect effect = Registry.STATUS_EFFECT.get(new Identifier((Objects.requireNonNull(Vaccines.byRawId(((CompoundTag) vaccine).getByte("Id"))).getName())));
+                if (effect != null) list.add(effect);
+            }
+        }
+        return list;
     }
 }

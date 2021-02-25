@@ -7,7 +7,7 @@ public enum Vaccines {
     BLINDNESS("minecraft:blindness", (byte) 1, 200),
     MINING_FATIGUE("minecraft:mining_fatigue", (byte) 2, 200),
     WITHER("minecraft:wither", (byte) 3, 200),
-    DARKNESS("cpp:darkness", (byte) 4, 200);
+    DARKNESS("cpp:darkness", (byte) 4, 600);
 
     private final byte rawId;
     private final String name;

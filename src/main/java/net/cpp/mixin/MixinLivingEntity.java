@@ -1,9 +1,9 @@
 package net.cpp.mixin;
 
-import net.cpp.init.CppEffects;
+import net.cpp.item.Vaccine;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.server.command.EffectCommand;
+import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,9 +34,21 @@ public abstract class MixinLivingEntity extends Entity {
 	
 	@Shadow
 	public abstract ItemStack getOffHandStack();
-	
+
+	@Shadow
+	public Map<StatusEffect, StatusEffectInstance> activeStatusEffects;
+
+	@Shadow
+	protected abstract void onStatusEffectRemoved(StatusEffectInstance effect);
+
+
 	@Inject(at = @At("RETURN"), method = "tick()V")
 	public void tick(CallbackInfo callbackInfo) {
+		if ((Object)this instanceof PlayerEntity) this.activeStatusEffects.entrySet().removeIf(effect -> {
+			boolean remove = Vaccine.getVaccineEffects((PlayerEntity) (Object)this).contains(effect.getKey());
+			if (remove) this.onStatusEffectRemoved(effect.getValue());
+			return remove;
+		});
 		if (!isSpectator() && canFly()) {
 			/*
 			 * if ((Object) this instanceof PlayerEntity) { PlayerEntity player = ((PlayerEntity) (Object) this); if (!player.isCreative()) player.getAbilities().flying = getMainHandStack().isOf(CppItems.SHOOTING_STAR); } else
@@ -67,26 +79,10 @@ public abstract class MixinLivingEntity extends Entity {
 			}
 		}
 	}
-	
-	@Shadow
-	public abstract Map<StatusEffect, StatusEffectInstance> getActiveStatusEffects();
-	
-	@Shadow
-	public abstract boolean removeStatusEffect(StatusEffect type);
-	
 	@Inject(at = @At("HEAD"), method = "addStatusEffect", cancellable = true)
 	public void addStatusEffect1(StatusEffectInstance effect, CallbackInfoReturnable<Boolean> info) {
-		StatusEffect statusEffect = effect.getEffectType();
-		Map<StatusEffect, StatusEffectInstance> effects = getActiveStatusEffects();
-		if (statusEffect instanceof CppEffects.VaccineStatusEffect) {
-			removeStatusEffect(((CppEffects.VaccineStatusEffect) statusEffect).getImmuneEffect());
-		} else {
-			for (StatusEffect statusEffect1 : effects.keySet()) {
-				if (statusEffect1 instanceof CppEffects.VaccineStatusEffect && statusEffect == ((CppEffects.VaccineStatusEffect) statusEffect1).getImmuneEffect()) {
-					info.setReturnValue(false);
-					return;
-				}
-			}
+		if (Vaccine.getVaccineEffects((LivingEntity) (Object)this).contains(effect.getEffectType())) {
+			info.setReturnValue(false);
 		}
 	}
 }

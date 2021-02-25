@@ -1,6 +1,6 @@
 package net.cpp.mixin;
 
-import net.cpp.api.IPlayerVaccine;
+import net.cpp.ducktyping.IPlayerVaccine;
 import net.cpp.vaccine.VaccineInstance;
 import net.cpp.vaccine.Vaccines;
 import net.minecraft.nbt.ListTag;
@@ -23,7 +23,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 @Mixin(PlayerEntity.class)
@@ -36,6 +35,7 @@ public abstract class MixinPlayerEntity extends LivingEntity implements ITempera
 	private int weight = 0;
 	protected boolean effectEnabled;
 	private final Map<Vaccines, VaccineInstance> vaccines = new HashMap<>();
+
 
 	@Inject(at = @At("RETURN"), method = "tick")
 	public void tick(CallbackInfo info) {
@@ -99,5 +99,10 @@ public abstract class MixinPlayerEntity extends LivingEntity implements ITempera
 	@Override
 	public void removeVaccine(Vaccines vaccine) {
 		this.vaccines.remove(vaccine);
+	}
+
+	@Override
+	public boolean containVaccine(Vaccines vaccine) {
+		return this.vaccines.containsKey(vaccine);
 	}
 }

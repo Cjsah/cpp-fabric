@@ -31,7 +31,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 
 import net.cpp.api.CodingTool;
-import net.cpp.api.ITickableInItemFrame;
+import net.cpp.ducktyping.ITickableInItemFrame;
 import net.minecraft.block.BambooBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.KelpPlantBlock;
