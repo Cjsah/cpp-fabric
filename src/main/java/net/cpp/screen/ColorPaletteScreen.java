@@ -108,7 +108,7 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 						//显示当前选中的颜色色块
 						DrawableHelper.fill(matrices, x + CBX, y + CBY, x + CBX + CBW, y + CBY + CBH, handler.getRgb() | 0xff000000);
 						//显示染料名字
-						DyeItem dye = handler.getNeededDye(0);
+						Item dye = handler.getNeededDye(0);
 						textRenderer.draw(matrices, dye.getName(), x + CBX + CBW + 4, y + CBY, 0);
 						break;
 					}
@@ -175,11 +175,7 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 						{
 							//渲染箭头
 							drawTexture(matrices, posX + B3X - A23W / 2 + B23SW / 2 + handler.getSelectedColorId(2) * B23SW, posY + B3Y - A23H - 1, A23X, A23Y, A23W, A23H, TW, TH);
-							
 						}
-						
-						//						itemRenderer.renderInGui(inputStack, posX + 8, posY + 18);
-						
 					}
 				}
 				if (mode > 0) {
@@ -226,9 +222,9 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 				if (mx >= 0 && mx < B23SW * DyeColor.values().length && my >= 0 && my < B23H) {
 					setSelectedColor(2, (int) (mx / B23SW));
 					clicked = true;
-				}else if (focusedSlot!=null&&focusedSlot.id>=39&&focusedSlot.id<39+16){
-					int id = focusedSlot.id-39;
-					setSelectedColor(2,id);
+				} else if (focusedSlot != null && focusedSlot.id >= 39 && focusedSlot.id < 39 + 16) {
+					int id = focusedSlot.id - 39;
+					setSelectedColor(2, id);
 				}
 			}
 		}
@@ -337,9 +333,9 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 				break;
 			}
 			case 3:
-				DyeColor dyeColor=ColorPaletteScreenHandler.getDyeColor(stack.getItem());
-				if (dyeColor!=null){
-					setSelectedColor(2,dyeColor.getId());
+				DyeColor dyeColor = ColorPaletteScreenHandler.getDyeColor(stack.getItem());
+				if (dyeColor != null) {
+					setSelectedColor(2, dyeColor.getId());
 				}
 				break;
 		}

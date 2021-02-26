@@ -1,11 +1,6 @@
 package net.cpp.screen.handler;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Stream;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 
 import com.google.common.collect.Lists;
 import io.netty.buffer.Unpooled;
@@ -18,7 +13,6 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.fabric.mixin.item.ItemStackMixin;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -39,9 +33,6 @@ import javax.annotation.Nullable;
 import static net.minecraft.item.Items.*;
 
 public class ColorPaletteScreenHandler extends ScreenHandler {
-	/** 染料物品，用于调用染色方法（搞得跟静态方法一样，MJSB） */
-	public static final DyeableItem DYER = new DyeableItem() {
-	};
 	public static final Identifier CHANNEL = Registry.ITEM.getId(CppItems.COLOR_PALETTE);
 	public ColorPaletteScreen colorPaletteScreen;
 	
@@ -72,64 +63,29 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 	}
 	
 	private final int[] selectedColorIds = new int[3];
-	private ItemStack rawStack = ItemStack.EMPTY;
-	private static final int materialSlotIndex = 36;
-	private static final int resultSlotIndex = 37;
-	private static final int[] dyeSlotIndexes = {38, 39};
+//	private static final int resultSlotIndex = 37;
+//	private static final int[] dyeSlotIndexes = {38, 39};
 	/**
 	 * 为调色盘量身定做的物品栏，考虑到了结果槽的特殊性，避免无限递归<br> 序号	用途<br> 0	原料<br> 1	产物<br> 2	第一染料<br> 3	第二染料<br> 4-19	模式3用于储存16色方块
 	 */
-	private final SimpleInventory items = new SimpleInventory(20) {
+	private final SimpleInventory items = new SimpleInventory(20) /*{//DEL
 		public ItemStack addStack(ItemStack stack) {
 			return super.addStack(stack);
 		}
 		
-		public void setStack(int slot, ItemStack stack) {
-			ItemStack preStack = getStack(slot);
+		public void setStack(int slot, ItemStack stack) {//DEL
 			super.setStack(slot, stack);
-			if (slot == 0) {
-				if (!stack.isEmpty() && preStack.isEmpty() || !ItemStack.canCombine(preStack, stack)) {
-					rawStack = stack;
-					changeSlots();
-					if (colorPaletteScreen != null) {
-						colorPaletteScreen.appliedNewMaterial();
-					}
-				}
-				updateResult();
-			}
 		}
 		
-		public ItemStack removeStack(int slot, int amount) {
-			ItemStack r = super.removeStack(slot, amount);
-			if (slot == 0 && !r.isEmpty()) {
-				changeSlots();
-				updateResult();
-			} else if (slot == 1 && !r.isEmpty()) {
-				getStack(2).decrement(1);
-				if (getCurrentMode() == 2) {
-					getStack(3).decrement(1);
-				}
-				items.removeStack(0);
-			}
-			return r;
+		public ItemStack removeStack(int slot, int amount) {//DEL
+			return super.removeStack(slot, amount);
 		}
 		
-		public ItemStack removeStack(int slot) {
-			ItemStack r = super.removeStack(slot);
-			if (slot == 0 && !r.isEmpty()) {
-				changeSlots();
-				updateResult();
-			} else if (slot == 1 && !r.isEmpty()) {
-				getStack(2).decrement(1);
-				if (getCurrentMode() == 2) {
-					getStack(3).decrement(1);
-				}
-				items.removeStack(0);
-			}
-			return r;
+		public ItemStack removeStack(int slot) {//DEL
+			return super.removeStack(slot);
 		}
-	};
-	private DyeItem neededDye = (DyeItem) WHITE_DYE;
+	}*/;
+	private Item neededDye = WHITE_DYE;
 	private final PlayerEntity player;
 	
 	public ColorPaletteScreenHandler(int syncId, PlayerInventory playerInventory) {
@@ -158,11 +114,35 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 			});
 		}
 		CodingTool.addPlayerSlots(this::addSlot, player.getInventory());
-		addSlot(new Slot(items, 0, CodingTool.x(8), CodingTool.y(0)));
+		addSlot(new Slot(items, 0, CodingTool.x(8), CodingTool.y(0)) {
+			@Override
+			public void onStackChanged(ItemStack originalItem, ItemStack newItem) {
+				super.onStackChanged(originalItem, newItem);
+				//				onMaterialChanged();
+			}
+			
+			@Override
+			public void setStack(ItemStack stack) {
+				super.setStack(stack);
+				onMaterialChanged();
+			}
+			
+			@Override
+			public ItemStack onTakeItem(PlayerEntity player, ItemStack stack) {
+				ItemStack r = super.onTakeItem(player, stack);
+				onMaterialChanged();
+				return r;
+			}
+			
+			@Override
+			protected void onTake(int amount) {
+				super.onTake(amount);
+			}
+		});
 		changeSlots();
 	}
 	
-	public DyeItem getNeededDye(int i) {
+	public Item getNeededDye(int i) {
 		switch (getCurrentMode()) {
 			case 1:
 				return neededDye;
@@ -181,49 +161,40 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 	
 	public void close(PlayerEntity player) {
 		super.close(player);
+		insertItem(items.getStack(0), 0, 36, false);
 		CodingTool.give(player, items.removeStack(0));
+		onMaterialChanged();
 	}
 	
-	@Override
-	public void onContentChanged(Inventory inventory) {
-		//		items.setStack(2, items.getStack(0).copy());
-		//		items.getStack(2).setCount(1);
-		//		if (items.getStack(0).getItem() instanceof DyeableItem) {
-		//			DYER.setColor(items.getStack(2), rgb & 0x00ffffff);
-		//		} else if (items.getStack(0).isOf(Items.FIREWORK_STAR)) {
-		//
-		//			List<Integer> list = Arrays.stream(items.getStack(2).getOrCreateSubTag("Explosion").getIntArray("Colors")).boxed().collect(Collectors.toList());
-		//			list.add(rgb);
-		//			items.getStack(2).getOrCreateSubTag("Explosion").putIntArray("Colors", list);
-		//
-		//		} else {
-		//			items.removeStack(2);
-		//		}
-		super.onContentChanged(inventory);
-		//		System.out.println(items);
-	}
+//	@Override
+//	public void onContentChanged(Inventory inventory) {
+//		super.onContentChanged(inventory);
+//	}
 	
 	@Override
-	public ItemStack transferSlot(PlayerEntity player, int index) {//TODO
-		ItemStack stack = getSlot(index).getStack();
-		if (index >= 0 && index < 36) {
-			if (getCurrentMode() > 0 && stack.getItem() instanceof DyeItem) {
-				if (!insertItem(stack, 38, 39, false)) {
-					if (getCurrentMode() == 2) {
-						insertItem(stack, 39, 40, false);
+	public ItemStack transferSlot(PlayerEntity player, int index) {
+		if (getSlot(index).canTakeItems(player)) {
+			ItemStack stack = getSlot(index).getStack();
+			if (index >= 0 && index < 36) {
+				if (getCurrentMode() > 0 && stack.getItem() instanceof DyeItem) {
+					if (!insertItem(stack, 38, 39, false)) {
+						if (getCurrentMode() == 2) {
+							insertItem(stack, 39, 40, false);
+						}
 					}
+				} else {
+					insertItem(stack, 36, 37, false);
+					onMaterialChanged();
 				}
+			} else if (index == 36) {
+				insertItem(stack, 0, 36, false);
+				onMaterialChanged();
+			} else if (index == 37) {
+				insertItem(stack, 0, 36, false);
+				onResultTaken();
 			} else {
-				insertItem(stack, 36, 37, false);
+				insertItem(stack, 0, 36, false);
 			}
-		} else if (index == 36) {
-			CodingTool.give(player, items.removeStack(0));
-		} else if (index == 37) {
-			if (getSlot(37).canTakeItems(player)) {
-				CodingTool.give(player, items.removeStack(1));
-			}
-		} else {
-			insertItem(stack, 0, 36, false);
 		}
 		return ItemStack.EMPTY;
 	}
@@ -283,9 +254,6 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 	}
 	
 	public void changeSlots() {
-		while (slots.size() > 37) {
-			slots.remove(slots.size() - 1);
-		}
 		int mode = getCurrentMode();
 		if (mode > 0) {
 			addSlot(new ResultSlot(items, 1, CodingTool.x(8), CodingTool.y(2)) {
@@ -296,49 +264,64 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 							return false;
 						}
 					}
-					if (!getDyeSlot(0).getStack().isOf(getNeededDye(0))) {
-						return false;
-					}
-					return true;
+					return getDyeSlot(0).getStack().isOf(getNeededDye(0));
 				}
 				
 				@Override
 				public ItemStack onTakeItem(PlayerEntity player, ItemStack stack) {
-					return super.onTakeItem(player, stack);
+					ItemStack r = super.onTakeItem(player, stack);
+					onResultTaken();
+					return r;
 				}
 				
-				@Override
-				protected void onTake(int amount) {
-					super.onTake(amount);
-				}
+//				@Override
+//				protected void onTake(int amount) {
+//					super.onTake(amount);
+//				}
 			});
 			addSlot(new Slot(items, 2, CodingTool.x(8), CodingTool.y(1)));
 			if (mode == 2) {
 				addSlot(new Slot(items, 3, CodingTool.x(7), CodingTool.y(1)));
 			} else {
+				insertItem(items.getStack(3), 0, 36, false);
 				CodingTool.give(player, items.removeStack(3));
+				while (slots.size() > 40) {
+					slots.remove(slots.size() - 1);
+				}
 				if (mode == 3) {
+					class DisplaySlot extends Slot {
+						
+						public DisplaySlot(Inventory inventory, int index, int x, int y) {
+							super(inventory, index, x, y);
+						}
+						@Override
+						public boolean canTakeItems(PlayerEntity playerEntity) {
+							return false;
+						}
+						
+						@Override
+						public boolean canInsert(ItemStack stack) {
+							return false;
+						}
+					}
 					for (int i = 0; i < 16; i++) {
-						addSlot(new Slot(items, i + 4, CodingTool.x(i % 8), CodingTool.y(1 + i / 8)) {
-							@Override
-							public boolean canTakeItems(PlayerEntity playerEntity) {
-								return false;
-							}
-							
-							@Override
-							public boolean canInsert(ItemStack stack) {
-								return false;
-							}
-							
-						});
+						addSlot(new DisplaySlot(items, i + 4, CodingTool.x(i % 8), CodingTool.y(1 + i / 8)));
+					}
+//					addSlot(new DisplaySlot(items, 21, CodingTool.x(8), CodingTool.y(0)));
+				}else{
+					while (slots.size() > 39) {
+						slots.remove(slots.size() - 1);
 					}
 				}
 			}
-			
 		} else {
 			items.removeStack(1);
 			for (int i = 2; i < 4; i++) {
+				insertItem(items.getStack(i), 0, 36, false);
 				CodingTool.give(player, items.removeStack(i));
+			}
+			while (slots.size() > 37) {
+				slots.remove(slots.size() - 1);
 			}
 		}
 		
@@ -376,26 +359,15 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 				break;
 			}
 			case 3: {
-				Identifier materialId = Registry.ITEM.getId(materialStack.getItem());
-				String resultIdPath = materialId.getPath();
-				DyeColor originalColor = null;
-				for (DyeColor dyeColor : DyeColor.values()) {
-					if (materialId.getPath().contains(dyeColor.asString())) {
-						originalColor = dyeColor;
-						resultIdPath = materialId.getPath().replace(dyeColor.asString(), "");
-						break;
-					}
+				resultStack = dyeStack(materialStack, DyeColor.byId(getSelectedColorId(2)));
+				for (int i = 0; i < 16; i++) {
+					ItemStack stack = dyeStack(materialStack, DyeColor.byId(i));
+					stack.setCount(1);
+					items.setStack(i + 4, stack);
 				}
-				if (originalColor == null) {
-					resultIdPath = "_" + materialId.getPath();
-				}
-				if (resultStack != (resultStack = dyeStack(materialStack, DyeColor.byId(getSelectedColorId(2))))) {
-					for (int i = 0; i < 16; i++) {
-						ItemStack stack = dyeStack(materialStack,DyeColor.byId(i));
-						stack.setCount(1);
-						items.setStack(i + 4, stack);
-					}
-				}
+//				ItemStack stack = removeColor(materialStack);
+//				stack.setCount(1);
+//				items.setStack(20, stack);
 			}
 		}
 		items.setStack(1, resultStack);
@@ -415,7 +387,7 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 		Identifier id = Registry.ITEM.getId(item);
 		DyeColor color = null;
 		for (DyeColor dyeColor : DyeColor.values()) {
-			if (id.getPath().contains(dyeColor.asString())) {
+			if (id.getPath().indexOf(dyeColor.asString()) == 0) {
 				color = dyeColor;
 				break;
 			}
@@ -428,7 +400,7 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 		Identifier id = Registry.ITEM.getId(stack.getItem());
 		String path = null;
 		for (DyeColor dyeColor : DyeColor.values()) {
-			if (id.getPath().contains(dyeColor.asString())) {
+			if (id.getPath().indexOf(dyeColor.asString()) == 0) {
 				path = id.getPath().replace(dyeColor.asString() + "_", "");
 				break;
 			}
@@ -440,7 +412,7 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 				item = Registry.ITEM.get(new Identifier(id.getNamespace(), path));
 			}
 			if (item != AIR) {
-				resultStack = new ItemStack(item, resultStack.getCount());
+				resultStack = new ItemStack(item, stack.getCount());
 				resultStack.setTag(stack.getTag());
 			}
 		}
@@ -448,18 +420,44 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 	}
 	
 	public static ItemStack dyeStack(ItemStack stack, DyeColor color) {
-		ItemStack resultStack = stack;
-		Identifier id = Registry.ITEM.getId(removeColor(stack).getItem());
-		String path = color.asString() + "_" + id.getPath();
+		ItemStack resultStack = ItemStack.EMPTY;
+		Identifier id = Registry.ITEM.getId(stack.getItem());
+		String rootPath = null;
+		for (DyeColor dyeColor : DyeColor.values()) {
+			if (id.getPath().indexOf(dyeColor.asString()) == 0) {
+				rootPath = id.getPath().replace(dyeColor.asString(), "");
+			}
+		}
+		if (rootPath == null) {
+			rootPath = "_" + id.getPath();
+		}
+		String path = color.asString() + rootPath;
 		Item item = Registry.ITEM.get(new Identifier(id.getNamespace(), path));
 		if (item == AIR) {
-			path = color.asString() + "_stained_" + id.getPath();
+			path = color.asString() + "_stained" + rootPath;
 			item = Registry.ITEM.get(new Identifier(id.getNamespace(), path));
 		}
 		if (item != AIR) {
-			resultStack = new ItemStack(item, resultStack.getCount());
+			resultStack = new ItemStack(item, stack.getCount());
 			resultStack.setTag(stack.getTag());
 		}
 		return resultStack;
+	}
+	
+	public void onMaterialChanged() {
+		changeSlots();
+		if (colorPaletteScreen != null) {
+			colorPaletteScreen.appliedNewMaterial();
+		}
+		updateResult();
+	}
+	
+	public void onResultTaken() {
+		items.getStack(2).decrement(1);
+		if (getCurrentMode() == 2) {
+			items.getStack(3).decrement(1);
+		}
+		items.removeStack(0);
+		changeSlots();
 	}
 }
