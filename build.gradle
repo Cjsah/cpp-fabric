@@ -10,13 +10,15 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
-// 发布时注释掉
 repositories {
-	maven {
-		url 'https://masa.dy.fi/maven'
-	}
+	// modmenu maven 地址
 	maven {
 		url 'https://maven.terraformersmc.com/releases'
+	}
+	// 发布时注释掉
+	// fabric maven 地址
+	maven {
+		url 'https://masa.dy.fi/maven'
 	}
 }
 
