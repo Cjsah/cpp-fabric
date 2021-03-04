@@ -1,7 +1,7 @@
 package net.cpp.config;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.github.prospector.modmenu.ModMenu;
+import com.terraformersmc.modmenu.ModMenu;
 import net.cpp.api.ICppConfig;
 import net.cpp.api.TexturedButtonWidget;
 import net.minecraft.client.MinecraftClient;

@@ -2,7 +2,6 @@ package net.cpp.config;
 
 import com.google.gson.JsonElement;
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.github.prospector.modmenu.mixin.EntryListWidgetAccessor;
 import net.cpp.Craftingpp;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
@@ -152,7 +151,7 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
                 ConfigListEntry entry = this.getEntry(index);
                 int rowWidth = this.getRowWidth();
                 int entryLeft;
-                if (((EntryListWidgetAccessor)this).isRenderSelection() && this.isSelectedItem(index)) {
+                if (this.isSelectedItem(index)) {
                     entryLeft = this.getRowLeft() - 2 + entry.getXOffset();
                     int selectionRight = x + rowWidth + 2;
                     RenderSystem.disableTexture();

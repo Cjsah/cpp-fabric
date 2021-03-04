@@ -23,7 +23,7 @@ public abstract class MixinCowEntity extends AnimalEntity {
 		super.tick();
 		if (!world.isClient && (Class<?>) getClass() == CowEntity.class && world.getTime() % 100 == 0 && world.getLightLevel(getBlockPos()) <= 7 && getServer().getPredicateManager().get(new Identifier("cpp:dark_animal")).test(new LootContext.Builder((ServerWorld) world).random(world.random).build(LootContextTypes.EMPTY))) {
 			DarkCowEntity darkCow = CppEntities.DARK_COW.create(world);
-			darkCow.setPos(getX(), getY(), getZ());
+			darkCow.setPos(getX(), getY() + .1D, getZ());
 			darkCow.yaw = yaw;
 			darkCow.pitch = pitch;
 			darkCow.setVelocity(getVelocity());

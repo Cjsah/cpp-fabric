@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.github.prospector.modmenu.ModMenu;
+import com.terraformersmc.modmenu.ModMenu;
 import net.cpp.Craftingpp;
 import net.cpp.api.TexturedButtonWidget;
 import net.minecraft.client.gui.screen.Screen;
