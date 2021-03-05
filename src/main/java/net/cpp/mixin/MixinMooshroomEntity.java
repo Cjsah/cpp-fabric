@@ -1,5 +1,6 @@
 package net.cpp.mixin;
 
+import net.cpp.Craftingpp;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.PassiveEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,7 +32,7 @@ public abstract class MixinMooshroomEntity extends CowEntity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!world.isClient && world.getTime() % 100 == 0 && world.getLightLevel(getBlockPos()) <= 7 && getServer().getPredicateManager().get(new Identifier("cpp:dark_animal")).test(new LootContext.Builder((ServerWorld) world).random(world.random).build(LootContextTypes.EMPTY))) {
+		if (!this.world.isClient && this.world.getTime() % 24000 == 13245 && world.getLightLevel(this.getBlockPos()) <= 7 && this.getServer().getPredicateManager().get(new Identifier(Craftingpp.MOD_ID3, "dark_animal")).test(new LootContext.Builder((ServerWorld) this.world).random(this.world.random).build(LootContextTypes.EMPTY))) {
 			DarkMooshroomEntity darkMooshroom = CppEntities.DARK_MOOSHROOM.create(world);
 			darkMooshroom.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.yaw, this.pitch);
 			darkMooshroom.setVelocity(this.getVelocity());

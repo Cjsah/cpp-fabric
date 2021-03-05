@@ -22,7 +22,7 @@ public abstract class MixinSheepEntity extends AnimalEntity {
 
 	public void tick() {
 		super.tick();
-		if (!world.isClient && world.getTime() % 100 == 0 && world.getLightLevel(getBlockPos()) <= 7 && getServer().getPredicateManager().get(new Identifier("cpp:dark_animal")).test(new LootContext.Builder((ServerWorld) world).random(world.random).build(LootContextTypes.EMPTY))) {
+		if (!this.world.isClient && this.world.getTime() % 24000 == 13245 && world.getLightLevel(this.getBlockPos()) <= 7 && this.getServer().getPredicateManager().get(new Identifier("cpp:dark_animal")).test(new LootContext.Builder((ServerWorld) this.world).random(this.world.random).build(LootContextTypes.EMPTY))) {
 			DarkSheepEntity darkSheep = CppEntities.DARK_SHEEP.create(world);
 			darkSheep.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.yaw, this.pitch);
 			darkSheep.setVelocity(this.getVelocity());
