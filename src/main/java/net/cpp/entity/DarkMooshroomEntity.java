@@ -19,6 +19,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.world.World;
 
+
 public class DarkMooshroomEntity extends HostileEntity {
 	private static final TrackedData<String> TYPE = DataTracker.registerData(DarkMooshroomEntity.class, TrackedDataHandlerRegistry.STRING);
 
@@ -26,6 +27,7 @@ public class DarkMooshroomEntity extends HostileEntity {
 		super(entityType, world);
 	}
 
+	@Override
 	protected void initGoals() {
 		this.goalSelector.add(8, new DarkAnimalsLookAtEntityGoal(this, PlayerEntity.class, 8.0F));
 		this.goalSelector.add(8, new LookAroundGoal(this));
@@ -38,6 +40,7 @@ public class DarkMooshroomEntity extends HostileEntity {
 		return super.getCurrentExperience(player) + 5;
 	}
 
+	@Override
 	public boolean tryAttack(Entity target) {
 		if (target instanceof LivingEntity) {
 			LivingEntity living = (LivingEntity) target;
@@ -57,25 +60,35 @@ public class DarkMooshroomEntity extends HostileEntity {
 	}
 
 	public MooshroomEntity.Type getMooshroomType() {
-		return MooshroomEntity.Type.valueOf((String) this.dataTracker.get(TYPE));
+		return MooshroomEntity.Type.valueOf(this.dataTracker.get(TYPE));
 	}
 
 	public void setType(MooshroomEntity.Type type) {
 		this.dataTracker.set(TYPE, type.name());
 	}
 
+	@Override
 	public void readCustomDataFromTag(CompoundTag tag) {
 		super.readCustomDataFromTag(tag);
-		this.setType(MooshroomEntity.Type.valueOf(tag.getString("Type")));
+		this.setType(this.getType(tag.getString("Type")));
 	}
 
+	@Override
 	public void writeCustomDataToTag(CompoundTag tag) {
 		super.writeCustomDataToTag(tag);
 		tag.putString("Type", this.getMooshroomType().name());
 	}
 
+	@Override
 	protected void initDataTracker() {
 		super.initDataTracker();
 		this.dataTracker.startTracking(TYPE, MooshroomEntity.Type.RED.name());
+	}
+
+	private MooshroomEntity.Type getType(String name) {
+		for (MooshroomEntity.Type type : MooshroomEntity.Type.values()) {
+			if (type.name().equals(name)) return type;
+		}
+		return MooshroomEntity.Type.RED;
 	}
 }
