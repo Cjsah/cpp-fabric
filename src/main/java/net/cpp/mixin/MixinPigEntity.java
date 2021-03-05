@@ -1,9 +1,10 @@
 package net.cpp.mixin;
 
+import net.cpp.entity.DarkPigEntity;
+import net.minecraft.entity.SpawnReason;
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.cpp.init.CppEntities;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PigEntity;
@@ -22,13 +23,12 @@ public abstract class MixinPigEntity extends AnimalEntity {
 	public void tick() {
 		super.tick();
 		if (!world.isClient && world.getTime() % 100 == 0 && world.getLightLevel(getBlockPos()) <= 7 && getServer().getPredicateManager().get(new Identifier("cpp:dark_animal")).test(new LootContext.Builder((ServerWorld) world).random(world.random).build(LootContextTypes.EMPTY))) {
-			Entity darkCow = CppEntities.DARK_PIG.create(world);
-			darkCow.setPos(getX(), getY(), getZ());
-			darkCow.yaw = yaw;
-			darkCow.pitch = pitch;
-			darkCow.setVelocity(getVelocity());
-			world.spawnEntity(darkCow);
-			discard();
+			DarkPigEntity darkPig = CppEntities.DARK_PIG.create(world);
+			darkPig.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.yaw, this.pitch);
+			darkPig.setVelocity(this.getVelocity());
+			darkPig.initialize(((ServerWorld)this.world), this.world.getLocalDifficulty(darkPig.getBlockPos()), SpawnReason.CONVERSION, null, null);
+			((ServerWorld)this.world).shouldCreateNewEntityWithPassenger(darkPig);
+			this.discard();
 		}
 	}
 }
