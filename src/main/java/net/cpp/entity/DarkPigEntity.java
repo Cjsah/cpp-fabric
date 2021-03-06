@@ -18,17 +18,16 @@ import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
-public class DarkPigEntity extends HostileEntity {
+public class DarkPigEntity extends ADarkAnimalEntity<PigEntity> {
 	private static final TrackedData<Integer> FUSE_SPEED = DataTracker.registerData(DarkPigEntity.class, TrackedDataHandlerRegistry.INTEGER);
 	private int lastFuseTime;
 	private int currentFuseTime;
@@ -36,12 +35,13 @@ public class DarkPigEntity extends HostileEntity {
 	private int explosionRadius = 3;
 
 	public DarkPigEntity(EntityType<? extends DarkPigEntity> entityType, World world) {
-		super(entityType, world);
+		super(entityType, world, EntityType.PIG);
 	}
 
+	@Override
 	protected void initGoals() {
 		this.goalSelector.add(1, new SwimGoal(this));
-		goalSelector.add(2, new IgniteGoal(this));
+		this.goalSelector.add(2, new IgniteGoal(this));
 		this.goalSelector.add(4, new MeleeAttackGoal(this, 1.0D, false));
 		this.goalSelector.add(5, new WanderAroundFarGoal(this, 0.8D));
 		this.goalSelector.add(6, new DarkAnimalsLookAtEntityGoal(this, PlayerEntity.class, 8.0F));
@@ -50,12 +50,14 @@ public class DarkPigEntity extends HostileEntity {
 		this.targetSelector.add(2, new RevengeGoal(this));
 	}
 
+	@Override
 	public void writeCustomDataToTag(CompoundTag tag) {
 		super.writeCustomDataToTag(tag);
 		tag.putShort("Fuse", (short) this.fuseTime);
 		tag.putByte("ExplosionRadius", (byte) this.explosionRadius);
 	}
 
+	@Override
 	public void readCustomDataFromTag(CompoundTag tag) {
 		super.readCustomDataFromTag(tag);
 		if (tag.contains("Fuse", 99)) {
@@ -67,10 +69,6 @@ public class DarkPigEntity extends HostileEntity {
 	}
 
 	@Override
-	protected int getCurrentExperience(PlayerEntity player) {
-		return super.getCurrentExperience(player) + 5;
-	}
-
 	public boolean tryAttack(Entity target) {
 		return true;
 	}
@@ -97,10 +95,6 @@ public class DarkPigEntity extends HostileEntity {
 		}
 
 		super.tick();
-		if (world.isClient) {
-			world.addParticle(ParticleTypes.SMOKE, getX(), getEyeY(), getZ(), (world.random.nextFloat() - .5f) / 10, world.random.nextFloat() / 10, (world.random.nextFloat() - .5f) / 10);
-		}
-
 	}
 
 	public int getFuseSpeed() {
@@ -126,6 +120,7 @@ public class DarkPigEntity extends HostileEntity {
 		return MathHelper.lerp(timeDelta, (float) this.lastFuseTime, (float) this.currentFuseTime) / (float) (this.fuseTime - 2);
 	}
 
+	@Override
 	protected void initDataTracker() {
 		super.initDataTracker();
 		this.dataTracker.startTracking(FUSE_SPEED, -1);
@@ -140,20 +135,24 @@ public class DarkPigEntity extends HostileEntity {
 			this.setControls(EnumSet.of(Goal.Control.MOVE));
 		}
 
+		@Override
 		public boolean canStart() {
 			LivingEntity livingEntity = this.darkPig.getTarget();
 			return this.darkPig.getFuseSpeed() > 0 || livingEntity != null && this.darkPig.squaredDistanceTo(livingEntity) < 9.0D;
 		}
 
+		@Override
 		public void start() {
 			this.darkPig.getNavigation().stop();
 			this.target = this.darkPig.getTarget();
 		}
 
+		@Override
 		public void stop() {
 			this.target = null;
 		}
 
+		@Override
 		public void tick() {
 			if (this.target == null) {
 				this.darkPig.setFuseSpeed(-1);
