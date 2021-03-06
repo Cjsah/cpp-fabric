@@ -1,6 +1,7 @@
 package net.cpp.api;
 
-import javax.swing.text.html.parser.Entity;
+
+import net.minecraft.entity.Entity;
 
 public interface IDarkTransform {
     <T extends Entity> void run(T entity);
