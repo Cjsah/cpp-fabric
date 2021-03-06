@@ -1,4 +1,4 @@
-package net.cpp.entity.render;
+package net.cpp.client.render.entity;
 
 import net.cpp.entity.DarkChickenEntity;
 import net.fabricmc.api.EnvType;
@@ -7,7 +7,6 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
 import net.minecraft.client.render.entity.model.ChickenEntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 

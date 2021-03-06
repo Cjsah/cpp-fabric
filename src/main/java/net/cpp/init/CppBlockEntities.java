@@ -21,6 +21,7 @@ public final class CppBlockEntities {
 	public static final BlockEntityType<BlockBreakerBlockEntity> BLOCK_BREAKER = registerBlockEntityType(BlockBreakerBlockEntity::new, CppBlocks.BLOCK_BREAKER);
 	public static final BlockEntityType<FermenterBlockEntity> FERMENTER = registerBlockEntityType(FermenterBlockEntity::new, CppBlocks.FERMENTER);
 	public static final BlockEntityType<BrokenSpawnerBlockEntity> BROKEN_SPAWNER = registerBlockEntityType(BrokenSpawnerBlockEntity::new, CppBlocks.BROKEN_SPAWNER);
+	public static final BlockEntityType<VariantSkullBlockEntity> VARIANT_SKULL = registerBlockEntityType(VariantSkullBlockEntity::new, CppBlocks.VARIANT_SKULL);
 
 	public static void loadClass() {}
 

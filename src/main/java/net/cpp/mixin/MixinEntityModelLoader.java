@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.cpp.entity.render.GolemEntityModel;
-import net.cpp.entity.render.GolemEntityRenderer;
+import net.cpp.client.render.entity.GolemEntityModel;
+import net.cpp.client.render.entity.GolemEntityRenderer;
 import net.minecraft.client.model.TexturedModelData;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.EntityModelLoader;

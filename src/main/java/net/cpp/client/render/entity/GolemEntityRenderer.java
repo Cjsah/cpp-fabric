@@ -1,4 +1,4 @@
-package net.cpp.entity.render;
+package net.cpp.client.render.entity;
 
 import java.util.HashMap;
 import java.util.Map;

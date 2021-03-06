@@ -1,4 +1,4 @@
-package net.cpp.entity.render;
+package net.cpp.client.render.entity;
 
 import net.cpp.entity.DarkSheepEntity;
 import net.fabricmc.api.EnvType;
@@ -8,8 +8,6 @@ import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.model.EntityModelLoader;
-import net.minecraft.client.render.entity.model.SheepEntityModel;
-import net.minecraft.client.render.entity.model.SheepWoolEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.util.DyeColor;

@@ -11,7 +11,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-public class ItemProcessorItem extends BlockItem {
+public class ItemProcessorItem extends BlockItem {//TODO
 	public ItemProcessorItem(Settings settings) {
 		super(CppBlocks.ITEM_PROCESSOR, settings);
 	}

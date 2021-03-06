@@ -127,7 +127,7 @@ public final class CppBlocks {
 	public static final Block STRUCTURE_GENERATOR = Registry.register(Registry.BLOCK, new Identifier(MOD_ID3, "structure_generator"), new StructureGenerationBlock(FabricBlockSettings.of(Material.AIR).noCollision().dropsNothing().air().nonOpaque()));
 	public static final Block BLOCK_BREAKER = registerBlock(BlockBreakerBlock.ID, new BlockBreakerBlock(FabricBlockSettings.of(Material.STONE).requiresTool().strength(3.5F)), CPP_GROUP_MACHINE);
 	public static final Block FERMENTER = registerBlock("fermenter", new FermenterBlock(FabricBlockSettings.of(Material.WOOD).strength(0.6F).sounds(BlockSoundGroup.WOOD)), CPP_GROUP_MACHINE);
-//	public static final Block ENDERMAN_HEAD = registerBlock("enderman_head", new PublicSkullBlock(null, null), CPP_GROUP_MISC);
+	public static final Block VARIANT_SKULL = registerBlock("variant_skull", new VariantSkullBlock(FabricBlockSettings.of(Material.WOOD).strength(0.6F).sounds(BlockSoundGroup.WOOD)), CPP_GROUP_MISC);
 
 	public static final List<Block> FLOWER_GRASSES = ImmutableList.of(LYCORIS_RADIATA, TRIFOLIUM, BLACKTHORN, CATTAIL, MARIGOLD, HIBISCUS, HYACINTH, CALAMUS, WILD_LILIUM, BAUHINIA, FLUFFY_GRASS, GERBERA, ESPARTO, GLOW_FORSYTHIA, GLAZED_SHADE, STELERA, FORAGE_CRYSTAL, ISORCHID, BURNING_CHRYSANTHE, OXALIS, CALLIOPSIS, CYCLAMEN, IRIS, LILIUM_PUMILUM, SNOWDROP, NARCISSUS, COLE_FLOWER, LUPINE, CROCUS, PANSY, ARABIA_SPEEDWELL, SILENE_PENDULA, ARTEMISIA_ARGYI);
 
