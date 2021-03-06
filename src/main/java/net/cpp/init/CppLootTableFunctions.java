@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonSerializer;
 import net.minecraft.util.registry.Registry;
 
-public class CppLootTableFunctions {
+public final class CppLootTableFunctions {
 
     public static final LootFunctionType ANCIENT_SCROLL_RANDOM_TAG = register("ancient_scroll_random_tag", new AncientScrollRandomTag.Serializer());
 
