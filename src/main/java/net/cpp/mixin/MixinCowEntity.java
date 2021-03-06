@@ -18,6 +18,6 @@ public abstract class MixinCowEntity extends AnimalEntity {
 
 	public void tick() {
 		super.tick();
-		if (!this.world.isClient) CodingTool.darkTransform((ServerWorld) this.world, this, CppEntities.DARK_COW, true, null);
+		if (!this.world.isClient && ((Object)this.getClass()) == CowEntity.class) CodingTool.darkTransform((ServerWorld) this.world, this, CppEntities.DARK_COW, true, null);
 	}
 }

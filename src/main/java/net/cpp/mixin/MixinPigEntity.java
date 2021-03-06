@@ -18,6 +18,6 @@ public abstract class MixinPigEntity extends AnimalEntity {
 
 	public void tick() {
 		super.tick();
-		if (!this.world.isClient) CodingTool.darkTransform((ServerWorld) this.world, this, CppEntities.DARK_PIG, true, null);
+		if (!this.world.isClient && ((Object)this.getClass()) == PigEntity.class) CodingTool.darkTransform((ServerWorld) this.world, this, CppEntities.DARK_PIG, true, null);
 	}
 }

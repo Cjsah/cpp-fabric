@@ -27,6 +27,6 @@ public abstract class MixinMooshroomEntity extends CowEntity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!this.world.isClient) CodingTool.darkTransform((ServerWorld) this.world, this, CppEntities.DARK_MOOSHROOM, true, (entity) -> entity.setType(this.getMooshroomType()));
+		if (!this.world.isClient && ((Object)this.getClass()) == MooshroomEntity.class) CodingTool.darkTransform((ServerWorld) this.world, this, CppEntities.DARK_MOOSHROOM, true, (entity) -> entity.setType(this.getMooshroomType()));
 	}
 }
