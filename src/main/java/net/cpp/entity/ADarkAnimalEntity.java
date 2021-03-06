@@ -33,7 +33,7 @@ public abstract class ADarkAnimalEntity<T extends Entity> extends HostileEntity 
                     this.world.random.nextFloat() / 10,
                     (this.world.random.nextFloat() - .5f) / 10);
         } else {
-            if (this.transform) CodingTool.darkExchange((ServerWorld) this.world, this, this.transformedEntity, false);
+            if (this.transform) CodingTool.darkTransform((ServerWorld) this.world, this, this.transformedEntity, false);
         }
     }
 

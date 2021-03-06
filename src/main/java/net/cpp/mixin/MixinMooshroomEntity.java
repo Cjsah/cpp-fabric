@@ -26,9 +26,6 @@ public abstract class MixinMooshroomEntity extends CowEntity {
 	@Shadow
 	public abstract MooshroomEntity.Type getMooshroomType();
 
-	@Shadow
-	public abstract MooshroomEntity createChild(ServerWorld serverWorld, PassiveEntity passiveEntity);
-
 	@Override
 	public void tick() {
 		super.tick();

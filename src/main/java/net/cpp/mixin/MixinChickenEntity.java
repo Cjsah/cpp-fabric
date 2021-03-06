@@ -1,17 +1,13 @@
 package net.cpp.mixin;
 
-import net.cpp.entity.DarkChickenEntity;
-import net.minecraft.entity.SpawnReason;
+import net.cpp.api.CodingTool;
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.cpp.init.CppEntities;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.ChickenEntity;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 @Mixin(ChickenEntity.class)
@@ -22,13 +18,6 @@ public abstract class MixinChickenEntity extends AnimalEntity {
 
 	public void tick() {
 		super.tick();
-		if (!this.world.isClient && this.world.getTime() % 24000 == 13245 && this.world.getLightLevel(this.getBlockPos()) <= 7 && this.getServer().getPredicateManager().get(new Identifier("cpp:dark_animal")).test(new LootContext.Builder((ServerWorld) this.world).random(this.world.random).build(LootContextTypes.EMPTY))) {
-			DarkChickenEntity darkChicken = CppEntities.DARK_CHICKEN.create(this.world);
-			darkChicken.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.yaw, this.pitch);
-			darkChicken.setVelocity(this.getVelocity());
-			darkChicken.initialize(((ServerWorld)this.world), this.world.getLocalDifficulty(darkChicken.getBlockPos()), SpawnReason.CONVERSION, null, null);
-			((ServerWorld)this.world).shouldCreateNewEntityWithPassenger(darkChicken);
-			this.discard();
-		}
+		if (!this.world.isClient) CodingTool.darkTransform((ServerWorld) this.world, this, CppEntities.DARK_CHICKEN, true);
 	}
 }

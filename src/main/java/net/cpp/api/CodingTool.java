@@ -19,6 +19,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonSyntaxException;
 
 import net.cpp.Craftingpp;
+import net.cpp.entity.ADarkAnimalEntity;
 import net.cpp.init.CppItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -34,7 +35,6 @@ import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -200,7 +200,8 @@ public class CodingTool {
 	 * @param entityType 	要转化成的实体类型
 	 * @param toDark		是否转化为黑暗生物
 	 */
-	public static <T extends Entity> void darkExchange(@Nonnull ServerWorld world, Entity entity, EntityType<T> entityType, boolean toDark) {
+	@SuppressWarnings("unchecked")
+	public static <T extends Entity> void darkTransform(@Nonnull ServerWorld world, Entity entity, EntityType<T> entityType, boolean toDark, @Nullable IDarkTransform entityWith) {
 		if (world.getTimeOfDay() % 24000 == (toDark ? 13189 : 22814) &&
 				Objects.requireNonNull(Objects.requireNonNull(entity.getServer()).getPredicateManager()
 						.get(new Identifier(Craftingpp.MOD_ID3, (toDark ? "dark" : "back") + "_animal")))
@@ -209,8 +210,14 @@ public class CodingTool {
 			assert changed != null;
 			changed.refreshPositionAndAngles(entity.getX(), entity.getY(), entity.getZ(), entity.yaw, entity.pitch);
 			changed.setVelocity(entity.getVelocity());
-			if (toDark) ((HostileEntity)changed).initialize(world, world.getLocalDifficulty(changed.getBlockPos()), SpawnReason.CONVERSION, null, null);
-			else ((AnimalEntity)changed).initialize(world, world.getLocalDifficulty(changed.getBlockPos()), SpawnReason.CONVERSION, null, null);
+			if (entityWith != null) entityWith.run(changed);
+			if (toDark && changed instanceof ADarkAnimalEntity) {
+				((ADarkAnimalEntity<T>)changed).setTransform(true);
+				((ADarkAnimalEntity<T>)changed).initialize(world, world.getLocalDifficulty(changed.getBlockPos()), SpawnReason.CONVERSION, null, null);
+			}
+			else {
+				((AnimalEntity)changed).initialize(world, world.getLocalDifficulty(changed.getBlockPos()), SpawnReason.CONVERSION, null, null);
+			}
 			world.shouldCreateNewEntityWithPassenger(changed);
 			entity.discard();
 		}
@@ -354,7 +361,7 @@ public class CodingTool {
 					toolStack.damage(1, world.random, null);
 			}
 			if (b) {
-				block.onStacksDropped(blockState, world, pos, toolStack);
+				Block.dropStacks(blockState, world, pos, null, entity, toolStack);
 				if (droppeds != null) {
 					droppeds.addAll(Block.getDroppedStacks(blockState, world, pos, blockEntity, entity, toolStack));
 				}

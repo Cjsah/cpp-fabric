@@ -1,17 +1,13 @@
 package net.cpp.mixin;
 
-import net.cpp.entity.DarkSheepEntity;
-import net.minecraft.entity.SpawnReason;
+import net.cpp.api.CodingTool;
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.cpp.init.CppEntities;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.SheepEntity;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 @Mixin(SheepEntity.class)
@@ -22,13 +18,6 @@ public abstract class MixinSheepEntity extends AnimalEntity {
 
 	public void tick() {
 		super.tick();
-		if (!this.world.isClient && this.world.getTime() % 24000 == 13245 && world.getLightLevel(this.getBlockPos()) <= 7 && this.getServer().getPredicateManager().get(new Identifier("cpp:dark_animal")).test(new LootContext.Builder((ServerWorld) this.world).random(this.world.random).build(LootContextTypes.EMPTY))) {
-			DarkSheepEntity darkSheep = CppEntities.DARK_SHEEP.create(world);
-			darkSheep.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), this.yaw, this.pitch);
-			darkSheep.setVelocity(this.getVelocity());
-			darkSheep.initialize(((ServerWorld)this.world), this.world.getLocalDifficulty(darkSheep.getBlockPos()), SpawnReason.CONVERSION, null, null);
-			((ServerWorld)this.world).shouldCreateNewEntityWithPassenger(darkSheep);
-			this.discard();
-		}
+		if (!this.world.isClient) CodingTool.darkTransform((ServerWorld) this.world, this, CppEntities.DARK_SHEEP, true);
 	}
 }
