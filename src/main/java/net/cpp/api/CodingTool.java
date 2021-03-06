@@ -7,48 +7,53 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonSyntaxException;
 
+import net.cpp.Craftingpp;
 import net.cpp.init.CppItems;
-import net.fabricmc.loader.util.sat4j.core.Vec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.tag.ServerTagManagerHolder;
@@ -73,6 +78,7 @@ public class CodingTool {
 			this.entity = entity;
 		}
 
+		@Override
 		public boolean canStart() {
 			boolean b = false;
 			TargetPredicate targetPredicate = new TargetPredicate();
@@ -141,7 +147,8 @@ public class CodingTool {
 	 * @param uuid 要转化为数组的uuid
 	 * @return 转化的数组
 	 */
-	public static int[] uuidToIntArray(UUID uuid) {
+	@Nonnull
+	public static int[] uuidToIntArray(@Nonnull UUID uuid) {
 		int[] arr = new int[4];
 		arr[0] = (int) (uuid.getMostSignificantBits() >> 32);
 		arr[1] = (int) uuid.getMostSignificantBits();
@@ -159,7 +166,8 @@ public class CodingTool {
 	 * @param uuidListTag 含有uuid的tag
 	 * @return 转化的UUID
 	 */
-	public static UUID intArrayToUUID(IntArrayTag uuidListTag) {
+	@Nonnull
+	public static UUID intArrayToUUID(@Nonnull IntArrayTag uuidListTag) {
 		long mostSigBits = uuidListTag.get(0).getLong() << 32;
 		mostSigBits += uuidListTag.get(1).getLong();
 		long leastSigBits = uuidListTag.get(2).getLong() << 32;
@@ -167,6 +175,11 @@ public class CodingTool {
 		return new UUID(mostSigBits, leastSigBits);
 	}
 
+	/**
+	 * 将tick值转化为计时时间
+	 *
+	 * @return **:**:**
+	 */
 	public static String ticksToTime(int ticks) {
 		int seconds = (int) Math.ceil((double) ticks / 20D);
 		int hours = seconds / 60 / 60;
@@ -175,8 +188,32 @@ public class CodingTool {
 		return String.format("%s:%s:%s", addZero(hours), addZero(minutes), addZero(seconds));
 	}
 
+	@Nonnull
 	private static String addZero(int num) {
 		return num < 10 ? "0" + num : String.valueOf(num);
+	}
+
+	/**
+	 * 黑暗生物和正常生物之间转化
+	 *
+	 * @param entity 		当前实体
+	 * @param entityType 	要转化成的实体类型
+	 * @param toDark		是否转化为黑暗生物
+	 */
+	public static <T extends Entity> void darkExchange(@Nonnull ServerWorld world, Entity entity, EntityType<T> entityType, boolean toDark) {
+		if (world.getTimeOfDay() % 24000 == (toDark ? 13189 : 22814) &&
+				Objects.requireNonNull(Objects.requireNonNull(entity.getServer()).getPredicateManager()
+						.get(new Identifier(Craftingpp.MOD_ID3, (toDark ? "dark" : "back") + "_animal")))
+						.test(new LootContext.Builder(world).random(world.random).build(LootContextTypes.EMPTY))) {
+			T changed = entityType.create(world);
+			assert changed != null;
+			changed.refreshPositionAndAngles(entity.getX(), entity.getY(), entity.getZ(), entity.yaw, entity.pitch);
+			changed.setVelocity(entity.getVelocity());
+			if (toDark) ((HostileEntity)changed).initialize(world, world.getLocalDifficulty(changed.getBlockPos()), SpawnReason.CONVERSION, null, null);
+			else ((AnimalEntity)changed).initialize(world, world.getLocalDifficulty(changed.getBlockPos()), SpawnReason.CONVERSION, null, null);
+			world.shouldCreateNewEntityWithPassenger(changed);
+			entity.discard();
+		}
 	}
 
 	/**
@@ -186,7 +223,8 @@ public class CodingTool {
 	 * @param player 玩家
 	 * @return 物品实体
 	 */
-	public static ItemEntity rayItem(PlayerEntity player) {
+	@Nullable
+	public static ItemEntity rayItem(@Nonnull PlayerEntity player) {
 		double length = .05D;
 		Vec3d playerPos = player.getCameraPosVec(1.0F);
 		double yaw = player.yaw;
@@ -211,33 +249,6 @@ public class CodingTool {
 	}
 
 	/**
-	 * 获取玩家指向的物品实体
-	 *
-	 * @author Cjsah
-	 * @param player 玩家
-	 * @return 坐标
-	 */
-	public static Vec3d rayingPos(PlayerEntity player) {
-		double length = .05D;
-		Vec3d playerPos = player.getCameraPosVec(1.0F);
-		Vec3d pos = playerPos;
-		double yaw = player.yaw;
-		double pitch = player.pitch;
-		double y = -Math.sin(pitch * Math.PI / 180D) * length;
-		double x = -Math.sin(yaw * Math.PI / 180D);
-		double z = Math.cos(yaw * Math.PI / 180D);
-		double proportion = Math.sqrt((((length * length) - (y * y)) / ((x * x) + (z * z))));
-		x *= proportion;
-		z *= proportion;
-		for (; Math.sqrt(Math.pow(pos.x - playerPos.x, 2) + Math.pow(pos.y - playerPos.y, 2) + Math.pow(pos.z - playerPos.z, 2)) < 5; pos = pos.add(x, y, z)) {
-			if (player.world.getBlockState(new BlockPos(pos)).getBlock() != Blocks.AIR) {
-				return pos.add(-x, -y, -z);
-			}
-		}
-		return pos;
-	}
-
-	/**
 	 * 使某坐标向玩家的前方移动一段距离
 	 *
 	 * @author Cjsah
@@ -245,20 +256,13 @@ public class CodingTool {
 	 * @param length 位移长度
 	 * @return 位移后的坐标
 	 */
-	public static Vec3d move(PlayerEntity player, Vec3d pos, float length) {
+	public static Vec3d move(@Nonnull PlayerEntity player, @Nonnull Vec3d pos, float length) {
 		double yaw = player.yaw;
 		double x = -Math.sin(yaw * Math.PI / 180D) * length;
 		double z = Math.cos(yaw * Math.PI / 180D) * length;
 		return pos.add(x, 0, z);
 	}
 
-	public static ItemStack newItemStack(Item item, int count, @Nullable CompoundTag nbt) {
-		ItemStack rst = new ItemStack(item, count);
-		if (nbt != null) {
-			rst.setTag(nbt);
-		}
-		return rst;
-	}
 
 	/**
 	 * 吸引物品
@@ -268,7 +272,7 @@ public class CodingTool {
 	 * @param needPickup  拾取延迟需要为0
 	 * @param tp          直接传送
 	 */
-	public static void attractItems(Vec3d pos, ServerWorld serverWorld, boolean needPickup, boolean tp) {
+	public static void attractItems(Vec3d pos, @Nonnull ServerWorld serverWorld, boolean needPickup, boolean tp) {
 		for (ItemEntity itemEntity : serverWorld.getEntitiesByType(EntityType.ITEM, new Box(pos, pos).expand(16), itemEntity -> pos.isInRange(itemEntity.getPos(), 16) && (!needPickup || !itemEntity.cannotPickup()))) {
 			if (tp) {
 				itemEntity.teleport(pos.x, pos.y, pos.z);
@@ -291,7 +295,7 @@ public class CodingTool {
 	/**
 	 * 报时
 	 */
-	public static void timeChecker(World world) {
+	public static void timeChecker(@Nonnull World world) {
 		if (!world.isClient) {
 			long time = world.getTimeOfDay();
 			int todayTime = (int) (time - time / 24000 * 24000);
@@ -316,7 +320,7 @@ public class CodingTool {
 		}
 	}
 
-	public static void sendMessage(World world, String name, boolean playSound) {
+	public static void sendMessage(@Nonnull World world, String name, boolean playSound) {
 		for (PlayerEntity player : world.getPlayers()) {
 			say(player, new TranslatableText("chat.cpp.time." + name));
 			if (playSound)
@@ -332,7 +336,7 @@ public class CodingTool {
 	 * @param pos      位置
 	 * @param droppeds 掉落物列表，方块的掉落物将会被加入该列表，如果为{@code null}，则掉落物直接消失
 	 */
-	public static void excavate(ServerWorld world, LivingEntity entity, BlockPos pos, @Nullable List<ItemStack> droppeds) {
+	public static void excavate(@Nonnull ServerWorld world, @Nonnull LivingEntity entity, BlockPos pos, @Nullable List<ItemStack> droppeds) {
 		BlockState blockState = world.getBlockState(pos);
 		Block block = blockState.getBlock();
 		BlockEntity blockEntity = world.getBlockEntity(pos);
@@ -365,7 +369,7 @@ public class CodingTool {
 	 * @param player 玩家
 	 * @param stacks 物品
 	 */
-	public static void give(PlayerEntity player, ItemStack... stacks) {
+	public static void give(PlayerEntity player, @Nonnull ItemStack... stacks) {
 		for (ItemStack stack : stacks) {
 			ItemEntity itemEntity = new ItemEntity(player.world, player.getX(), player.getY(), player.getZ(), stack);
 			itemEntity.setOwner(player.getUuid());
@@ -391,7 +395,7 @@ public class CodingTool {
 	 * @param pos    位置
 	 * @param stacks 被掉落的物品
 	 */
-	public static void drop(World world, Vec3d pos, List<ItemStack> stacks) {
+	public static void drop(World world, Vec3d pos, @Nonnull List<ItemStack> stacks) {
 		for (ItemStack stack : stacks) {
 			ItemEntity itemEntity = new ItemEntity(world, pos.x, pos.y, pos.z, stack);
 			itemEntity.setToDefaultPickupDelay();
@@ -405,7 +409,7 @@ public class CodingTool {
 	 * @param source 源物品栏
 	 * @param target 目标物品栏
 	 */
-	public static void transfer(Inventory source, Inventory target) {
+	public static void transfer(@Nonnull Inventory source, Inventory target) {
 		for (int i = 0; i < source.size(); i++) {
 			ItemStack stack1 = source.getStack(i);
 			for (int j = 0; j < target.size() && !stack1.isEmpty(); j++) {
@@ -427,9 +431,8 @@ public class CodingTool {
 	 * 
 	 * @param stack 工具
 	 * @param state 方块
-	 * @return
 	 */
-	public static boolean canHarvest(ItemStack stack, BlockState state) {
+	public static boolean canHarvest(ItemStack stack, @Nonnull BlockState state) {
 		return !state.isToolRequired() || stack.isSuitableFor(state);
 	}
 
@@ -440,7 +443,6 @@ public class CodingTool {
 	 * @param state 方块
 	 * @param world 世界
 	 * @param pos   位置
-	 * @return
 	 */
 	public static boolean canHarvest(ItemStack stack, BlockState state, World world, BlockPos pos) {
 //		System.out.println(state.getBlock() + ": " + state.getHardness(world, pos));
@@ -453,7 +455,7 @@ public class CodingTool {
 	 * @param inventory 物品栏
 	 * @param tag       标签
 	 */
-	public static void inventoryToTag(Inventory inventory, CompoundTag tag) {
+	public static void inventoryToTag(@Nonnull Inventory inventory, CompoundTag tag) {
 		DefaultedList<ItemStack> stacks = DefaultedList.ofSize(inventory.size(), ItemStack.EMPTY);
 		for (int i = 0; i < stacks.size(); i++) {
 			stacks.set(i, inventory.getStack(i));
@@ -467,7 +469,7 @@ public class CodingTool {
 	 * @param inventory 物品栏
 	 * @param tag       标签
 	 */
-	public static void inventoryFromTag(Inventory inventory, CompoundTag tag) {
+	public static void inventoryFromTag(@Nonnull Inventory inventory, CompoundTag tag) {
 		DefaultedList<ItemStack> stacks = DefaultedList.ofSize(inventory.size(), ItemStack.EMPTY);
 		Inventories.fromTag(tag, stacks);
 		for (int i = 0; i < inventory.size(); i++) {
@@ -482,7 +484,7 @@ public class CodingTool {
 	 * @param exp   经验值
 	 * @return 剩余的经验值
 	 */
-	public static int mend(ItemStack stack, int exp) {
+	public static int mend(@Nonnull ItemStack stack, int exp) {
 		if (stack.isDamaged()) {
 			int amount = Math.min(stack.getDamage(), exp * 2);
 			stack.setDamage(stack.getDamage() - amount);
@@ -500,9 +502,9 @@ public class CodingTool {
 	 * @param globe  是球体
 	 * @return 拾取到的经验值
 	 */
-	public static int collectExpOrbs(World world, Vec3d pos, double radius, boolean globe) {
+	public static int collectExpOrbs(@Nonnull World world, Vec3d pos, double radius, boolean globe) {
 		int exp = 0;
-		for (ExperienceOrbEntity orb : world.getEntitiesByClass(ExperienceOrbEntity.class, new Box(pos, pos).expand(radius), orb -> globe ? orb.getPos().isInRange(pos, radius) : true)) {
+		for (ExperienceOrbEntity orb : world.getEntitiesByClass(ExperienceOrbEntity.class, new Box(pos, pos).expand(radius), orb -> !globe || orb.getPos().isInRange(pos, radius))) {
 			exp += orb.getExperienceAmount();
 			orb.discard();
 		}
@@ -515,8 +517,9 @@ public class CodingTool {
 	 * @param exp 经验值
 	 * @return 附魔之瓶列表，每个物品叠不会超过最大堆叠数量，并且只有最后一个可能没有到达最大堆叠
 	 */
+	@Nonnull
 	public static List<ItemStack> expToBottle(int exp) {
-		List<ItemStack> list = new LinkedList<ItemStack>();
+		List<ItemStack> list = new LinkedList<>();
 		int c1 = exp / 9 + (Math.random() < (exp % 9) / 9. ? 1 : 0);
 		int c2 = Items.EXPERIENCE_BOTTLE.getMaxCount();
 		while (c1 >= c2) {
@@ -535,7 +538,7 @@ public class CodingTool {
 	 * @param amplifier 倍率
 	 * @param duration  时间
 	 */
-	public static void removeEffectExceptHidden(LivingEntity living, StatusEffect effect, int amplifier, int duration) {
+	public static void removeEffectExceptHidden(@Nonnull LivingEntity living, StatusEffect effect, int amplifier, int duration) {
 		StatusEffectInstance effectInstance = living.getStatusEffect(effect);
 		if (effectInstance != null && effectInstance.getAmplifier() == amplifier && effectInstance.getDuration() <= duration) {
 			CompoundTag tag1 = effectInstance.toTag(new CompoundTag());
@@ -548,15 +551,15 @@ public class CodingTool {
 		}
 	}
 
-	public static void actionbar(ServerPlayerEntity player, String translationKey, Object... params) {
+	public static void actionbar(@Nonnull ServerPlayerEntity player, String translationKey, Object... params) {
 		player.sendMessage(new TranslatableText(translationKey, params), true);
 	}
 
-	public static void tellraw(ServerPlayerEntity player, String translationKey, Object... params) {
+	public static void tellraw(@Nonnull ServerPlayerEntity player, String translationKey, Object... params) {
 		player.sendMessage(new TranslatableText(translationKey, params), false);
 	}
 
-	public static <T> ImmutableList<T> findByKeyword(DefaultedRegistry<T> registry, String keyword) {
+	public static <T> ImmutableList<T> findByKeyword(@Nonnull DefaultedRegistry<T> registry, String keyword) {
 		ImmutableList.Builder<T> builder = ImmutableList.builder();
 		for (Entry<RegistryKey<T>, T> entry : registry.getEntries()) {
 			if (entry.getKey().getValue().getPath().contains(keyword)) {
@@ -592,7 +595,7 @@ public class CodingTool {
 		return true;
 	}
 
-	public static void insert(List<ItemStack> items, Inventory inventory, int beginIndex, int endIndex) {
+	public static void insert(@Nonnull List<ItemStack> items, Inventory inventory, int beginIndex, int endIndex) {
 		for (ItemStack stack : items) {
 			for (int i = beginIndex; i < endIndex && !stack.isEmpty(); i++) {
 				if (inventory.getStack(i).isEmpty()) {
@@ -618,7 +621,7 @@ public class CodingTool {
 		return ServerTagManagerHolder.getTagManager().getTag(registryKey, new Identifier(id), id1 -> new JsonSyntaxException("Unknown item tag '" + id1 + "'"));
 	}
 
-	public static void playSound(World world, PlaySoundS2CPacket packet) {
+	public static void playSound(@Nonnull World world, PlaySoundS2CPacket packet) {
 		if (!world.isClient()) {
 			for (PlayerEntity player: world.getPlayers(TargetPredicate.DEFAULT, null, new Box(packet.getX(),packet.getY(),packet.getZ(),packet.getX(),packet.getY(),packet.getZ()).expand(packet.getVolume() * 16))) {
 				((ServerPlayerEntity)player).networkHandler.sendPacket(packet);
@@ -643,7 +646,8 @@ public class CodingTool {
 			addSlot.accept(new Slot(playerInventory, m, x + m * 18, y + 58));
 		}
 	}
-	
+
+	@Nonnull
 	public static float[] hsbFromRGB(int rgb,float[] hsb) {
 		return Color.RGBtoHSB((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, hsb);
 	}

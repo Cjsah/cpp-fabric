@@ -9,17 +9,17 @@ import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.world.World;
 
-public class DarkSheepEntity extends HostileEntity {
+public class DarkSheepEntity extends ADarkAnimalEntity<SheepEntity> {
 
 	public DarkSheepEntity(EntityType<? extends DarkSheepEntity> entityType, World world) {
-		super(entityType, world);
+		super(entityType, world, EntityType.SHEEP);
 	}
 
+	@Override
 	protected void initGoals() {
 		this.goalSelector.add(8, new DarkAnimalsLookAtEntityGoal(this, PlayerEntity.class, 8.0F));
 		this.goalSelector.add(8, new LookAroundGoal(this));
@@ -28,10 +28,6 @@ public class DarkSheepEntity extends HostileEntity {
 	}
 
 	@Override
-	protected int getCurrentExperience(PlayerEntity player) {
-		return super.getCurrentExperience(player) + 5;
-	}
-
 	public boolean tryAttack(Entity target) {
 		if (target instanceof LivingEntity) {
 			LivingEntity living = (LivingEntity) target;
@@ -40,13 +36,5 @@ public class DarkSheepEntity extends HostileEntity {
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public void tick() {
-		super.tick();
-		if (world.isClient) {
-			world.addParticle(ParticleTypes.SMOKE, getX(), getEyeY(), getZ(), (world.random.nextFloat() - .5f) / 10, world.random.nextFloat() / 10, (world.random.nextFloat() - .5f) / 10);
-		}
 	}
 }

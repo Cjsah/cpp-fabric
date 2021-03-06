@@ -9,27 +9,22 @@ import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.world.World;
 
-public class DarkCowEntity extends HostileEntity {
+public class DarkCowEntity extends ADarkAnimalEntity<CowEntity> {
 
 	public DarkCowEntity(EntityType<? extends DarkCowEntity> entityType, World world) {
-		super(entityType, world);
+		super(entityType, world, EntityType.COW);
 	}
 
+	@Override
 	protected void initGoals() {
 		this.goalSelector.add(8, new DarkAnimalsLookAtEntityGoal(this, PlayerEntity.class, 8.0F));
 		this.goalSelector.add(8, new LookAroundGoal(this));
 		this.goalSelector.add(2, new MeleeAttackGoal(this, 1.0D, false));
 		this.targetSelector.add(2, new DarkAnimalsFollowTargetGoal<>(this, PlayerEntity.class, true));
-	}
-
-	@Override
-	protected int getCurrentExperience(PlayerEntity player) {
-		return super.getCurrentExperience(player) + 5;
 	}
 
 	@Override
@@ -41,13 +36,5 @@ public class DarkCowEntity extends HostileEntity {
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public void tick() {
-		super.tick();
-		if (world.isClient) {
-			world.addParticle(ParticleTypes.SMOKE, getX(), getEyeY(), getZ(), (world.random.nextFloat() - .5f) / 10, world.random.nextFloat() / 10, (world.random.nextFloat() - .5f) / 10);
-		}
 	}
 }
