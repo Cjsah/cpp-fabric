@@ -6,6 +6,8 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Util;
 
+import javax.annotation.Nonnull;
+
 public final class CppChat {
 
     /**
@@ -15,7 +17,7 @@ public final class CppChat {
      * @param user 说话的玩家
      * @param text 说话的内容
      */
-    public static void say(PlayerEntity user, Text text) {
+    public static void say(@Nonnull PlayerEntity user, Text text) {
         user.sendSystemMessage(
                 new TranslatableText("misc.cpp",
                         new TranslatableText("chat.cpp.title").formatted(Formatting.GOLD),

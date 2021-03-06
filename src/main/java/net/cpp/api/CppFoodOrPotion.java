@@ -34,6 +34,8 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public class CppFoodOrPotion extends Item implements INutrition {
     public static final Map<Item, Integer> map = new HashMap<>();
     private static final MutableText field_25817;
@@ -133,7 +135,8 @@ public class CppFoodOrPotion extends Item implements INutrition {
         }
     }
 
-    public static List<StatusEffectInstance> getFoodEffects(ItemStack stack) {
+    @Nonnull
+    public static List<StatusEffectInstance> getFoodEffects(@Nonnull ItemStack stack) {
         List<StatusEffectInstance> list = Lists.newArrayList();
         List<Pair<StatusEffectInstance, Float>> effectList = Objects.requireNonNull(stack.getItem().getFoodComponent()).getStatusEffects();
 
@@ -159,7 +162,7 @@ public class CppFoodOrPotion extends Item implements INutrition {
         return stack;
     }
 
-    private void applyFoodEffects(Item item, World world, LivingEntity targetEntity) {
+    private void applyFoodEffects(@Nonnull Item item, World world, LivingEntity targetEntity) {
         List<Pair<StatusEffectInstance, Float>> list = Objects.requireNonNull(item.getFoodComponent()).getStatusEffects();
 
         for (Pair<StatusEffectInstance, Float> pair : list) {
