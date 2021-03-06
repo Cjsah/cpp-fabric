@@ -201,7 +201,7 @@ public class CodingTool {
 	 * @param toDark		是否转化为黑暗生物
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends Entity> void darkTransform(@Nonnull ServerWorld world, Entity entity, EntityType<T> entityType, boolean toDark, @Nullable IDarkTransform entityWith) {
+	public static <T extends Entity> void darkTransform(@Nonnull ServerWorld world, Entity entity, EntityType<T> entityType, boolean toDark, @Nullable Consumer<T> entityWith) {
 		if (world.getTimeOfDay() % 24000 == (toDark ? 13189 : 22814) &&
 				Objects.requireNonNull(Objects.requireNonNull(entity.getServer()).getPredicateManager()
 						.get(new Identifier(Craftingpp.MOD_ID3, (toDark ? "dark" : "back") + "_animal")))
@@ -210,7 +210,7 @@ public class CodingTool {
 			assert changed != null;
 			changed.refreshPositionAndAngles(entity.getX(), entity.getY(), entity.getZ(), entity.yaw, entity.pitch);
 			changed.setVelocity(entity.getVelocity());
-			if (entityWith != null) entityWith.run(changed);
+			if (entityWith != null) entityWith.accept(changed);
 			if (toDark && changed instanceof ADarkAnimalEntity) {
 				((ADarkAnimalEntity<T>)changed).setTransform(true);
 				((ADarkAnimalEntity<T>)changed).initialize(world, world.getLocalDifficulty(changed.getBlockPos()), SpawnReason.CONVERSION, null, null);
