@@ -1,16 +1,14 @@
 package net.cpp;
 
+import net.cpp.client.render.block.entity.VariantSkullBlockEntityRenderer;
 import net.cpp.entity.AGolemEntity;
-import net.cpp.entity.render.DarkChickenEntityRenderer;
-import net.cpp.entity.render.DarkCowEntityRenderer;
-import net.cpp.entity.render.DarkMooshroomEntityRenderer;
-import net.cpp.entity.render.DarkPigEntityRenderer;
-import net.cpp.entity.render.DarkSheepEntityRenderer;
-import net.cpp.entity.render.GolemEntityRenderer;
-import net.cpp.init.CppBlocks;
-import net.cpp.init.CppEntities;
-import net.cpp.init.CppPredicates;
-import net.cpp.init.CppScreenHandler;
+import net.cpp.client.render.entity.DarkChickenEntityRenderer;
+import net.cpp.client.render.entity.DarkCowEntityRenderer;
+import net.cpp.client.render.entity.DarkMooshroomEntityRenderer;
+import net.cpp.client.render.entity.DarkPigEntityRenderer;
+import net.cpp.client.render.entity.DarkSheepEntityRenderer;
+import net.cpp.client.render.entity.GolemEntityRenderer;
+import net.cpp.init.*;
 import net.cpp.screen.AllInOneMachineScreen;
 import net.cpp.screen.BeaconEnhancerScreen;
 import net.cpp.screen.ColorPaletteScreen;
@@ -24,6 +22,7 @@ import net.cpp.screen.TradeMachineScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.impl.blockrenderlayer.BlockRenderLayerMapImpl;
@@ -64,8 +63,10 @@ public class CraftingppClient implements ClientModInitializer {
 		
 		BlockRenderLayerMapImpl.INSTANCE.putBlocks(RenderLayer.getCutout(), FRUIT_SAPLING, ORE_SAPLING, SAKURA_SAPLING, WOOL_SAPLING, BLUE_ROSE, POINSETTIA, CHRISTMAS_TREE, RICE, BROKEN_SPAWNER);
 		BlockRenderLayerMapImpl.INSTANCE.putBlocks(RenderLayer.getTranslucent(), RARE_EARTH_GLASS, REINFORCED_GLASS);
-		for (Block block : CppBlocks.FLOWER_GRASSES)
+		for (Block block : CppBlocks.FLOWER_GRASSES) {
 			BlockRenderLayerMapImpl.INSTANCE.putBlock(block, RenderLayer.getCutout());
+		}
+		BlockEntityRendererRegistry.INSTANCE.register(CppBlockEntities.VARIANT_SKULL, VariantSkullBlockEntityRenderer::new);
 	}
 	
 }

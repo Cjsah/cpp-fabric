@@ -1,4 +1,4 @@
-package net.cpp.entity.render;
+package net.cpp.client.render.entity;
 
 import net.cpp.entity.DarkCowEntity;
 import net.fabricmc.api.EnvType;

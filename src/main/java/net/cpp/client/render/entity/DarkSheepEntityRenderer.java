@@ -1,14 +1,11 @@
-package net.cpp.entity.render;
+package net.cpp.client.render.entity;
 
 import net.cpp.entity.DarkSheepEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
-import net.minecraft.client.render.entity.SheepEntityRenderer;
-import net.minecraft.client.render.entity.feature.SheepWoolFeatureRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
-import net.minecraft.client.render.entity.model.SheepEntityModel;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)

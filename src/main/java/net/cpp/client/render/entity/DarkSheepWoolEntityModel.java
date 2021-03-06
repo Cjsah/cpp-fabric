@@ -1,4 +1,4 @@
-package net.cpp.entity.render;
+package net.cpp.client.render.entity;
 
 import net.cpp.entity.DarkSheepEntity;
 import net.fabricmc.api.EnvType;
@@ -11,7 +11,6 @@ import net.minecraft.client.model.ModelTransform;
 import net.minecraft.client.model.TexturedModelData;
 import net.minecraft.client.render.entity.model.QuadrupedEntityModel;
 import net.minecraft.client.util.math.Dilation;
-import net.minecraft.entity.passive.SheepEntity;
 
 @Environment(EnvType.CLIENT)
 public class DarkSheepWoolEntityModel<T extends DarkSheepEntity> extends QuadrupedEntityModel<T> {
