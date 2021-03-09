@@ -50,6 +50,7 @@ public class ConfigScreen extends Screen {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected void init() {
         Objects.requireNonNull(this.client).keyboard.setRepeatEvents(true);
         this.panX = this.width <= 395 + 50 + 50 + 80 ? 50 : (this.width - (395 + 80)) / 2 ;
@@ -167,6 +168,7 @@ public class ConfigScreen extends Screen {
     private void addStringWidget(String jk, String jv) {
         this.addButton(new TextFieldWidget(this.textRenderer, this.panX + 80, this.drawY, this.panWidth, 20, new LiteralText(jk)) {
 
+            @SuppressWarnings("unused")
             private final boolean init = init();
             private boolean init() {
                 setMaxLength(2147483647);
@@ -198,6 +200,7 @@ public class ConfigScreen extends Screen {
     private void addListWidget(String jk, JsonArray jv) {
         this.addButton(new TextFieldWidget(this.textRenderer, this.panX + 80, this.drawY, this.panWidth, 20, new LiteralText(jk)) {
 
+            @SuppressWarnings("unused")
             private final boolean init = init();
             private boolean init() {
                 this.setMaxLength(2147483647);
@@ -234,6 +237,7 @@ public class ConfigScreen extends Screen {
     private void addNumberWidget(String jk, Number jv) {
         this.addButton(new TextFieldWidget(this.textRenderer, this.panX + 80, this.drawY, this.panWidth, 20, new LiteralText(jk)) {
 
+            @SuppressWarnings("unused")
             private final boolean init = init();
             private boolean init() {
                 this.setMaxLength(2147483647);

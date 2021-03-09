@@ -19,7 +19,7 @@ public class ConfigListEntry extends Entry<ConfigListEntry> {
 
     protected Identifier iconLocation;
     protected final MinecraftClient client = MinecraftClient.getInstance();
-    public static final Identifier UNKNOWN_ICON = new Identifier("textures/misc/unknown_pack.png");
+//    public static final Identifier UNKNOWN_ICON = new Identifier("textures/misc/unknown_pack.png");
     private final String key;
     private final ConfigListWidget list;
 
@@ -29,6 +29,7 @@ public class ConfigListEntry extends Entry<ConfigListEntry> {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         x += getXOffset();
         entryWidth -= getXOffset();

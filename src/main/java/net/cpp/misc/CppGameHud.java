@@ -25,6 +25,7 @@ public class CppGameHud extends DrawableHelper {
     private static final int icon_size = 12;
     private static final int text_left = margin + icon_size + 3;
 
+    @SuppressWarnings({"ConstantConditions", "deprecation"})
     public void render(MatrixStack matrix) {
         if (client.options.debugEnabled) return;
         ServerPlayerEntity player = client.getServer().getPlayerManager().getPlayer(client.player.getUuid());

@@ -24,6 +24,7 @@ public class TexturedButtonWidget extends ButtonWidget {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         MinecraftClient client = MinecraftClient.getInstance();
         client.getTextureManager().bindTexture(this.texture);

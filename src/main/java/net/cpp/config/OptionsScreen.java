@@ -95,6 +95,7 @@ public class OptionsScreen extends Screen {
             }
 
             @Override
+            @SuppressWarnings("deprecation")
             public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
                 RenderSystem.color4f(1, 1, 1, 1f);
                 super.renderButton(matrices, mouseX, mouseY, delta);
@@ -105,6 +106,7 @@ public class OptionsScreen extends Screen {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices);
         ConfigListEntry selectedEntry = this.selected;
@@ -170,6 +172,7 @@ public class OptionsScreen extends Screen {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void renderBackground(MatrixStack matrices) {
         int x1 = 0, y1 = 0, x2 = this.width, y2 = this.height;
         Tessellator tessellator = Tessellator.getInstance();

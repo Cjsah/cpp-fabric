@@ -16,7 +16,7 @@ import net.minecraft.util.Language;
 public class DescriptionListWidget extends EntryListWidget<DescriptionListWidget.DescriptionEntry> {
     private final OptionsScreen parent;
     private ConfigListEntry lastSelected = null;
-    private boolean scrolling;
+//    private boolean scrolling;
 
     public DescriptionListWidget(MinecraftClient client, int width, int height, int top, int bottom, int entryHeight, OptionsScreen parent) {
         super(client, width, height, top, bottom, entryHeight);
@@ -46,7 +46,7 @@ public class DescriptionListWidget extends EntryListWidget<DescriptionListWidget
     @Override
     protected void updateScrollingState(double mouseX, double mouseY, int button) {
         super.updateScrollingState(mouseX, mouseY, button);
-        this.scrolling = button == 0 && mouseX >= (double)this.getScrollbarPositionX() && mouseX < (double)(this.getScrollbarPositionX() + 6);
+//        this.scrolling = button == 0 && mouseX >= (double)this.getScrollbarPositionX() && mouseX < (double)(this.getScrollbarPositionX() + 6);
     }
 
     @Override
@@ -65,6 +65,7 @@ public class DescriptionListWidget extends EntryListWidget<DescriptionListWidget
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         ConfigListEntry selectedEntry = this.parent.getSelectedEntry();
         if (selectedEntry != this.lastSelected) {

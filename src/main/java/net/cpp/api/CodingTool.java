@@ -148,6 +148,7 @@ public class CodingTool {
 	 * @return 转化的数组
 	 */
 	@Nonnull
+	@SuppressWarnings("unused")
 	public static int[] uuidToIntArray(@Nonnull UUID uuid) {
 		int[] arr = new int[4];
 		arr[0] = (int) (uuid.getMostSignificantBits() >> 32);
@@ -167,6 +168,7 @@ public class CodingTool {
 	 * @return 转化的UUID
 	 */
 	@Nonnull
+	@SuppressWarnings("unused")
 	public static UUID intArrayToUUID(@Nonnull IntArrayTag uuidListTag) {
 		long mostSigBits = uuidListTag.get(0).getLong() << 32;
 		mostSigBits += uuidListTag.get(1).getLong();
@@ -655,8 +657,7 @@ public class CodingTool {
 		}
 	}
 
-	@Nonnull
-	public static float[] hsbFromRGB(int rgb,float[] hsb) {
-		return Color.RGBtoHSB((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, hsb);
+	public static void hsbFromRGB(int rgb, float[] hsb) {
+		Color.RGBtoHSB((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, hsb);
 	}
 }

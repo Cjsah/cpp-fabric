@@ -9,15 +9,12 @@ import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +26,7 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
 
     private final OptionsScreen parent;
     private final Set<String> configKeys = new HashSet<>();
-    private final Map<Path, NativeImageBackedTexture> configIconsCache = new HashMap<>();
+//    private final Map<Path, NativeImageBackedTexture> configIconsCache = new HashMap<>();
     private List<String> ConfigContainerList = null;
     private final Set<String> addedConfigs = new HashSet<>();
     private String selectedConfigId = null;
@@ -101,6 +98,7 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
     }
 
     // 加了排序功能后使用
+    @SuppressWarnings("unused")
     public void reloadFilters() {
         this.filter(this.parent.getSearchInput(), true);
     }
@@ -138,6 +136,7 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected void renderList(MatrixStack matrices, int x, int y, int mouseX, int mouseY, float delta) {
         int itemCount = this.getItemCount();
         Tessellator tessellator = Tessellator.getInstance();
@@ -274,10 +273,5 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
 
     @Override
     public void close() {
-
-        for (NativeImageBackedTexture tex : this.configIconsCache.values()) {
-            tex.close();
-        }
-
     }
 }
