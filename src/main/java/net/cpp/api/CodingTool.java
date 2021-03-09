@@ -199,6 +199,7 @@ public class CodingTool {
 	 * @param entity 		当前实体
 	 * @param entityType 	要转化成的实体类型
 	 * @param toDark		是否转化为黑暗生物
+	 * @author Cjsah
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T extends Entity> void darkTransform(@Nonnull ServerWorld world, Entity entity, EntityType<T> entityType, boolean toDark, @Nullable Consumer<T> entityWith) {

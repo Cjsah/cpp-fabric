@@ -32,7 +32,7 @@ public class CppGameHud extends DrawableHelper {
         player.writeCustomDataToTag(tag);
         int weight = tag.getInt("weight");
         ListTag vaccines = tag.getList("Vaccines", 10);
-        int width = 55;
+        int width = 51;
         int height = margin + (vaccines.size() + 1) * icon_size + vaccines.size() * interval + margin;
         int firstY = client.getWindow().getScaledHeight() - margin - icon_size;
         fill(matrix, 0, client.getWindow().getScaledHeight() - height, width, client.getWindow().getScaledHeight(), client.options.getTextBackgroundColor(0.3F));
