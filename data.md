@@ -17,13 +17,17 @@
 }
 ```
 
-### 疫苗
+### 疫苗 *PlayerTag*
 
 ```json
 {
     "Vaccines": [
         {
             "Id": 1,
+            "Duration": 1
+        },
+        {
+            "Id": 2,
             "Duration": 1
         }
     ]
