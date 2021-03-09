@@ -12,7 +12,7 @@ public enum Vaccines {
     private final String name;
     private final int duration;
 
-    Vaccines(String name, int duration){
+    Vaccines(String name, int duration) {
         this.name = name;
         this.duration = duration;
     }

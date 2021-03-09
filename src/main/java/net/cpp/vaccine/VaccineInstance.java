@@ -2,6 +2,7 @@ package net.cpp.vaccine;
 
 import net.minecraft.nbt.CompoundTag;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 public class VaccineInstance {
@@ -34,13 +35,14 @@ public class VaccineInstance {
         return --this.duration > 0;
     }
 
-    public CompoundTag toTag(CompoundTag tag) {
+    public CompoundTag toTag(@Nonnull CompoundTag tag) {
         tag.putByte("Id", (byte) this.vaccine.ordinal());
         tag.putInt("Duration", this.duration);
         return tag;
     }
 
-    public static VaccineInstance fromTag(CompoundTag tag) {
+    @Nonnull
+    public static VaccineInstance fromTag(@Nonnull CompoundTag tag) {
         System.out.println(Arrays.toString(Vaccines.values()));
         return new VaccineInstance(Vaccines.byRawId(tag.getByte("Id")), tag.getInt("Duration"));
     }
