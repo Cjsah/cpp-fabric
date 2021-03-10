@@ -578,6 +578,8 @@
   "structure_feature.bastion_remnant": "堡垒遗迹",
   "structure_feature.ruined_portal": "废弃传送门",
 
+  "generator.cpp_island": "Crafting++空岛",
+
   "loot_table.minecraft:gameplay/piglin_bartering": "猪灵交易表"
 
 }

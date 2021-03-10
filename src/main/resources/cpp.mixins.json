@@ -4,6 +4,8 @@
     "package": "net.cpp.mixin",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
+		"AccessorGeneratorType",
+		"MixinAbstractSkeletonEntity",
 		"MixinBeeEntity",
 		"MixinBlock",
 		"MixinChickenEntity",
@@ -21,6 +23,7 @@
 		"MixinItemStack",
 		"MixinLeavesBlock",
 		"MixinLivingEntity",
+		"MixinMooshroomEntity",
 		"MixinPigEntity",
 		"MixinPlayerEntity",
 		"MixinPlayerManager",
@@ -30,11 +33,9 @@
 		"MixinSheepEntity",
 		"MixinSilverfishEntity",
 		"MixinSpiderEntity",
-		"MixinWanderingTraderEntity",
 		"MixinVillagerEntity",
+		"MixinWanderingTraderEntity",
 		"MixinZombieEntity",
-		"MixinAbstractSkeletonEntity",
-		"MixinMooshroomEntity"
 	],
 	"client": [
 		"MixinInCppGameHud"

@@ -1,6 +1,15 @@
 package net.cpp;
 import static net.cpp.api.CppChat.say;
 
+import net.cpp.init.CppGeneratorType;
+import net.minecraft.client.world.GeneratorType;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.chunk.ChunkGenerator;
+import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
+import net.minecraft.world.gen.chunk.FlatChunkGenerator;
+import net.minecraft.world.gen.chunk.FlatChunkGeneratorConfig;
+import net.minecraft.world.gen.chunk.StructuresConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,6 +42,9 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.village.TradeOffers;
 
+import java.util.Collections;
+import java.util.Optional;
+
 public class Craftingpp implements ModInitializer {
 
 	public static final String MOD_ID1 = "Crafting++";
@@ -50,6 +62,8 @@ public class Craftingpp implements ModInitializer {
 	public static final ItemGroup CPP_GROUP_PLANT = FabricItemGroupBuilder.create(new Identifier("cpp:title.plant")).icon(() -> new ItemStack(CppBlocks.ORE_SAPLING)).build();
 	public static final ItemGroup CPP_GROUP_DECORATE = FabricItemGroupBuilder.create(new Identifier("cpp:title.decorate")).icon(() -> new ItemStack(CppItems.CLASSICAL_PAINTING)).build();
 
+
+
 	@Override
 	public void onInitialize() {
 
@@ -64,13 +78,13 @@ public class Craftingpp implements ModInitializer {
 		CppLootTableFunctions.loadClass();
 		CppEntities.loadClass();
 		CppFeatures.loadClass();
+		CppGeneratorType.loadClass();
 		AttachAttributesLootFunction.loadClass();
 		IPlayerJoinCallback.EVENT.register((player, server) -> {
 			if (!player.world.isClient)
 				say(player, new TranslatableText("misc.cpp1", new TranslatableText("chat.cpp.load1"), new TranslatableText("chat.cpp.load2").setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.cjsah.net/ruhuasiyu/"))).formatted(Formatting.GOLD)));
 			return ActionResult.PASS;
 		});
+
 	}
-	
-	
 }

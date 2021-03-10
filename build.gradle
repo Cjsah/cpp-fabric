@@ -40,6 +40,10 @@ dependencies {
 
 }
 
+minecraft {
+	accessWidener =  file("src/main/resources/cpp.accesswidener")
+}
+
 processResources {
 	inputs.property "version", project.version
 
