@@ -29,6 +29,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 @Mixin(ExperienceBottleItem.class)
+@SuppressWarnings({"all"})
 public class MixinExperienceBottleItem extends Item implements IDefaultTagItem {
 
 	public MixinExperienceBottleItem(Settings settings) {
@@ -51,7 +52,7 @@ public class MixinExperienceBottleItem extends Item implements IDefaultTagItem {
 		ItemStack itemStack = user.getStackInHand(hand);
 		int multiple = itemStack.getOrCreateTag().getByte("multiple");
 		if (multiple <= 1) {
-			world.playSound((PlayerEntity) null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_EXPERIENCE_BOTTLE_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
+			world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_EXPERIENCE_BOTTLE_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
 			if (!world.isClient) {
 				ExperienceBottleEntity experienceBottleEntity = new ExperienceBottleEntity(world, user);
 				experienceBottleEntity.setItem(itemStack);

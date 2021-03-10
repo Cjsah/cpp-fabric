@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import static net.cpp.api.CppFoodOrPotion.map;
 
 @Mixin(Item.class)
+@SuppressWarnings("unused")
 public class MixinItem implements INutrition {
 
     @Override

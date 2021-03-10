@@ -13,6 +13,7 @@ import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.world.World;
 
 @Mixin(AbstractSkeletonEntity.class)
+@SuppressWarnings("all")
 public abstract class MixinAbstractSkeletonEntity extends HostileEntity {
 
 	protected MixinAbstractSkeletonEntity(EntityType<? extends HostileEntity> entityType, World world) {
@@ -22,7 +23,7 @@ public abstract class MixinAbstractSkeletonEntity extends HostileEntity {
 	@Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V")
 	public void enhance(CallbackInfo info) {
 		MobEnhancing.equipArmor(this);
-		if ((Class<?>) getClass() == WitherSkeletonEntity.class) {
+		if ((Class<?>) this.getClass() == WitherSkeletonEntity.class) {
 			MobEnhancing.equipWeapon(this);
 		} else {
 			MobEnhancing.equipArrow(this);

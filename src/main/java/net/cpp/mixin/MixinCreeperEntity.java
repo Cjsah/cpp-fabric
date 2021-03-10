@@ -17,6 +17,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 @Mixin(CreeperEntity.class)
+@SuppressWarnings("all")
 public abstract class MixinCreeperEntity extends HostileEntity {
 
 	protected MixinCreeperEntity(EntityType<? extends HostileEntity> entityType, World world) {

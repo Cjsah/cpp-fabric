@@ -11,6 +11,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 
 @Mixin(PigEntity.class)
+@SuppressWarnings("all")
 public abstract class MixinPigEntity extends AnimalEntity {
 	protected MixinPigEntity(EntityType<? extends AnimalEntity> entityType, World world) {
 		super(entityType, world);

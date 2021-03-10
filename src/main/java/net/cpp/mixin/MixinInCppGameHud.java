@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(InGameHud.class)
+@SuppressWarnings("unused")
 public class MixinInCppGameHud{
     CppGameHud GUI = new CppGameHud();
 

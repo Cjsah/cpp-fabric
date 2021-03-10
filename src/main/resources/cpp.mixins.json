@@ -27,15 +27,13 @@
 		"MixinPigEntity",
 		"MixinPlayerEntity",
 		"MixinPlayerManager",
-		"MixinPresetsScreen",
 		"MixinRabbitEntity",
 		"MixinServerPlayerEntity",
 		"MixinSheepEntity",
 		"MixinSilverfishEntity",
 		"MixinSpiderEntity",
 		"MixinVillagerEntity",
-		"MixinWanderingTraderEntity",
-		"MixinZombieEntity",
+		"MixinZombieEntity"
 	],
 	"client": [
 		"MixinInCppGameHud"

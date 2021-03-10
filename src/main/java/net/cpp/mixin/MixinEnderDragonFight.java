@@ -15,6 +15,7 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.feature.EndPortalFeature;
 
 @Mixin(EnderDragonFight.class)
+@SuppressWarnings("unused")
 public abstract class MixinEnderDragonFight {
 	@Shadow
 	private boolean previouslyKilled;

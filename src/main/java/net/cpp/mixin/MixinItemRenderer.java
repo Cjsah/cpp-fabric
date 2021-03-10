@@ -20,6 +20,7 @@ import net.minecraft.resource.SynchronousResourceReloadListener;
 import net.minecraft.util.Formatting;
 
 @Mixin(ItemRenderer.class)
+@SuppressWarnings({"unused", "ConstantConditions"})
 public abstract class MixinItemRenderer implements SynchronousResourceReloadListener {
 
 	@Shadow
@@ -34,7 +35,7 @@ public abstract class MixinItemRenderer implements SynchronousResourceReloadList
 				String string = String.valueOf(multiple);
 				matrixStack.translate(0.0D, 0.0D, zOffset + 200);
 				VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
-				renderer.draw((String) string, (float) (x + 19 - 2 - renderer.getWidth(string)), (float) (y + 0), Formatting.DARK_AQUA.getColorValue()|0xff000000, true, matrixStack.peek().getModel(), immediate, false, 0, 15728880);
+				renderer.draw(string, (float) (x + 19 - 2 - renderer.getWidth(string)), (float) (y), Formatting.DARK_AQUA.getColorValue()|0xff000000, true, matrixStack.peek().getModel(), immediate, false, 0, 15728880);
 				immediate.draw();
 			}
 		}

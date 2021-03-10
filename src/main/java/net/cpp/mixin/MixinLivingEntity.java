@@ -24,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Map;
 
 @Mixin(LivingEntity.class)
+@SuppressWarnings("all")
 public abstract class MixinLivingEntity extends Entity {
 	public MixinLivingEntity(EntityType<?> type, World world) {
 		super(type, world);

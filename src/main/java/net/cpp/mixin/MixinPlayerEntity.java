@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Mixin(PlayerEntity.class)
+@SuppressWarnings("unused")
 public abstract class MixinPlayerEntity extends LivingEntity implements ITemperancable, IPlayerVaccine {
 
 	protected MixinPlayerEntity(EntityType<? extends LivingEntity> entityType, World world) {

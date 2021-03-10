@@ -12,6 +12,7 @@ import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.item.ItemStack;
 
 @Mixin(ItemModels.class)
+@SuppressWarnings("unused")
 public abstract class MixinItemModels {
 	@Shadow
 	public abstract BakedModel getModel(ItemStack stack);
