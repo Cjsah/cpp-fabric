@@ -1,25 +1,15 @@
 package net.cpp;
+
 import static net.cpp.api.CppChat.say;
 
 import net.cpp.init.CppGeneratorType;
-import net.minecraft.client.world.GeneratorType;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
-import net.minecraft.world.gen.chunk.FlatChunkGenerator;
-import net.minecraft.world.gen.chunk.FlatChunkGeneratorConfig;
-import net.minecraft.world.gen.chunk.StructuresConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.common.collect.ImmutableMap;
 
 import net.cpp.config.CppConfig;
 import net.cpp.ducktyping.IPlayerJoinCallback;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
-import net.cpp.init.CppEffects;
 import net.cpp.init.CppEntities;
 import net.cpp.init.CppFeatures;
 import net.cpp.init.CppItems;
@@ -28,22 +18,16 @@ import net.cpp.init.CppRecipes;
 import net.cpp.init.CppScreenHandler;
 import net.cpp.init.CppStats;
 import net.cpp.misc.AttachAttributesLootFunction;
-import net.cpp.mixin.MixinWanderingTraderEntity;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.village.TradeOffers;
-
-import java.util.Collections;
-import java.util.Optional;
 
 public class Craftingpp implements ModInitializer {
 
