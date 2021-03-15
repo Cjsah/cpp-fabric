@@ -1,14 +1,17 @@
 package net.cpp.island;
 
+import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.LootableContainerBlockEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
@@ -18,11 +21,13 @@ import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
+import net.minecraft.world.gen.chunk.StructureConfig;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
+import net.minecraft.world.gen.feature.StructureFeature;
 
 import javax.annotation.Nonnull;
-import java.util.function.Supplier;
+import java.util.Optional;
 
 public class IslandChunkGenerator extends ChunkGenerator {
     public static final Codec<IslandChunkGenerator> CODEC = RecordCodecBuilder.create((instance) ->
@@ -31,12 +36,14 @@ public class IslandChunkGenerator extends ChunkGenerator {
             ), Codec.LONG.fieldOf("seed").stable().forGetter((islandChunkGenerator) ->
                     islandChunkGenerator.seed
             )).apply(instance, instance.stable(IslandChunkGenerator::new)));
+    private static final ImmutableMap<StructureFeature<?>, StructureConfig> structures;
     protected static final int islandInterval = 1000;
+    private static final CompoundTag defaultTag = new CompoundTag();
     private final long seed;
     private final StructuresConfig structuresConfig;
 
     public IslandChunkGenerator(BiomeSource biomeSource, long seed) {
-        this(biomeSource, biomeSource, seed, new StructuresConfig(false));
+        this(biomeSource, biomeSource, seed, new StructuresConfig(Optional.empty(), structures));
     }
 
     private IslandChunkGenerator(BiomeSource populationSource, BiomeSource biomeSource, long seed, StructuresConfig structuresConfig) {
@@ -58,19 +65,23 @@ public class IslandChunkGenerator extends ChunkGenerator {
 
     @Override
     @SuppressWarnings("ConstantConditions")
-    public void buildSurface(ChunkRegion region, Chunk chunk) {
-        int startX = chunk.getPos().getStartX();
-        int startZ = chunk.getPos().getStartZ();
+    public void buildSurface(ChunkRegion region, @Nonnull Chunk chunk) {
+        int startX = getCorner(chunk.getPos().getStartX());
+        int startZ = getCorner(chunk.getPos().getStartZ());
         if (Math.abs(startX % 1000) < 16 && Math.abs(startZ % 1000) < 16) {
-            System.out.println(startX%1000);
-            BlockPos pos = new BlockPos(startX - (startX % 1000), 62, startZ - (startZ % 1000));
-            chunk.setBlockState(pos, Blocks.BEDROCK.getDefaultState(), false);
-            chunk.setBlockState(pos.add(0, 1, 0), Blocks.CHEST.getDefaultState(), false);
-//            LootableContainerBlockEntity blockEntity = (LootableContainerBlockEntity) chunk.getBlockEntity(pos.add(0, 1, 0));
-//            blockEntity.setStack(0, new ItemStack(Items.OAK_SAPLING, 4));
-//            blockEntity.setStack(1, new ItemStack(Items.DIRT, 1));
-//            blockEntity.setStack(2, new ItemStack(Items.BONE_MEAL, 16));
+            BlockPos pos = new BlockPos(startX - (startX % 1000), 63, startZ - (startZ % 1000));
+            region.setBlockState(pos.add(0, -1, 0), Blocks.BEDROCK.getDefaultState(), 2);
+            region.setBlockState(pos, Blocks.CHEST.getDefaultState(), 2);
+            BlockEntity blockEntity = region.getBlockEntity(pos);
+            CompoundTag tag = defaultTag.copy();
+            tag.putInt("x", pos.getX());
+            tag.putInt("y", pos.getY());
+            tag.putInt("z", pos.getZ());
+            blockEntity.fromTag(tag);
         }
+    }
+    private int getCorner(int pos) {
+        return pos >= 0 ? pos + 15 : pos;
     }
 
     @Override
@@ -80,21 +91,10 @@ public class IslandChunkGenerator extends ChunkGenerator {
 
     @Override
     public void populateNoise(@Nonnull WorldAccess world, StructureAccessor accessor, @Nonnull Chunk chunk) {
-//        BlockState blockState = Blocks.AIR.getDefaultState();
-//        Heightmap heightmap = chunk.getHeightmap(Heightmap.Type.OCEAN_FLOOR_WG);
-//        Heightmap heightmap2 = chunk.getHeightmap(Heightmap.Type.WORLD_SURFACE_WG);
-//
-//        int y = world.getBottomY();
-//        for(int x = 0; x < 16; ++x) {
-//            for(int z = 0; z < 16; ++z) {
-//                heightmap.trackUpdate(x, y, z, blockState);
-//                heightmap2.trackUpdate(x, y, z, blockState);
-//            }
-//        }
     }
 
     @Override
-    public int getHeight(int x, int z, @Nonnull Heightmap.Type heightmap, HeightLimitView world) {
+    public int getHeight(int x, int z, @Nonnull Heightmap.Type heightmap, @Nonnull HeightLimitView world) {
         return world.getBottomY();
     }
 
@@ -108,4 +108,30 @@ public class IslandChunkGenerator extends ChunkGenerator {
         return this.structuresConfig;
     }
 
+    static {
+        ListTag list = new ListTag();
+        list.add(newItem(0, Items.OAK_SAPLING, 4));
+        list.add(newItem(1, Items.DIRT, 1));
+        list.add(newItem(2, Items.BONE_MEAL, 16));
+        defaultTag.put("Items", list);
+
+        structures = new ImmutableMap.Builder<StructureFeature<?>, StructureConfig>()
+                .put(StructureFeature.END_CITY, new StructureConfig(20, 11, 10387313))
+                // 破损的传送门
+                .put(StructureFeature.RUINED_PORTAL, new StructureConfig(40, 15, 34222645))
+                .put(StructureFeature.BASTION_REMNANT, new StructureConfig(27, 4, 30084232))
+                .put(StructureFeature.FORTRESS, new StructureConfig(27, 4, 30084232))
+                .put(StructureFeature.NETHER_FOSSIL, new StructureConfig(2, 1, 14357921))
+                .build();
+
+    }
+
+    @Nonnull
+    private static CompoundTag newItem(int slot, @Nonnull Item item, int count) {
+        CompoundTag tag = new CompoundTag();
+        tag.putByte("Slot", (byte) slot);
+        tag.putString("id", item.toString());
+        tag.putByte("Count", (byte) count);
+        return tag;
+    }
 }
