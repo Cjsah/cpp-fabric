@@ -32,8 +32,10 @@ public class IslandChunkGeneratorConfig {
 
     public IslandChunkGeneratorConfig(Registry<Biome> biomeRegistry, long seed) {
         this.biomeRegistry = biomeRegistry;
-//        this.biomeSource = new VanillaLayeredBiomeSource(seed, false, false, biomeRegistry);
-        this.biomeSource = new FixedBiomeSource(biomeRegistry.getOrThrow(BiomeKeys.PLAINS));
+        // 多群系
+        this.biomeSource = new VanillaLayeredBiomeSource(seed, false, false, biomeRegistry);
+        // 单群系
+//        this.biomeSource = new FixedBiomeSource(biomeRegistry.getOrThrow(BiomeKeys.PLAINS));
         this.structuresConfig = this.initStructuresConfig();
         this.seed = seed;
     }
