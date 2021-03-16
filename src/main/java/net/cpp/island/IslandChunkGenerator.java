@@ -15,6 +15,7 @@ import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.biome.source.FixedBiomeSource;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
@@ -31,7 +32,7 @@ public class IslandChunkGenerator extends ChunkGenerator {
     private static final CompoundTag defaultTag = new CompoundTag();
 
     public IslandChunkGenerator(IslandChunkGeneratorConfig config) {
-        super(config.getBiome(), config.getBiome(), config.getStructuresConfig(), config.getSeed());
+        super(new FixedBiomeSource(config.createBiome()), new FixedBiomeSource(config.getBiome()), config.getStructuresConfig(), 0L);
         this.config = config;
     }
 
