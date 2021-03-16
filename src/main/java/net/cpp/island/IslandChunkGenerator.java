@@ -1,8 +1,6 @@
 package net.cpp.island;
 
-import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
@@ -17,39 +15,28 @@ import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.WorldAccess;
-import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.chunk.StructureConfig;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
-import net.minecraft.world.gen.feature.StructureFeature;
 
 import javax.annotation.Nonnull;
-import java.util.Optional;
 
 public class IslandChunkGenerator extends ChunkGenerator {
-    public static final Codec<IslandChunkGenerator> CODEC = RecordCodecBuilder.create((instance) ->
-            instance.group(BiomeSource.CODEC.fieldOf("biome_source").forGetter((islandChunkGenerator) ->
-                    islandChunkGenerator.populationSource
-            ), Codec.LONG.fieldOf("seed").stable().forGetter((islandChunkGenerator) ->
-                    islandChunkGenerator.seed
-            )).apply(instance, instance.stable(IslandChunkGenerator::new)));
-    private static final ImmutableMap<StructureFeature<?>, StructureConfig> structures;
+    public static final Codec<IslandChunkGenerator> CODEC;
+    private final IslandChunkGeneratorConfig config;
+
     protected static final int islandInterval = 1000;
     private static final CompoundTag defaultTag = new CompoundTag();
-    private final long seed;
-    private final StructuresConfig structuresConfig;
 
-    public IslandChunkGenerator(BiomeSource biomeSource, long seed) {
-        this(biomeSource, biomeSource, seed, new StructuresConfig(Optional.empty(), structures));
+    public IslandChunkGenerator(IslandChunkGeneratorConfig config) {
+        super(config.getBiome(), config.getBiome(), config.getStructuresConfig(), config.getSeed());
+        this.config = config;
     }
 
-    private IslandChunkGenerator(BiomeSource populationSource, BiomeSource biomeSource, long seed, StructuresConfig structuresConfig) {
-        super(populationSource, biomeSource, structuresConfig, seed);
-        this.structuresConfig = structuresConfig;
-        this.seed = seed;
+    public IslandChunkGeneratorConfig getConfig() {
+        return this.config;
     }
 
     @Override
@@ -80,6 +67,7 @@ public class IslandChunkGenerator extends ChunkGenerator {
             blockEntity.fromTag(tag);
         }
     }
+
     private int getCorner(int pos) {
         return pos >= 0 ? pos + 15 : pos;
     }
@@ -105,25 +93,18 @@ public class IslandChunkGenerator extends ChunkGenerator {
 
     @Override
     public StructuresConfig getStructuresConfig() {
-        return this.structuresConfig;
+        return this.config.getStructuresConfig();
     }
 
     static {
+
+        CODEC = IslandChunkGeneratorConfig.CODEC.fieldOf("settings").xmap(IslandChunkGenerator::new, IslandChunkGenerator::getConfig).codec();
+
         ListTag list = new ListTag();
         list.add(newItem(0, Items.OAK_SAPLING, 4));
         list.add(newItem(1, Items.DIRT, 1));
         list.add(newItem(2, Items.BONE_MEAL, 16));
         defaultTag.put("Items", list);
-
-        structures = new ImmutableMap.Builder<StructureFeature<?>, StructureConfig>()
-                .put(StructureFeature.END_CITY, new StructureConfig(20, 11, 10387313))
-                // 破损的传送门
-                .put(StructureFeature.RUINED_PORTAL, new StructureConfig(40, 15, 34222645))
-                .put(StructureFeature.BASTION_REMNANT, new StructureConfig(27, 4, 30084232))
-                .put(StructureFeature.FORTRESS, new StructureConfig(27, 4, 30084232))
-                .put(StructureFeature.NETHER_FOSSIL, new StructureConfig(2, 1, 14357921))
-                .build();
-
     }
 
     @Nonnull
