@@ -11,11 +11,11 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.WorldAccess;
-import net.minecraft.world.biome.source.FixedBiomeSource;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
@@ -25,14 +25,14 @@ import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import javax.annotation.Nonnull;
 
 public class IslandChunkGenerator extends ChunkGenerator {
-    public static final Codec<IslandChunkGenerator> CODEC;
+    public static final Codec<IslandChunkGenerator> CODEC = IslandChunkGeneratorConfig.CODEC.fieldOf("settings").xmap(IslandChunkGenerator::new, IslandChunkGenerator::getConfig).codec();
     private final IslandChunkGeneratorConfig config;
 
     protected static final int islandInterval = 1000;
     private static final CompoundTag defaultTag = new CompoundTag();
 
     public IslandChunkGenerator(IslandChunkGeneratorConfig config) {
-        super(new FixedBiomeSource(config.createBiome()), new FixedBiomeSource(config.getBiome()), config.getStructuresConfig(), 0L);
+        super(config.getBiomeSource(), config.getBiomeSource(), config.getStructuresConfig(), config.getSeed());
         this.config = config;
     }
 
@@ -98,8 +98,7 @@ public class IslandChunkGenerator extends ChunkGenerator {
     }
 
     static {
-
-        CODEC = IslandChunkGeneratorConfig.CODEC.fieldOf("settings").xmap(IslandChunkGenerator::new, IslandChunkGenerator::getConfig).codec();
+        Registry.register(Registry.CHUNK_GENERATOR, "island", IslandChunkGenerator.CODEC);
 
         ListTag list = new ListTag();
         list.add(newItem(0, Items.OAK_SAPLING, 4));

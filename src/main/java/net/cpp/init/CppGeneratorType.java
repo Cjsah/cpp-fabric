@@ -19,15 +19,7 @@ import java.util.Optional;
 public final class CppGeneratorType {
     private static final GeneratorType CPP_ISLAND = new GeneratorType("cpp_island") {
         protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
-//            return new IslandChunkGenerator(new IslandChunkGeneratorConfig(biomeRegistry, seed));
-            IslandChunkGeneratorConfig config = new IslandChunkGeneratorConfig(
-                    new StructuresConfig(Optional.empty(), Collections.emptyMap()), biomeRegistry);
-            config.updateLayerBlocks();
-            return new IslandChunkGenerator(config);
-//            FlatChunkGeneratorConfig config = new FlatChunkGeneratorConfig(
-//                    new StructuresConfig(Optional.empty(), Collections.emptyMap()), biomeRegistry);
-//            config.updateLayerBlocks();
-//            return new FlatChunkGenerator(config);
+            return new IslandChunkGenerator(new IslandChunkGeneratorConfig(biomeRegistry, seed));
         }
     };
 
