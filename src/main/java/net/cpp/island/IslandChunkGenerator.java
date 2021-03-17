@@ -98,7 +98,7 @@ public class IslandChunkGenerator extends ChunkGenerator {
     }
 
     static {
-        Registry.register(Registry.CHUNK_GENERATOR, "island", IslandChunkGenerator.CODEC);
+        Registry.register(Registry.CHUNK_GENERATOR, "cpp_island", IslandChunkGenerator.CODEC);
 
         ListTag list = new ListTag();
         list.add(newItem(0, Items.OAK_SAPLING, 4));
