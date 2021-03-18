@@ -41,6 +41,11 @@ public class IslandChunkGenerator extends ChunkGenerator {
     }
 
     @Override
+    public void generateFeatures(ChunkRegion region, StructureAccessor accessor) {
+
+    }
+
+    @Override
     protected Codec<? extends ChunkGenerator> getCodec() {
         return CODEC;
     }
@@ -58,14 +63,17 @@ public class IslandChunkGenerator extends ChunkGenerator {
         int startZ = getCorner(chunk.getPos().getStartZ());
         if (Math.abs(startX % 1000) < 16 && Math.abs(startZ % 1000) < 16) {
             BlockPos pos = new BlockPos(startX - (startX % 1000), 63, startZ - (startZ % 1000));
-            region.setBlockState(pos.add(0, -1, 0), Blocks.BEDROCK.getDefaultState(), 2);
-            region.setBlockState(pos, Blocks.CHEST.getDefaultState(), 2);
-            BlockEntity blockEntity = region.getBlockEntity(pos);
-            CompoundTag tag = defaultTag.copy();
-            tag.putInt("x", pos.getX());
-            tag.putInt("y", pos.getY());
-            tag.putInt("z", pos.getZ());
-            blockEntity.fromTag(tag);
+            if (pos.getX() != 0 || pos.getZ() != 0) {
+                region.setBlockState(pos.down(), Blocks.BEDROCK.getDefaultState(), 2);
+                region.setBlockState(pos, Blocks.CHEST.getDefaultState(), 2);
+                BlockEntity blockEntity = region.getBlockEntity(pos);
+                CompoundTag tag = defaultTag.copy();
+                tag.putInt("x", pos.getX());
+                tag.putInt("y", pos.getY());
+                tag.putInt("z", pos.getZ());
+                blockEntity.fromTag(tag);
+
+            }
         }
     }
 
