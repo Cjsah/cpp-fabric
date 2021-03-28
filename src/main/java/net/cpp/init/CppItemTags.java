@@ -3,10 +3,10 @@ package net.cpp.init;
 import net.cpp.Craftingpp;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.item.Item;
-import net.minecraft.tag.ItemTags;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 
+@SuppressWarnings("unused")
 public final class CppItemTags {
 	public static final Tag<Item> FLOWER_GRASSES = register("flower_grasses");
 	public static final Tag<Item> FLOWER_GRASSES_1 = register("flower_grasses_1");

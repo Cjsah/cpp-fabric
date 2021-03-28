@@ -26,6 +26,7 @@ public final class CppEffects {
 		});
 	}
 	
+	@SuppressWarnings("SameParameterValue")
 	private static <T extends StatusEffect> T register(String name, T effectClass) {
 		return Registry.register(Registry.STATUS_EFFECT, new Identifier(Craftingpp.MOD_ID3, name), effectClass);
 	}

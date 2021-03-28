@@ -1,22 +1,14 @@
 package net.cpp.init;
 
-import java.util.OptionalLong;
-
 import net.cpp.Craftingpp;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.ServerStarted;
-import net.fabricmc.fabric.mixin.biome.modification.DynamicRegistryManagerImplMixin;
-import net.fabricmc.fabric.mixin.registry.sync.DynamicRegistryManagerMixin;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.tag.BlockTags;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.biome.source.HorizontalVoronoiBiomeAccessType;
 import net.minecraft.world.dimension.DimensionType;
 
+@SuppressWarnings("unused")
 public final class CppDimensionTypes {
 	public static final Identifier FLOWER_ID = new Identifier(Craftingpp.MOD_ID3, "flower");
 	public static final RegistryKey<DimensionType> FLOWER_KEY = RegistryKey.of(Registry.DIMENSION_TYPE_KEY, FLOWER_ID);
@@ -33,8 +25,6 @@ public final class CppDimensionTypes {
 	}
 
 	static {
-		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			register(server);
-		});
+		ServerLifecycleEvents.SERVER_STARTED.register(CppDimensionTypes::register);
 	}
 }

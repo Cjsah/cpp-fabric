@@ -63,7 +63,4 @@ public final class CppEntities {
 		return Registry.register(Registry.ENTITY_TYPE, cppid, type.build(cppid));
 	}
 
-	static {
-
-	}
 }

@@ -87,6 +87,7 @@ import net.minecraft.util.Rarity;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.registry.Registry;
 
+@SuppressWarnings("unused")
 public final class CppItems {
 	// 稀有物品
 	public static final Item SHARD_OF_THE_DARKNESS;
