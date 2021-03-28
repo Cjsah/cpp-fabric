@@ -477,6 +477,13 @@
   "block.cpp.broken_spawner": "破损的刷怪笼",
   "block.cpp.rare_earth_glass": "稀土玻璃",
   "block.cpp.reinforced_glass": "钢化玻璃",
+
+  "block.cpp.blueberry_cake": "蓝莓蛋糕",
+  "block.cpp.strawberry_cake": "草莓蛋糕",
+  "block.cpp.cheese_cake": "芝士蛋糕",
+  "block.cpp.chocolate_cake": "巧克力蛋糕",
+  "block.cpp.rotten_flesh_cake": "腐肉蛋糕",
+
   "block.cpp.fruit_leaves": "水果树树叶",
   "block.cpp.ore_leaves": "矿石树树叶",
   "block.cpp.wool_leaves": "羊毛树树叶",

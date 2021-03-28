@@ -1,28 +1,7 @@
 package net.cpp.init;
 
-import static net.cpp.Craftingpp.CPP_GROUP_MACHINE;
-import static net.cpp.Craftingpp.CPP_GROUP_MISC;
-import static net.cpp.Craftingpp.CPP_GROUP_PLANT;
-import static net.cpp.Craftingpp.MOD_ID3;
-import static net.minecraft.entity.effect.StatusEffects.BLINDNESS;
-import static net.minecraft.entity.effect.StatusEffects.FIRE_RESISTANCE;
-import static net.minecraft.entity.effect.StatusEffects.GLOWING;
-import static net.minecraft.entity.effect.StatusEffects.HASTE;
-import static net.minecraft.entity.effect.StatusEffects.INVISIBILITY;
-import static net.minecraft.entity.effect.StatusEffects.JUMP_BOOST;
-import static net.minecraft.entity.effect.StatusEffects.LEVITATION;
-import static net.minecraft.entity.effect.StatusEffects.MINING_FATIGUE;
-import static net.minecraft.entity.effect.StatusEffects.NAUSEA;
-import static net.minecraft.entity.effect.StatusEffects.POISON;
-import static net.minecraft.entity.effect.StatusEffects.REGENERATION;
-import static net.minecraft.entity.effect.StatusEffects.RESISTANCE;
-import static net.minecraft.entity.effect.StatusEffects.SATURATION;
-import static net.minecraft.entity.effect.StatusEffects.SLOWNESS;
-import static net.minecraft.entity.effect.StatusEffects.SPEED;
-import static net.minecraft.entity.effect.StatusEffects.STRENGTH;
-import static net.minecraft.entity.effect.StatusEffects.WATER_BREATHING;
-import static net.minecraft.entity.effect.StatusEffects.WEAKNESS;
-import static net.minecraft.entity.effect.StatusEffects.WITHER;
+import static net.cpp.Craftingpp.*;
+import static net.minecraft.entity.effect.StatusEffects.*;
 
 import java.util.List;
 import java.util.function.BiFunction;
@@ -60,6 +39,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
 
+@SuppressWarnings({"unused", "DuplicatedCode", "SameParameterValue"})
 public final class CppBlocks {
 	public static final AbstractBlock.Settings FURNACE_SETTINGS = AbstractBlock.Settings.of(Material.STONE).requiresTool().strength(3.5F);
 	public static final AbstractBlock.Settings BARREL_SETTINGS = AbstractBlock.Settings.of(Material.WOOD).strength(2.5F).sounds(BlockSoundGroup.WOOD);
@@ -78,6 +58,13 @@ public final class CppBlocks {
 	public static final Block MOON_STONE = registerBlock("moon_stone", new Block(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5.0F, 6.0F).sounds(BlockSoundGroup.METAL)), CPP_GROUP_MISC);
 	public static final Block SUN_STONE = registerBlock("sun_stone", new Block(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(3.0F, 6.0F).sounds(BlockSoundGroup.METAL)), CPP_GROUP_MISC);
 	public static final Block BROKEN_SPAWNER = registerBlock("broken_spawner", new BrokenSpawnerBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5.0F).sounds(BlockSoundGroup.METAL).nonOpaque()), CPP_GROUP_MISC);
+
+	public static final Block BLUEBERRY_CAKE = registerBlock("blueberry_cake", new CppCakeBlock(RESISTANCE, 600, 0, FabricBlockSettings.of(Material.CAKE).strength(0.5F).sounds(BlockSoundGroup.WOOL)), CPP_GROUP_FOOD);
+	public static final Block STRAWBERRY_CAKE = registerBlock("strawberry_cake", new CppCakeBlock(JUMP_BOOST, 600, 0, FabricBlockSettings.of(Material.CAKE).strength(0.5F).sounds(BlockSoundGroup.WOOL)), CPP_GROUP_FOOD);
+	public static final Block CHEESE_CAKE = registerBlock("cheese_cake", new CppCakeBlock(STRENGTH, 600, 0, FabricBlockSettings.of(Material.CAKE).strength(0.5F).sounds(BlockSoundGroup.WOOL)), CPP_GROUP_FOOD);
+	public static final Block CHOCOLATE_CAKE = registerBlock("chocolate_cake", new CppCakeBlock(HASTE, 600, 0, FabricBlockSettings.of(Material.CAKE).strength(0.5F).sounds(BlockSoundGroup.WOOL)), CPP_GROUP_FOOD);
+	public static final Block ROTTEN_FRESH_CAKE = registerBlock("rotten_flesh_cake", new CppCakeBlock(HUNGER, 100, 254, FabricBlockSettings.of(Material.CAKE).strength(0.5F).sounds(BlockSoundGroup.WOOL)), CPP_GROUP_FOOD);
+
 	public static final Block FRUIT_LEAVES = registerLeaves("fruit_leaves", FruitLeavesBlock::new);
 	public static final Block ORE_LEAVES = registerLeaves("ore_leaves", OreLeavesBlock::new);
 	public static final Block WOOL_LEAVES = registerLeaves("wool_leaves", WoolLeavesBlock::new);
