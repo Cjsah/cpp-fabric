@@ -11,12 +11,13 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 
 @Mixin(PigEntity.class)
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 public abstract class MixinPigEntity extends AnimalEntity {
 	protected MixinPigEntity(EntityType<? extends AnimalEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	public void tick() {
 		super.tick();
 		if (!this.world.isClient && ((Object)this.getClass()) == PigEntity.class) CodingTool.darkTransform((ServerWorld) this.world, this, CppEntities.DARK_PIG, true, null);

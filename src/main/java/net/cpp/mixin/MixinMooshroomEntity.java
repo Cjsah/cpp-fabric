@@ -13,7 +13,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 
 @Mixin(MooshroomEntity.class)
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 public abstract class MixinMooshroomEntity extends CowEntity {
 	public MixinMooshroomEntity(EntityType<? extends CowEntity> entityType, World world) {
 		super(entityType, world);
@@ -26,6 +26,7 @@ public abstract class MixinMooshroomEntity extends CowEntity {
 	public abstract MooshroomEntity createChild(ServerWorld serverWorld, PassiveEntity passiveEntity);
 
 	@Override
+	@SuppressWarnings("ConstantConditions")
 	public void tick() {
 		super.tick();
 		if (!this.world.isClient && ((Object)this.getClass()) == MooshroomEntity.class) CodingTool.darkTransform((ServerWorld) this.world, this, CppEntities.DARK_MOOSHROOM, true, (entity) -> entity.setType(this.getMooshroomType()));

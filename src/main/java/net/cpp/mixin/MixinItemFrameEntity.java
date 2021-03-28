@@ -14,7 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.World;
 
 @Mixin(ItemFrameEntity.class)
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 public abstract class MixinItemFrameEntity extends AbstractDecorationEntity implements IRitualFrame {
 	private int ritualType, ritualTime;
 
@@ -31,6 +31,7 @@ public abstract class MixinItemFrameEntity extends AbstractDecorationEntity impl
 	@Shadow
 	public abstract int getRotation();
 
+	@SuppressWarnings("ConstantConditions")
 	public void tick() {
 		ItemFrameEntity this0 = (ItemFrameEntity) (Object) this;
 		if (!world.isClient) {

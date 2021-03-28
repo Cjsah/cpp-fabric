@@ -59,8 +59,8 @@ public class IslandChunkGenerator extends ChunkGenerator {
     @Override
     @SuppressWarnings("ConstantConditions")
     public void buildSurface(ChunkRegion region, @Nonnull Chunk chunk) {
-        int startX = getCorner(chunk.getPos().getStartX());
-        int startZ = getCorner(chunk.getPos().getStartZ());
+        int startX = this.getCorner(chunk.getPos().getStartX());
+        int startZ = this.getCorner(chunk.getPos().getStartZ());
         if (Math.abs(startX % 1000) < 16 && Math.abs(startZ % 1000) < 16) {
             BlockPos pos = new BlockPos(startX - (startX % 1000), 63, startZ - (startZ % 1000));
             if (pos.getX() != 0 || pos.getZ() != 0) {

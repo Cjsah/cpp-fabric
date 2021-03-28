@@ -29,7 +29,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 @Mixin(ExperienceBottleItem.class)
-@SuppressWarnings({"all"})
+@SuppressWarnings("unused")
 public class MixinExperienceBottleItem extends Item implements IDefaultTagItem {
 
 	public MixinExperienceBottleItem(Settings settings) {
@@ -48,6 +48,7 @@ public class MixinExperienceBottleItem extends Item implements IDefaultTagItem {
 	 * @reason null
 	 */
 	@Overwrite
+	@SuppressWarnings("ConstantConditions")
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack itemStack = user.getStackInHand(hand);
 		int multiple = itemStack.getOrCreateTag().getByte("multiple");

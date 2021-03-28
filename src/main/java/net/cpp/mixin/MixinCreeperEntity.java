@@ -17,7 +17,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 @Mixin(CreeperEntity.class)
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 public abstract class MixinCreeperEntity extends HostileEntity {
 
 	protected MixinCreeperEntity(EntityType<? extends HostileEntity> entityType, World world) {
@@ -26,7 +26,9 @@ public abstract class MixinCreeperEntity extends HostileEntity {
 
 	@Shadow
 	private static TrackedData<Boolean> CHARGED;
+
 	@Shadow
+	@SuppressWarnings("FieldCanBeLocal")
 	private int fuseTime;
 
 	@Inject(at = @At("RETURN"), method = { "<init>" })

@@ -13,7 +13,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 @Mixin(RabbitEntity.class)
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 public abstract class MixinRabbitEntity extends AnimalEntity {
 	protected MixinRabbitEntity(EntityType<? extends AnimalEntity> entityType, World world) {
 		super(entityType, world);
@@ -22,6 +22,7 @@ public abstract class MixinRabbitEntity extends AnimalEntity {
 	@Shadow
 	public abstract void setRabbitType(int rabbitType);
 
+	@SuppressWarnings("ConstantConditions")
 	public void tick() {
 		super.tick();
 		if (!world.isClient && world.getTime() % 100 == 0 && world.getLightLevel(getBlockPos()) <= 7 && getServer().getPredicateManager().get(new Identifier("cpp:dark_animal")).test(new LootContext.Builder((ServerWorld) world).random(world.random).build(LootContextTypes.EMPTY))) {

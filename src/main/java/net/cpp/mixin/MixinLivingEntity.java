@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Map;
 
 @Mixin(LivingEntity.class)
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 public abstract class MixinLivingEntity extends Entity {
 	public MixinLivingEntity(EntityType<?> type, World world) {
 		super(type, world);
@@ -43,6 +43,7 @@ public abstract class MixinLivingEntity extends Entity {
 	protected abstract void onStatusEffectRemoved(StatusEffectInstance effect);
 
 
+	@SuppressWarnings("ConstantConditions")
 	@Inject(at = @At("RETURN"), method = "tick()V")
 	public void tick(CallbackInfo callbackInfo) {
 		if ((Object)this instanceof PlayerEntity) this.activeStatusEffects.entrySet().removeIf(effect -> {
@@ -80,6 +81,7 @@ public abstract class MixinLivingEntity extends Entity {
 			}
 		}
 	}
+	@SuppressWarnings("ConstantConditions")
 	@Inject(at = @At("HEAD"), method = "addStatusEffect", cancellable = true)
 	public void addStatusEffect1(StatusEffectInstance effect, CallbackInfoReturnable<Boolean> info) {
 		if (Vaccine.getVaccineEffects((LivingEntity) (Object)this).contains(effect.getEffectType())) {
