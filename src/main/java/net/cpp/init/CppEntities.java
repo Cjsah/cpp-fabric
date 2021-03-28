@@ -5,6 +5,7 @@ import java.util.function.UnaryOperator;
 
 import com.google.common.collect.ImmutableList;
 
+import net.cpp.Craftingpp;
 import net.cpp.entity.AGolemEntity;
 import net.cpp.entity.DarkChickenEntity;
 import net.cpp.entity.DarkCowEntity;
@@ -59,8 +60,8 @@ public final class CppEntities {
 	}
 
 	static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> type) {
-		String cppid = "cpp:" + id;
-		return Registry.register(Registry.ENTITY_TYPE, cppid, type.build(cppid));
+		String cppId = Craftingpp.MOD_ID3 + ":" + id;
+		return Registry.register(Registry.ENTITY_TYPE, cppId, type.build(cppId));
 	}
 
 }
