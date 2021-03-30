@@ -41,11 +41,6 @@ public class IslandChunkGenerator extends ChunkGenerator {
     }
 
     @Override
-    public void generateFeatures(ChunkRegion region, StructureAccessor accessor) {
-
-    }
-
-    @Override
     protected Codec<? extends ChunkGenerator> getCodec() {
         return CODEC;
     }

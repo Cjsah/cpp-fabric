@@ -5,10 +5,12 @@
     "compatibilityLevel": "JAVA_8",
     "mixins": [
 		"AccessorGeneratorType",
+		"AccessorProtoChunk",
 		"MixinAbstractSkeletonEntity",
 		"MixinBeeEntity",
 		"MixinBlock",
 		"MixinChickenEntity",
+		"MixinChunkStatus",
 		"MixinCowEntity",
 		"MixinCreeperEntity",
 		"MixinEnderDragonFight",
