@@ -1,16 +1,10 @@
 package net.cpp.island;
 
 import com.mojang.serialization.Codec;
+import net.cpp.Craftingpp;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
@@ -29,7 +23,6 @@ public class IslandChunkGenerator extends ChunkGenerator {
     private final IslandChunkGeneratorConfig config;
 
     protected static final int islandInterval = 1000;
-    private static final CompoundTag defaultTag = new CompoundTag();
 
     public IslandChunkGenerator(IslandChunkGeneratorConfig config) {
         super(config.getBiomeSource(), config.getBiomeSource(), config.getStructuresConfig(), config.getSeed());
@@ -52,28 +45,7 @@ public class IslandChunkGenerator extends ChunkGenerator {
     }
 
     @Override
-    @SuppressWarnings("ConstantConditions")
     public void buildSurface(ChunkRegion region, @Nonnull Chunk chunk) {
-        int startX = this.getCorner(chunk.getPos().getStartX());
-        int startZ = this.getCorner(chunk.getPos().getStartZ());
-        if (Math.abs(startX % 1000) < 16 && Math.abs(startZ % 1000) < 16) {
-            BlockPos pos = new BlockPos(startX - (startX % 1000), 63, startZ - (startZ % 1000));
-            if (pos.getX() != 0 || pos.getZ() != 0) {
-                region.setBlockState(pos.down(), Blocks.BEDROCK.getDefaultState(), 2);
-                region.setBlockState(pos, Blocks.CHEST.getDefaultState(), 2);
-                BlockEntity blockEntity = region.getBlockEntity(pos);
-                CompoundTag tag = defaultTag.copy();
-                tag.putInt("x", pos.getX());
-                tag.putInt("y", pos.getY());
-                tag.putInt("z", pos.getZ());
-                blockEntity.fromTag(tag);
-
-            }
-        }
-    }
-
-    private int getCorner(int pos) {
-        return pos >= 0 ? pos + 15 : pos;
     }
 
     @Override
@@ -101,21 +73,6 @@ public class IslandChunkGenerator extends ChunkGenerator {
     }
 
     static {
-        Registry.register(Registry.CHUNK_GENERATOR, "cpp_island", IslandChunkGenerator.CODEC);
-
-        ListTag list = new ListTag();
-        list.add(newItem(0, Items.OAK_SAPLING, 4));
-        list.add(newItem(1, Items.DIRT, 1));
-        list.add(newItem(2, Items.BONE_MEAL, 16));
-        defaultTag.put("Items", list);
-    }
-
-    @Nonnull
-    private static CompoundTag newItem(int slot, @Nonnull Item item, int count) {
-        CompoundTag tag = new CompoundTag();
-        tag.putByte("Slot", (byte) slot);
-        tag.putString("id", item.toString());
-        tag.putByte("Count", (byte) count);
-        return tag;
+        Registry.register(Registry.CHUNK_GENERATOR, Craftingpp.MOD_ID3 + "cpp_island", IslandChunkGenerator.CODEC);
     }
 }

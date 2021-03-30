@@ -27,7 +27,7 @@ public class MixinChunkStatus {
     // LIGHT
     @Inject(method = "method_20613", at = @At("HEAD"))
     private static void onLighting(ChunkStatus chunkStatus, ServerWorld world, ChunkGenerator generator, StructureManager manager, ServerLightingProvider lightingProvider, Function<Chunk, CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> function, List<Chunk> list, Chunk chunk, CallbackInfoReturnable<CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> info) {
-        if(generator instanceof IslandChunkGenerator && !chunk.getStatus().isAtLeast(chunkStatus)) IslandUtils.deleteBlocks((ProtoChunk) chunk, world);
+        if(generator instanceof IslandChunkGenerator && !chunk.getStatus().isAtLeast(chunkStatus)) IslandUtils.generator((ProtoChunk) chunk, world);
     }
 
     // SPAWN -> populateEntities
