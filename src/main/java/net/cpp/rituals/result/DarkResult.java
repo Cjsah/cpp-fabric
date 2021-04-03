@@ -1,13 +1,13 @@
 package net.cpp.rituals.result;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class DarkResult extends ARitualResult {
-    public DarkResult() {
-    }
+import javax.annotation.Nullable;
 
+public class DarkResult implements ARitualResult {
     @Override
-    public ItemStack get() {
+    public ItemStack get(@Nullable Item... items) {
         return null;
     }
 }

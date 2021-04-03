@@ -1,14 +1,13 @@
 package net.cpp.rituals.result;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class AttributeResult extends ARitualResult {
+import javax.annotation.Nullable;
 
-    public AttributeResult() {
-    }
-
+public class AttributeResult implements ARitualResult {
     @Override
-    public ItemStack get() {
+    public ItemStack get(@Nullable Item... items) {
         return null;
     }
 }

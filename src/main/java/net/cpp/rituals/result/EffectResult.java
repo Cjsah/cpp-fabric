@@ -3,16 +3,11 @@ package net.cpp.rituals.result;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class EffectResult extends ARitualResult {
-    private final Item rare;
-    private final Item agentia;
-    public EffectResult(Item rare, Item agentia) {
-        this.rare = rare;
-        this.agentia = agentia;
-    }
+import javax.annotation.Nullable;
 
+public class EffectResult implements ARitualResult {
     @Override
-    public ItemStack get() {
+    public ItemStack get(@Nullable Item... items) {
         return null;
     }
 }

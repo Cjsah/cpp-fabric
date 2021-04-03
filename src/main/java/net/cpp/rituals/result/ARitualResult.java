@@ -1,8 +1,12 @@
 package net.cpp.rituals.result;
 
+
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import java.util.function.Supplier;
+import javax.annotation.Nullable;
 
-public abstract class ARitualResult implements Supplier<ItemStack> {
+@FunctionalInterface
+public interface ARitualResult {
+    ItemStack get(@Nullable Item... items);
 }
