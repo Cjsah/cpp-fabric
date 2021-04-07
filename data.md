@@ -12,17 +12,11 @@
         "c"
     ],
     
-    //
-    EnchantingRecipes: [
-        {
-            "rare1": "",
-            "rare2": "",
-            "result": ""
-        },
-        {
-            "rare1": "",
-            "rare2": "",
-            "result": ""
+    // 仪式-附魔书
+    EnchantingRituals: [
+        "minecraft:xxx",
+        "minecraft:xxx",
+        "minecraft:xxx",
         }
     ]
 }
