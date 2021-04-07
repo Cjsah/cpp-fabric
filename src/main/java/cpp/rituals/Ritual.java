@@ -5,6 +5,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public class Ritual {
 
 //    private static final Collection<RitualRecipe> recipes = Collections.emptyList();
@@ -17,7 +19,7 @@ public class Ritual {
      * @param border        基座四周方块
      * @return              是否符合多方块结构
      */
-    public static boolean valid(World world, BlockPos dispenserPos, Block center, Block corner, Block border) {
+    public static boolean valid(@Nonnull World world, BlockPos dispenserPos, Block center, Block corner, Block border) {
         if (world.getBlockState(dispenserPos).getBlock() != Blocks.DISPENSER) {
             return false;
         }

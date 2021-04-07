@@ -3,6 +3,8 @@ package cpp;
 import static cpp.api.CppChat.say;
 
 import cpp.init.CppGeneratorType;
+import cpp.state.CppStateOperate;
+import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,7 +37,7 @@ public class Craftingpp implements ModInitializer {
 	public static final String MOD_ID2 = "Craftingpp";
 	public static final String MOD_ID3 = "cpp";
 
-	public static final Logger logger = LogManager.getLogger("Craftingpp");
+	public static final Logger logger = LogManager.getLogger(MOD_ID1);
 
 	public static final CppConfig CONFIG = new CppConfig();
 

@@ -21,7 +21,7 @@ import net.fabricmc.loader.api.FabricLoader;
 public class CppConfig {
     private final File JSON_PATH = new File(FabricLoader.getInstance().getConfigDir().toFile(), Craftingpp.MOD_ID2);
 
-    private final Logger logger = LogManager.getLogger(Craftingpp.MOD_ID1);
+    private final Logger logger = Craftingpp.logger;
 
     private final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
 

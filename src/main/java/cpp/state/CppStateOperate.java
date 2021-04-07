@@ -4,10 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,9 +85,10 @@ public class CppStateOperate {
         return this.data.get("Around").getAsInt();
     }
 
-    public Enchantment getEnchantment(int index) {
+    public String getEnchantment(int index) {
         index -= index / 38 * 38;
-        return Registry.ENCHANTMENT.get(new Identifier(this.data.get("EnchantingRituals").getAsJsonArray().get(index).getAsString()));
+//        return Registry.ENCHANTMENT.get(new Identifier(this.data.get("EnchantingRituals").getAsJsonArray().get(index).getAsString()));
+        return this.data.get("EnchantingRituals").getAsJsonArray().get(index).getAsString();
     }
 
     public boolean inIsland(String name) {

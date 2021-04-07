@@ -11,6 +11,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.PersistentState;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +24,7 @@ public class CppState extends PersistentState {
     }
 
     @Override
-    public CompoundTag toNbt(CompoundTag tag) {
+    public CompoundTag toNbt(@Nonnull CompoundTag tag) {
         tag.putBoolean("IslandMode", this.data.get("IslandMode").getAsBoolean());
         tag.putInt("IslandID", this.data.get("IslandID").getAsInt());
         tag.putInt("Around", this.data.get("Around").getAsInt());
@@ -36,6 +37,7 @@ public class CppState extends PersistentState {
         return tag;
     }
 
+    @Nonnull
     private ListTag getEnchantingRecipes() {
         ListTag list = new ListTag();
         if (this.data.has("EnchantingRituals")) {
@@ -59,7 +61,7 @@ public class CppState extends PersistentState {
         return list;
     }
 
-    protected CppState readNbt(CompoundTag tag) {
+    protected CppState readNbt(@Nonnull CompoundTag tag) {
         this.data.addProperty("IslandMode", tag.getBoolean("IslandMode"));
         this.data.addProperty("IslandID", tag.getInt("IslandID"));
         this.data.addProperty("Around", tag.getInt("Around"));
