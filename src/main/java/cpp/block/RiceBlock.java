@@ -80,15 +80,13 @@ public class RiceBlock extends PlantBlock implements Fertilizable {
 		BlockState blockState = world.getBlockState(pos.down());
 		if (blockState.isOf(Blocks.GRASS_BLOCK) || blockState.isOf(Blocks.DIRT) || blockState.isOf(Blocks.COARSE_DIRT) || blockState.isOf(Blocks.PODZOL) || blockState.isOf(Blocks.SAND) || blockState.isOf(Blocks.RED_SAND)) {
 			BlockPos blockPos = pos.down();
-			Iterator<Direction> var6 = Direction.Type.HORIZONTAL.iterator();
-			while (var6.hasNext()) {
-				Direction direction = (Direction) var6.next();
-				BlockState blockState2 = world.getBlockState(blockPos.offset(direction));
-				FluidState fluidState = world.getFluidState(blockPos.offset(direction));
-				if (fluidState.isIn(FluidTags.WATER) || blockState2.isOf(Blocks.FROSTED_ICE)) {
-					return true;
-				}
-			}
+            for (Direction direction : Direction.Type.HORIZONTAL) {
+                BlockState blockState2 = world.getBlockState(blockPos.offset(direction));
+                FluidState fluidState = world.getFluidState(blockPos.offset(direction));
+                if (fluidState.isIn(FluidTags.WATER) || blockState2.isOf(Blocks.FROSTED_ICE)) {
+                    return true;
+                }
+            }
 		}
 		return false;
 	}

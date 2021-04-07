@@ -13,7 +13,7 @@ public class DarkSheepEntityRenderer extends MobEntityRenderer<DarkSheepEntity, 
 	public static final Identifier TEXTURE = new Identifier("textures/entity/sheep/sheep.png");
 
 	public DarkSheepEntityRenderer(EntityRendererFactory.Context context) {
-		super(context, new DarkSheepEntityModel<DarkSheepEntity>(context.getPart(EntityModelLayers.SHEEP)), 0.7F);
+		super(context, new DarkSheepEntityModel<>(context.getPart(EntityModelLayers.SHEEP)), 0.7F);
 		addFeature(new DarkSheepWoolFeatureRenderer(this, context.getModelLoader()));
 	}
 

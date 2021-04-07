@@ -8,7 +8,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.item.MiningToolItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.ToolMaterials;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -55,7 +54,7 @@ public class Grafter extends MiningToolItem {
 		 */
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
 			if (player.getMainHandStack().isOf(CppItems.GRAFTER) && LEAVES_TO_SALPING.containsKey(state.getBlock())) {
-				Utils.excavate((ServerWorld) world, (ServerPlayerEntity) player, pos, null);
+				Utils.excavate((ServerWorld) world, player, pos, null);
 				if (!player.isCreative())
 					Block.dropStack(world, pos, LEAVES_TO_SALPING.get(state.getBlock()).asItem().getDefaultStack());
 				return false;

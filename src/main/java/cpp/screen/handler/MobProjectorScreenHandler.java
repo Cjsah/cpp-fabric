@@ -33,7 +33,7 @@ public class MobProjectorScreenHandler extends AExpMachineScreenHandler {
 
 	@Override
 	public ItemStack transferSlot(PlayerEntity player, int index) {
-		Slot slot = (Slot) this.slots.get(index);
+		Slot slot = this.slots.get(index);
 		if (slot != null && slot.hasStack()) {
 			ItemStack itemStack = slot.getStack();
 			if (index >= 36 && index < blockEntity.size())

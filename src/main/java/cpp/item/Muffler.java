@@ -4,7 +4,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
@@ -25,7 +24,7 @@ public class Muffler extends Item {
 		if (!world.isClient) {
 			double dis = 16;
 			int cnt = 0;
-			for (Entity entity : ((ServerWorld) world).getOtherEntities(null, new Box(user.getPos(), user.getPos()).expand(dis), entity -> user.getPos().isInRange(entity.getPos(), dis))) {
+			for (Entity entity : world.getOtherEntities(null, new Box(user.getPos(), user.getPos()).expand(dis), entity -> user.getPos().isInRange(entity.getPos(), dis))) {
 				if (!(entity instanceof PlayerEntity)) {
 					entity.setSilent(true);
 					cnt++;

@@ -54,7 +54,7 @@ public class GolemFarmerEntity extends AMovingGolemEntity {
 			BlockState state = getBlockState();
 			Block block = state.getBlock();
 			BlockPos blockPos = getBlockPos();
-			List<ItemStack> droppeds = new LinkedList<ItemStack>();
+			List<ItemStack> droppeds = new LinkedList<>();
 			if (block instanceof CropBlock) {
 				CropBlock cropBlock = (CropBlock) block;
 				if (cropBlock.isMature(state)) {

@@ -7,9 +7,7 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
 public abstract class AExpMachineScreen<T extends AExpMachineScreenHandler> extends AOutputMachineScreen<T> {
-	public final ExpTankButton expTankButton = new ExpTankButton(buttonWidget -> {
-		client.interactionManager.clickButton(handler.syncId, ExpTankButton.SYNC_ID);
-	}, handler.blockEntity);
+	public final ExpTankButton expTankButton = new ExpTankButton(buttonWidget -> client.interactionManager.clickButton(handler.syncId, ExpTankButton.SYNC_ID), handler.blockEntity);
 
 	public AExpMachineScreen(T handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);

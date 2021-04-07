@@ -5,7 +5,6 @@ import java.util.Iterator;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import it.unimi.dsi.fastutil.ints.IntList;
 import cpp.init.CppRecipes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -45,7 +44,7 @@ import net.minecraft.world.World;
 			}
 		}
 
-		return i == this.input.size() && recipeFinder.findRecipe(this, (IntList) null);
+		return i == this.input.size() && recipeFinder.findRecipe(this, null);
 	}
 
 	public ItemStack craft(CraftingInventory craftingInventory) {
@@ -122,12 +121,10 @@ import net.minecraft.world.World;
 		public void write(PacketByteBuf packetByteBuf, CppCraftingShapelessRecipe shapelessRecipe) {
 			packetByteBuf.writeString(shapelessRecipe.group);
 			packetByteBuf.writeVarInt(shapelessRecipe.input.size());
-			Iterator<Ingredient> var3 = shapelessRecipe.input.iterator();
 
-			while (var3.hasNext()) {
-				Ingredient ingredient = (Ingredient) var3.next();
-				ingredient.write(packetByteBuf);
-			}
+            for (Ingredient ingredient : shapelessRecipe.input) {
+                ingredient.write(packetByteBuf);
+            }
 
 			packetByteBuf.writeItemStack(shapelessRecipe.output);
 		}

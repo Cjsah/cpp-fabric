@@ -3,7 +3,6 @@ package cpp.item;
 import cpp.entity.AGolemEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -37,7 +36,7 @@ public class Golem extends Item {
 				return ActionResult.FAIL;
 			entity.setMainHandStack(ItemStack.fromTag(itemStack.getSubTag("tool")));
 			serverWorld.spawnEntityAndPassengers(entity);
-			world.playSound((PlayerEntity) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_ARMOR_STAND_PLACE, SoundCategory.BLOCKS, 0.75F, 0.8F);
+			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_ARMOR_STAND_PLACE, SoundCategory.BLOCKS, 0.75F, 0.8F);
 			world.emitGameEvent(context.getPlayer(), GameEvent.BLOCK_PLACE, entity);
 		}
 		itemStack.decrement(1);

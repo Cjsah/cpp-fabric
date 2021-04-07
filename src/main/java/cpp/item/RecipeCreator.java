@@ -13,7 +13,7 @@ import net.minecraft.util.registry.Registry;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -29,8 +29,7 @@ public class RecipeCreator extends Item {
 	private final Function<Item, FileWriter> pather = item -> {
 		try {
 			Identifier id = Registry.ITEM.getId(item);
-			FileWriter fw = new FileWriter(String.format("D:\\CCC\\Documents\\编程\\Minecraft Mod\\更多的合成 FabricMod 开发中\\src\\main\\resources\\data\\cpp\\recipes\\%s.json", id.getPath()));
-			return fw;
+			return new FileWriter(String.format("D:\\CCC\\Documents\\编程\\Minecraft Mod\\更多的合成 FabricMod 开发中\\src\\main\\resources\\data\\cpp\\recipes\\%s.json", id.getPath()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -50,7 +49,7 @@ public class RecipeCreator extends Item {
 			try {
 				ServerWorld world = (ServerWorld) context.getWorld();
 				BlockEntity blockEntity = world.getBlockEntity(context.getBlockPos());
-				if (blockEntity != null && blockEntity instanceof BarrelBlockEntity) {
+				if (blockEntity instanceof BarrelBlockEntity) {
 					BarrelBlockEntity barrel = (BarrelBlockEntity) blockEntity;
 					ItemStack typeStack = barrel.getStack(0);
 					if (typeStack.isOf(CRAFTING_TABLE) || typeStack.isOf(CRAFTING_MACHINE.asItem())) {
@@ -97,7 +96,7 @@ public class RecipeCreator extends Item {
 							}
 							fw.write("	],\r\n" + "	\"key\": {\r\n" + "");
 							List<Entry<Item, Character>> list = new ArrayList<>(map.entrySet());
-							Collections.sort(list, (a, b) -> Character.compare(a.getValue(), b.getValue()));
+							list.sort(Comparator.comparingInt(Entry::getValue));
 							for (Iterator<Entry<Item, Character>> iterator = list.iterator(); iterator.hasNext();) {
 								Entry<Item, Character> entry = iterator.next();
 								if (entry.getKey() != AIR) {
@@ -110,7 +109,6 @@ public class RecipeCreator extends Item {
 							}
 							fw.write("\r\n	}\r\n" + "}");
 							fw.close();
-							return ActionResult.SUCCESS;
 						} else {
 							List<Item> ingredients = new ArrayList<>(9);
 							for (int i = 0; i < 3; i++) {
@@ -133,8 +131,8 @@ public class RecipeCreator extends Item {
 							}
 							fw.write("\r\n	}\r\n" + "}");
 							fw.close();
-							return ActionResult.SUCCESS;
 						}
+						return ActionResult.SUCCESS;
 					}
 				}
 			} catch (Exception e) {

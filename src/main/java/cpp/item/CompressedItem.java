@@ -42,8 +42,8 @@ public class CompressedItem extends Item {
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack itemStack = user.getStackInHand(hand);
-		if (!world.isClient && uncompressAndGive(user, itemStack)) {
-			return TypedActionResult.success(itemStack);
+		if (!world.isClient) {
+			uncompressAndGive(user, itemStack);
 		}
 		return TypedActionResult.success(itemStack);
 	}

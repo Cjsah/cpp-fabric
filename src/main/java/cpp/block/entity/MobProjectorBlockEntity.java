@@ -56,23 +56,19 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 
 		@Override
 		public void set(int index, int value) {
-			switch (index) {
-			case 4:
+			if (index == 4) {
 				currentRecipeCode = value;
-				break;
-			default:
+			} else {
 				super.set(index, value);
 			}
 		}
 
 		@Override
 		public int get(int index) {
-			switch (index) {
-			case 4:
+			if (index == 4) {
 				return currentRecipeCode;
-			default:
-				return super.get(index);
 			}
+			return super.get(index);
 		}
 	};
 

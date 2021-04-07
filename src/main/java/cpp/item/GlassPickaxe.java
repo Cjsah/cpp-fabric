@@ -8,7 +8,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ToolMaterials;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
@@ -48,7 +47,7 @@ public class GlassPickaxe extends PickaxeItem {
 		 */
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
 			if (player.getMainHandStack().isOf(CppItems.GLASS_PICKAXE) && GLASSES.contains(state.getBlock())) {
-				Utils.excavate((ServerWorld) world, (ServerPlayerEntity) player, pos, null);
+				Utils.excavate((ServerWorld) world, player, pos, null);
 				if (!player.isCreative())
 					Block.dropStack(world, pos, state.getBlock().asItem().getDefaultStack());
 				return false;

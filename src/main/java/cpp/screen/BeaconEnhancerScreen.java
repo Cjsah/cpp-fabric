@@ -28,9 +28,7 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 	/**
 	 * 施加于玩家的状态效果的按钮，点击切换
 	 */
-	public final TexturedButtonWidget playerEffectButton = new TexturedButtonWidget(0, 0, 24, 24, 0, 0, 0, BACKGROUND, buttonWidget -> {
-		client.interactionManager.clickButton(handler.syncId, PLAYER_EFFECT_BUTTON_SYNC_ID);
-	}) {
+	public final TexturedButtonWidget playerEffectButton = new TexturedButtonWidget(0, 0, 24, 24, 0, 0, 0, BACKGROUND, buttonWidget -> client.interactionManager.clickButton(handler.syncId, PLAYER_EFFECT_BUTTON_SYNC_ID)) {
 		@Override
 		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			MinecraftClient.getInstance().getTextureManager().bindTexture(PLAYER_EFFECT_TEXTURES.get(handler.blockEntity.propertyDelegate.get(0)));
@@ -41,9 +39,7 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 	/**
 	 * 施加于生物的状态效果的按钮，点击切换
 	 */
-	public final TexturedButtonWidget mobEffectButton = new TexturedButtonWidget(0, 0, 24, 24, 0, 0, 0, BACKGROUND, buttonWidget -> {
-		client.interactionManager.clickButton(handler.syncId, MOB_EFFECT_BUTTON_SYNC_ID);
-	}) {
+	public final TexturedButtonWidget mobEffectButton = new TexturedButtonWidget(0, 0, 24, 24, 0, 0, 0, BACKGROUND, buttonWidget -> client.interactionManager.clickButton(handler.syncId, MOB_EFFECT_BUTTON_SYNC_ID)) {
 		@Override
 		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			MinecraftClient.getInstance().getTextureManager().bindTexture(MOB_EFFECT_TEXTURES.get(handler.blockEntity.propertyDelegate.get(1)));
@@ -54,9 +50,7 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 	/**
 	 * 施加于生物的状态效果是否仅施加于敌对生物的按钮，点击切换
 	 */
-	public final TexturedButtonWidget onlyAdverseButton = new TexturedButtonWidget(0, 0, 20, 20, 0, 0, 0, BACKGROUND, buttonWidget -> {
-		client.interactionManager.clickButton(handler.syncId, ONLY_ADVERSE_BUTTON_SYNC_ID);
-	}) {
+	public final TexturedButtonWidget onlyAdverseButton = new TexturedButtonWidget(0, 0, 20, 20, 0, 0, 0, BACKGROUND, buttonWidget -> client.interactionManager.clickButton(handler.syncId, ONLY_ADVERSE_BUTTON_SYNC_ID)) {
 		@Override
 		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			MinecraftClient.getInstance().getTextureManager().bindTexture(BACKGROUND);
@@ -110,13 +104,13 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 
 	static {
 		{
-			List<Identifier> tempList = new ArrayList<Identifier>();
+			List<Identifier> tempList = new ArrayList<>();
 			for (String s : new String[] { "fire_resistance", "night_vision", "water_breathing", "invisibility", "saturation" })
 				tempList.add(new Identifier(String.format("textures/mob_effect/%s.png", s)));
 			tempList.add(new Identifier("cpp:textures/mob_effect/chain.png"));
 			PLAYER_EFFECT_TEXTURES = Collections.unmodifiableList(tempList);
 
-			tempList = new ArrayList<Identifier>();
+			tempList = new ArrayList<>();
 			for (String s : new String[] { "weakness", "slowness", "glowing", "poison", "wither" })
 				tempList.add(new Identifier(String.format("textures/mob_effect/%s.png", s)));
 			tempList.add(AMachineScreen.getBackgroundByName("attract"));

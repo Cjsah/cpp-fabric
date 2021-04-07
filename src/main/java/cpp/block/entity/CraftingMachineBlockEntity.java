@@ -37,7 +37,7 @@ public class CraftingMachineBlockEntity extends AOutputMachineBlockEntity implem
 	private static final int[] AVAILABLE_SLOTS = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 	private CppCraftingInventory inputInventory = new CppCraftingInventory();
 	private int viewerCnt = 0;
-	private final Object2IntOpenHashMap<Identifier> recipesUsed = new Object2IntOpenHashMap<Identifier>();
+	private final Object2IntOpenHashMap<Identifier> recipesUsed = new Object2IntOpenHashMap<>();
 	/**
 	 * 试图输出到指定方向的容器，但是没输出完就塞满了，剩下的物品
 	 */

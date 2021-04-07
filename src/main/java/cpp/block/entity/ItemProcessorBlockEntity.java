@@ -115,10 +115,10 @@ public class ItemProcessorBlockEntity extends AOutputMachineBlockEntity {
 				ItemStack input1 = blockEntity.getStack(1), output1 = blockEntity.getStack(2);
 				if (tool == RED_FORCE_OF_FIRE) {
 // 红色火之力
-					SmeltingRecipe recipe = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, new SimpleInventory(new ItemStack[] { input1 }), blockEntity.world).orElse(null);
+					SmeltingRecipe recipe = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, new SimpleInventory(input1), blockEntity.world).orElse(null);
 					if (recipe != null) {
 						ItemStack result = recipe.getOutput();
-						boolean processed = false;
+						boolean processed;
 						if (processed = output1.isEmpty())
 							blockEntity.setStack(2, result.copy());
 						else if (processed = output1.isItemEqual(result) && output1.getCount() + result.getCount() <= output1.getMaxCount())
@@ -280,7 +280,7 @@ public class ItemProcessorBlockEntity extends AOutputMachineBlockEntity {
 	 * @return 可烧炼
 	 */
 	public boolean isSmeltable(ItemStack itemStack) {
-		return this.world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, new SimpleInventory(new ItemStack[] { itemStack }), this.world).isPresent();
+		return this.world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, new SimpleInventory(itemStack), this.world).isPresent();
 	}
 
 	public static void put(Map<Item, ItemStackAndCount> map, Item item1, Item item2) {

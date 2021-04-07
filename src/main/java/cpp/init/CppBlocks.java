@@ -38,7 +38,7 @@ import java.util.function.Function;
 import static cpp.Craftingpp.*;
 import static net.minecraft.entity.effect.StatusEffects.*;
 
-@SuppressWarnings({"unused", "DuplicatedCode", "SameParameterValue"})
+@SuppressWarnings({"unused", "SameParameterValue"})
 public final class CppBlocks {
 	public static final AbstractBlock.Settings FURNACE_SETTINGS = AbstractBlock.Settings.of(Material.STONE).requiresTool().strength(3.5F);
 	public static final AbstractBlock.Settings BARREL_SETTINGS = AbstractBlock.Settings.of(Material.WOOD).strength(2.5F).sounds(BlockSoundGroup.WOOD);

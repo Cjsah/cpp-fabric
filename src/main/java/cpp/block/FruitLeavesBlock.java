@@ -30,7 +30,7 @@ public class FruitLeavesBlock extends LeavesBlock {
 	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (random.nextDouble() < 1. / 20 / speed) {
 			Pair<BlockPos, Integer> pair;
-			BlockPos pos2 = pos, pos3 = pos2;
+			BlockPos pos2 = pos, pos3;
 			int distance = state.get(DISTANCE);
 			int limit = 10;
 			do {

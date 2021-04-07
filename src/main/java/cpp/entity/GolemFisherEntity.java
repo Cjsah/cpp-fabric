@@ -32,9 +32,7 @@ public class GolemFisherEntity extends AGolemEntity {
 			ItemStack tool = getMainHandStack();
 			LootContext.Builder builder = new LootContext.Builder((ServerWorld) world).parameter(LootContextParameters.ORIGIN, getPos()).parameter(LootContextParameters.TOOL, tool).parameter(LootContextParameters.THIS_ENTITY, this).random(world.random).luck(0);
 			LootTable lootTable = world.getServer().getLootManager().getTable(LootTables.FISHING_GAMEPLAY);
-			lootTable.generateLoot(builder.build(LootContextTypes.FISHING), itemStack -> {
-				Utils.drop(world, getPos(), itemStack);
-			});
+			lootTable.generateLoot(builder.build(LootContextTypes.FISHING), itemStack -> Utils.drop(world, getPos(), itemStack));
 			int exp = random.nextInt(6) + 1;
 			tool.damage(1, random, null);
 			if (EnchantmentHelper.getLevel(Enchantments.MENDING, tool) > 0) {

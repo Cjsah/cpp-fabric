@@ -20,7 +20,7 @@ public class DarkSheepWoolFeatureRenderer extends FeatureRenderer<DarkSheepEntit
 
 	public DarkSheepWoolFeatureRenderer(FeatureRendererContext<DarkSheepEntity, DarkSheepEntityModel<DarkSheepEntity>> featureRendererContext, EntityModelLoader entityModelLoader) {
 		super(featureRendererContext);
-		this.model = new DarkSheepWoolEntityModel<DarkSheepEntity>(entityModelLoader.getModelPart(EntityModelLayers.SHEEP_FUR));
+		this.model = new DarkSheepWoolEntityModel<>(entityModelLoader.getModelPart(EntityModelLayers.SHEEP_FUR));
 	}
 
 	public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, DarkSheepEntity sheepEntity, float f, float g, float h, float j, float k, float l) {

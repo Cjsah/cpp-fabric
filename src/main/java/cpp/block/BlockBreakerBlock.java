@@ -52,7 +52,7 @@ public class BlockBreakerBlock extends BlockWithEntity {
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
         if (!world.isClient() && pos.down().equals(fromPos)) {
             BlockEntity blockEntity = world.getBlockEntity(fromPos.down());
-            if (blockEntity !=null && blockEntity instanceof PistonBlockEntity) {
+            if (blockEntity instanceof PistonBlockEntity) {
                 PistonBlockEntity pistonBlockEntity = (PistonBlockEntity) blockEntity;
                 if (!pistonBlockEntity.isExtending() && pistonBlockEntity.getFacing() == Direction.UP && pistonBlockEntity.getPushedBlock().getBlock() instanceof PistonBlock) {
                     breakBlock(world, pos, null);
@@ -84,11 +84,11 @@ public class BlockBreakerBlock extends BlockWithEntity {
         return false;
     }
     static {
-        PRODUCES.put(COBBLESTONE, new Pair(SAND, null));
-        PRODUCES.put(STONE, new Pair(GRAVEL, null));
-        PRODUCES.put(SOUL_SOIL, new Pair(SOUL_SAND,null ));
+        PRODUCES.put(COBBLESTONE, new Pair<>(SAND, null));
+        PRODUCES.put(STONE, new Pair<>(GRAVEL, null));
+        PRODUCES.put(SOUL_SOIL, new Pair<>(SOUL_SAND,null ));
         for (Block block: new Block[] {DIRT,SOUL_SAND,GRAVEL,SAND}) {
-            PRODUCES.put(block, new Pair(null, new Identifier(Craftingpp.MOD_ID3, "misc/"+ID+"/"+ Registry.BLOCK.getId(block).getPath())));
+            PRODUCES.put(block, new Pair<>(null, new Identifier(Craftingpp.MOD_ID3, "misc/"+ID+"/"+ Registry.BLOCK.getId(block).getPath())));
         }
     }
     public BlockRenderType getRenderType(BlockState state) {

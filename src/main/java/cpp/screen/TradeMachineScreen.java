@@ -22,9 +22,7 @@ public class TradeMachineScreen extends AExpMachineScreen<TradeMachineScreenHand
 	/**
 	 * 交易模式按钮，点击切换模式
 	 */
-	public final TexturedButtonWidget modeButton = new TexturedButtonWidget(0, 0, 16, 16, 0, 0, 0, BACKGROUND, buttonWidget -> {
-		client.interactionManager.clickButton(this.handler.syncId, MODE_BUTTON_SYNC_ID);
-	}) {
+	public final TexturedButtonWidget modeButton = new TexturedButtonWidget(0, 0, 16, 16, 0, 0, 0, BACKGROUND, buttonWidget -> client.interactionManager.clickButton(this.handler.syncId, MODE_BUTTON_SYNC_ID)) {
 		@Override
 		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			MinecraftClient.getInstance().getTextureManager().bindTexture(BACKGROUND);

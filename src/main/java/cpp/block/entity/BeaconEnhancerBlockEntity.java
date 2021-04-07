@@ -13,7 +13,6 @@ import static net.minecraft.entity.effect.StatusEffects.WITHER;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -189,10 +188,9 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 							// 直接用目标选择器来选取玩家和生物
 							List<ServerPlayerEntity> players = new EntitySelectorReader(new StringReader("@a" + (sunMoonStone ? "" : String.format("[distance=..%d]", 10 * (level + 1))))).read().getPlayers(blockEntity.getServerCommandSource());
 							List<? extends Entity> entities0 = new EntitySelectorReader(new StringReader(String.format("@e[distance=..%d]", sunMoonStone ? 128 : 10 * (level + 1)))).read().getEntities(blockEntity.getServerCommandSource());
-							List<MobEntity> entities = new LinkedList<MobEntity>();
+							List<MobEntity> entities = new LinkedList<>();
 							// 把entities里的非生物实体和玩家去除
-							for (Iterator<? extends Entity> iterator = entities0.iterator(); iterator.hasNext(); ) {
-								Entity e = iterator.next();
+							for (Entity e : entities0) {
 								if (e instanceof MobEntity) {
 									if (!blockEntity.onlyAdverse || !(e instanceof GolemEntity && !(e instanceof ShulkerEntity) || (e instanceof PassiveEntity && !(e instanceof HoglinEntity)) || e instanceof AmbientEntity))
 										entities.add((MobEntity) e);

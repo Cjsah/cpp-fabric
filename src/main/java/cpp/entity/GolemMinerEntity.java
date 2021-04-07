@@ -22,7 +22,7 @@ public class GolemMinerEntity extends AMovingGolemEntity {
 		BlockState blockState = getBlockState();
 		if (!world.isClient) {
 			if (!CONTROLS.contains(blockState.getBlock()) && Utils.canHarvest(getMainHandStack(), blockState, world, getBlockPos())) {
-				List<ItemStack> droppeds = new ArrayList<ItemStack>();
+				List<ItemStack> droppeds = new ArrayList<>();
 				Utils.excavate((ServerWorld) world, this, getBlockPos(), droppeds);
 				listMerge(droppeds);
 			}

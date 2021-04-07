@@ -43,9 +43,7 @@ public class MobEnhancing {
 				if (living.getEquippedStack(slot).isEmpty()) {
 					Holder<Item> holder = new Holder<>(Items.AIR);
 					LootContext lootContext = new LootContext.Builder((ServerWorld) living.world).random(living.world.random).build(LootContextTypes.EMPTY);
-					lootTable.generateLoot(lootContext, stack -> {
-						holder.value = stack.getItem();
-					});
+					lootTable.generateLoot(lootContext, stack -> holder.value = stack.getItem());
 					String material = MATERIALS.get(holder.value);
 					if (material != null) {
 						Item armorItem = Registry.ITEM.get(new Identifier(material + "_" + ARMOR_NAMES.get(slot)));
@@ -68,9 +66,7 @@ public class MobEnhancing {
 			if (living.getEquippedStack(slot).isEmpty()) {
 				Holder<ItemStack> holder = new Holder<>(ItemStack.EMPTY);
 				LootContext lootContext = new LootContext.Builder((ServerWorld) living.world).random(living.world.random).build(LootContextTypes.EMPTY);
-				lootTable.generateLoot(lootContext, stack -> {
-					holder.value = stack;
-				});
+				lootTable.generateLoot(lootContext, stack -> holder.value = stack);
 				if (!holder.value.isEmpty()) {
 					ItemStack stack = lootFunction.apply(holder.value, lootContext);
 					living.equipStack(slot, stack);
@@ -87,9 +83,7 @@ public class MobEnhancing {
 			if (living.getEquippedStack(slot).isEmpty()) {
 				Holder<ItemStack> holder = new Holder<>(ItemStack.EMPTY);
 				LootContext lootContext = new LootContext.Builder((ServerWorld) living.world).random(living.world.random).build(LootContextTypes.EMPTY);
-				lootTable.generateLoot(lootContext, stack -> {
-					holder.value = stack;
-				});
+				lootTable.generateLoot(lootContext, stack -> holder.value = stack);
 				if (!holder.value.isEmpty()) {
 					living.equipStack(slot, holder.value);
 				}

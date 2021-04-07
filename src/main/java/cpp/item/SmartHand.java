@@ -35,9 +35,7 @@ public class SmartHand extends Item implements ITickableInItemFrame {
 				if (world.random.nextDouble() < chance) {
 					LootContext.Builder builder = new LootContext.Builder((ServerWorld) world).parameter(LootContextParameters.ORIGIN, fishingPos).parameter(LootContextParameters.TOOL, ItemStack.EMPTY).parameter(LootContextParameters.THIS_ENTITY, itemFrameEntity).random(world.random).luck(0);
 					LootTable lootTable = world.getServer().getLootManager().getTable(LootTables.FISHING_GAMEPLAY);
-					lootTable.generateLoot(builder.build(LootContextTypes.FISHING), itemStack -> {
-						world.spawnEntity(new ItemEntity(world, pos.x, pos.y, pos.z, itemStack));
-					});
+					lootTable.generateLoot(builder.build(LootContextTypes.FISHING), itemStack -> world.spawnEntity(new ItemEntity(world, pos.x, pos.y, pos.z, itemStack)));
 				}
 			}
 			itemFrameEntity.getHeldItemStack().getOrCreateTag().putInt("time", time);

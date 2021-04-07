@@ -22,7 +22,7 @@ public class ToughenHand extends Item implements ITickableInItemFrame {
 		World world = itemFrameEntity.world;
 		if (world.getTime() % 600 == 0) {
 			Vec3d pos = ITickableInItemFrame.getPos(itemFrameEntity);
-			for (SheepEntity sheep : world.getEntitiesByClass(SheepEntity.class, new Box(pos, pos).expand(16), sheep -> sheep.isShearable())) {
+			for (SheepEntity sheep : world.getEntitiesByClass(SheepEntity.class, new Box(pos, pos).expand(16), SheepEntity::isShearable)) {
 				sheep.sheared(SoundCategory.MASTER);
 			}
 			for (ItemEntity itemEntity : world.getEntitiesByClass(ItemEntity.class, new Box(pos, pos).expand(16), itemEntity -> itemEntity.getStack().isOf(Items.EGG) || itemEntity.getStack().isIn(ItemTags.WOOL))) {

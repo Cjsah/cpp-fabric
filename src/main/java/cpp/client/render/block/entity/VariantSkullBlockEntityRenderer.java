@@ -1,7 +1,6 @@
 package cpp.client.render.block.entity;
 
 import com.google.common.collect.ImmutableMap;
-import cpp.Craftingpp;
 import cpp.block.VariantSkullBlock;
 import cpp.block.entity.VariantSkullBlockEntity;
 import net.minecraft.block.BlockState;

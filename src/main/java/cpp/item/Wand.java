@@ -83,9 +83,6 @@ import static net.minecraft.block.Blocks.MAGMA_BLOCK;
 import static net.minecraft.block.Blocks.OBSIDIAN;
 import static net.minecraft.entity.attribute.EntityAttributes.*;
 import static net.minecraft.entity.effect.StatusEffects.*;
-import static net.minecraft.item.Items.AMETHYST_BLOCK;
-import static net.minecraft.item.Items.BUDDING_AMETHYST;
-import static net.minecraft.item.Items.SPAWNER;
 import static net.minecraft.item.Items.*;
 
 public class Wand extends Item {
@@ -490,13 +487,13 @@ public class Wand extends Item {
 			}
 		}
 		if (item instanceof ToolItem || item instanceof TridentItem) {
-			stack.addAttributeModifier(GENERIC_ATTACK_SPEED, new EntityAttributeModifier(new UUID(HIGH_UUID, 1 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", attackSpeed + random.nextDouble() * 2, Operation.ADDITION), slot);
-			stack.addAttributeModifier(GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(new UUID(HIGH_UUID, 2 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", damage + random.nextDouble() * 8, Operation.ADDITION), slot);
+			stack.addAttributeModifier(GENERIC_ATTACK_SPEED, new EntityAttributeModifier(new UUID(HIGH_UUID, 1L * slot.ordinal() + 1), "更多的合成：仪式：属性附加", attackSpeed + random.nextDouble() * 2, Operation.ADDITION), slot);
+			stack.addAttributeModifier(GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(new UUID(HIGH_UUID, 2L * slot.ordinal() + 1), "更多的合成：仪式：属性附加", damage + random.nextDouble() * 8, Operation.ADDITION), slot);
 		} else {
-			stack.addAttributeModifier(GENERIC_MAX_HEALTH, new EntityAttributeModifier(new UUID(HIGH_UUID, 3 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", health + random.nextDouble() * 5, Operation.ADDITION), slot);
-			stack.addAttributeModifier(GENERIC_KNOCKBACK_RESISTANCE, new EntityAttributeModifier(new UUID(HIGH_UUID, 4 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", resistance + random.nextDouble() * .3, Operation.ADDITION), slot);
-			stack.addAttributeModifier(GENERIC_MOVEMENT_SPEED, new EntityAttributeModifier(new UUID(HIGH_UUID, 5 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", movementSpeed + random.nextDouble() * .15, Operation.MULTIPLY_BASE), slot);
-			stack.addAttributeModifier(GENERIC_LUCK, new EntityAttributeModifier(new UUID(HIGH_UUID, 6 * slot.ordinal() + 1), "更多的合成：仪式：属性附加", luck + random.nextDouble() * 2, Operation.ADDITION), slot);
+			stack.addAttributeModifier(GENERIC_MAX_HEALTH, new EntityAttributeModifier(new UUID(HIGH_UUID, 3L * slot.ordinal() + 1), "更多的合成：仪式：属性附加", health + random.nextDouble() * 5, Operation.ADDITION), slot);
+			stack.addAttributeModifier(GENERIC_KNOCKBACK_RESISTANCE, new EntityAttributeModifier(new UUID(HIGH_UUID, 4L * slot.ordinal() + 1), "更多的合成：仪式：属性附加", resistance + random.nextDouble() * .3, Operation.ADDITION), slot);
+			stack.addAttributeModifier(GENERIC_MOVEMENT_SPEED, new EntityAttributeModifier(new UUID(HIGH_UUID, 5L * slot.ordinal() + 1), "更多的合成：仪式：属性附加", movementSpeed + random.nextDouble() * .15, Operation.MULTIPLY_BASE), slot);
+			stack.addAttributeModifier(GENERIC_LUCK, new EntityAttributeModifier(new UUID(HIGH_UUID, 6L * slot.ordinal() + 1), "更多的合成：仪式：属性附加", luck + random.nextDouble() * 2, Operation.ADDITION), slot);
 		}
 		return stack;
 	}

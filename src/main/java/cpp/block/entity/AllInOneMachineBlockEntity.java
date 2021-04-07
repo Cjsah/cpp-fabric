@@ -314,7 +314,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	public static void tick(World world, BlockPos pos, BlockState state, AllInOneMachineBlockEntity blockEntity) {
 		if (!world.isClient) {
 			blockEntity.transferExpBottle();
-			AllInOneMachineRecipe recipe = null;
+			AllInOneMachineRecipe recipe;
 			if (blockEntity.getTemperature() == Degree.HIGH && blockEntity.getPressure() == Degree.HIGH && (recipe = ORE_RECIPES.get(blockEntity.ingredient())) != null) {
 				if (!recipe.matches(blockEntity, world))
 					recipe = null;
@@ -566,6 +566,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	 * @param input2      原料2
 	 * @return 哈希码
 	 */
+
 	public static int getHashCode(Degree temperature, Degree pressure, Item input1, Item input2) {
 		return (input1.hashCode() ^ input2.hashCode()) * 256 + temperature.ordinal() * 16 + pressure.ordinal();
 	}
@@ -600,9 +601,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 			ORE_BASIC_COUNTS.put(LAPIS_ORE, 6.);
 			ORE_BASIC_COUNTS.put(REDSTONE_ORE, 5.);
 		}
-		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			load(server);
-		});
+		ServerLifecycleEvents.SERVER_STARTED.register(AllInOneMachineBlockEntity::load);
 		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((MinecraftServer server, ServerResourceManager serverResourceManager, boolean success) -> {
 			if (success) {
 				load(server);
@@ -769,14 +768,12 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		addRecipe(Degree.ORDINARY, Degree.ORDINARY, SAKURA_SAPLING.asItem(), FERTILIZER, new ItemStack(CHERRY), new ItemStack(SAKURA_SAPLING), 2F, 5F, 0F, 4F, 2, 40);
 		{
 			List<Block> plants = CppBlockTags.FLOWER_GRASSES_1.values();
-			for (int i = 0; i < plants.size(); i++) {
-				addRecipe(Degree.ORDINARY, Degree.ORDINARY, ((FlowerGrass1Block) plants.get(i)).getSeed(), FERTILIZER, new ItemStack(plants.get(i)), 2, 40);
-				addRecipe(Degree.ORDINARY, Degree.ORDINARY, plants.get(i).asItem(), FERTILIZER, new ItemStack(plants.get(i), 4), 2, 40);
+			for (Block plant : plants) {
+				addRecipe(Degree.ORDINARY, Degree.ORDINARY, ((FlowerGrass1Block) plant).getSeed(), FERTILIZER, new ItemStack(plant), 2, 40);
+				addRecipe(Degree.ORDINARY, Degree.ORDINARY, plant.asItem(), FERTILIZER, new ItemStack(plant, 4), 2, 40);
 			}
 		}
-		/**
-		 * 常温低压
-		 */
+		// 常温低压
 		addRecipe(Degree.ORDINARY, Degree.LOW, PHANTOM_MEMBRANE, POTION, new ItemStack(AGENTIA_OF_LIGHTNESS), 4, 200);
 		addRecipe(Degree.ORDINARY, Degree.LOW, GOLDEN_CARROT, POTION, new ItemStack(AGENTIA_OF_EYESIGHT), 4, 200);
 		addRecipe(Degree.ORDINARY, Degree.LOW, MAGMA_CREAM, POTION, new ItemStack(AGENTIA_OF_FIRE_SHIELD), 4, 200);
@@ -911,8 +908,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		}
 
 		public static int certianCount(float min, float max) {
-			int rst = (int) Math.floor(min + Math.random() * (max - min));
-			return rst;
+			return (int) Math.floor(min + Math.random() * (max - min));
 		}
 	}
 

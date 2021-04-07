@@ -19,7 +19,7 @@ public class DarkMooshroomEntityRenderer extends MobEntityRenderer<DarkMooshroom
 	public static final Map<MooshroomEntity.Type, Identifier> TEXTURES = ImmutableMap.<MooshroomEntity.Type, Identifier>builder().put(MooshroomEntity.Type.BROWN, new Identifier("textures/entity/cow/brown_mooshroom.png")).put(MooshroomEntity.Type.RED, new Identifier("textures/entity/cow/red_mooshroom.png")).build();
 
 	public DarkMooshroomEntityRenderer(EntityRendererFactory.Context context) {
-		super(context, new CowEntityModel<DarkMooshroomEntity>(context.getPart(EntityModelLayers.MOOSHROOM)), 0.7F);
+		super(context, new CowEntityModel<>(context.getPart(EntityModelLayers.MOOSHROOM)), 0.7F);
 	}
 
 	public Identifier getTexture(DarkMooshroomEntity entity) {

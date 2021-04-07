@@ -24,7 +24,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
 import javax.annotation.Nullable;
-import java.util.Iterator;
 
 public class BlockPlacerItem extends Item {
 	protected final Block block;
@@ -119,10 +118,8 @@ public class BlockPlacerItem extends Item {
 		if (compoundTag != null) {
 			CompoundTag compoundTag2 = compoundTag.getCompound("BlockStateTag");
 			StateManager<Block, BlockState> stateManager = state.getBlock().getStateManager();
-			Iterator<String> var9 = compoundTag2.getKeys().iterator();
 
-			while (var9.hasNext()) {
-				String string = (String) var9.next();
+			for (String string : compoundTag2.getKeys()) {
 				Property<?> property = stateManager.getProperty(string);
 				if (property != null) {
 					String string2 = compoundTag2.get(string).asString();
@@ -144,9 +141,7 @@ public class BlockPlacerItem extends Item {
 
 	public static boolean writeTagToBlockEntity(World world, @Nullable PlayerEntity player, BlockPos pos, ItemStack stack) {
 		MinecraftServer minecraftServer = world.getServer();
-		if (minecraftServer == null) {
-			return false;
-		} else {
+		if (minecraftServer != null) {
 			CompoundTag compoundTag = stack.getSubTag("BlockEntityTag");
 			if (compoundTag != null) {
 				BlockEntity blockEntity = world.getBlockEntity(pos);
@@ -169,13 +164,11 @@ public class BlockPlacerItem extends Item {
 				}
 			}
 
-			return false;
 		}
+		return false;
 	}
 
 	protected static <T extends Comparable<T>> BlockState with(BlockState state, Property<T> property, String name) {
-		return (BlockState) property.parse(name).map((value) -> {
-			return (BlockState) state.with(property, value);
-		}).orElse(state);
+		return property.parse(name).map((value) -> state.with(property, value)).orElse(state);
 	}
 }

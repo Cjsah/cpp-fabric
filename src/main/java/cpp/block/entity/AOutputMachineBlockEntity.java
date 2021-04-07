@@ -234,7 +234,7 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 			}
 		}
 
-		return (Inventory) inventory;
+		return inventory;
 	}
 
 	/**
@@ -290,7 +290,7 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 		ListTag listTag = new ListTag();
 
 		for (int i = 0; i < inventory.size(); ++i) {
-			ItemStack itemStack = (ItemStack) inventory.getStack(i);
+			ItemStack itemStack = inventory.getStack(i);
 			if (!itemStack.isEmpty()) {
 				CompoundTag compoundTag = new CompoundTag();
 				compoundTag.putByte("Slot", (byte) i);

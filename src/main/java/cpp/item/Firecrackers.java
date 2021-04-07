@@ -20,7 +20,7 @@ public class Firecrackers extends Item {
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack stack = user.getStackInHand(hand);
-		world.playSound((PlayerEntity) null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.NEUTRAL, 1F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
+		world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.NEUTRAL, 1F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
 		if (!world.isClient) {
 			TntEntity tnt = new TntEntity(world, user.getX(), user.getY()+1, user.getZ(), user);
 			tnt.setVelocity(user.getRotationVector().multiply(.5));

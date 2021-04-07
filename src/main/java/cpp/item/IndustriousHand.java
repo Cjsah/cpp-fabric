@@ -76,7 +76,7 @@ public class IndustriousHand extends Item implements ITickableInItemFrame {
 								break;
 							}
 						}
-						Utils.drop((ServerWorld) world, itemFrameEntity.getPos(), droppeds);
+						Utils.drop(world, itemFrameEntity.getPos(), droppeds);
 						if (has) {
 							world.setBlockState(pos2, block.getDefaultState());
 							tick(itemFrameEntity);

@@ -245,9 +245,7 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 	}
 
 	public static void addEnchanted(int code, Item currency, int currencyCount, Item result, int resultCount, int experience, int cooldown) {
-		SELL_TABLE.add(new Recipe(currency, currencyCount, experience, cooldown, (blockEntity) -> {
-			return EnchantmentHelper.enchant(blockEntity.getWorld().random, new ItemStack(result, resultCount), blockEntity.getWorld().random.nextInt(14) + 5, false);
-		}, (list, context) -> list.add(new TranslatableText("tooltip.cpp.enchantment_with_levels", 5, 19).append(result.getName()))));
+		SELL_TABLE.add(new Recipe(currency, currencyCount, experience, cooldown, (blockEntity) -> EnchantmentHelper.enchant(blockEntity.getWorld().random, new ItemStack(result, resultCount), blockEntity.getWorld().random.nextInt(14) + 5, false), (list, context) -> list.add(new TranslatableText("tooltip.cpp.enchantment_with_levels", 5, 19).append(result.getName()))));
 	}
 
 	/**
@@ -495,7 +493,7 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		addSell(17, EMERALD, 1, TROPICAL_FISH_BUCKET, 1, 1, 30);
 		addSell(18, EMERALD, 1, REDSTONE, 2, 1, 30);
 
-		tmpList = new LinkedList<ItemStack>();
+		tmpList = new LinkedList<>();
 		for (Entry<RegistryKey<Potion>, Potion> entry : Registry.POTION.getEntries()) {
 			ItemStack itemStack = new ItemStack(TIPPED_ARROW, 2);
 			PotionUtil.setPotion(itemStack, entry.getValue());
@@ -509,7 +507,7 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		addSell(22, EMERALD, 1, GLASS, 4, 1, 30);
 		addSell(23, EMERALD, 1, RED_SAND, 4, 1, 30);
 //		addSell(24, EMERALD, 1, stacksOf(4, "_dye"), 1, 30);
-		SELL_TABLE.add(new Recipe(EMERALD, 1, 1, 30, Recipe.createOutputer(Collections.unmodifiableList(stacksOf(4, "_dye"))), Recipe.createTooltipModifier("item.cpp.dye")));
+		SELL_TABLE.add(new Recipe(EMERALD, 1, 1, 30, Recipe.createOutputer(stacksOf(4, "_dye")), Recipe.createTooltipModifier("item.cpp.dye")));
 		addSell(25, EMERALD, 1, COOKED_PORKCHOP, 5, 1, 30);
 		addSell(26, EMERALD, 1, BREAD, 6, 1, 30);
 		addSell(27, EMERALD, 1, COOKIE, 12, 1, 30);
@@ -645,11 +643,7 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 		}
 
 		public Recipe(Item currency, int currencyCount, int experience, int cooldown, Identifier lootTable) {
-			this(currency, currencyCount, experience, cooldown, (blockEntity) -> {
-				return blockEntity.getWorld().getServer().getLootManager().getTable(lootTable).generateLoot((new LootContext.Builder((ServerWorld) blockEntity.getWorld())).random(blockEntity.getWorld().random).build(LootContextTypes.EMPTY)).get(0);
-			}, (list, context) -> {
-				list.add(new TranslatableText("loot_table." + lootTable.toString()));
-			});
+			this(currency, currencyCount, experience, cooldown, (blockEntity) -> blockEntity.getWorld().getServer().getLootManager().getTable(lootTable).generateLoot((new LootContext.Builder((ServerWorld) blockEntity.getWorld())).random(blockEntity.getWorld().random).build(LootContextTypes.EMPTY)).get(0), (list, context) -> list.add(new TranslatableText("loot_table." + lootTable.toString())));
 		}
 
 		public Recipe(Item currency, int currencyCount, int experience, int cooldown, List<ItemStack> results) {

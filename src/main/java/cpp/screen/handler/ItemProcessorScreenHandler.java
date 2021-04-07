@@ -3,7 +3,6 @@ package cpp.screen.handler;
 import cpp.api.Utils;
 import cpp.block.entity.ItemProcessorBlockEntity;
 import cpp.init.CppScreenHandler;
-import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -28,12 +27,12 @@ public class ItemProcessorScreenHandler extends AOutputMachineScreenHandler {
 
 	@Override
 	public boolean canUse(PlayerEntity player) {
-		return ((LootableContainerBlockEntity) blockEntity).canPlayerUse(player);
+		return blockEntity.canPlayerUse(player);
 	}
 
 	@Override
 	public ItemStack transferSlot(PlayerEntity player, int index) {
-		Slot slot = (Slot) this.slots.get(index);
+		Slot slot = this.slots.get(index);
 		if (slot != null && slot.hasStack()) {
 			ItemStack itemStack2 = slot.getStack();
 			if (index >= 36 && index < 36+ blockEntity.size()) {

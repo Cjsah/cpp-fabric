@@ -34,8 +34,7 @@ public class OreLeavesBlock extends LeavesBlock {
 		Direction[] var5 = Direction.values();
 		int var6 = var5.length;
 
-		for (int var7 = 0; var7 < var6; ++var7) {
-			Direction direction = var5[var7];
+		for (Direction direction : var5) {
 			mutable.set(pos, direction);
 			i = Math.min(i, getDistanceFromLog(world.getBlockState(mutable)) + 1);
 			if (i == 1) {
@@ -50,7 +49,7 @@ public class OreLeavesBlock extends LeavesBlock {
 		if (state.isIn(BlockTags.LOGS) || ORES.containsKey(state.getBlock())) {
 			return 0;
 		} else {
-			return state.getBlock() instanceof LeavesBlock ? (Integer) state.get(DISTANCE) : 7;
+			return state.getBlock() instanceof LeavesBlock ? state.get(DISTANCE) : 7;
 		}
 	}
 

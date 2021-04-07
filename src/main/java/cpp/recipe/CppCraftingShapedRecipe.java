@@ -109,10 +109,8 @@ public class CppCraftingShapedRecipe implements ICppCraftingRecipe {
 
 	private static Map<String, Ingredient> getComponents(JsonObject json) {
 		Map<String, Ingredient> map = Maps.newHashMap();
-		Iterator<Entry<String, JsonElement>> var2 = json.entrySet().iterator();
 
-		while (var2.hasNext()) {
-			Entry<String, JsonElement> entry = (Entry<String, JsonElement>) var2.next();
+		for (Entry<String, JsonElement> entry : json.entrySet()) {
 			if (entry.getKey().length() != 1) {
 				throw new JsonSyntaxException("Invalid key entry: '" + entry.getKey()
 						+ "' is an invalid symbol (must be 1 character only).");
@@ -264,10 +262,8 @@ public class CppCraftingShapedRecipe implements ICppCraftingRecipe {
 			packetByteBuf.writeVarInt(shapedRecipe.width);
 			packetByteBuf.writeVarInt(shapedRecipe.height);
 			packetByteBuf.writeString(shapedRecipe.group);
-			Iterator<Ingredient> var3 = shapedRecipe.inputs.iterator();
 
-			while (var3.hasNext()) {
-				Ingredient ingredient = (Ingredient) var3.next();
+			for (Ingredient ingredient : shapedRecipe.inputs) {
 				ingredient.write(packetByteBuf);
 			}
 

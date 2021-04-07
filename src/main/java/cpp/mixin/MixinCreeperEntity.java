@@ -28,9 +28,9 @@ public abstract class MixinCreeperEntity extends HostileEntity {
 	private static TrackedData<Boolean> CHARGED;
 
 	@Shadow
-	@SuppressWarnings("FieldCanBeLocal")
 	private int fuseTime;
 
+	@SuppressWarnings("ConstantConditions")
 	@Inject(at = @At("RETURN"), method = { "<init>" })
 	public void init(CallbackInfo info) {
 		if (!world.isClient) {

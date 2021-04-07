@@ -62,20 +62,19 @@ public interface IOutputDiractional {
 	 */
 	static byte dirToByte(Direction dir) {
 		switch (dir) {
-		case EAST:
-			return 0;
-		case WEST:
-			return 1;
-		case UP:
-			return 2;
-		case DOWN:
-			return 3;
-		case SOUTH:
-			return 4;
-		case NORTH:
-			return 5;
-		default:
-			return 0;
+			case WEST:
+				return 1;
+			case UP:
+				return 2;
+			case DOWN:
+				return 3;
+			case SOUTH:
+				return 4;
+			case NORTH:
+				return 5;
+			case EAST:
+			default:
+				return 0;
 		}
 	}
 
@@ -84,24 +83,23 @@ public interface IOutputDiractional {
 	 * 
 	 * @see #dirToByte(Direction)
 	 * @param b
-	 * @return
+	 * @return f
 	 */
 	static Direction byteToDir(byte b) {
 		switch (b % 6) {
-		case 0:
-			return Direction.EAST;
-		case 1:
-			return Direction.WEST;
-		case 2:
-			return Direction.UP;
-		case 3:
-			return Direction.DOWN;
-		case 4:
-			return Direction.SOUTH;
-		case 5:
-			return Direction.NORTH;
-		default:
-			return Direction.EAST;
+			case 1:
+				return Direction.WEST;
+			case 2:
+				return Direction.UP;
+			case 3:
+				return Direction.DOWN;
+			case 4:
+				return Direction.SOUTH;
+			case 5:
+				return Direction.NORTH;
+			case 0:
+			default:
+				return Direction.EAST;
 		}
 	}
 }

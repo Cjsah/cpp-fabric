@@ -39,17 +39,13 @@ public class StructureGenerationBlock extends Block {
 			blockEntity.setIgnoreEntities(false);
 			String stt = random();
 //			stt="enchanting_room";
-			switch (stt) {
-			case "enchanting_room":
+			if ("enchanting_room".equals(stt)) {
 				blockEntity.setOffset(new BlockPos(-3, 0, -3));
 				blockEntity.setStructureName("cpp:enchanting_room");
 				blockEntity.loadStructure((ServerWorld) world);
 				blockEntity.loadStructure((ServerWorld) world);
-				break;
-
-			default:
+			} else {
 				blockEntity.setStructureName(stt);
-				break;
 			}
 		}else {
 			MinecraftClient.getInstance().player.sendMessage(new LiteralText("Hi!"), false);

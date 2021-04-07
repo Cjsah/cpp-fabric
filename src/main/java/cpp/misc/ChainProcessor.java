@@ -21,6 +21,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -66,7 +67,7 @@ public class ChainProcessor {
 		this.block = block;
 		this.toolStack = toolStack;
 		this.player = player;
-		posQueue = new PriorityQueue<>((a,b)->Double.compare(a.getSquaredDistance(startPos),b.getSquaredDistance(startPos)));
+		posQueue = new PriorityQueue<>(Comparator.comparingDouble(a -> a.getSquaredDistance(startPos)));
 		posQueue.add(startPos);
 	}
 
@@ -147,7 +148,7 @@ public class ChainProcessor {
 	}
 
 	static {
-		Set<Block> axeBlocks = new HashSet<>(), pickaxeBlocks = new HashSet<>(), shovelBlocks = new HashSet<>(), hoeBlocks = new HashSet<>();
+		Set<Block> axeBlocks = new HashSet<>(), pickaxeBlocks = new HashSet<>(), shovelBlocks, hoeBlocks;
 		for (Entry<RegistryKey<Block>, Block> entry : Registry.BLOCK.getEntries()) {
 			String s = entry.getKey().getValue().getPath();
 			if (s.contains("_log") || s.contains("_stem"))
@@ -162,8 +163,8 @@ public class ChainProcessor {
 
 		axeBlocks.addAll(ImmutableSet.of(NETHER_WART));
 		pickaxeBlocks.addAll(ImmutableSet.of(ANCIENT_DEBRIS, OBSIDIAN));
-		shovelBlocks.addAll(ImmutableSet.of(SAND, RED_SAND, GRAVEL, CLAY));
-		hoeBlocks.addAll(ImmutableSet.of(HAY_BLOCK, NETHER_WART_BLOCK, WARPED_WART_BLOCK, SHROOMLIGHT));
+		shovelBlocks = new HashSet<>(ImmutableSet.of(SAND, RED_SAND, GRAVEL, CLAY));
+		hoeBlocks = new HashSet<>(ImmutableSet.of(HAY_BLOCK, NETHER_WART_BLOCK, WARPED_WART_BLOCK, SHROOMLIGHT));
 
 		for (Item item : FabricToolTags.AXES.values())
 			TOOL_TO_BLOCKS.put(item, axeBlocks);

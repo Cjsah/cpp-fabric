@@ -16,7 +16,7 @@ public class DarkPigEntityRenderer extends MobEntityRenderer<DarkPigEntity, PigE
 	public static final Identifier TEXTURE = new Identifier("textures/entity/pig/pig.png");
 
 	public DarkPigEntityRenderer(EntityRendererFactory.Context context) {
-		super(context, new PigEntityModel<DarkPigEntity>(context.getPart(EntityModelLayers.PIG)), 0.7F);
+		super(context, new PigEntityModel<>(context.getPart(EntityModelLayers.PIG)), 0.7F);
 	}
 
 	public Identifier getTexture(DarkPigEntity entity) {

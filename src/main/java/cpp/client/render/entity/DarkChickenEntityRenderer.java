@@ -15,7 +15,7 @@ public class DarkChickenEntityRenderer extends MobEntityRenderer<DarkChickenEnti
 	public static final Identifier TEXTURE = new Identifier("textures/entity/chicken.png");
 
 	public DarkChickenEntityRenderer(EntityRendererFactory.Context context) {
-		super(context, new ChickenEntityModel<DarkChickenEntity>(context.getPart(EntityModelLayers.CHICKEN)), 0.7F);
+		super(context, new ChickenEntityModel<>(context.getPart(EntityModelLayers.CHICKEN)), 0.7F);
 	}
 
 	public Identifier getTexture(DarkChickenEntity entity) {

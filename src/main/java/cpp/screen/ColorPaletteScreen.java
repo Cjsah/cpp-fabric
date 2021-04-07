@@ -303,7 +303,7 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 		MutableText text = new TranslatableText(TropicalFishEntity.getTranslationKey(variant)).formatted(formattings);
 		MutableText mutableText = new TranslatableText(string);
 		if (!string.equals(string2)) {
-			mutableText.append(",").append((Text) (new TranslatableText(string2)));
+			mutableText.append(",").append(new TranslatableText(string2));
 		}
 		mutableText.formatted(formattings);
 		text.append(" ").append(mutableText);
