@@ -21,13 +21,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.cpp.Craftingpp"
+      "cpp.Craftingpp"
     ],
     "client": [
-      "net.cpp.CraftingppClient"
+      "cpp.CraftingppClient"
     ],
     "modmenu": [
-      "net.cpp.config.CppModMenu"
+      "cpp.config.CppModMenu"
     ]
   },
   "mixins": [
