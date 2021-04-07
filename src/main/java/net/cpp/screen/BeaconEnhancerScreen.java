@@ -7,7 +7,7 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.init.CppBlocks;
 import net.cpp.screen.handler.BeaconEnhancerScreenHandler;
 import net.minecraft.client.MinecraftClient;
@@ -21,7 +21,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHandler> {
-	public static final int PLAYER_EFFECT_BUTTON_SYNC_ID = CodingTool.nextSyncId(), MOB_EFFECT_BUTTON_SYNC_ID = CodingTool.nextSyncId(), ONLY_ADVERSE_BUTTON_SYNC_ID = CodingTool.nextSyncId();
+	public static final int PLAYER_EFFECT_BUTTON_SYNC_ID = Utils.nextSyncId(), MOB_EFFECT_BUTTON_SYNC_ID = Utils.nextSyncId(), ONLY_ADVERSE_BUTTON_SYNC_ID = Utils.nextSyncId();
 	public static final Identifier BACKGROUND = AMachineScreen.getBackgroundByName(Registry.BLOCK.getId(CppBlocks.BEACON_ENHANCER).getPath());
 	public static final List<Identifier> PLAYER_EFFECT_TEXTURES, MOB_EFFECT_TEXTURES;
 	public static final List<Text> ONLY_ADVERSE_TEXTS = ImmutableList.of(new TranslatableText("gui.all_living"), new TranslatableText("gui.only_adverse"));

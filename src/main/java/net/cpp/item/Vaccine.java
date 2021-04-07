@@ -1,6 +1,6 @@
 package net.cpp.item;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.ducktyping.IPlayerVaccine;
 import net.cpp.vaccine.VaccineInstance;
 import net.cpp.vaccine.Vaccines;
@@ -48,7 +48,7 @@ public class Vaccine extends Item {
     @Override
     @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(new TranslatableText("tooltip.cpp.vaccine", new TranslatableText("effect." + this.vaccine.getName().replaceAll(":", ".")).formatted(Formatting.DARK_PURPLE), CodingTool.ticksToTime(vaccine.getDuration())).formatted(Formatting.BLUE));
+        tooltip.add(new TranslatableText("tooltip.cpp.vaccine", new TranslatableText("effect." + this.vaccine.getName().replaceAll(":", ".")).formatted(Formatting.DARK_PURPLE), Utils.ticksToTime(vaccine.getDuration())).formatted(Formatting.BLUE));
     }
 
     @Override

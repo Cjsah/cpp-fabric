@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.init.CppItems;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.Block;
@@ -55,7 +55,7 @@ public class Grafter extends MiningToolItem {
 		 */
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
 			if (player.getMainHandStack().isOf(CppItems.GRAFTER) && LEAVES_TO_SALPING.containsKey(state.getBlock())) {
-				CodingTool.excavate((ServerWorld) world, (ServerPlayerEntity) player, pos, null);
+				Utils.excavate((ServerWorld) world, (ServerPlayerEntity) player, pos, null);
 				if (!player.isCreative())
 					Block.dropStack(world, pos, LEAVES_TO_SALPING.get(state.getBlock()).asItem().getDefaultStack());
 				return false;

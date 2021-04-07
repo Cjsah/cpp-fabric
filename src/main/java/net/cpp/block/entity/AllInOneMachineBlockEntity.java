@@ -92,9 +92,6 @@ import static net.cpp.init.CppItems.WING_OF_SKY;
 import static net.minecraft.item.Items.*;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -112,7 +109,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSet.Builder;
 import com.google.common.collect.Maps;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.block.AllInOneMachineBlock;
 import net.cpp.block.FlowerGrass1Block;
 import net.cpp.init.CppBlockEntities;
@@ -328,7 +325,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 			if (recipe != null) {
 //				System.out.println(recipe.ingredient);
 				blockEntity.workTimeTotal = recipe.time;
-				if (CodingTool.canInsert(recipe.maximize(blockEntity), blockEntity, 3, 5)) {
+				if (Utils.canInsert(recipe.maximize(blockEntity), blockEntity, 3, 5)) {
 					if (blockEntity.workTime >= blockEntity.workTimeTotal) {
 						blockEntity.workTime = 0;
 						blockEntity.expStorage -= recipe.experience;
@@ -338,7 +335,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 							}
 						}
 //						System.out.println(recipe.produce(blockEntity));
-						CodingTool.insert(recipe.produce(blockEntity), blockEntity, 3, 5);
+						Utils.insert(recipe.produce(blockEntity), blockEntity, 3, 5);
 					} else {
 						blockEntity.workTime++;
 					}
@@ -942,7 +939,7 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 		ORE_RATES.clear();
 		ORE_RECIPES.clear();
 		ServerCommandSource commandSource = new ServerCommandSource(CommandOutput.DUMMY, Vec3d.ZERO, Vec2f.ZERO, world, 4, "更多的合成：多功能一体机：读取矿石倍率", LiteralText.EMPTY, server, null);
-		ImmutableList<Item> ores = ImmutableList.<Item>builder().addAll(ImmutableSet.<Item>builder().addAll(CodingTool.findByKeyword(Registry.ITEM, "_ore")).addAll(CppItemTags.ORES.values()).build()).build();
+		ImmutableList<Item> ores = ImmutableList.<Item>builder().addAll(ImmutableSet.<Item>builder().addAll(Utils.findByKeyword(Registry.ITEM, "_ore")).addAll(CppItemTags.ORES.values()).build()).build();
 		for (int i = 0; i < ores.size(); i++) {
 			Item item1 = ores.get(i);
 			String id1 = Registry.ITEM.getId(item1).toString();

@@ -19,7 +19,7 @@ import java.util.List;
 
 import com.mojang.brigadier.StringReader;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.api.Effect;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppBlocks;
@@ -54,11 +54,9 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 /**
@@ -288,6 +286,6 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 	}
 	
 	public static void tickEffect(PlayerEntity player) {
-		CodingTool.removeEffectExceptHidden(player, NIGHT_VISION, 253, 199);
+		Utils.removeEffectExceptHidden(player, NIGHT_VISION, 253, 199);
 	}
 }

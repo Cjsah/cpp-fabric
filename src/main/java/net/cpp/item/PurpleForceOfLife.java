@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 import java.util.Map;
 
-import static net.cpp.api.CodingTool.rayItem;
+import static net.cpp.api.Utils.rayItem;
 
 public class PurpleForceOfLife extends Item {
     public static final Map<Item, Item> EXCHANGE = new HashMap<>();

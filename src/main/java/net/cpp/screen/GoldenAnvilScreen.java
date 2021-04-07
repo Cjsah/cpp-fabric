@@ -1,7 +1,7 @@
 package net.cpp.screen;
 
-import static net.cpp.api.CodingTool.x;
-import static net.cpp.api.CodingTool.y;
+import static net.cpp.api.Utils.x;
+import static net.cpp.api.Utils.y;
 
 import net.cpp.init.CppBlocks;
 import net.cpp.screen.handler.GoldenAnvilScreenHandler;

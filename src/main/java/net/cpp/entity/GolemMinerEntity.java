@@ -3,7 +3,7 @@ package net.cpp.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -21,12 +21,12 @@ public class GolemMinerEntity extends AMovingGolemEntity {
 	public void work() {
 		BlockState blockState = getBlockState();
 		if (!world.isClient) {
-			if (!CONTROLS.contains(blockState.getBlock()) && CodingTool.canHarvest(getMainHandStack(), blockState, world, getBlockPos())) {
+			if (!CONTROLS.contains(blockState.getBlock()) && Utils.canHarvest(getMainHandStack(), blockState, world, getBlockPos())) {
 				List<ItemStack> droppeds = new ArrayList<ItemStack>();
-				CodingTool.excavate((ServerWorld) world, this, getBlockPos(), droppeds);
+				Utils.excavate((ServerWorld) world, this, getBlockPos(), droppeds);
 				listMerge(droppeds);
 			}
-			experience = CodingTool.mend(mainHandStack, experience);
+			experience = Utils.mend(mainHandStack, experience);
 		}
 	}
 

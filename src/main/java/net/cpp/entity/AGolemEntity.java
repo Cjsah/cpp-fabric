@@ -2,7 +2,7 @@ package net.cpp.entity;
 
 import java.util.Collections;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -102,7 +102,7 @@ public abstract class AGolemEntity extends LivingEntity {
 
 	@Override
 	public void kill() {
-		CodingTool.drop(world, getPos(), mainHandStack);
+		Utils.drop(world, getPos(), mainHandStack);
 		discard();
 	}
 

@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.init.CppBlocks;
 import net.cpp.screen.handler.MobProjectorScreenHandler;
 import net.minecraft.client.util.math.MatrixStack;
@@ -32,7 +32,7 @@ public class MobProjectorScreen extends AExpMachineScreen<MobProjectorScreenHand
 
 	protected void init() {
 		super.init();
-		oButton.setPos(x + CodingTool.x(7), y + CodingTool.y(2));
+		oButton.setPos(x + Utils.x(7), y + Utils.y(2));
 	}
 
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {

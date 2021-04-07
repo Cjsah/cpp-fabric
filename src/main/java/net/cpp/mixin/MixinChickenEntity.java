@@ -1,6 +1,6 @@
 package net.cpp.mixin;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.cpp.init.CppEntities;
@@ -20,6 +20,6 @@ public abstract class MixinChickenEntity extends AnimalEntity {
 	@SuppressWarnings("ConstantConditions")
 	public void tick() {
 		super.tick();
-		if (!this.world.isClient && ((Object)this.getClass()) == ChickenEntity.class) CodingTool.darkTransform((ServerWorld) this.world, this, CppEntities.DARK_CHICKEN, true, null);
+		if (!this.world.isClient && ((Object)this.getClass()) == ChickenEntity.class) Utils.darkTransform((ServerWorld) this.world, this, CppEntities.DARK_CHICKEN, true, null);
 	}
 }

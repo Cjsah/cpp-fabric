@@ -2,7 +2,7 @@ package net.cpp.block;
 
 import com.google.common.collect.Maps;
 import net.cpp.Craftingpp;
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.block.entity.BlockBreakerBlockEntity;
 import net.cpp.init.CppBlockEntities;
 import net.cpp.init.CppStats;
@@ -17,9 +17,7 @@ import net.minecraft.block.entity.PistonBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextTypes;
-import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -77,7 +75,7 @@ public class BlockBreakerBlock extends BlockWithEntity {
                 } else {
                     Identifier lootTableId = pair.getRight();
                     Vec3d vec3d = new Vec3d(pos.getX()+0.5, pos.getY()+1,pos.getZ()+0.5);
-                    CodingTool.drop(world, vec3d, world.getServer().getLootManager().getTable(lootTableId).generateLoot((new LootContext.Builder((ServerWorld) world)).random(world.random).build(LootContextTypes.EMPTY)));
+                    Utils.drop(world, vec3d, world.getServer().getLootManager().getTable(lootTableId).generateLoot((new LootContext.Builder((ServerWorld) world)).random(world.random).build(LootContextTypes.EMPTY)));
                     world.breakBlock(pos.up(),false);
                 }
             }

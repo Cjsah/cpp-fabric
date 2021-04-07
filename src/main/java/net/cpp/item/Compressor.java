@@ -1,6 +1,6 @@
 package net.cpp.item;
 
-import static net.cpp.api.CodingTool.rayItem;
+import static net.cpp.api.Utils.rayItem;
 
 import net.cpp.init.CppItems;
 import net.minecraft.entity.EntityType;

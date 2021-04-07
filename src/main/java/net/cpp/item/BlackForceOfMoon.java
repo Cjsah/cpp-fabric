@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import static net.cpp.api.CodingTool.move;
+import static net.cpp.api.Utils.move;
 import static net.cpp.api.CppChat.say;
 
 public class BlackForceOfMoon extends Item {

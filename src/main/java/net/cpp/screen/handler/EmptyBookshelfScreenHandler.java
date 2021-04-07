@@ -1,6 +1,6 @@
 package net.cpp.screen.handler;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.block.entity.EmptyBookshelfBlockEntity;
 import net.cpp.init.CppScreenHandler;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,7 +20,7 @@ public class EmptyBookshelfScreenHandler extends AMachineScreenHandler {
 		super(CppScreenHandler.EMPTY_BOOKSHELF, syncId, playerInventory, blockEntity);
 		this.blockEntity = blockEntity;
 		for (int i = 0; i < 3; i++)
-			addSlot(new BookshelfSlot(blockEntity, i, CodingTool.x(3 + i), CodingTool.y(1)));
+			addSlot(new BookshelfSlot(blockEntity, i, Utils.x(3 + i), Utils.y(1)));
 		blockEntity.onOpen(playerInventory.player);
 	}
 

@@ -1,6 +1,6 @@
 package net.cpp.screen.handler;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.block.entity.AExpMachineBlockEntity;
 import net.cpp.screen.ExpTankButton;
 import net.minecraft.entity.ExperienceOrbEntity;
@@ -15,7 +15,7 @@ public abstract class AExpMachineScreenHandler extends AOutputMachineScreenHandl
 	public AExpMachineScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, AExpMachineBlockEntity blockEntity) {
 		super(type, syncId, playerInventory, blockEntity);
 		this.blockEntity = blockEntity;
-		addSlot(new ExperienceBottleSlot(blockEntity, 0, CodingTool.x(7), CodingTool.y(0)));
+		addSlot(new ExperienceBottleSlot(blockEntity, 0, Utils.x(7), Utils.y(0)));
 	}
 
 	@Override

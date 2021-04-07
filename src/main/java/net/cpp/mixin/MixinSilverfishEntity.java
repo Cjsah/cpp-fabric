@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.init.CppItems;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.HostileEntity;
@@ -25,6 +25,6 @@ public class MixinSilverfishEntity extends HostileEntity {
 
 	@Inject(at = @At("RETURN"), method = { "initGoals" })
 	public void initGoals1(CallbackInfo info) {
-		goalSelector.add(1, new CodingTool.SachetFleeGoal(this));
+		goalSelector.add(1, new Utils.SachetFleeGoal(this));
 	}
 }

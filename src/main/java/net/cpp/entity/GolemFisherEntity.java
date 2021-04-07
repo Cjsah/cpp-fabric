@@ -1,6 +1,6 @@
 package net.cpp.entity;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
@@ -33,15 +33,15 @@ public class GolemFisherEntity extends AGolemEntity {
 			LootContext.Builder builder = new LootContext.Builder((ServerWorld) world).parameter(LootContextParameters.ORIGIN, getPos()).parameter(LootContextParameters.TOOL, tool).parameter(LootContextParameters.THIS_ENTITY, this).random(world.random).luck(0);
 			LootTable lootTable = world.getServer().getLootManager().getTable(LootTables.FISHING_GAMEPLAY);
 			lootTable.generateLoot(builder.build(LootContextTypes.FISHING), itemStack -> {
-				CodingTool.drop(world, getPos(), itemStack);
+				Utils.drop(world, getPos(), itemStack);
 			});
 			int exp = random.nextInt(6) + 1;
 			tool.damage(1, random, null);
 			if (EnchantmentHelper.getLevel(Enchantments.MENDING, tool) > 0) {
-				exp = CodingTool.mend(tool, exp);
+				exp = Utils.mend(tool, exp);
 			}
 			if (random.nextDouble() < exp / 9) {
-				CodingTool.drop(world, getPos(), Items.EXPERIENCE_BOTTLE.getDefaultStack());
+				Utils.drop(world, getPos(), Items.EXPERIENCE_BOTTLE.getDefaultStack());
 			}
 		}
 	}

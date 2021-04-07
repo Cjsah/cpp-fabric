@@ -13,7 +13,7 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
@@ -79,9 +79,9 @@ public abstract class AMovingGolemEntity extends AGolemEntity {
 		else if (block == WHITE_WOOL && !world.isClient)
 			killed = true;
 		else if (block instanceof TrappedChestBlock)
-			CodingTool.transfer((TrappedChestBlockEntity) world.getBlockEntity(getBlockPos()), inventory);
+			Utils.transfer((TrappedChestBlockEntity) world.getBlockEntity(getBlockPos()), inventory);
 		else if (block instanceof ChestBlock)
-			CodingTool.transfer(inventory, (ChestBlockEntity) world.getBlockEntity(getBlockPos()));
+			Utils.transfer(inventory, (ChestBlockEntity) world.getBlockEntity(getBlockPos()));
 
 	}
 
@@ -92,14 +92,14 @@ public abstract class AMovingGolemEntity extends AGolemEntity {
 		for (ItemEntity itemEntity : world.getEntitiesByClass(ItemEntity.class, new Box(getPos(), getPos()).expand(1), item -> true)) {
 			itemEntity.setStack(inventory.addStack(itemEntity.getStack()));
 		}
-		experience += CodingTool.collectExpOrbs(world, getPos(), 1, false);
+		experience += Utils.collectExpOrbs(world, getPos(), 1, false);
 	}
 
 	@Override
 	public void fromTag(CompoundTag tag) {
 		continuousDisplacement = tag.getInt("continuousDisplacement");
 		experience = tag.getInt("experience");
-		CodingTool.inventoryFromTag(inventory, tag);
+		Utils.inventoryFromTag(inventory, tag);
 		Vec3d rotation = getRotationVector();
 		movingDirection = Direction.getFacing(rotation.x, rotation.y, rotation.z);
 		super.fromTag(tag);
@@ -109,13 +109,13 @@ public abstract class AMovingGolemEntity extends AGolemEntity {
 	public CompoundTag toTag(CompoundTag tag) {
 		tag.putInt("continuousDisplacement", continuousDisplacement);
 		tag.putInt("experience", experience);
-		CodingTool.inventoryToTag(inventory, tag);
+		Utils.inventoryToTag(inventory, tag);
 		return super.toTag(tag);
 	}
 
 	@Override
 	public void kill() {
-		CodingTool.drop(world, getPos(), inventory.clearToList());
+		Utils.drop(world, getPos(), inventory.clearToList());
 		if (!world.isClient) {
 			ExperienceOrbEntity.spawn((ServerWorld) world, getPos(), experience);
 		}
@@ -142,6 +142,6 @@ public abstract class AMovingGolemEntity extends AGolemEntity {
 		for (int i = 0; i < droppeds.size(); i++) {
 			droppeds.set(i, inventory.addStack(droppeds.get(i)));
 		}
-		CodingTool.drop(world, getPos(), droppeds);
+		Utils.drop(world, getPos(), droppeds);
 	}
 }

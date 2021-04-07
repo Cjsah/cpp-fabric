@@ -70,7 +70,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.api.Effect;
 import net.cpp.ducktyping.ITemperancable;
 import net.cpp.init.CppEffects;
@@ -191,11 +191,11 @@ public class Wand extends Item {
 						}
 					}
 					if (failed) {
-						CodingTool.actionbar(player, "info.cpp.rituals.fail");
+						Utils.actionbar(player, "info.cpp.rituals.fail");
 						return ActionResult.FAIL;
 					} else {
 						player.networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_BEACON_POWER_SELECT, SoundCategory.BLOCKS, frame.getX(), frame.getY(), frame.getZ(), 5, 1));
-						CodingTool.tellraw(player, "info.cpp.rituals.start");
+						Utils.tellraw(player, "info.cpp.rituals.start");
 						return ActionResult.SUCCESS;
 					}
 				}
@@ -281,7 +281,7 @@ public class Wand extends Item {
 					}
 				}
 			}
-			CodingTool.removeEffectExceptHidden(player, NIGHT_VISION, 254, 210);
+			Utils.removeEffectExceptHidden(player, NIGHT_VISION, 254, 210);
 		}
 	}
 
@@ -302,7 +302,7 @@ public class Wand extends Item {
 				}
 			} else {
 				ServerPlayerEntity player = (ServerPlayerEntity) frame.world.getClosestPlayer(frame.getX(), frame.getY(), frame.getZ(), 128, false);
-				CodingTool.tellraw(player, "info.cpp.rituals.break");
+				Utils.tellraw(player, "info.cpp.rituals.break");
 				player.networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_BEACON_DEACTIVATE, SoundCategory.BLOCKS, frame.getX(), frame.getY(), frame.getZ(), 5, 1));
 				iRitualFrame.setRitualType(0);
 				iRitualFrame.setRitualTime(0);
@@ -444,7 +444,7 @@ public class Wand extends Item {
 				break;
 			}
 			ServerPlayerEntity player = (ServerPlayerEntity) frame.world.getClosestPlayer(frame.getX(), frame.getY(), frame.getZ(), 128, false);
-			CodingTool.tellraw(player, "info.cpp.rituals.finish");
+			Utils.tellraw(player, "info.cpp.rituals.finish");
 			player.networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, frame.getX(), frame.getY(), frame.getZ(), 5, 1));
 		}
 	}

@@ -1,7 +1,7 @@
 package net.cpp.screen.handler;
 
-import static net.cpp.api.CodingTool.x;
-import static net.cpp.api.CodingTool.y;
+import static net.cpp.api.Utils.x;
+import static net.cpp.api.Utils.y;
 
 import net.cpp.block.entity.TradeMachineBlockEntity;
 import net.cpp.init.CppItems;

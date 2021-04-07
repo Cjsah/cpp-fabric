@@ -1,6 +1,6 @@
 package net.cpp.screen.handler;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.block.entity.ItemProcessorBlockEntity;
 import net.cpp.init.CppScreenHandler;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
@@ -20,10 +20,10 @@ public class ItemProcessorScreenHandler extends AOutputMachineScreenHandler {
 		super(CppScreenHandler.ITEM_PROCESSOR, syncId, playerInventory, blockEntity);
 		this.blockEntity = blockEntity;
 
-		addSlot(new Slot(blockEntity, 0, CodingTool.x(3), CodingTool.y(0)));
-		addSlot(new Slot(blockEntity, 1, CodingTool.x(3), CodingTool.y(1)));
-		addSlot(new ResultSlot(blockEntity, 2, CodingTool.x(6), CodingTool.y(1)));
-		addSlot(new ResultSlot(blockEntity, 3, CodingTool.x(7), CodingTool.y(1)));
+		addSlot(new Slot(blockEntity, 0, Utils.x(3), Utils.y(0)));
+		addSlot(new Slot(blockEntity, 1, Utils.x(3), Utils.y(1)));
+		addSlot(new ResultSlot(blockEntity, 2, Utils.x(6), Utils.y(1)));
+		addSlot(new ResultSlot(blockEntity, 3, Utils.x(7), Utils.y(1)));
 	}
 
 	@Override

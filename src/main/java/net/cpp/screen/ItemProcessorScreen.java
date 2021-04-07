@@ -1,6 +1,6 @@
 package net.cpp.screen;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.init.CppBlocks;
 import net.cpp.screen.handler.ItemProcessorScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
@@ -22,6 +22,6 @@ public class ItemProcessorScreen extends AOutputMachineScreen<ItemProcessorScree
 	@Override
 	protected void init() {
 		super.init();
-		oButton.setPos(x + CodingTool.x(4), y + CodingTool.y(2));
+		oButton.setPos(x + Utils.x(4), y + Utils.y(2));
 	}
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.init.CppBlocks;
 import net.cpp.screen.handler.AllInOneMachineScreenHandler;
 import net.minecraft.client.MinecraftClient;
@@ -21,7 +21,7 @@ public class AllInOneMachineScreen extends AExpMachineScreen<AllInOneMachineScre
 	public static final Identifier BACKGROUND = getBackgroundByName(Registry.BLOCK.getId(CppBlocks.ALL_IN_ONE_MACHINE).getPath());
 	public static final TranslatableText[] TEMPERATURE_TEXTS = {new TranslatableText("gui.ordinary_temperature"), new TranslatableText("gui.low_temperature"), new TranslatableText("gui.high_temperature")};
 	public static final TranslatableText[] PRESSURE_TEXTS = {new TranslatableText("gui.ordinary_pressure"), new TranslatableText("gui.low_pressure"), new TranslatableText("gui.high_pressure")};
-	public static final int TEMPERATURE_BUTTON_SYNC_ID = CodingTool.nextSyncId(), PRESSURE_BUTTON_SYNC_ID = CodingTool.nextSyncId();
+	public static final int TEMPERATURE_BUTTON_SYNC_ID = Utils.nextSyncId(), PRESSURE_BUTTON_SYNC_ID = Utils.nextSyncId();
 	public final List<Text> temperatureTooltip = Arrays.asList(TEMPERATURE_TEXTS[0], AOutputMachineScreen.CLICK_TO_SHIFT);
 	public final List<Text> pressureTooltip = Arrays.asList(PRESSURE_TEXTS[0], AOutputMachineScreen.CLICK_TO_SHIFT);
 	public final TexturedButtonWidget temperatureButton = new TexturedButtonWidget(0, 0, 16, 16, 0, 0, 0, BACKGROUND, buttonWidget -> {
@@ -66,10 +66,10 @@ public class AllInOneMachineScreen extends AExpMachineScreen<AllInOneMachineScre
 	
 	protected void init() {
 		super.init();
-		oButton.setPos(x + CodingTool.x(1), y + CodingTool.y(2));
-		temperatureButton.setPos(x + CodingTool.x(1), y + CodingTool.y(0));
+		oButton.setPos(x + Utils.x(1), y + Utils.y(2));
+		temperatureButton.setPos(x + Utils.x(1), y + Utils.y(0));
 		addButton(temperatureButton);
-		pressureButton.setPos(x + CodingTool.x(1), y + CodingTool.y(1));
+		pressureButton.setPos(x + Utils.x(1), y + Utils.y(1));
 		addButton(pressureButton);
 	}
 	

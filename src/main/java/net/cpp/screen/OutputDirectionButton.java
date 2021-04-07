@@ -5,10 +5,9 @@ import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.block.entity.AOutputMachineBlockEntity;
 import net.cpp.block.entity.IOutputDiractional;
-import net.cpp.init.CppBlocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
@@ -17,10 +16,9 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class OutputDirectionButton extends TexturedButtonWidget {
-	public static final int SYNC_ID = CodingTool.nextSyncId();
+	public static final int SYNC_ID = Utils.nextSyncId();
 	public static final Identifier TEXTURE = AMachineScreen.getBackgroundByName("output_direction_button");
 	/**
 	 * 悬浮文本

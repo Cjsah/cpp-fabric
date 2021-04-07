@@ -1,6 +1,6 @@
 package net.cpp.screen.handler;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.block.entity.MobProjectorBlockEntity;
 import net.cpp.init.CppScreenHandler;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,9 +21,9 @@ public class MobProjectorScreenHandler extends AExpMachineScreenHandler {
 		super(CppScreenHandler.MOB_PROJECTOR, syncId, playerInventory, blockEntity);
 		player = playerInventory.player;
 		this.blockEntity = blockEntity;
-		addSlot(new Slot(blockEntity, 1, CodingTool.x(4), CodingTool.y(0)));
-		addSlot(new Slot(blockEntity, 2, CodingTool.x(4), CodingTool.y(1)));
-		addSlot(new Slot(blockEntity, 3, CodingTool.x(4), CodingTool.y(2)));
+		addSlot(new Slot(blockEntity, 1, Utils.x(4), Utils.y(0)));
+		addSlot(new Slot(blockEntity, 2, Utils.x(4), Utils.y(1)));
+		addSlot(new Slot(blockEntity, 3, Utils.x(4), Utils.y(2)));
 		blockEntity.onOpen(player);
 	}
 

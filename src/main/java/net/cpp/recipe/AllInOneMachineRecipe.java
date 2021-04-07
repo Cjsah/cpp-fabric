@@ -26,7 +26,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.block.OreLeavesBlock;
 import net.cpp.block.entity.AllInOneMachineBlockEntity;
 import net.cpp.block.entity.AllInOneMachineBlockEntity.Degree;
@@ -281,7 +281,7 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 				if (jse.isJsonObject()) {
 					JsonObject obj = jse.getAsJsonObject();
 					if (obj.has("tag")) {
-						itemsBuilder.addAll(CodingTool.getTag(obj.get("tag").getAsString(), Registry.ITEM_KEY).values());
+						itemsBuilder.addAll(Utils.getTag(obj.get("tag").getAsString(), Registry.ITEM_KEY).values());
 					} else {
 						JsonElement jsonItemId = obj.get("item");
 						if (jsonItemId.isJsonArray()) {
@@ -315,7 +315,7 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 				if (jse.isJsonObject()) {
 					JsonObject itemAndCount = jse.getAsJsonObject();
 					if (itemAndCount.has("tag")) {
-						list = CodingTool.getTag(itemAndCount.get("tag").getAsString(), Registry.ITEM_KEY).values();
+						list = Utils.getTag(itemAndCount.get("tag").getAsString(), Registry.ITEM_KEY).values();
 					} else {
 						ImmutableList.Builder<Item> itemsBuilder = ImmutableList.builder();
 						JsonElement jsonItem = itemAndCount.get("item");

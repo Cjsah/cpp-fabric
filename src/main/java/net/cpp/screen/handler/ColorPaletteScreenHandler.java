@@ -4,7 +4,7 @@ import java.util.*;
 
 import com.google.common.collect.Lists;
 import io.netty.buffer.Unpooled;
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.init.CppItems;
 import net.cpp.init.CppScreenHandler;
 import net.cpp.screen.ColorPaletteScreen;
@@ -113,8 +113,8 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 				}
 			});
 		}
-		CodingTool.addPlayerSlots(this::addSlot, player.getInventory());
-		addSlot(new Slot(items, 0, CodingTool.x(8), CodingTool.y(0)) {
+		Utils.addPlayerSlots(this::addSlot, player.getInventory());
+		addSlot(new Slot(items, 0, Utils.x(8), Utils.y(0)) {
 			@Override
 			public void onStackChanged(ItemStack originalItem, ItemStack newItem) {
 				super.onStackChanged(originalItem, newItem);
@@ -162,7 +162,7 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 	public void close(PlayerEntity player) {
 		super.close(player);
 		insertItem(items.getStack(0), 0, 36, false);
-		CodingTool.give(player, items.removeStack(0));
+		Utils.give(player, items.removeStack(0));
 		onMaterialChanged();
 	}
 	
@@ -256,7 +256,7 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 	public void changeSlots() {
 		int mode = getCurrentMode();
 		if (mode > 0) {
-			addSlot(new ResultSlot(items, 1, CodingTool.x(8), CodingTool.y(2)) {
+			addSlot(new ResultSlot(items, 1, Utils.x(8), Utils.y(2)) {
 				@Override
 				public boolean canTakeItems(PlayerEntity playerEntity) {
 					if (getCurrentMode() == 2) {
@@ -279,12 +279,12 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 //					super.onTake(amount);
 //				}
 			});
-			addSlot(new Slot(items, 2, CodingTool.x(8), CodingTool.y(1)));
+			addSlot(new Slot(items, 2, Utils.x(8), Utils.y(1)));
 			if (mode == 2) {
-				addSlot(new Slot(items, 3, CodingTool.x(7), CodingTool.y(1)));
+				addSlot(new Slot(items, 3, Utils.x(7), Utils.y(1)));
 			} else {
 				insertItem(items.getStack(3), 0, 36, false);
-				CodingTool.give(player, items.removeStack(3));
+				Utils.give(player, items.removeStack(3));
 				while (slots.size() > 40) {
 					slots.remove(slots.size() - 1);
 				}
@@ -305,7 +305,7 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 						}
 					}
 					for (int i = 0; i < 16; i++) {
-						addSlot(new DisplaySlot(items, i + 4, CodingTool.x(i % 8), CodingTool.y(1 + i / 8)));
+						addSlot(new DisplaySlot(items, i + 4, Utils.x(i % 8), Utils.y(1 + i / 8)));
 					}
 //					addSlot(new DisplaySlot(items, 21, CodingTool.x(8), CodingTool.y(0)));
 				}else{
@@ -318,7 +318,7 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 			items.removeStack(1);
 			for (int i = 2; i < 4; i++) {
 				insertItem(items.getStack(i), 0, 36, false);
-				CodingTool.give(player, items.removeStack(i));
+				Utils.give(player, items.removeStack(i));
 			}
 			while (slots.size() > 37) {
 				slots.remove(slots.size() - 1);

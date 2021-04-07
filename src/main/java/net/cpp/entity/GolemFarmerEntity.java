@@ -21,7 +21,7 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -58,27 +58,27 @@ public class GolemFarmerEntity extends AMovingGolemEntity {
 			if (block instanceof CropBlock) {
 				CropBlock cropBlock = (CropBlock) block;
 				if (cropBlock.isMature(state)) {
-					CodingTool.excavate((ServerWorld) world, this, getBlockPos(), droppeds);
+					Utils.excavate((ServerWorld) world, this, getBlockPos(), droppeds);
 					listMerge(droppeds);
 					if (decrement(block.asItem()))
 						world.setBlockState(blockPos, block.getDefaultState());
 				}
 			} else if ((block instanceof SweetBerryBushBlock || block instanceof NetherWartBlock) && state.get(Properties.AGE_3) >= 3) {
-				CodingTool.excavate((ServerWorld) world, this, getBlockPos(), droppeds);
+				Utils.excavate((ServerWorld) world, this, getBlockPos(), droppeds);
 				droppeds.get(0).decrement(1);
 				world.setBlockState(blockPos, block.getDefaultState());
 				listMerge(droppeds);
 			} else if (LOG_TO_SAPLING.containsKey(block)) {
-				CodingTool.excavate((ServerWorld) world, this, blockPos, droppeds);
+				Utils.excavate((ServerWorld) world, this, blockPos, droppeds);
 				listMerge(droppeds);
 				Block sapling = LOG_TO_SAPLING.get(block);
 				if (sapling.canPlaceAt(sapling.getDefaultState(), world, blockPos) && decrement(sapling.asItem()))
 					world.setBlockState(blockPos, sapling.getDefaultState());
 			} else if (HARVESTABLE.contains(block)) {
-				CodingTool.excavate((ServerWorld) world, this, blockPos, droppeds);
+				Utils.excavate((ServerWorld) world, this, blockPos, droppeds);
 				listMerge(droppeds);
 			}
-			experience=CodingTool.mend(mainHandStack, experience);
+			experience= Utils.mend(mainHandStack, experience);
 		}
 	}
 

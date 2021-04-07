@@ -1,6 +1,6 @@
 package net.cpp.entity;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.HostileEntity;
@@ -33,7 +33,7 @@ public abstract class ADarkAnimalEntity<T extends Entity> extends HostileEntity 
                     this.world.random.nextFloat() / 10,
                     (this.world.random.nextFloat() - .5f) / 10);
         } else {
-            if (this.transform) CodingTool.darkTransform((ServerWorld) this.world, this, this.transformedEntity, false, null);
+            if (this.transform) Utils.darkTransform((ServerWorld) this.world, this, this.transformedEntity, false, null);
         }
     }
 

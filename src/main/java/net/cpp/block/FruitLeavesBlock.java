@@ -2,7 +2,7 @@ package net.cpp.block;
 
 import java.util.Random;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.init.CppBlocks;
 import net.cpp.init.CppItemTags;
 import net.minecraft.block.BlockState;
@@ -40,7 +40,7 @@ public class FruitLeavesBlock extends LeavesBlock {
 				distance = pair.getRight();
 			} while (pos3 != pos2 && limit-- > 0);
 			world.removeBlock(pos2, false);
-			CodingTool.drop(world, new Vec3d(pos2.getX() + .5, pos2.getY() + .5, pos2.getZ() + .5), randomFruit(random));
+			Utils.drop(world, new Vec3d(pos2.getX() + .5, pos2.getY() + .5, pos2.getZ() + .5), randomFruit(random));
 		} else
 			super.randomTick(state, world, pos, random);
 	}

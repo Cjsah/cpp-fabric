@@ -2,7 +2,7 @@ package net.cpp.entity;
 
 import com.mojang.authlib.GameProfile;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.item.AngryHand;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -38,10 +38,10 @@ public class GolemWarriorEntity extends AGolemEntity {
 			if (ed) {
 				mainHandStack.damage(1, random, null);
 			}
-			int exp = CodingTool.collectExpOrbs(world, getPos(), 3, false);
+			int exp = Utils.collectExpOrbs(world, getPos(), 3, false);
 			if (EnchantmentHelper.getLevel(Enchantments.MENDING, mainHandStack) > 0)
-				exp = CodingTool.mend(mainHandStack, exp);
-			CodingTool.drop(world, getPos(), CodingTool.expToBottle(exp));
+				exp = Utils.mend(mainHandStack, exp);
+			Utils.drop(world, getPos(), Utils.expToBottle(exp));
 		}
 
 	}

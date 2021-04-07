@@ -1,6 +1,6 @@
 package net.cpp.screen.handler;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.block.entity.AllInOneMachineBlockEntity;
 import net.cpp.init.CppScreenHandler;
 import net.cpp.screen.AllInOneMachineScreen;
@@ -28,10 +28,10 @@ public class AllInOneMachineScreenHandler extends AExpMachineScreenHandler {
 		super(CppScreenHandler.ALL_IN_ONE_MACHINE, syncId, playerInventory, blockEntity);
 		player = playerInventory.player;
 		this.blockEntity = blockEntity;
-		addSlot(new Slot(blockEntity, 1, CodingTool.x(3), CodingTool.y(0)));
-		addSlot(new Slot(blockEntity, 2, CodingTool.x(4), CodingTool.y(0)));
-		addSlot(new ResultSlot(blockEntity, 3, CodingTool.x(3), CodingTool.y(2)));
-		addSlot(new ResultSlot(blockEntity, 4, CodingTool.x(4), CodingTool.y(2)));
+		addSlot(new Slot(blockEntity, 1, Utils.x(3), Utils.y(0)));
+		addSlot(new Slot(blockEntity, 2, Utils.x(4), Utils.y(0)));
+		addSlot(new ResultSlot(blockEntity, 3, Utils.x(3), Utils.y(2)));
+		addSlot(new ResultSlot(blockEntity, 4, Utils.x(4), Utils.y(2)));
 		blockEntity.onOpen(player);
 	}
 

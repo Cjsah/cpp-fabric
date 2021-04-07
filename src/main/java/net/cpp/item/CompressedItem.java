@@ -3,7 +3,7 @@ package net.cpp.item;
 import java.util.Arrays;
 import java.util.List;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.init.CppItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -86,10 +86,10 @@ public class CompressedItem extends Item {
 			if (playerEntity.isSneaking()) {
 				ItemStack[] stacks = new ItemStack[pair.getRight()];
 				Arrays.fill(stacks, pair.getLeft().copy());
-				CodingTool.give(playerEntity, stacks);
+				Utils.give(playerEntity, stacks);
 				compressed.decrement(pair.getRight());
 			} else {
-				CodingTool.give(playerEntity, pair.getLeft());
+				Utils.give(playerEntity, pair.getLeft());
 				compressed.decrement(1);
 			}
 			return true;

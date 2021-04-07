@@ -2,7 +2,7 @@ package net.cpp.misc;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.cpp.Craftingpp;
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
@@ -43,7 +43,7 @@ public class CppGameHud extends DrawableHelper {
                 weight > -50 && weight < 50 ? Formatting.GREEN : weight > -100 && weight < 100 ? Formatting.YELLOW : Formatting.RED));
         for(int i = 1; i <= vaccines.size(); ++i) {
             CompoundTag vaccine = (CompoundTag) vaccines.get(i - 1);
-            this.draw(matrix, firstY - i * (icon_size + interval), vaccine.getByte("Id"), Text.of(CodingTool.ticksToTime(vaccine.getInt("Duration"))));
+            this.draw(matrix, firstY - i * (icon_size + interval), vaccine.getByte("Id"), Text.of(Utils.ticksToTime(vaccine.getInt("Duration"))));
         }
         RenderSystem.disableBlend();
     }

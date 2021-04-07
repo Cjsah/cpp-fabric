@@ -30,7 +30,7 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.ducktyping.ITickableInItemFrame;
 import net.minecraft.block.BambooBlock;
 import net.minecraft.block.Block;
@@ -100,7 +100,7 @@ public class IndustriousHand extends Item implements ITickableInItemFrame {
 								break;
 							}
 						}
-						CodingTool.drop((ServerWorld) world, itemFrameEntity.getPos(), droppeds);
+						Utils.drop((ServerWorld) world, itemFrameEntity.getPos(), droppeds);
 						if (has) {
 							world.setBlockState(pos2, block.getDefaultState());
 							tick(itemFrameEntity);

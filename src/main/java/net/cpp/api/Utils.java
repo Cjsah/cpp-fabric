@@ -69,7 +69,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
-public class CodingTool {
+public class Utils {
 	public static class SachetFleeGoal extends FleeEntityGoal<PlayerEntity> {
 		public final PathAwareEntity entity;
 
@@ -103,7 +103,7 @@ public class CodingTool {
 		}
 	}
 
-	private CodingTool() {
+	private Utils() {
 
 	}
 
@@ -143,7 +143,7 @@ public class CodingTool {
 	 * （本类未使用）
 	 *
 	 * @author Phoupraw
-	 * @see CodingTool#intArrayToUUID(IntArrayTag)
+	 * @see Utils#intArrayToUUID(IntArrayTag)
 	 * @param uuid 要转化为数组的uuid
 	 * @return 转化的数组
 	 */

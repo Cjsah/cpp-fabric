@@ -2,7 +2,7 @@ package net.cpp.item;
 
 import java.util.List;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.api.IDefaultTagItem;
 import net.cpp.ducktyping.ITickableInItemFrame;
 import net.cpp.init.CppItems;
@@ -65,7 +65,7 @@ public class Magnet extends Item implements IDefaultTagItem, ITickableInItemFram
 	@Override
 	public boolean tick(ItemFrameEntity itemFrameEntity) {
 		if (itemFrameEntity.getHeldItemStack().getOrCreateTag().getBoolean("enabled") ^ ((itemFrameEntity.getRotation() & 1) != 0)) {
-			CodingTool.attractItems(itemFrameEntity.getPos(), (ServerWorld) itemFrameEntity.world, true, true);
+			Utils.attractItems(itemFrameEntity.getPos(), (ServerWorld) itemFrameEntity.world, true, true);
 			return true;
 		}
 		return false;
@@ -75,7 +75,7 @@ public class Magnet extends Item implements IDefaultTagItem, ITickableInItemFram
 		for (int i = 0; i < player.getInventory().size(); i++) {
 			ItemStack itemStack = player.getInventory().getStack(i);
 			if (itemStack.isOf(CppItems.MAGNET) && Magnet.isEnabled(itemStack)) {
-				CodingTool.attractItems(player.getPos().add(0, 1, 0), (ServerWorld) player.world, true, false);
+				Utils.attractItems(player.getPos().add(0, 1, 0), (ServerWorld) player.world, true, false);
 				for (ExperienceOrbEntity orb : player.world.getEntitiesByClass(ExperienceOrbEntity.class, new Box(player.getPos(), player.getPos()).expand(16), orb -> orb.getPos().isInRange(player.getPos(), 16))) {
 					orb.teleport(player.getPos().x, player.getPos().y, player.getPos().z);
 				}

@@ -4,11 +4,9 @@ import java.awt.Color;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import io.netty.buffer.Unpooled;
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.init.CppItems;
 import net.cpp.screen.handler.ColorPaletteScreenHandler;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -17,7 +15,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.TropicalFishEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.*;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -348,7 +345,7 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 	}
 	
 	public void setHsb(int rgb) {
-		CodingTool.hsbFromRGB(rgb, hsb);
+		Utils.hsbFromRGB(rgb, hsb);
 	}
 	
 	public void setRgb(int rgb) {

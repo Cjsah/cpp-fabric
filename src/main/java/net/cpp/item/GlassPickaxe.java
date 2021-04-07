@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.init.CppItems;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.Block;
@@ -48,7 +48,7 @@ public class GlassPickaxe extends PickaxeItem {
 		 */
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
 			if (player.getMainHandStack().isOf(CppItems.GLASS_PICKAXE) && GLASSES.contains(state.getBlock())) {
-				CodingTool.excavate((ServerWorld) world, (ServerPlayerEntity) player, pos, null);
+				Utils.excavate((ServerWorld) world, (ServerPlayerEntity) player, pos, null);
 				if (!player.isCreative())
 					Block.dropStack(world, pos, state.getBlock().asItem().getDefaultStack());
 				return false;

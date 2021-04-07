@@ -1,8 +1,8 @@
 package net.cpp.screen;
 
-import static net.cpp.api.CodingTool.nextSyncId;
-import static net.cpp.api.CodingTool.x;
-import static net.cpp.api.CodingTool.y;
+import static net.cpp.api.Utils.nextSyncId;
+import static net.cpp.api.Utils.x;
+import static net.cpp.api.Utils.y;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 

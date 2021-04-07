@@ -1,6 +1,6 @@
 package net.cpp.item;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,7 +23,7 @@ public class SantaGift extends Item {
 		ItemStack item = user.getStackInHand(hand);
 		if (!world.isClient) {
 			ItemStack itemStack = world.getServer().getLootManager().getTable(new Identifier("cpp:items/santa_gift")).generateLoot((new LootContext.Builder((ServerWorld) world)).random(world.random).build(LootContextTypes.EMPTY)).get(0);
-			CodingTool.give(user, itemStack);
+			Utils.give(user, itemStack);
 			item.decrement(1);
 			user.incrementStat(Stats.USED.getOrCreateStat(this));
 		}

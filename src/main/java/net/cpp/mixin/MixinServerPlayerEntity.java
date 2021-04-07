@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.authlib.GameProfile;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.block.entity.BeaconEnhancerBlockEntity;
 import net.cpp.init.CppItems;
 import net.cpp.item.Magnet;
@@ -52,7 +52,7 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 			}
 			if (this0.totalExperience >= round) {
 				this0.addExperience(-round);
-				CodingTool.give(this0, stack);
+				Utils.give(this0, stack);
 			}
 		}
 		Wand.tickEffect(this0);

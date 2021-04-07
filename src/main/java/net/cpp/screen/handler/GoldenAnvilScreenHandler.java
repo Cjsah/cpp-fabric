@@ -8,7 +8,7 @@ import static net.minecraft.item.Items.BOOK;
 import static net.minecraft.item.Items.ENCHANTED_GOLDEN_APPLE;
 import static net.minecraft.item.Items.EXPERIENCE_BOTTLE;
 
-import net.cpp.api.CodingTool;
+import net.cpp.api.Utils;
 import net.cpp.block.entity.GoldenAnvilBlockEntity;
 import net.cpp.init.CppScreenHandler;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,9 +27,9 @@ public class GoldenAnvilScreenHandler extends AExpMachineScreenHandler {
 		super(CppScreenHandler.GOLDEN_ANVIL, syncId, playerInventory, blockEntity);
 		this.blockEntity = blockEntity;
 
-		addSlot(new Slot(blockEntity, 1, CodingTool.x(1), CodingTool.y(0)));
-		addSlot(new Slot(blockEntity, 2, CodingTool.x(3), CodingTool.y(0)));
-		addSlot(new ResultSlot(blockEntity, 3, CodingTool.x(2), CodingTool.y(2)));
+		addSlot(new Slot(blockEntity, 1, Utils.x(1), Utils.y(0)));
+		addSlot(new Slot(blockEntity, 2, Utils.x(3), Utils.y(0)));
+		addSlot(new ResultSlot(blockEntity, 3, Utils.x(2), Utils.y(2)));
 	}
 
 	@Override
