@@ -5,9 +5,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.Collection;
-import java.util.Collections;
-
 public class Ritual {
 
 //    private static final Collection<RitualRecipe> recipes = Collections.emptyList();
