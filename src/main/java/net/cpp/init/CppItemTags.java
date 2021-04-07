@@ -17,6 +17,8 @@ public final class CppItemTags {
 	public static final Tag<Item> RARE_DROPS = register("rare_drops");
 	public static final Tag<Item> AGENTIAS = register("agentias");
 	public static final Tag<Item> ORES = register("ores");
+	public static final Tag<Item> ARMORS = register("armors");
+	public static final Tag<Item> WEAPONS = register("weapons");
 
 	private CppItemTags() {
 	}
