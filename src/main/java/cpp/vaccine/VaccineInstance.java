@@ -43,7 +43,6 @@ public class VaccineInstance {
 
     @Nonnull
     public static VaccineInstance fromTag(@Nonnull CompoundTag tag) {
-        System.out.println(Arrays.toString(Vaccines.values()));
         return new VaccineInstance(Vaccines.byRawId(tag.getByte("Id")), tag.getInt("Duration"));
     }
 }

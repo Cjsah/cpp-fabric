@@ -2,6 +2,7 @@ package cpp;
 
 import static cpp.api.CppChat.say;
 
+import cpp.init.CppCommands;
 import cpp.init.CppGeneratorType;
 import cpp.state.CppStateOperate;
 import net.minecraft.server.MinecraftServer;
@@ -41,14 +42,12 @@ public class Craftingpp implements ModInitializer {
 
 	public static final CppConfig CONFIG = new CppConfig();
 
-	public static final ItemGroup CPP_GROUP_MACHINE = FabricItemGroupBuilder.create(new Identifier("cpp:title.machine")).icon(() -> new ItemStack(CppBlocks.CRAFTING_MACHINE)).build();
-	public static final ItemGroup CPP_GROUP_MISC = FabricItemGroupBuilder.create(new Identifier("cpp:title.misc")).icon(() -> new ItemStack(CppItems.ENCHANTED_IRON)).build();
-	public static final ItemGroup CPP_GROUP_TOOL = FabricItemGroupBuilder.create(new Identifier("cpp:title.tool")).icon(() -> new ItemStack(CppItems.BROOM)).build();
-	public static final ItemGroup CPP_GROUP_FOOD = FabricItemGroupBuilder.create(new Identifier("cpp:title.food")).icon(() -> new ItemStack(CppItems.CITRUS)).build();
-	public static final ItemGroup CPP_GROUP_PLANT = FabricItemGroupBuilder.create(new Identifier("cpp:title.plant")).icon(() -> new ItemStack(CppBlocks.ORE_SAPLING)).build();
-	public static final ItemGroup CPP_GROUP_DECORATE = FabricItemGroupBuilder.create(new Identifier("cpp:title.decorate")).icon(() -> new ItemStack(CppItems.CLASSICAL_PAINTING)).build();
-
-
+	public static final ItemGroup CPP_GROUP_MACHINE = FabricItemGroupBuilder.create(new Identifier(MOD_ID3, "title.machine")).icon(() -> new ItemStack(CppBlocks.CRAFTING_MACHINE)).build();
+	public static final ItemGroup CPP_GROUP_MISC = FabricItemGroupBuilder.create(new Identifier(MOD_ID3, "title.misc")).icon(() -> new ItemStack(CppItems.ENCHANTED_IRON)).build();
+	public static final ItemGroup CPP_GROUP_TOOL = FabricItemGroupBuilder.create(new Identifier(MOD_ID3, "title.tool")).icon(() -> new ItemStack(CppItems.BROOM)).build();
+	public static final ItemGroup CPP_GROUP_FOOD = FabricItemGroupBuilder.create(new Identifier(MOD_ID3, "title.food")).icon(() -> new ItemStack(CppItems.CITRUS)).build();
+	public static final ItemGroup CPP_GROUP_PLANT = FabricItemGroupBuilder.create(new Identifier(MOD_ID3, "title.plant")).icon(() -> new ItemStack(CppBlocks.ORE_SAPLING)).build();
+	public static final ItemGroup CPP_GROUP_DECORATE = FabricItemGroupBuilder.create(new Identifier(MOD_ID3, "title.decorate")).icon(() -> new ItemStack(CppItems.CLASSICAL_PAINTING)).build();
 
 	@Override
 	public void onInitialize() {
@@ -65,6 +64,7 @@ public class Craftingpp implements ModInitializer {
 		CppEntities.loadClass();
 		CppFeatures.loadClass();
 		CppGeneratorType.loadClass();
+		CppCommands.register();
 		AttachAttributesLootFunction.loadClass();
 		IPlayerJoinCallback.EVENT.register((player, server) -> {
 			if (!player.world.isClient)

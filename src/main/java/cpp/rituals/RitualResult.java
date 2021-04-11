@@ -2,6 +2,7 @@ package cpp.rituals;
 
 import cpp.ducktyping.ICppState;
 import cpp.init.CppItemTags;
+import cpp.state.CppStateOperate;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
@@ -24,7 +25,7 @@ public class RitualResult {
      */
     @Nonnull
     @SuppressWarnings("ConstantConditions")
-    protected static ItemStack getEnchantingResult(Item rare1, Item rare2) {
+    public static ItemStack getEnchantingResult(Item rare1, Item rare2) {
         int index = 0;
         ItemStack book = new ItemStack(Items.ENCHANTED_BOOK);
         for (Item value1 : CppItemTags.RARE_DROPS.values()) {

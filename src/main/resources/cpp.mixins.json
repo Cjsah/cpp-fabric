@@ -25,6 +25,7 @@
 		"MixinItemStack",
 		"MixinLeavesBlock",
 		"MixinLivingEntity",
+		"MixinMinecraftServer",
 		"MixinMooshroomEntity",
 		"MixinPigEntity",
 		"MixinPlayerEntity",

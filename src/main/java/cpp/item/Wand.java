@@ -1,17 +1,18 @@
 package cpp.item;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import cpp.api.Effect;
 import cpp.api.Utils;
+import cpp.ducktyping.ICppState;
 import cpp.ducktyping.ITemperancable;
 import cpp.init.CppEffects;
 import cpp.init.CppItemTags;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import cpp.rituals.RitualResult;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.DispenserBlockEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentLevelEntry;
 import net.minecraft.entity.EquipmentSlot;
@@ -39,29 +40,21 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.resource.ServerResourceManager;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.CommandOutput;
-import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec2f;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -90,7 +83,6 @@ public class Wand extends Item {
 	public static final ImmutableMap<Item, StatusEffect> EFFECTS = ImmutableMap.<Item, StatusEffect>builder().put(AGENTIA_OF_AGILENESS, SPEED).put(AGENTIA_OF_BOUNCE, JUMP_BOOST).put(AGENTIA_OF_EXTREMENESS, HASTE).put(AGENTIA_OF_SHARPNESS, STRENGTH).put(AGENTIA_OF_REJUVENESS, REGENERATION).put(AGENTIA_OF_SHIELD, RESISTANCE).put(AGENTIA_OF_FIRE_SHIELD, FIRE_RESISTANCE).put(AGENTIA_OF_TRANSPARENTNESS, INVISIBILITY).put(AGENTIA_OF_WATERLESS, WATER_BREATHING).put(AGENTIA_OF_EYESIGHT, NIGHT_VISION).put(COLD_DRINK, SATURATION).put(AGENTIA_OF_LIGHTNESS, SLOW_FALLING).put(AGENTIA_OF_TIDE, CONDUIT_POWER).put(AGENTIA_OF_CHAIN, CppEffects.CHAIN).put(MAGNET, MAGNETIC).build();
 	public static final ImmutableMultimap<StatusEffect, EquipmentSlot> CORRECT_SLOTS = ImmutableMultimap.<StatusEffect, EquipmentSlot>builder().put(SPEED, EquipmentSlot.FEET).put(JUMP_BOOST, EquipmentSlot.FEET).put(HASTE, EquipmentSlot.MAINHAND).put(STRENGTH, EquipmentSlot.MAINHAND).put(REGENERATION, EquipmentSlot.HEAD).put(REGENERATION, EquipmentSlot.CHEST).put(REGENERATION, EquipmentSlot.LEGS).put(REGENERATION, EquipmentSlot.FEET).put(RESISTANCE, EquipmentSlot.HEAD).put(RESISTANCE, EquipmentSlot.CHEST).put(RESISTANCE, EquipmentSlot.LEGS).put(RESISTANCE, EquipmentSlot.FEET).put(FIRE_RESISTANCE, EquipmentSlot.HEAD).put(FIRE_RESISTANCE, EquipmentSlot.CHEST).put(FIRE_RESISTANCE, EquipmentSlot.LEGS).put(FIRE_RESISTANCE, EquipmentSlot.FEET).put(INVISIBILITY, EquipmentSlot.HEAD).put(INVISIBILITY, EquipmentSlot.CHEST).put(INVISIBILITY, EquipmentSlot.LEGS).put(INVISIBILITY, EquipmentSlot.FEET).put(WATER_BREATHING, EquipmentSlot.HEAD).put(NIGHT_VISION, EquipmentSlot.HEAD).put(SATURATION, EquipmentSlot.HEAD).put(SLOW_FALLING, EquipmentSlot.FEET).put(CONDUIT_POWER, EquipmentSlot.HEAD).put(CppEffects.CHAIN, EquipmentSlot.MAINHAND).put(MAGNETIC, EquipmentSlot.MAINHAND).put(MAGNETIC, EquipmentSlot.OFFHAND).put(MAGNETIC, EquipmentSlot.HEAD).put(MAGNETIC, EquipmentSlot.CHEST).put(MAGNETIC, EquipmentSlot.LEGS).put(MAGNETIC, EquipmentSlot.FEET).build();
 	public static final long HIGH_UUID = 0x0123456789ABCDEFL;
-	private static Map<Item, Integer> randoms = new HashMap<>();
 	private static int tickSpent = 1200;
 	private final int level;
 
@@ -182,27 +174,6 @@ public class Wand extends Item {
 		return null;
 	}
 
-	public static void loadRandoms(MinecraftServer server) {
-		ServerWorld world = server.getWorlds().iterator().next();
-		ServerCommandSource commandSource = new ServerCommandSource(CommandOutput.DUMMY, Vec3d.ZERO, Vec2f.ZERO, world, 4, "更多的合成：仪式：读取预留随机数", LiteralText.EMPTY, server, null);
-		int l = CppItemTags.RARE_DROPS.values().size();
-		List<Integer> rs = new ArrayList<>(l);
-		for (int i = 0; i < l; i++)
-			rs.add(world.random.nextInt(i + 1), i);
-		for (Item item : CppItemTags.RARE_DROPS.values()) {
-			String id = Registry.ITEM.getId(item).toString();
-			int a = server.getCommandManager().execute(commandSource, String.format("data get storage cpp:constants rituals.enchantmentRandoms.%s 1", id)) - 1;
-			if (rs.contains(a)) {
-				rs.removeAll(ImmutableList.of(a));
-			} else {
-				a = rs.remove(world.random.nextInt(rs.size()));
-				String command = String.format("data modify storage cpp:constants rituals.enchantmentRandoms.%s set value %d", id, a + 1);
-				server.getCommandManager().execute(commandSource, command);
-			}
-			randoms.put(item, a);
-		}
-	}
-
 	public static void tickEffect(PlayerEntity player) {
 		if (((ITemperancable) player).isEffectEnabled() && player.world.getTime() % 20 == 0) {
 			for (EquipmentSlot slot : EquipmentSlot.values()) {
@@ -266,16 +237,6 @@ public class Wand extends Item {
 				iRitualFrame.setRitualTime(0);
 			}
 		}
-	}
-
-	static {
-		ServerLifecycleEvents.SERVER_STARTED.register(Wand::loadRandoms);
-		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((MinecraftServer server, ServerResourceManager serverResourceManager, boolean success) -> {
-			if (success) {
-				loadRandoms(server);
-			}
-		});
-
 	}
 
 	public static boolean checkBase1(World world, BlockPos blockPos) {
@@ -408,16 +369,7 @@ public class Wand extends Item {
 	}
 
 	public static void done1(Inventory inventory, ItemFrameEntity frame) {
-		Set<Entry<RegistryKey<Enchantment>, Enchantment>> entries = Registry.ENCHANTMENT.getEntries();
-		int r = (randoms.get(inventory.getStack(1).getItem()) + randoms.get(inventory.getStack(7).getItem()) * CppItemTags.RARE_DROPS.values().size()) % entries.size();
-		Iterator<Entry<RegistryKey<Enchantment>, Enchantment>> iterator = entries.iterator();
-		while (--r > 0) {
-			iterator.next();
-		}
-		Enchantment enchantment = iterator.next().getValue();
-		ItemStack enchantedBook = ENCHANTED_BOOK.getDefaultStack();
-		EnchantedBookItem.addEnchantment(enchantedBook, new EnchantmentLevelEntry(enchantment, enchantment.getMaxLevel()));
-		frame.setHeldItemStack(enchantedBook);
+		frame.setHeldItemStack(RitualResult.getEnchantingResult(inventory.getStack(1).getItem(), inventory.getStack(7).getItem()));
 		decrease1(inventory);
 	}
 

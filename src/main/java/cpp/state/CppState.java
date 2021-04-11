@@ -40,8 +40,9 @@ public class CppState extends PersistentState {
     @Nonnull
     private ListTag getEnchantingRecipes() {
         ListTag list = new ListTag();
-        if (this.data.has("EnchantingRituals")) {
-            for (JsonElement json : this.data.get("EnchantingRituals").getAsJsonArray()) {
+        JsonArray enchantingRituals = this.data.get("EnchantingRituals").getAsJsonArray();
+        if (enchantingRituals.size() != 0) {
+            for (JsonElement json : enchantingRituals) {
                 CompoundTag tag = new CompoundTag();
                 tag.putString("rare1", json.getAsJsonObject().get("rare1").getAsString());
                 tag.putString("rare2", json.getAsJsonObject().get("rare2").getAsString());
@@ -49,32 +50,25 @@ public class CppState extends PersistentState {
                 list.add(tag);
             }
         }else {
-            JsonArray jsonArray = new JsonArray();
             List<Identifier> enchants = new ArrayList<>(Registry.ENCHANTMENT.getIds());
             Collections.shuffle(enchants);
             for (Identifier enchant : enchants) {
                 list.add(StringTag.of(enchant.toString()));
-                jsonArray.add(enchant.toString());
+                enchantingRituals.add(enchant.toString());
             }
-            this.data.add("EnchantingRituals", jsonArray);
         }
         return list;
     }
 
-    protected CppState readNbt(@Nonnull CompoundTag tag) {
+    protected void readNbt(@Nonnull CompoundTag tag) {
         this.data.addProperty("IslandMode", tag.getBoolean("IslandMode"));
         this.data.addProperty("IslandID", tag.getInt("IslandID"));
         this.data.addProperty("Around", tag.getInt("Around"));
-        JsonArray inIslandArray = new JsonArray();
-        for (Tag inIsland : tag.getList("InIsland", 10)) {
-            inIslandArray.add(inIsland.asString());
+        for (Tag inIsland : tag.getList("InIsland", 8)) {
+            this.data.get("InIsland").getAsJsonArray().add(inIsland.asString());
         }
-        this.data.add("InIsland", inIslandArray);
-        JsonArray enchantsArray = new JsonArray();
-        for (Tag enchant : tag.getList("EnchantingRituals", 10)) {
-            enchantsArray.add(enchant.asString());
+        for (Tag enchant : tag.getList("EnchantingRituals", 8)) {
+            this.data.get("EnchantingRituals").getAsJsonArray().add(enchant.asString());
         }
-        this.data.add("EnchantingRituals", enchantsArray);
-        return this;
     }
 }

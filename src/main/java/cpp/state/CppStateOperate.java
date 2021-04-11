@@ -12,6 +12,10 @@ import java.util.List;
 public class CppStateOperate {
     private final JsonObject data = new JsonObject();
 
+    public CppStateOperate() {
+        this.initData();
+    }
+
     private final List<Runnable> updateListeners = Lists.newArrayList();
 
     private void addUpdateListener(Runnable listener) {
@@ -25,13 +29,25 @@ public class CppStateOperate {
     }
 
     public CppState stateFromNbt(CompoundTag tag) {
-        return this.createState().readNbt(tag);
+        CppState state = new CppState(this.data);
+        this.addUpdateListener(state::markDirty);
+        state.readNbt(tag);
+        return state;
     }
 
-    public CppState createState() {
-        CppState logMeState = new CppState(this.data);
-        this.addUpdateListener(logMeState::markDirty);
-        return logMeState;
+    public CppState initState() {
+        CppState state = new CppState(this.data);
+        this.addUpdateListener(state::markDirty);
+        this.runUpdateListeners();
+        return state;
+    }
+
+    private void initData() {
+        this.data.addProperty("IslandMode", false);
+        this.data.addProperty("IslandID", 1);
+        this.data.addProperty("Around", 1);
+        this.data.add("InIsland", new JsonArray());
+        this.data.add("EnchantingRituals", new JsonArray());
     }
 
     public boolean contains(String name) {
@@ -87,7 +103,6 @@ public class CppStateOperate {
 
     public String getEnchantment(int index) {
         index -= index / 38 * 38;
-//        return Registry.ENCHANTMENT.get(new Identifier(this.data.get("EnchantingRituals").getAsJsonArray().get(index).getAsString()));
         return this.data.get("EnchantingRituals").getAsJsonArray().get(index).getAsString();
     }
 

@@ -16,9 +16,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
 
-@Mixin(MinecraftServer.class)
 @SuppressWarnings("unused")
-public class MixinMinecraftServer implements ICppState {
+@Mixin(MinecraftServer.class)
+public abstract class MixinMinecraftServer implements ICppState {
 
     @Shadow
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
@@ -32,7 +32,7 @@ public class MixinMinecraftServer implements ICppState {
     }
 
     private void initCppState(PersistentStateManager persistentStateManager) {
-        persistentStateManager.getOrCreate(this.getCppStateOperate()::stateFromNbt, this.getCppStateOperate()::createState, Craftingpp.MOD_ID3);
+        persistentStateManager.getOrCreate(this.getCppStateOperate()::stateFromNbt, this.getCppStateOperate()::initState, Craftingpp.MOD_ID3);
     }
 
     @Inject(at = @At("RETURN"), method = "createWorlds")
