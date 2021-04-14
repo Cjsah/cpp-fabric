@@ -153,15 +153,16 @@ public class CppFoodOrPotion extends Item implements INutrition {
         if (player instanceof ServerPlayerEntity) {
             Criteria.CONSUME_ITEM.trigger((ServerPlayerEntity)player, stack);
         }
-        applyFoodEffects(stack.getItem(), world, player);
+        this.applyFoodEffects(stack.getItem(), world, player);
         if (!player.isCreative()) {
             stack.decrement(1);
         }
         return stack;
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void applyFoodEffects(@Nonnull Item item, World world, LivingEntity targetEntity) {
-        List<Pair<StatusEffectInstance, Float>> list = Objects.requireNonNull(item.getFoodComponent()).getStatusEffects();
+        List<Pair<StatusEffectInstance, Float>> list = item.getFoodComponent().getStatusEffects();
 
         for (Pair<StatusEffectInstance, Float> pair : list) {
             if (!world.isClient && pair.getFirst() != null && world.random.nextFloat() < pair.getSecond()) {
