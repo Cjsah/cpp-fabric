@@ -60,7 +60,7 @@ public final class RitualResult {
         }
         item.putSubTag("EquipmentEffect", StringTag.of(tag));
 
-        return null;
+        return item;
     }
 
     /**
