@@ -516,7 +516,6 @@
   "gui.click_to_take_out": "点击取出",
 
   "effect.cpp.chain": "连环",
-  "effect.cpp.darkness": "黑暗",
 
   "chat.cpp.title": "[Crafting++]",
   "chat.cpp.load1": "模组《更多的合成》已成功加载，更多内容请",
@@ -587,6 +586,8 @@
 
   "generator.cpp_island": "Crafting++空岛",
 
-  "loot_table.minecraft:gameplay/piglin_bartering": "猪灵交易表"
+  "loot_table.minecraft:gameplay/piglin_bartering": "猪灵交易表",
+
+  "text.cpp.test": "%s %s %s %s %s %s %s %s %s"
 
 }
