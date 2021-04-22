@@ -1,6 +1,5 @@
 package cpp;
 
-import cpp.client.render.block.entity.VariantSkullBlockEntityRenderer;
 import cpp.entity.AGolemEntity;
 import cpp.client.render.entity.DarkChickenEntityRenderer;
 import cpp.client.render.entity.DarkCowEntityRenderer;
@@ -22,7 +21,6 @@ import cpp.screen.TradeMachineScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.impl.blockrenderlayer.BlockRenderLayerMapImpl;
@@ -66,7 +64,6 @@ public class CraftingppClient implements ClientModInitializer {
 		for (Block block : CppBlocks.FLOWER_GRASSES) {
 			BlockRenderLayerMapImpl.INSTANCE.putBlock(block, RenderLayer.getCutout());
 		}
-		BlockEntityRendererRegistry.INSTANCE.register(CppBlockEntities.VARIANT_SKULL, VariantSkullBlockEntityRenderer::new);
 	}
 	
 }

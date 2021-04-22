@@ -51,7 +51,7 @@ public class Craftingpp implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-
+		
 		logger.info("welcome to use cpp");
 
 		CppBlocks.loadClass();

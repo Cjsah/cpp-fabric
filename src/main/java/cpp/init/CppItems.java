@@ -11,10 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.DyeableArmorItem;
-import net.minecraft.item.FoodComponent;
-import net.minecraft.item.Item;
+import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.UseAction;
@@ -337,6 +334,7 @@ public final class CppItems {
 	public static final Item RECIPE_CREATOR = registerItem("recipe_creator", new RecipeCreator());
 
 	public static final Item COMPRESSED_ITEM;
+	
 	static {
 		SHARD_OF_THE_DARKNESS = registerItem("shard_of_the_darkness", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		WING_OF_SKY = registerItem("wing_of_sky", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
@@ -648,6 +646,9 @@ public final class CppItems {
 		COMPRESSED_ITEM = registerItem("compressed_item", new CompressedItem(new Item.Settings()));
 	}
 
+	static <T extends BlockItem> T register(T blockItem) {
+		return Registry.register(Registry.ITEM, Registry.BLOCK.getId(blockItem.getBlock()), blockItem);
+	}
 	private static Item registerItem(String id, Item item) {
 		return Registry.register(Registry.ITEM, new Identifier(Craftingpp.MOD_ID3, id), item);
 	}

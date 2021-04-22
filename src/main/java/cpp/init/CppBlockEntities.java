@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityT
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.block.entity.SkullBlockEntity;
 import net.minecraft.util.registry.Registry;
 
 public final class CppBlockEntities {
@@ -21,11 +22,10 @@ public final class CppBlockEntities {
 	public static final BlockEntityType<BlockBreakerBlockEntity> BLOCK_BREAKER = registerBlockEntityType(BlockBreakerBlockEntity::new, CppBlocks.BLOCK_BREAKER);
 	public static final BlockEntityType<FermenterBlockEntity> FERMENTER = registerBlockEntityType(FermenterBlockEntity::new, CppBlocks.FERMENTER);
 	public static final BlockEntityType<BrokenSpawnerBlockEntity> BROKEN_SPAWNER = registerBlockEntityType(BrokenSpawnerBlockEntity::new, CppBlocks.BROKEN_SPAWNER);
-	public static final BlockEntityType<VariantSkullBlockEntity> VARIANT_SKULL = registerBlockEntityType(VariantSkullBlockEntity::new, CppBlocks.VARIANT_SKULL);
-
+	
 	public static void loadClass() {}
 
-	private static <T extends BlockEntity> BlockEntityType<T> registerBlockEntityType(FabricBlockEntityTypeBuilder.Factory<T> factory, Block block) {
-		return Registry.register(Registry.BLOCK_ENTITY_TYPE, Registry.BLOCK.getId(block).toString(), FabricBlockEntityTypeBuilder.create(factory, block).build());
+	private static <T extends BlockEntity> BlockEntityType<T> registerBlockEntityType(FabricBlockEntityTypeBuilder.Factory<T> factory, Block... blocks) {
+		return Registry.register(Registry.BLOCK_ENTITY_TYPE, Registry.BLOCK.getId(blocks[0]).toString(), FabricBlockEntityTypeBuilder.create(factory, blocks).build());
 	}
 }

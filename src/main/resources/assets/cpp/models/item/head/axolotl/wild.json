@@ -1,0 +1,7 @@
+{
+	"parent": "cpp:head/axolotl/axolotl",
+	"textures": {
+		"particle": "entity/axolotl/axolotl_wild",
+		"layer": "entity/axolotl/axolotl_wild"
+	}
+}
