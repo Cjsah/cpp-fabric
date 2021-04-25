@@ -1,5 +1,5 @@
 {
-	"parent": "cpp:head/rabbit/rabbit",
+	"parent": "cpp:item/head/rabbit/rabbit",
 	"textures": {
 		"particle": "entity/rabbit/white_splotched",
 		"layer": "entity/rabbit/white_splotched"

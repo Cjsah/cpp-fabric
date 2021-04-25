@@ -5,6 +5,7 @@ import static cpp.api.CppChat.say;
 import cpp.init.CppCommands;
 import cpp.init.CppGeneratorType;
 import cpp.state.CppStateOperate;
+import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,27 +34,27 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 public class Craftingpp implements ModInitializer {
-
+	
 	public static final String MOD_ID1 = "Crafting++";
 	public static final String MOD_ID2 = "Craftingpp";
 	public static final String MOD_ID3 = "cpp";
-
+	
 	public static final Logger logger = LogManager.getLogger(MOD_ID1);
-
+	
 	public static final CppConfig CONFIG = new CppConfig();
-
+	
 	public static final ItemGroup CPP_GROUP_MACHINE = FabricItemGroupBuilder.create(new Identifier(MOD_ID3, "title.machine")).icon(() -> new ItemStack(CppBlocks.CRAFTING_MACHINE)).build();
 	public static final ItemGroup CPP_GROUP_MISC = FabricItemGroupBuilder.create(new Identifier(MOD_ID3, "title.misc")).icon(() -> new ItemStack(CppItems.ENCHANTED_IRON)).build();
 	public static final ItemGroup CPP_GROUP_TOOL = FabricItemGroupBuilder.create(new Identifier(MOD_ID3, "title.tool")).icon(() -> new ItemStack(CppItems.BROOM)).build();
 	public static final ItemGroup CPP_GROUP_FOOD = FabricItemGroupBuilder.create(new Identifier(MOD_ID3, "title.food")).icon(() -> new ItemStack(CppItems.CITRUS)).build();
 	public static final ItemGroup CPP_GROUP_PLANT = FabricItemGroupBuilder.create(new Identifier(MOD_ID3, "title.plant")).icon(() -> new ItemStack(CppBlocks.ORE_SAPLING)).build();
 	public static final ItemGroup CPP_GROUP_DECORATE = FabricItemGroupBuilder.create(new Identifier(MOD_ID3, "title.decorate")).icon(() -> new ItemStack(CppItems.CLASSICAL_PAINTING)).build();
-
+	
 	@Override
 	public void onInitialize() {
 		
 		logger.info("welcome to use cpp");
-
+		
 		CppBlocks.loadClass();
 		CppItems.loadClass();
 		CppBlockEntities.loadClass();
@@ -71,6 +72,9 @@ public class Craftingpp implements ModInitializer {
 				say(player, new TranslatableText("misc.cpp1", new TranslatableText("chat.cpp.load1"), new TranslatableText("chat.cpp.load2").setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.cjsah.net/ruhuasiyu/"))).formatted(Formatting.GOLD)));
 			return ActionResult.PASS;
 		});
-
+		
+		LootTableLoadingCallback.EVENT.register((resourceManager, manager, id, supplier, setter) -> {
+		
+		});
 	}
 }

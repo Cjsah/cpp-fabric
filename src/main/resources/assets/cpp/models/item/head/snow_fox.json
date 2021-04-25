@@ -1,5 +1,5 @@
 {
-	"parent": "cpp:head/fox_template",
+	"parent": "cpp:item/head/fox_template",
 	"textures": {
 		"particle": "entity/fox/snow_fox",
 		"layer": "entity/fox/snow_fox"

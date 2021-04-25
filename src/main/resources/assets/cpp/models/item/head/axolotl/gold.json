@@ -1,5 +1,5 @@
 {
-	"parent": "cpp:head/axolotl/axolotl",
+	"parent": "cpp:item/head/axolotl/axolotl",
 	"textures": {
 		"particle": "entity/axolotl/axolotl_gold",
 		"layer": "entity/axolotl/axolotl_gold"

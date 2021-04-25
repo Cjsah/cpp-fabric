@@ -1,5 +1,5 @@
 {
-	"parent": "cpp:head/guardian_template",
+	"parent": "cpp:item/head/guardian_template",
 	"textures": {
 		"particle": "entity/guardian_elder",
 		"layer": "entity/guardian_elder"

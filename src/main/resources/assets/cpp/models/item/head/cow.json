@@ -1,5 +1,5 @@
 {
-	"parent": "cpp:head/cow_template",
+	"parent": "cpp:item/head/cow_template",
 	"textures": {
 		"particle": "entity/cow/cow",
 		"layer": "entity/cow/cow"

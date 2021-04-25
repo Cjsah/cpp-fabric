@@ -1,5 +1,5 @@
 {
-	"parent": "cpp:head/villager_template",
+	"parent": "cpp:item/head/villager_template",
 	"textures": {
 		"particle": "entity/illager/evoker",
 		"layer": "entity/illager/evoker"
