@@ -42,7 +42,7 @@ import net.minecraft.entity.passive.GolemEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -132,11 +132,11 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		tag.putInt("playerEffect", playerEffectCode);
 		tag.putInt("mobEffect", mobEffectCode);
 		tag.putBoolean("onlyAdverse", onlyAdverse);
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 	
 	/**
@@ -151,13 +151,13 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 	}
 	
 	@Override
-	public void fromTag(CompoundTag tag) {
+	public void readNbt(NbtCompound tag) {
 		playerEffectCode = tag.getInt("playerEffect");
 		playerEffect = AVAILABLE_PLAYER_EFFECTS.get(playerEffectCode);
 		mobEffectCode = tag.getInt("mobEffect");
 		mobEffect = AVAILABLE_MOB_EFFECTS.get(mobEffectCode);
 		onlyAdverse = tag.getBoolean("onlyAdverse");
-		super.fromTag(tag);
+		super.readNbt(tag);
 	}
 	
 	public static void tick(World world, BlockPos pos, BlockState state, BeaconEnhancerBlockEntity blockEntity) {
@@ -167,7 +167,7 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 				BlockEntity tempBlockEntity = world.getBlockEntity(pos.down());
 				if (tempBlockEntity instanceof BeaconBlockEntity) {
 					BeaconBlockEntity beaconBlockEntity = (BeaconBlockEntity) tempBlockEntity;
-					int level = beaconBlockEntity.toInitialChunkDataTag().getInt("Levels");
+					int level = beaconBlockEntity.toInitialChunkDataNbt().getInt("Levels");
 					blockEntity.cooldown = 160 - level * 20;
 					// 仅当信标激活时才工作
 					if (level >= 0) {

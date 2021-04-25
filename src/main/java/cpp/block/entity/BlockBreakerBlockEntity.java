@@ -8,7 +8,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
@@ -22,17 +22,17 @@ public class BlockBreakerBlockEntity extends BlockEntity {
 	}
 	
 	@Override
-	public void fromTag(CompoundTag tag) {
-		super.fromTag(tag);
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
 		time = tag.getInt("time");
 		fluid = tag.getString("fluid");
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		tag.putInt("time", time);
 		tag.putString("fluid", fluid);
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 	
 	public static void tick(World world, BlockPos pos, BlockState state, BlockBreakerBlockEntity blockEntity) {

@@ -43,7 +43,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.screen.PropertyDelegate;
@@ -95,15 +95,15 @@ public class ItemProcessorBlockEntity extends AOutputMachineBlockEntity {
 	}
 
 	@Override
-	public void fromTag(CompoundTag tag) {
-		super.fromTag(tag);
-		Inventories.fromTag(tag, inventory);
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
+		Inventories.readNbt(tag, inventory);
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		super.toTag(tag);
-		Inventories.toTag(tag, inventory);
+	public NbtCompound writeNbt(NbtCompound tag) {
+		super.writeNbt(tag);
+		Inventories.writeNbt(tag, inventory);
 		return tag;
 	}
 

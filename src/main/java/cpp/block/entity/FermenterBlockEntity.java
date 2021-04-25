@@ -6,7 +6,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -86,15 +86,15 @@ public class FermenterBlockEntity extends BlockEntity implements SidedInventory 
 	}
 	
 	@Override
-	public void fromTag(CompoundTag tag) {
-		super.fromTag(tag);
-		stack = ItemStack.fromTag(tag.getCompound("stack"));
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
+		stack = ItemStack.fromNbt(tag.getCompound("stack"));
 	}
 	
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag.put("stack", stack.toTag(new CompoundTag()));
-		return super.toTag(tag);
+	public NbtCompound writeNbt(NbtCompound tag) {
+		tag.put("stack", stack.writeNbt(new NbtCompound()));
+		return super.writeNbt(tag);
 	}
 	
 	@Override

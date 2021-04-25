@@ -30,8 +30,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.IntArrayTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtIntArray;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
@@ -141,7 +141,7 @@ public class Utils {
 	 * （本类未使用）
 	 *
 	 * @author Phoupraw
-	 * @see Utils#intArrayToUUID(IntArrayTag)
+	 * @see Utils#intArrayToUUID(NbtIntArray)
 	 * @param uuid 要转化为数组的uuid
 	 * @return 转化的数组
 	 */
@@ -167,11 +167,11 @@ public class Utils {
 	 */
 	@Nonnull
 	@SuppressWarnings("unused")
-	public static UUID intArrayToUUID(@Nonnull IntArrayTag uuidListTag) {
-		long mostSigBits = uuidListTag.get(0).getLong() << 32;
-		mostSigBits += uuidListTag.get(1).getLong();
-		long leastSigBits = uuidListTag.get(2).getLong() << 32;
-		leastSigBits += uuidListTag.get(3).getLong();
+	public static UUID intArrayToUUID(@Nonnull NbtIntArray uuidListTag) {
+		long mostSigBits = uuidListTag.get(0).longValue() << 32;
+		mostSigBits += uuidListTag.get(1).longValue();
+		long leastSigBits = uuidListTag.get(2).longValue() << 32;
+		leastSigBits += uuidListTag.get(3).longValue();
 		return new UUID(mostSigBits, leastSigBits);
 	}
 
@@ -458,28 +458,28 @@ public class Utils {
 	}
 
 	/**
-	 * 把{@link Inventory}储存到{@link CompoundTag}
+	 * 把{@link Inventory}储存到{@link NbtCompound}
 	 * 
 	 * @param inventory 物品栏
 	 * @param tag       标签
 	 */
-	public static void inventoryToTag(@Nonnull Inventory inventory, CompoundTag tag) {
+	public static void inventoryToTag(@Nonnull Inventory inventory, NbtCompound tag) {
 		DefaultedList<ItemStack> stacks = DefaultedList.ofSize(inventory.size(), ItemStack.EMPTY);
 		for (int i = 0; i < stacks.size(); i++) {
 			stacks.set(i, inventory.getStack(i));
 		}
-		Inventories.toTag(tag, stacks);
+		Inventories.writeNbt(tag, stacks);
 	}
 
 	/**
-	 * 从{@link CompoundTag}读取{@link Inventory}
+	 * 从{@link NbtCompound}读取{@link Inventory}
 	 * 
 	 * @param inventory 物品栏
 	 * @param tag       标签
 	 */
-	public static void inventoryFromTag(@Nonnull Inventory inventory, CompoundTag tag) {
+	public static void inventoryFromTag(@Nonnull Inventory inventory, NbtCompound tag) {
 		DefaultedList<ItemStack> stacks = DefaultedList.ofSize(inventory.size(), ItemStack.EMPTY);
-		Inventories.fromTag(tag, stacks);
+		Inventories.readNbt(tag, stacks);
 		for (int i = 0; i < inventory.size(); i++) {
 			inventory.setStack(i, stacks.get(i));
 		}
@@ -549,10 +549,10 @@ public class Utils {
 	public static void removeEffectExceptHidden(@Nonnull LivingEntity living, StatusEffect effect, int amplifier, int duration) {
 		StatusEffectInstance effectInstance = living.getStatusEffect(effect);
 		if (effectInstance != null && effectInstance.getAmplifier() == amplifier && effectInstance.getDuration() <= duration) {
-			CompoundTag tag1 = effectInstance.toTag(new CompoundTag());
+			NbtCompound tag1 = effectInstance.writeNbt(new NbtCompound());
 			if (tag1.contains("HiddenEffect")) {
-				CompoundTag tag2 = tag1.getCompound("HiddenEffect");
-				living.applyStatusEffect(StatusEffectInstance.fromTag(tag2));
+				NbtCompound tag2 = tag1.getCompound("HiddenEffect");
+				living.applyStatusEffect(StatusEffectInstance.fromNbt(tag2));
 			} else {
 				living.removeStatusEffect(effect);
 			}

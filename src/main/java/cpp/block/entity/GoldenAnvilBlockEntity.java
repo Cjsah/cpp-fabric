@@ -16,8 +16,8 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -65,15 +65,15 @@ public class GoldenAnvilBlockEntity extends AExpMachineBlockEntity {
 	}
 
 	@Override
-	public void fromTag(CompoundTag tag) {
-		super.fromTag(tag);
-		Inventories.fromTag(tag, inventory);
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
+		Inventories.readNbt(tag, inventory);
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		super.toTag(tag);
-		Inventories.toTag(tag, inventory);
+	public NbtCompound writeNbt(NbtCompound tag) {
+		super.writeNbt(tag);
+		Inventories.writeNbt(tag, inventory);
 		return tag;
 	}
 
@@ -117,11 +117,11 @@ public class GoldenAnvilBlockEntity extends AExpMachineBlockEntity {
 					blockEntity.transferResult(1);
 				} else if (rightStack.isOf(ENCHANTED_GOLDEN_APPLE) && blockEntity.expStorage >= 256 && leftStack.isEnchantable()) {
 					boolean hasCursed = false;
-					Iterator<Tag> iterator = leftStack.getEnchantments().iterator();
+					Iterator<NbtElement> iterator = leftStack.getEnchantments().iterator();
 					while (iterator.hasNext()) {
-						Tag tag = iterator.next();
-						if (tag instanceof CompoundTag) {
-							CompoundTag compoundTag = (CompoundTag) tag;
+						NbtElement tag = iterator.next();
+						if (tag instanceof NbtCompound) {
+							NbtCompound compoundTag = (NbtCompound) tag;
 							String name = compoundTag.getString("id");
 							Enchantment enchantment = Registry.ENCHANTMENT.get(new Identifier(name));
 							if (enchantment.isCursed()) {

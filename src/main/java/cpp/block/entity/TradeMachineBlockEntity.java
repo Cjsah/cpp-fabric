@@ -40,7 +40,7 @@ import net.minecraft.item.map.MapState;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextTypes;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.screen.PropertyDelegate;
@@ -146,21 +146,21 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 	}
 
 	@Override
-	public void fromTag(CompoundTag tag) {
+	public void readNbt(NbtCompound tag) {
 		cooldown = tag.getInt("cooldown");
 		emeraldCount = tag.getInt("emeraldCount");
 		mode = tag.getInt("mode");
 		tradeValue = tag.getInt("tradeValue");
-		super.fromTag(tag);
+		super.readNbt(tag);
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		tag.putInt("cooldown", cooldown);
 		tag.putInt("emeraldCount", emeraldCount);
 		tag.putInt("mode", mode);
 		tag.putInt("tradeValue", tradeValue);
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 
 	@Override
@@ -597,7 +597,7 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 				if (blockPos != null) {
 					ItemStack itemStack = FilledMapItem.createMap(serverWorld, blockPos.getX(), blockPos.getZ(), (byte) 1, true, true);
 					FilledMapItem.fillExplorationMap(serverWorld, itemStack);
-					MapState.addDecorationsTag(itemStack, blockPos, "X", MapIcon.Type.RED_X);
+					MapState.addDecorationsNbt(itemStack, blockPos, "X", MapIcon.Type.RED_X);
 					itemStack.setCustomName(new TranslatableText("structure_feature." + structureFeature.getName()).append(new TranslatableText("item.cpp.explorer_map")));
 					return itemStack;
 				}

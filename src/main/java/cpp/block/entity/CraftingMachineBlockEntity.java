@@ -12,10 +12,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeFinder;
 import net.minecraft.recipe.RecipeInputProvider;
+import net.minecraft.recipe.RecipeMatcher;
 import net.minecraft.recipe.RecipeUnlocker;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -136,15 +136,15 @@ public class CraftingMachineBlockEntity extends AOutputMachineBlockEntity implem
 	 * 以下是LockableContainerBlockEntity的方法
 	 */
 	@Override
-	public void fromTag(CompoundTag tag) {
-		super.fromTag(tag);
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
 		inventoryFromTag(tag, inputInventory);
-		leftover = ItemStack.fromTag(tag.getCompound("leftover"));
+		leftover = ItemStack.fromNbt(tag.getCompound("leftover"));
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		super.toTag(tag);
+	public NbtCompound writeNbt(NbtCompound tag) {
+		super.writeNbt(tag);
 		inventoryToTag(tag, inputInventory);
 		tag.put("leftover", itemStackToTag(leftover));
 		return tag;
@@ -177,7 +177,7 @@ public class CraftingMachineBlockEntity extends AOutputMachineBlockEntity implem
 	 * 以下是RecipeInputProvider的方法
 	 */
 	@Override
-	public void provideRecipeInputs(RecipeFinder finder) {
+	public void provideRecipeInputs(RecipeMatcher finder) {
 		inputInventory.provideRecipeInputs(finder);
 	}
 

@@ -2,7 +2,7 @@ package cpp.api;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.sapling.SaplingGenerator;
-import net.minecraft.world.gen.UniformIntDistribution;
+import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
@@ -23,6 +23,6 @@ public class SimpleSaplingGenerator extends SaplingGenerator {
 
 	@Override
 	protected ConfiguredFeature<TreeFeatureConfig, ?> createTreeFeature(Random random, boolean bl) {
-		return Feature.TREE.configure((new TreeFeatureConfig.Builder(new SimpleBlockStateProvider(log.getDefaultState()), new SimpleBlockStateProvider(leaves.getDefaultState()), new BlobFoliagePlacer(UniformIntDistribution.of(2), UniformIntDistribution.of(0), 3), new StraightTrunkPlacer(5, 2, 0), new TwoLayersFeatureSize(1, 0, 1))).ignoreVines().build());
+		return Feature.TREE.configure((new TreeFeatureConfig.Builder(new SimpleBlockStateProvider(log.getDefaultState()), new StraightTrunkPlacer(5, 2, 0), new SimpleBlockStateProvider(leaves.getDefaultState()), new BlobFoliagePlacer(ConstantIntProvider.create(2), ConstantIntProvider.create(0), 3), new TwoLayersFeatureSize(1, 0, 1))).ignoreVines().build());
 	}
 }

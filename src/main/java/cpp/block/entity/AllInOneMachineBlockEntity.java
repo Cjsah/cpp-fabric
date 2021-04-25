@@ -101,6 +101,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import net.minecraft.nbt.NbtCompound;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -128,7 +129,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resource.ServerResourceManager;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -272,9 +272,9 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	 * 以下是LockableContainerBlockEntity的方法
 	 */
 	@Override
-	public void fromTag(CompoundTag tag) {
-		super.fromTag(tag);
-		Inventories.fromTag(tag, inventory);
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
+		Inventories.readNbt(tag, inventory);
 		for (int i = 0, a = tag.getInt("availabeTemperature"); a > 0 && i < Degree.values().length; i++) {
 			if ((a & 1) == 1)
 				availabeTemperature.add(Degree.values()[i]);
@@ -289,9 +289,9 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		super.toTag(tag);
-		Inventories.toTag(tag, inventory);
+	public NbtCompound writeNbt(NbtCompound tag) {
+		super.writeNbt(tag);
+		Inventories.writeNbt(tag, inventory);
 		tag.putInt("temperaturePressure", propertyDelegate.get(6));
 		int a = 0;
 		for (Degree degree : availabeTemperature) {

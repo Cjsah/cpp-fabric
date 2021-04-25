@@ -12,7 +12,7 @@ import net.minecraft.loot.LootTables;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.MathHelper;
@@ -51,14 +51,14 @@ public class GolemFisherEntity extends AGolemEntity {
 	}
 
 	@Override
-	public void fromTag(CompoundTag tag) {
+	public void readNbt(NbtCompound tag) {
 		time = tag.getInt("time");
-		super.fromTag(tag);
+		super.readNbt(tag);
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		tag.putInt("time", time);
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 }

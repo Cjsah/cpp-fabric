@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class CppStateOperate {
         }
     }
 
-    public CppState stateFromNbt(CompoundTag tag) {
+    public CppState stateFromNbt(NbtCompound tag) {
         CppState state = new CppState(this.data);
         this.addUpdateListener(state::markDirty);
         state.readNbt(tag);

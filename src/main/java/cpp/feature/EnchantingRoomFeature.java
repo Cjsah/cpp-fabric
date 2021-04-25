@@ -8,7 +8,8 @@ import java.util.Random;
 
 import com.mojang.serialization.Codec;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.SimpleStructurePiece;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.StructureManager;
@@ -22,6 +23,7 @@ import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.world.HeightLimitView;
@@ -43,19 +45,20 @@ public class EnchantingRoomFeature extends StructureFeature<DefaultFeatureConfig
 	}
 
 	public static class Start extends StructureStart<DefaultFeatureConfig> {
-		public Start(StructureFeature<DefaultFeatureConfig> structureFeature, int chunkX, int chunkZ, BlockBox blockBox, int references, long seed) {
-			super(structureFeature, chunkX, chunkZ, blockBox, references, seed);
+		public Start(StructureFeature<DefaultFeatureConfig> structureFeature, ChunkPos chunkPos, int references, long seed) {
+			super(structureFeature, chunkPos, references, seed);
 		}
 
 		@Override
-		public void init(DynamicRegistryManager registryManager, ChunkGenerator chunkGenerator, StructureManager manager, int chunkX, int chunkZ, Biome biome, DefaultFeatureConfig config, HeightLimitView heightLimitView) {
-			int x = ChunkSectionPos.getBlockCoord(chunkX);
-			int z = ChunkSectionPos.getBlockCoord(chunkZ);
-			int y = chunkGenerator.getHeight(x, z, Heightmap.Type.WORLD_SURFACE_WG, heightLimitView);
+		public void init(DynamicRegistryManager registryManager, ChunkGenerator chunkGenerator, StructureManager manager, ChunkPos pos, Biome biome, DefaultFeatureConfig config, HeightLimitView world) {
+			int x = ChunkSectionPos.getBlockCoord(pos.getStartX());
+			int z = ChunkSectionPos.getBlockCoord(pos.getStartZ());
+			int y = chunkGenerator.getHeight(x, z, Heightmap.Type.WORLD_SURFACE_WG, world);
 			BlockPos blockPos = new BlockPos(x, y, z);
 			BlockRotation blockRotation = BlockRotation.random(random);
 			Generator.addPieces(manager, blockPos, blockRotation, this.children);
 			this.setBoundingBoxFromChildren();
+
 		}
 	}
 
@@ -72,10 +75,10 @@ public class EnchantingRoomFeature extends StructureFeature<DefaultFeatureConfig
 		private final BlockRotation rotation;
 		private final Identifier template;
 
-		public Piece(StructureManager structureManager, CompoundTag compoundTag) {
-			super(PIECE_TYPE, compoundTag);
-			rotation = BlockRotation.valueOf(compoundTag.getString("Rot"));
-			template = new Identifier(compoundTag.getString("Template"));
+		public Piece(StructureManager structureManager, NbtCompound nbtCompound) {
+			super(PIECE_TYPE, nbtCompound);
+			rotation = BlockRotation.valueOf(nbtCompound.getString("Rot"));
+			template = new Identifier(nbtCompound.getString("Template"));
 			initializeStructureData(structureManager);
 		}
 
@@ -100,7 +103,7 @@ public class EnchantingRoomFeature extends StructureFeature<DefaultFeatureConfig
 			
 		}
 
-		protected void toNbt(CompoundTag tag) {
+		protected void toNbt(NbtCompound tag) {
 			super.toNbt(tag);
 			tag.putString("Template", Optional.of(template).orElseThrow(NullPointerException::new).toString());
 			tag.putString("Rot", Optional.of(rotation).orElseThrow(NullPointerException::new).name());

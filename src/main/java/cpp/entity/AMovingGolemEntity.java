@@ -27,7 +27,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
@@ -96,21 +96,21 @@ public abstract class AMovingGolemEntity extends AGolemEntity {
 	}
 
 	@Override
-	public void fromTag(CompoundTag tag) {
+	public void readNbt(NbtCompound tag) {
 		continuousDisplacement = tag.getInt("continuousDisplacement");
 		experience = tag.getInt("experience");
 		Utils.inventoryFromTag(inventory, tag);
 		Vec3d rotation = getRotationVector();
 		movingDirection = Direction.getFacing(rotation.x, rotation.y, rotation.z);
-		super.fromTag(tag);
+		super.readNbt(tag);
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		tag.putInt("continuousDisplacement", continuousDisplacement);
 		tag.putInt("experience", experience);
 		Utils.inventoryToTag(inventory, tag);
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 
 	@Override

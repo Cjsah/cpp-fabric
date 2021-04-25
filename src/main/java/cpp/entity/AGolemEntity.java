@@ -9,7 +9,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Arm;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -47,15 +47,15 @@ public abstract class AGolemEntity extends LivingEntity {
 	}
 
 	@Override
-	public void fromTag(CompoundTag tag) {
-		mainHandStack = ItemStack.fromTag(tag.getCompound("mainHandStack"));
-		super.fromTag(tag);
+	public void readNbt(NbtCompound tag) {
+		mainHandStack = ItemStack.fromNbt(tag.getCompound("mainHandStack"));
+		super.readNbt(tag);
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag.put("mainHandStack", mainHandStack.toTag(new CompoundTag()));
-		return super.toTag(tag);
+	public NbtCompound writeNbt(NbtCompound tag) {
+		tag.put("mainHandStack", mainHandStack.writeNbt(new NbtCompound()));
+		return super.writeNbt(tag);
 	}
 
 	public abstract void work();

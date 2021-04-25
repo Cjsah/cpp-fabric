@@ -5,7 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
@@ -20,8 +20,8 @@ public abstract class ADarkAnimalEntity<T extends Entity> extends HostileEntity 
     }
 
     @Override
-    protected int getCurrentExperience(PlayerEntity player) {
-        return super.getCurrentExperience(player) + 5;
+    protected int getXpToDrop(PlayerEntity player) {
+        return super.getXpToDrop(player) + 5;
     }
 
     @Override
@@ -42,14 +42,14 @@ public abstract class ADarkAnimalEntity<T extends Entity> extends HostileEntity 
     }
 
     @Override
-    public void writeCustomDataToTag(CompoundTag tag) {
-        super.writeCustomDataToTag(tag);
+    public void writeCustomDataToNbt(NbtCompound tag) {
+        super.writeCustomDataToNbt(tag);
         tag.putBoolean("TransForm", this.transform);
     }
 
     @Override
-    public void readCustomDataFromTag(CompoundTag tag) {
-        super.readCustomDataFromTag(tag);
+    public void readCustomDataFromNbt(NbtCompound tag) {
+        super.readCustomDataFromNbt(tag);
         this.transform = tag.getBoolean("TransForm");
     }
 }

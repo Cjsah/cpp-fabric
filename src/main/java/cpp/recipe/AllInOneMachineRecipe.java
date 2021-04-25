@@ -35,7 +35,7 @@ import cpp.init.CppRecipes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
@@ -77,7 +77,7 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 		if (temperature != blockEntity.getTemperature() || pressure != blockEntity.getPressure() || experience > blockEntity.getExpStorage())
 			return false;
 		List<Pair<List<Item>, String>> ingredient = Lists.newLinkedList(this.ingredient);
-		List<Pair<Item, CompoundTag>> input = Lists.newLinkedList();
+		List<Pair<Item, NbtCompound>> input = Lists.newLinkedList();
 		for (int i = 1; i < 3; i++) {
 			ItemStack stack = blockEntity.getStack(i);
 			if (!stack.isEmpty()) {
@@ -86,7 +86,7 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 		}
 		if (ingredient.size() != input.size())
 			return false;
-		for1: for (Pair<Item, CompoundTag> pair1 : input) {
+		for1: for (Pair<Item, NbtCompound> pair1 : input) {
 			Iterator<Pair<List<Item>, String>> ite = ingredient.iterator();
 			while (ite.hasNext()) {
 				Pair<List<Item>, String> pair2 = ite.next();
@@ -141,7 +141,7 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 	}
 
 	@Override
-	public ItemStack getRecipeKindIcon() {
+	public ItemStack createIcon() {
 		return CppBlocks.ALL_IN_ONE_MACHINE.asItem().getDefaultStack();
 	}
 
@@ -151,7 +151,7 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 	}
 
 	@Override
-	public DefaultedList<ItemStack> getRemainingStacks(AllInOneMachineBlockEntity inventory) {
+	public DefaultedList<ItemStack> getRemainder(AllInOneMachineBlockEntity inventory) {
 		DefaultedList<ItemStack> list = DefaultedList.ofSize(2, ItemStack.EMPTY);
 		for (int i = 1; i < 3; i++) {
 			if (UNCONSUMABLE.contains(inventory.getStack(i).getItem())) {
@@ -190,7 +190,7 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 		return list;
 	}
 
-	public static Predicate<CompoundTag> test(String potion) {
+	public static Predicate<NbtCompound> test(String potion) {
 		return tag -> tag.getString("Potion").equals(potion);
 	}
 

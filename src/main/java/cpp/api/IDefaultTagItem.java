@@ -1,6 +1,6 @@
 package cpp.api;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public interface IDefaultTagItem {
 	/**
@@ -8,5 +8,5 @@ public interface IDefaultTagItem {
 	 * @param tag 要被添加的tag
 	 * @return 添加之后的tag，与参数相同
 	 */
-	CompoundTag modifyDefaultTag(CompoundTag tag);
+	NbtCompound modifyDefaultTag(NbtCompound tag);
 }

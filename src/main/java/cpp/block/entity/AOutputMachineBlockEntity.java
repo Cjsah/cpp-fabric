@@ -15,8 +15,8 @@ import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.server.command.CommandOutput;
@@ -53,14 +53,14 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 	 * 以下是LockableContainerBlockEntity的方法
 	 */
 	@Override
-	public void fromTag(CompoundTag tag) {
-		super.fromTag(tag);
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
 		outputDir = IOutputDiractional.byteToDir(tag.getByte("outputDir"));
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		super.toTag(tag);
+	public NbtCompound writeNbt(NbtCompound tag) {
+		super.writeNbt(tag);
 		tag.putByte("outputDir", IOutputDiractional.dirToByte(outputDir));
 		return tag;
 	}
@@ -254,13 +254,13 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 	 * @param tag
 	 * @param inventory
 	 */
-	public static void inventoryFromTag(CompoundTag tag, Inventory inventory) {
-		ListTag listTag = tag.getList("Items", 10);
+	public static void inventoryFromTag(NbtCompound tag, Inventory inventory) {
+		NbtList listTag = tag.getList("Items", 10);
 		for (int i = 0; i < listTag.size(); ++i) {
-			CompoundTag compoundTag = listTag.getCompound(i);
+			NbtCompound compoundTag = listTag.getCompound(i);
 			int j = compoundTag.getByte("Slot") & 255;
 			if (j >= 0 && j < inventory.size()) {
-				inventory.setStack(j, ItemStack.fromTag(compoundTag));
+				inventory.setStack(j, ItemStack.fromNbt(compoundTag));
 			}
 		}
 	}
@@ -268,33 +268,33 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 	/**
 	 * 将inventory储存到tag的Items，即使inventory为空也储存
 	 * 
-	 * @see #inventoryToTag(CompoundTag, Inventory, boolean)
+	 * @see #inventoryToTag(NbtCompound, Inventory, boolean)
 	 * @param tag
 	 * @param inventory
 	 * @return tag
 	 */
-	public static CompoundTag inventoryToTag(CompoundTag tag, Inventory inventory) {
+	public static NbtCompound inventoryToTag(NbtCompound tag, Inventory inventory) {
 		return inventoryToTag(tag, inventory, true);
 	}
 
 	/**
 	 * 将inventory储存到tag的Items
 	 * 
-	 * @see #inventoryToTag(CompoundTag, Inventory)
+	 * @see #inventoryToTag(NbtCompound, Inventory)
 	 * @param tag
 	 * @param inventory
 	 * @param setIfEmpty 如果为true，即使inventory为空也储存
 	 * @return tag
 	 */
-	public static CompoundTag inventoryToTag(CompoundTag tag, Inventory inventory, boolean setIfEmpty) {
-		ListTag listTag = new ListTag();
+	public static NbtCompound inventoryToTag(NbtCompound tag, Inventory inventory, boolean setIfEmpty) {
+		NbtList listTag = new NbtList();
 
 		for (int i = 0; i < inventory.size(); ++i) {
 			ItemStack itemStack = inventory.getStack(i);
 			if (!itemStack.isEmpty()) {
-				CompoundTag compoundTag = new CompoundTag();
+				NbtCompound compoundTag = new NbtCompound();
 				compoundTag.putByte("Slot", (byte) i);
-				itemStack.toTag(compoundTag);
+				itemStack.writeNbt(compoundTag);
 				listTag.add(compoundTag);
 			}
 		}
@@ -312,9 +312,9 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 	 * @param itemStack
 	 * @return
 	 */
-	public static CompoundTag itemStackToTag(ItemStack itemStack) {
-		CompoundTag compoundTag = new CompoundTag();
-		itemStack.toTag(compoundTag);
+	public static NbtCompound itemStackToTag(ItemStack itemStack) {
+		NbtCompound compoundTag = new NbtCompound();
+		itemStack.writeNbt(compoundTag);
 		return compoundTag;
 	}
 

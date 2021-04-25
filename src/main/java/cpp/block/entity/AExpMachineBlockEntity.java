@@ -4,7 +4,7 @@ import cpp.item.CompressedItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -31,15 +31,15 @@ public abstract class AExpMachineBlockEntity extends AOutputMachineBlockEntity {
 	}
 
 	@Override
-	public void fromTag(CompoundTag tag) {
-		super.fromTag(tag);
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
 		workTime = tag.getInt("workTime");
 		expStorage = tag.getInt("expStorage");
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		super.toTag(tag);
+	public NbtCompound writeNbt(NbtCompound tag) {
+		super.writeNbt(tag);
 		tag.putInt("workTime", workTime);
 		tag.putInt("expStorage", expStorage);
 		return tag;

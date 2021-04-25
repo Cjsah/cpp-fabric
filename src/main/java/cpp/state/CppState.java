@@ -3,10 +3,10 @@ package cpp.state;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.PersistentState;
@@ -24,13 +24,13 @@ public class CppState extends PersistentState {
     }
 
     @Override
-    public CompoundTag toNbt(@Nonnull CompoundTag tag) {
+    public NbtCompound writeNbt(@Nonnull NbtCompound tag) {
         tag.putBoolean("IslandMode", this.data.get("IslandMode").getAsBoolean());
         tag.putInt("IslandID", this.data.get("IslandID").getAsInt());
         tag.putInt("Around", this.data.get("Around").getAsInt());
-        ListTag list = new ListTag();
+        NbtList list = new NbtList();
         for (JsonElement inIsland : data.get("InIsland").getAsJsonArray()) {
-            list.add(StringTag.of(inIsland.getAsString()));
+            list.add(NbtString.of(inIsland.getAsString()));
         }
         tag.put("InIsland", list);
         tag.put("EnchantingRituals", getEnchantingRecipes());
@@ -38,12 +38,12 @@ public class CppState extends PersistentState {
     }
 
     @Nonnull
-    private ListTag getEnchantingRecipes() {
-        ListTag list = new ListTag();
+    private NbtList getEnchantingRecipes() {
+        NbtList list = new NbtList();
         JsonArray enchantingRituals = this.data.get("EnchantingRituals").getAsJsonArray();
         if (enchantingRituals.size() != 0) {
             for (JsonElement json : enchantingRituals) {
-                CompoundTag tag = new CompoundTag();
+                NbtCompound tag = new NbtCompound();
                 tag.putString("rare1", json.getAsJsonObject().get("rare1").getAsString());
                 tag.putString("rare2", json.getAsJsonObject().get("rare2").getAsString());
                 tag.putString("result", json.getAsJsonObject().get("result").getAsString());
@@ -53,21 +53,21 @@ public class CppState extends PersistentState {
             List<Identifier> enchants = new ArrayList<>(Registry.ENCHANTMENT.getIds());
             Collections.shuffle(enchants);
             for (Identifier enchant : enchants) {
-                list.add(StringTag.of(enchant.toString()));
+                list.add(NbtString.of(enchant.toString()));
                 enchantingRituals.add(enchant.toString());
             }
         }
         return list;
     }
 
-    protected void readNbt(@Nonnull CompoundTag tag) {
+    protected void readNbt(@Nonnull NbtCompound tag) {
         this.data.addProperty("IslandMode", tag.getBoolean("IslandMode"));
         this.data.addProperty("IslandID", tag.getInt("IslandID"));
         this.data.addProperty("Around", tag.getInt("Around"));
-        for (Tag inIsland : tag.getList("InIsland", 8)) {
+        for (NbtElement inIsland : tag.getList("InIsland", 8)) {
             this.data.get("InIsland").getAsJsonArray().add(inIsland.asString());
         }
-        for (Tag enchant : tag.getList("EnchantingRituals", 8)) {
+        for (NbtElement enchant : tag.getList("EnchantingRituals", 8)) {
             this.data.get("EnchantingRituals").getAsJsonArray().add(enchant.asString());
         }
     }

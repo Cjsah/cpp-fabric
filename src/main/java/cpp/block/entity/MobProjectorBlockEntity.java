@@ -14,7 +14,7 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
@@ -104,15 +104,15 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 	 * 以下是LockableContainerBlockEntity的方法
 	 */
 	@Override
-	public void fromTag(CompoundTag tag) {
-		super.fromTag(tag);
-		Inventories.fromTag(tag, inventory);
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
+		Inventories.readNbt(tag, inventory);
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		super.toTag(tag);
-		Inventories.toTag(tag, inventory);
+	public NbtCompound writeNbt(NbtCompound tag) {
+		super.writeNbt(tag);
+		Inventories.writeNbt(tag, inventory);
 		return tag;
 	}
 
