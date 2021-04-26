@@ -6,6 +6,7 @@ import cpp.Craftingpp;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
@@ -49,6 +50,7 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
     }
 
     @Override
+    @SuppressWarnings("DuplicatedCode")
     public void setScrollAmount(double amount) {
         super.setScrollAmount(amount);
         int denominator = Math.max(0, this.getMaxPosition() - (this.bottom - this.top - 4));
@@ -68,7 +70,7 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
     }
 
     @Override
-    protected boolean isSelectedItem(int index) {
+    protected boolean isSelectedEntry(int index) {
         ConfigListEntry selected = this.getSelected();
         return selected != null && selected.getKey().equals((this.getEntry(index)).getKey());
     }
@@ -136,9 +138,8 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     protected void renderList(MatrixStack matrices, int x, int y, int mouseX, int mouseY, float delta) {
-        int itemCount = this.getItemCount();
+        int itemCount = this.getEntryCount();
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
 
@@ -150,12 +151,13 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
                 ConfigListEntry entry = this.getEntry(index);
                 int rowWidth = this.getRowWidth();
                 int entryLeft;
-                if (this.isSelectedItem(index)) {
+                if (this.isSelectedEntry(index)) {
                     entryLeft = this.getRowLeft() - 2 + entry.getXOffset();
                     int selectionRight = x + rowWidth + 2;
                     RenderSystem.disableTexture();
                     float float_2 = this.isFocused() ? 1.0F : 0.5F;
-                    RenderSystem.color4f(float_2, float_2, float_2, 1.0F);
+                    RenderSystem.setShader(GameRenderer::getPositionColorShader);
+                    RenderSystem.setShaderColor(float_2, float_2, float_2, 1.0F);
                     Matrix4f matrix = matrices.peek().getModel();
                     // 边框
                     buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
@@ -165,7 +167,8 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
                     buffer.vertex(matrix, (float)entryLeft, (float)(entryTop - 2), 0.0F).next();
                     tessellator.draw();
 
-                    RenderSystem.color4f(0.0F, 0.0F, 0.0F, 1.0F);
+                    RenderSystem.setShader(GameRenderer::getPositionColorShader);
+                    RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
                     // 背景
                     buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
                     buffer.vertex(matrix, (float)(entryLeft + 1), (float)(entryTop + entryHeight + 1), 0.0F).next();
@@ -186,7 +189,7 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
     public final ConfigListEntry getEntryAtPos(double x, double y) {
         int int_5 = MathHelper.floor(y - (double)this.top) - this.headerHeight + (int)this.getScrollAmount() - 4;
         int index = int_5 / this.itemHeight;
-        return x < (double)this.getScrollbarPositionX() && x >= (double)this.getRowLeft() && x <= (double)(this.getRowLeft() + this.getRowWidth()) && index >= 0 && int_5 >= 0 && index < this.getItemCount() ? this.children().get(index) : null;
+        return x < (double)this.getScrollbarPositionX() && x >= (double)this.getRowLeft() && x <= (double)(this.getRowLeft() + this.getRowWidth()) && index >= 0 && int_5 >= 0 && index < this.getEntryCount() ? this.children().get(index) : null;
     }
 
     @Override

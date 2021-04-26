@@ -9,6 +9,7 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
@@ -95,9 +96,9 @@ public class OptionsScreen extends Screen {
             }
 
             @Override
-            @SuppressWarnings("deprecation")
             public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-                RenderSystem.color4f(1, 1, 1, 1f);
+                RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+                RenderSystem.setShaderColor(1, 1, 1, 1f);
                 super.renderButton(matrices, mouseX, mouseY, delta);
             }
         });
@@ -106,7 +107,6 @@ public class OptionsScreen extends Screen {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices);
         ConfigListEntry selectedEntry = this.selected;
@@ -126,7 +126,7 @@ public class OptionsScreen extends Screen {
         if (selectedEntry != null) {
             String key = selectedEntry.getKey();
             int x = this.rightPaneX;
-            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             this.selected.bindIconTexture();
             RenderSystem.enableBlend();
             // 图标
@@ -172,13 +172,14 @@ public class OptionsScreen extends Screen {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings("DuplicatedCode")
     public void renderBackground(MatrixStack matrices) {
         int x1 = 0, y1 = 0, x2 = this.width, y2 = this.height;
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
         MinecraftClient.getInstance().getTextureManager().bindTexture(DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
         buffer.vertex(x1, y2, 0.0D).texture((float)x1 / 32.0F, (float)y2 / 32.0F).color(64, 64, 64, 255).next();
         buffer.vertex(x2, y2, 0.0D).texture((float)x2 / 32.0F, (float)y2 / 32.0F).color(64, 64, 64, 255).next();

@@ -6,6 +6,7 @@ import cpp.Craftingpp;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.EntryListWidget;
 import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
@@ -33,6 +34,7 @@ public class DescriptionListWidget extends EntryListWidget<DescriptionListWidget
     }
 
     @Override
+    @SuppressWarnings("DuplicatedCode")
     public void setScrollAmount(double amount) {
         super.setScrollAmount(amount);
         int denominator = Math.max(0, this.getMaxPosition() - (this.bottom - this.top - 4));
@@ -65,7 +67,6 @@ public class DescriptionListWidget extends EntryListWidget<DescriptionListWidget
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         ConfigListEntry selectedEntry = this.parent.getSelectedEntry();
         if (selectedEntry != this.lastSelected) {
@@ -84,8 +85,7 @@ public class DescriptionListWidget extends EntryListWidget<DescriptionListWidget
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
         RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SrcFactor.ZERO, GlStateManager.DstFactor.ONE);
-        RenderSystem.disableAlphaTest();
-        RenderSystem.shadeModel(7425);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.disableTexture();
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
         bufferBuilder.vertex(this.left, (this.top + 4), 0.0D).texture(0.0F, 1.0F).color(0, 0, 0, 0).next();
@@ -111,8 +111,6 @@ public class DescriptionListWidget extends EntryListWidget<DescriptionListWidget
         this.renderList(matrices, k, l, mouseX, mouseY, delta);
 
         RenderSystem.enableTexture();
-        RenderSystem.shadeModel(7424);
-        RenderSystem.enableAlphaTest();
         RenderSystem.disableBlend();
     }
 

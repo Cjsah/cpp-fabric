@@ -12,6 +12,7 @@ import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -50,7 +51,6 @@ public class ConfigScreen extends Screen {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     protected void init() {
         Objects.requireNonNull(this.client).keyboard.setRepeatEvents(true);
         this.panX = this.width <= 395 + 50 + 50 + 80 ? 50 : (this.width - (395 + 80)) / 2 ;
@@ -80,7 +80,8 @@ public class ConfigScreen extends Screen {
 
             @Override
             public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-                RenderSystem.color4f(1, 1, 1, 1f);
+                RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+                RenderSystem.setShaderColor(1, 1, 1, 1f);
                 super.renderButton(matrices, mouseX, mouseY, delta);
             }
         });
@@ -186,13 +187,13 @@ public class ConfigScreen extends Screen {
                 super.render(matrices, mouseX, mouseY, delta);
             }
 
-            @Override
-            public void setSelected(boolean selected) {
-                super.setSelected(selected);
-                if (!Objects.equals(this.getText(), value.get(jk).getAsString())) {
-                    value.addProperty(jk, this.getText());
-                }
-            }
+//            @Override
+//            public void setSelected(boolean selected) {
+//                super.setSelected(selected);
+//                if (!Objects.equals(this.getText(), value.get(jk).getAsString())) {
+//                    value.addProperty(jk, this.getText());
+//                }
+//            }
         });
         this.drawY += 25;
     }
@@ -218,18 +219,18 @@ public class ConfigScreen extends Screen {
                 super.render(matrices, mouseX, mouseY, delta);
             }
 
-            @Override
-            public void setSelected(boolean selected) {
-                super.setSelected(selected);
-                if (!Objects.equals(this.getText(), value.get(jk).getAsJsonArray().toString())) {
-                    String result = this.getText();
-                    JsonArray jsonArray = new JsonArray();
-                    for (String index : result.substring(1, result.length() - 1).split(",")) {
-                        jsonArray.add(index.substring(1, index.length() - 1));
-                    }
-                    value.add(jk, jsonArray);
-                }
-            }
+//            @Override
+//            public void setSelected(boolean selected) {
+//                super.setSelected(selected);
+//                if (!Objects.equals(this.getText(), value.get(jk).getAsJsonArray().toString())) {
+//                    String result = this.getText();
+//                    JsonArray jsonArray = new JsonArray();
+//                    for (String index : result.substring(1, result.length() - 1).split(",")) {
+//                        jsonArray.add(index.substring(1, index.length() - 1));
+//                    }
+//                    value.add(jk, jsonArray);
+//                }
+//            }
         });
         this.drawY += 25;
     }
@@ -255,13 +256,13 @@ public class ConfigScreen extends Screen {
                 super.render(matrices, mouseX, mouseY, delta);
             }
 
-            @Override
-            public void setSelected(boolean selected) {
-                super.setSelected(selected);
-                if (!Objects.equals(this.getText(), value.get(jk).getAsNumber().toString())) {
-                    value.addProperty(jk, Integer.parseInt(this.getText()));
-                }
-            }
+//            @Override
+//            public void setSelected(boolean selected) {
+//                super.setSelected(selected);
+//                if (!Objects.equals(this.getText(), value.get(jk).getAsNumber().toString())) {
+//                    value.addProperty(jk, Integer.parseInt(this.getText()));
+//                }
+//            }
         });
         this.drawY += 25;
     }

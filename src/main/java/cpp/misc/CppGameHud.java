@@ -5,9 +5,10 @@ import cpp.Craftingpp;
 import cpp.api.Utils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.StringVisitable;
@@ -25,24 +26,25 @@ public class CppGameHud extends DrawableHelper {
     private static final int icon_size = 12;
     private static final int text_left = margin + icon_size + 3;
 
-    @SuppressWarnings({"ConstantConditions", "deprecation"})
+    @SuppressWarnings("ConstantConditions")
     public void render(MatrixStack matrix) {
         if (client.options.debugEnabled) return;
         ServerPlayerEntity player = client.getServer().getPlayerManager().getPlayer(client.player.getUuid());
-        CompoundTag tag = new CompoundTag();
-        player.writeCustomDataToTag(tag);
+        NbtCompound tag = new NbtCompound();
+        player.writeCustomDataToNbt(tag);
         int weight = tag.getInt("weight");
-        ListTag vaccines = tag.getList("Vaccines", 10);
+        NbtList vaccines = tag.getList("Vaccines", 10);
         int width = 51;
         int height = margin + (vaccines.size() + 1) * icon_size + vaccines.size() * interval + margin;
         int firstY = client.getWindow().getScaledHeight() - margin - icon_size;
         fill(matrix, 0, client.getWindow().getScaledHeight() - height, width, client.getWindow().getScaledHeight(), client.options.getTextBackgroundColor(0.3F));
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.enableBlend();
         this.draw(matrix, client.getWindow().getScaledHeight() - margin - icon_size, 5, new LiteralText(String.valueOf(weight)).formatted(
                 weight > -50 && weight < 50 ? Formatting.GREEN : weight > -100 && weight < 100 ? Formatting.YELLOW : Formatting.RED));
         for(int i = 1; i <= vaccines.size(); ++i) {
-            CompoundTag vaccine = (CompoundTag) vaccines.get(i - 1);
+            NbtCompound vaccine = (NbtCompound) vaccines.get(i - 1);
             this.draw(matrix, firstY - i * (icon_size + interval), vaccine.getByte("Id"), Text.of(Utils.ticksToTime(vaccine.getInt("Duration"))));
         }
         RenderSystem.disableBlend();

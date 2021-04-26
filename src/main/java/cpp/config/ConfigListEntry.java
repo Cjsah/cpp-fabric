@@ -29,11 +29,10 @@ public class ConfigListEntry extends Entry<ConfigListEntry> {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         x += getXOffset();
         entryWidth -= getXOffset();
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         this.bindIconTexture();
         RenderSystem.enableBlend();
         // 图标
