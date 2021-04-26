@@ -1,6 +1,7 @@
 package cpp.rituals;
 
 import cpp.Craftingpp;
+import cpp.api.Utils;
 import cpp.ducktyping.ICppState;
 import cpp.init.CppItemTags;
 import cpp.init.CppItems;
@@ -13,7 +14,7 @@ import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -49,17 +50,17 @@ public final class RitualResult {
     @SuppressWarnings("ConstantConditions")
     public static ItemStack getEffectResult(@Nonnull Item agentia, ItemStack item) {
         FoodComponent foodComponent = agentia.getFoodComponent();
-        String tag;
+        String tag = "";
         if (foodComponent != null) {
             StatusEffect effect = foodComponent.getStatusEffects().get(0).getFirst().getEffectType();
             tag = Registry.STATUS_EFFECT.getId(effect).toString();
         }else if (agentia == CppItems.MAGNET) {
             tag = Craftingpp.MOD_ID3 + "magnet";
-        }else {
-            tag = "";
         }
-        item.putSubTag("EquipmentEffect", StringTag.of(tag));
-
+        if (!"".equals(tag)) {
+            item.putSubTag("EquipmentEffect", NbtString.of(tag));
+            Utils.addLore(item, false, "effect." + tag, null, false, false, false, false, false);
+        }
         return item;
     }
 

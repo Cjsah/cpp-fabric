@@ -31,7 +31,10 @@ import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.NbtIntArray;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
@@ -43,6 +46,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.Tag;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
@@ -192,6 +196,78 @@ public class Utils {
 	private static String addZero(int num) {
 		return num < 10 ? "0" + num : String.valueOf(num);
 	}
+
+	/**
+	 * 给物品添加文本lore
+	 * @param item 要添加lore的物品
+	 * @param isText 是否是text
+	 * @param textOrTranslated 名字
+	 * @param color 颜色
+	 * @param italic 倾斜
+	 * @param bold 粗体
+	 * @param underlined 下划线
+	 * @param strikethrough 删除线
+	 * @param obfuscated 乱码
+	 */
+	public static void addLore(ItemStack item, boolean isText, String textOrTranslated, @Nullable String color, boolean italic, boolean bold, boolean underlined, boolean strikethrough, boolean obfuscated) {
+		String text = "{";
+		if (isText) text += addLoreString("text", textOrTranslated);
+		else text += addLoreString("translate", textOrTranslated);
+		if (color != null) text += addLoreString("color", color);
+		if (!italic) text += addLoreString("italic", false);
+		if (bold) text += addLoreString("bold", true);
+		if (underlined) text += addLoreString("underlined", true);
+		if (strikethrough) text += addLoreString("strikethrough", true);
+		if (obfuscated) text += addLoreString("obfuscated", true);
+		text = text.substring(0, text.length()-1) + "}";
+		addLore(item, NbtString.of(text));
+
+//		NbtCompound tag = new NbtCompound();
+//		if (isText) tag.putString("text", textOrTranslated);
+//		else tag.putString("translate", textOrTranslated);
+//		if (color != null) tag.putString("color", color);
+//		if (!italic) tag.putBoolean("italic", false);
+//		if (bold) tag.putBoolean("bold", true);
+//		if (underlined) tag.putBoolean("underlined", true);
+//		if (strikethrough) tag.putBoolean("strikethrough", true);
+//		if (obfuscated) tag.putBoolean("obfuscated", true);
+//		Text text = NbtHelper.toPrettyPrintedText(tag);
+//		TranslatableText translatableText = new TranslatableText("text.cpp.test", text);
+//		System.out.println(translatableText);
+//		System.out.println(translatableText.getKey());
+//		System.out.println(translatableText.asString());
+//
+//		addLore(item, NbtString.of(text.asString()));
+	}
+
+	private static String addLoreString(String key, Object value) {
+		return String.format("\"%s\":\"%s\",", key, value);
+	}
+
+	/**
+	 * 给物品添加lore
+	 * @param item 要添加lore的物品
+	 * @param lore 要添加的lore
+	 */
+	public static void addLore(ItemStack item, NbtString lore) {
+		NbtCompound tag = item.getOrCreateTag();
+		if (tag.contains("display")) {
+			if (tag.contains("Lore")) {
+				tag.getCompound("display").getList("Lore", 8).add(lore);
+			}else {
+				NbtList list = new NbtList();
+				list.add(lore);
+				tag.getCompound("display").put("Lore", list);
+			}
+		}else {
+			NbtCompound display = new NbtCompound();
+			NbtList list = new NbtList();
+			list.add(lore);
+			display.put("Lore", list);
+			tag.put("display", display);
+		}
+	}
+
 
 	/**
 	 * 黑暗生物和正常生物之间转化
