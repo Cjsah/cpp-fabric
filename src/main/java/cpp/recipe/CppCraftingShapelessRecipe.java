@@ -45,38 +45,44 @@ public class CppCraftingShapelessRecipe implements ICppCraftingRecipe {
 		return i == this.input.size() && recipeFinder.match(this, null);
 	}
 
+	@Override
 	public ItemStack craft(CraftingInventory craftingInventory) {
 		return this.output.copy();
 	}
 
+	@Override
 	@Environment(EnvType.CLIENT)
 	public boolean fits(int width, int height) {
 		return width * height >= this.input.size();
 	}
 
 
-	 public ItemStack getOutput() {
+	@Override
+	public ItemStack getOutput() {
 		 return this.output;
 	 }
-
-	 public DefaultedList<Ingredient> getPreviewInputs() {
+	@Override
+	public DefaultedList<Ingredient> getIngredients() {
 		 return this.input;
 	 }
 
-	 @Environment(EnvType.CLIENT)
-	 public String getGroup() {
+	@Override
+	@Environment(EnvType.CLIENT)
+	public String getGroup() {
 		 return this.group;
 	 }
 
-	 public Identifier getId() {
+	@Override
+	public Identifier getId() {
 		 return this.id;
 	 }
 
-	 public RecipeSerializer<?> getSerializer() {
+	@Override
+	public RecipeSerializer<?> getSerializer() {
 		 return CppRecipes.CRAFTING_SHAPELESS_SERIALIZER;
 	 }
-
-	 public static class Serializer implements RecipeSerializer<CppCraftingShapelessRecipe> {
+	public static class Serializer implements RecipeSerializer<CppCraftingShapelessRecipe> {
+		@Override
 		public CppCraftingShapelessRecipe read(Identifier identifier, JsonObject jsonObject) {
 			String string = JsonHelper.getString(jsonObject, "group", "");
 			DefaultedList<Ingredient> defaultedList = getIngredients(JsonHelper.getArray(jsonObject, "ingredients"));
@@ -103,6 +109,7 @@ public class CppCraftingShapelessRecipe implements ICppCraftingRecipe {
 			return defaultedList;
 		}
 
+		@Override
 		public CppCraftingShapelessRecipe read(Identifier identifier, PacketByteBuf packetByteBuf) {
 			String string = packetByteBuf.readString(32767);
 			int i = packetByteBuf.readVarInt();
