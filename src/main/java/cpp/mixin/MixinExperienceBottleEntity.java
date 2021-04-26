@@ -1,5 +1,6 @@
 package cpp.mixin;
 
+import net.minecraft.nbt.NbtCompound;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
@@ -8,7 +9,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.projectile.thrown.ExperienceBottleEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
 import net.minecraft.server.world.ServerWorld;
@@ -25,15 +25,15 @@ public abstract class MixinExperienceBottleEntity extends ThrownItemEntity imple
 	}
 
 //	@Inject(at = { @At("HEAD") }, method = { "fromTag(Lnet/minecraft/nbt/CompoundTag;)V" })
-	public void fromTag(CompoundTag tag) {
-		multiple = tag.getInt("multiple");
-		super.fromTag(tag);
+	public void readNbt(NbtCompound nbt) {
+		multiple = nbt.getInt("multiple");
+		super.readNbt(nbt);
 	}
 
 //	@Inject(at = { @At("RETURN") }, method = { "toTag(Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/nbt/CompoundTag;" })
-	public CompoundTag toTag1(CompoundTag tag) {
-		tag.putInt("multiple", multiple);
-		return super.toTag(tag);
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		nbt.putInt("multiple", multiple);
+		return super.writeNbt(nbt);
 	}
 
 	/**

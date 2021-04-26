@@ -1,5 +1,6 @@
 package cpp.mixin;
 
+import net.minecraft.nbt.NbtCompound;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -10,7 +11,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.decoration.AbstractDecorationEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.World;
 
 @Mixin(ItemFrameEntity.class)
@@ -44,17 +44,17 @@ public abstract class MixinItemFrameEntity extends AbstractDecorationEntity impl
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public NbtCompound writeNbt(NbtCompound tag) {
 		tag.putInt("ritualTime", ritualTime);
 		tag.putInt("ritualType", ritualType);
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 
 	@Override
-	public void fromTag(CompoundTag tag) {
+	public void readNbt(NbtCompound tag) {
 		ritualTime = tag.getInt("ritualTime");
 		ritualType = tag.getInt("ritualType");
-		super.fromTag(tag);
+		super.readNbt(tag);
 	}
 
 	public void setRitualType(int type) {

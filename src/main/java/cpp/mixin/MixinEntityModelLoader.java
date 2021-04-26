@@ -22,10 +22,10 @@ public class MixinEntityModelLoader {
 	@Shadow
 	private Map<EntityModelLayer, TexturedModelData> modelParts;
 
-	@Inject(at = @At("RETURN"), method = "apply")
-	public void apply1(ResourceManager manager, CallbackInfo info) {
-		modelParts = new HashMap<>(modelParts);
+	@Inject(at = @At("RETURN"), method = "reload")
+	public void reload(ResourceManager manager, CallbackInfo info) {
+		this.modelParts = new HashMap<>(this.modelParts);
 		for (EntityModelLayer layer : GolemEntityRenderer.LAYERS.values())
-			modelParts.put(layer, GolemEntityModel.getTexturedModelData());
+			this.modelParts.put(layer, GolemEntityModel.getTexturedModelData());
 	}
 }

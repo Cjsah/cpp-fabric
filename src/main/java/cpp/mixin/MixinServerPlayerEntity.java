@@ -2,6 +2,7 @@ package cpp.mixin;
 
 import java.util.Collections;
 
+import net.minecraft.nbt.NbtCompound;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,7 +18,6 @@ import cpp.item.Wand;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -59,13 +59,13 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 		BeaconEnhancerBlockEntity.tickEffect(this0);
 	}
 
-	@Inject(at = @At("HEAD"), method = "writeCustomDataToTag")
-	public void writeCustomDataToTag(CompoundTag tag, CallbackInfo info) {
+	@Inject(at = @At("HEAD"), method = "writeCustomDataToNbt")
+	public void writeCustomDataToNbt(NbtCompound tag, CallbackInfo info) {
 		tag.putInt("elder_s_word_cooldown", elderSWordCoolDown);
 	}
 
-	@Inject(at = @At("HEAD"), method = "readCustomDataFromTag")
-	public void readCustomDataFromTag(CompoundTag tag, CallbackInfo info) {
+	@Inject(at = @At("HEAD"), method = "readCustomDataFromNbt")
+	public void readCustomDataFromNbt(NbtCompound tag, CallbackInfo info) {
 		elderSWordCoolDown = tag.getInt("elder_s_word_cooldown");
 	}
 }

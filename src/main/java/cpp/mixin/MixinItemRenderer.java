@@ -2,6 +2,7 @@ package cpp.mixin;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.resource.SynchronousResourceReloader;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,12 +17,11 @@ import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.resource.SynchronousResourceReloadListener;
 import net.minecraft.util.Formatting;
 
 @Mixin(ItemRenderer.class)
 @SuppressWarnings({"unused", "ConstantConditions"})
-public abstract class MixinItemRenderer implements SynchronousResourceReloadListener {
+public abstract class MixinItemRenderer implements SynchronousResourceReloader {
 
 	@Shadow
 	public float zOffset;
