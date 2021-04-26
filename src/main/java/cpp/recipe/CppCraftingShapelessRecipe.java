@@ -1,7 +1,5 @@
 package cpp.recipe;
 
-import java.util.Iterator;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -12,14 +10,14 @@ import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeFinder;
+import net.minecraft.recipe.RecipeMatcher;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
- public class CppCraftingShapelessRecipe implements ICppCraftingRecipe {
+public class CppCraftingShapelessRecipe implements ICppCraftingRecipe {
 	private final Identifier id;
 	private final String group;
 	private final ItemStack output;
@@ -33,18 +31,18 @@ import net.minecraft.world.World;
 	}
 
 	public boolean matches(CraftingInventory craftingInventory, World world) {
-		RecipeFinder recipeFinder = new RecipeFinder();
+		RecipeMatcher recipeFinder = new RecipeMatcher();
 		int i = 0;
 
 		for (int j = 0; j < craftingInventory.size(); ++j) {
 			ItemStack itemStack = craftingInventory.getStack(j);
 			if (!itemStack.isEmpty()) {
 				++i;
-				recipeFinder.addItem(itemStack, 1);
+				recipeFinder.addInput(itemStack, 1);
 			}
 		}
 
-		return i == this.input.size() && recipeFinder.findRecipe(this, null);
+		return i == this.input.size() && recipeFinder.match(this, null);
 	}
 
 	public ItemStack craft(CraftingInventory craftingInventory) {

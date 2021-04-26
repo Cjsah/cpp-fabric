@@ -115,11 +115,6 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 		}
 		Utils.addPlayerSlots(this::addSlot, player.getInventory());
 		addSlot(new Slot(items, 0, Utils.x(8), Utils.y(0)) {
-			@Override
-			public void onStackChanged(ItemStack originalItem, ItemStack newItem) {
-				super.onStackChanged(originalItem, newItem);
-				//				onMaterialChanged();
-			}
 			
 			@Override
 			public void setStack(ItemStack stack) {
@@ -128,10 +123,9 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 			}
 			
 			@Override
-			public ItemStack onTakeItem(PlayerEntity player, ItemStack stack) {
-				ItemStack r = super.onTakeItem(player, stack);
+			public void onTakeItem(PlayerEntity player, ItemStack stack) {
+				super.onTakeItem(player, stack);
 				onMaterialChanged();
-				return r;
 			}
 			
 			@Override
@@ -268,10 +262,9 @@ public class ColorPaletteScreenHandler extends ScreenHandler {
 				}
 				
 				@Override
-				public ItemStack onTakeItem(PlayerEntity player, ItemStack stack) {
-					ItemStack r = super.onTakeItem(player, stack);
+				public void onTakeItem(PlayerEntity player, ItemStack stack) {
+					super.onTakeItem(player, stack);
 					onResultTaken();
-					return r;
 				}
 				
 //				@Override

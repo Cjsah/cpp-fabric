@@ -13,16 +13,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsage;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
+import net.minecraft.util.*;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
@@ -80,10 +76,10 @@ public class Vaccine extends Item {
     public static Collection<StatusEffect> getVaccineEffects(LivingEntity user) {
         Collection<StatusEffect> list = new ArrayList<>();
         if (user instanceof ServerPlayerEntity) {
-            CompoundTag playerTag = new CompoundTag();
-            user.writeCustomDataToTag(playerTag);
-            for (Tag vaccine : playerTag.getList("Vaccines", 10)) {
-                StatusEffect effect = Registry.STATUS_EFFECT.get(new Identifier((Objects.requireNonNull(Vaccines.byRawId(((CompoundTag) vaccine).getByte("Id"))).getName())));
+            NbtCompound playerTag = new NbtCompound();
+            user.writeCustomDataToNbt(playerTag);
+            for (NbtElement vaccine : playerTag.getList("Vaccines", 10)) {
+                StatusEffect effect = Registry.STATUS_EFFECT.get(new Identifier((Objects.requireNonNull(Vaccines.byRawId(((NbtCompound) vaccine).getByte("Id"))).getName())));
                 if (effect != null) list.add(effect);
             }
         }

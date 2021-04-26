@@ -8,7 +8,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.projectile.thrown.ExperienceBottleEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
 import net.minecraft.server.world.ServerWorld;
@@ -24,16 +24,16 @@ public abstract class MixinExperienceBottleEntity extends ThrownItemEntity imple
 		super(entityType, d, e, f, world);
 	}
 
-//	@Inject(at = { @At("HEAD") }, method = { "fromTag(Lnet/minecraft/nbt/CompoundTag;)V" })
-	public void fromTag(CompoundTag tag) {
+//	@Inject(at = { @At("HEAD") }, method = { "fromTag(Lnet/minecraft/nbt/NbtCompound;)V" })
+	public void readNbt(NbtCompound tag) {
 		multiple = tag.getInt("multiple");
-		super.fromTag(tag);
+		super.readNbt(tag);
 	}
 
-//	@Inject(at = { @At("RETURN") }, method = { "toTag(Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/nbt/CompoundTag;" })
-	public CompoundTag toTag1(CompoundTag tag) {
+//	@Inject(at = { @At("RETURN") }, method = { "toTag(Lnet/minecraft/nbt/NbtCompound;)Lnet/minecraft/nbt/NbtCompound;" })
+	public NbtCompound toTag1(NbtCompound tag) {
 		tag.putInt("multiple", multiple);
-		return super.toTag(tag);
+		return super.writeNbt(tag);
 	}
 
 	/**

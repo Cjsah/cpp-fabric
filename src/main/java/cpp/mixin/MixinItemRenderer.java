@@ -1,13 +1,5 @@
 package cpp.mixin;
 
-import javax.annotation.Nullable;
-
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
 import cpp.init.CppItems;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.Tessellator;
@@ -16,12 +8,19 @@ import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.resource.SynchronousResourceReloadListener;
+import net.minecraft.resource.SynchronousResourceReloader;
 import net.minecraft.util.Formatting;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import javax.annotation.Nullable;
 
 @Mixin(ItemRenderer.class)
 @SuppressWarnings({"unused", "ConstantConditions"})
-public abstract class MixinItemRenderer implements SynchronousResourceReloadListener {
+public abstract class MixinItemRenderer implements SynchronousResourceReloader {//FIXME
 
 	@Shadow
 	public float zOffset;

@@ -28,7 +28,7 @@ public class TexturedButtonWidget extends ButtonWidget {
     public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         MinecraftClient client = MinecraftClient.getInstance();
         client.getTextureManager().bindTexture(this.texture);
-        RenderSystem.color4f(1, 1, 1, 1f);
+        RenderSystem.setShaderColor(1, 1, 1, 1f);
         RenderSystem.disableDepthTest();
         int adjustedV = this.v;
         if (!active) {

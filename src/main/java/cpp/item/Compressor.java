@@ -7,7 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.particle.ParticleTypes;
@@ -64,8 +64,8 @@ public class Compressor extends Item {
 					result.setCount(1);
 				}
 			} else {
-				CompoundTag tag = new CompoundTag();
-				itemStack.toTag(tag);
+				NbtCompound tag = new NbtCompound();
+				itemStack.writeNbt(tag);
 				result = new ItemStack(CppItems.COMPRESSED_ITEM);
 				result.getOrCreateTag().put("item", tag);
 				result.getOrCreateTag().putByte("multiple", (byte) 1);

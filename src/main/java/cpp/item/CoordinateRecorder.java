@@ -8,7 +8,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.particle.ParticleTypes;
@@ -31,7 +31,7 @@ public class CoordinateRecorder extends BlockItem {
 
 	@Override
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-		CompoundTag tag = stack.getOrCreateTag().getCompound(POS_KEY);
+		NbtCompound tag = stack.getOrCreateTag().getCompound(POS_KEY);
 		if (tag.getSize() == 3) {
 			BlockPos coordinate = NbtHelper.toBlockPos(tag);
 			tooltip.add(new TranslatableText("tooltip.cpp.coordinate", String.format("%d/%d/%d", coordinate.getX(), coordinate.getY(), coordinate.getZ())));
@@ -50,7 +50,7 @@ public class CoordinateRecorder extends BlockItem {
 				((ServerPlayerEntity) context.getPlayer()).networkHandler.sendPacket(new ParticleS2CPacket(ParticleTypes.PORTAL, false, coordinate.getX(), coordinate.getY(), coordinate.getZ(), 0, 0, 0, .1f, 5));
 				return ActionResult.CONSUME;
 			} else {
-				CompoundTag tag = context.getStack().getOrCreateTag().getCompound(POS_KEY);
+				NbtCompound tag = context.getStack().getOrCreateTag().getCompound(POS_KEY);
 				if (tag.getSize() == 3) {
 					BlockPos coordinate = NbtHelper.toBlockPos(tag);
 					BlockPos blockPos = new BlockPos(placementContext.getBlockPos());

@@ -115,15 +115,15 @@ public class CraftingMachineScreenHandler extends AOutputMachineScreenHandler {
 				if (!this.insertItem(itemStack2, 0, 36, true)) {
 					return ItemStack.EMPTY;
 				}
-				slot.onStackChanged(itemStack2, itemStack);
+				slot.onQuickTransfer(itemStack2, itemStack);
 			} else if (index >= 0 && index < 36) {
 				if (!this.insertItem(itemStack2, 36, 45, false) && super.transferSlot(player, index) == ItemStack.EMPTY) {
 					return ItemStack.EMPTY;
 				}
 			}
-			ItemStack itemStack3 = slot.onTakeItem(player, itemStack2);
+			slot.onTakeItem(player, itemStack2);
 			if (index == 45) {
-				player.dropItem(itemStack3, false);
+				player.dropItem(itemStack2, false);
 			}
 		}
 		return ItemStack.EMPTY;

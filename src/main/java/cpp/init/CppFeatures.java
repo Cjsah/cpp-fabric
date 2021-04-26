@@ -20,7 +20,7 @@ public final class CppFeatures {
 			ConfiguredStructureFeature<DefaultFeatureConfig, ? extends StructureFeature<DefaultFeatureConfig>> configuredStructure = feature.configure(new DefaultFeatureConfig());
 			ENCHANTING_ROOM_FEATURE = FabricStructureBuilder.create(EnchantingRoomFeature.Generator.STRUCTURE_ID, feature).step(Feature.SURFACE_STRUCTURES).defaultConfig(1, 1, 12345).superflatFeature(configuredStructure).register();
 			ENCHANTING_ROOM_CONFIGURED = ENCHANTING_ROOM_FEATURE.configure(DefaultFeatureConfig.DEFAULT);
-			RegistryKey<ConfiguredStructureFeature<?, ?>> myConfigured = RegistryKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_WORLDGEN, EnchantingRoomFeature.Generator.STRUCTURE_ID);
+			RegistryKey<ConfiguredStructureFeature<?, ?>> myConfigured = RegistryKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY, EnchantingRoomFeature.Generator.STRUCTURE_ID);
 			BuiltinRegistries.add(BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, myConfigured.getValue(), ENCHANTING_ROOM_CONFIGURED);
 			
 		}

@@ -1,26 +1,25 @@
 package cpp.mixin;
 
+import cpp.ducktyping.INutrition;
 import cpp.ducktyping.IPlayerVaccine;
+import cpp.ducktyping.ITemperancable;
 import cpp.vaccine.VaccineInstance;
 import cpp.vaccine.Vaccines;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import cpp.ducktyping.INutrition;
-import cpp.ducktyping.ITemperancable;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,27 +58,27 @@ public abstract class MixinPlayerEntity extends LivingEntity implements ITempera
 		}
 	}
 
-	@Inject(at = @At("HEAD"), method = "writeCustomDataToTag")
-	public void writeCustomDataToTag(CompoundTag tag, CallbackInfo info) {
+	@Inject(at = @At("HEAD"), method = "writeCustomDataToNbt")
+	public void writeCustomDataToTag(NbtCompound tag, CallbackInfo info) {
 		tag.putInt("weight", weight);
 		tag.putBoolean("effectEnabled", effectEnabled);
 		tag.put("Vaccines", saveToListTag());
 	}
 
-	@Inject(at = @At("HEAD"), method = "readCustomDataFromTag")
-	public void readCustomDataFromTag(CompoundTag tag, CallbackInfo info) {
+	@Inject(at = @At("HEAD"), method = "readCustomDataFromNbt")
+	public void readCustomDataFromTag(NbtCompound tag, CallbackInfo info) {
 		weight = tag.getInt("weight");
 		effectEnabled = tag.getBoolean("effectEnabled");
-		for (Tag index : tag.getList("Vaccines", 10)) {
-			VaccineInstance vaccine = VaccineInstance.fromTag((CompoundTag) index);
+		for (NbtElement index : tag.getList("Vaccines", 10)) {
+			VaccineInstance vaccine = VaccineInstance.fromTag((NbtCompound) index);
 			this.vaccines.put(vaccine.getVaccine(), vaccine);
 		}
 	}
 
-	private ListTag saveToListTag() {
-		ListTag list = new ListTag();
+	private NbtList saveToListTag() {
+		NbtList list = new NbtList();
 		for (Map.Entry<Vaccines, VaccineInstance> index : this.vaccines.entrySet()) {
-			list.add(index.getValue().toTag(new CompoundTag()));
+			list.add(index.getValue().toTag(new NbtCompound()));
 		}
 		return list;
 	}

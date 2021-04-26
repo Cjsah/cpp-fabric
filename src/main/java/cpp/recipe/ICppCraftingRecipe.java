@@ -19,9 +19,9 @@ public interface ICppCraftingRecipe extends Recipe<CraftingInventory> {
 	default RecipeType<?> getType() {
 		return CppRecipes.CRAFTING_TYPE;
 	}
-
+	
 	@Override
-	default ItemStack getRecipeKindIcon() {
+	default ItemStack createIcon() {
 		return CppBlocks.CRAFTING_MACHINE.asItem().getDefaultStack();
 	}
 

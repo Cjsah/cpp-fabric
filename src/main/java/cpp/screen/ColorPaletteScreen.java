@@ -41,7 +41,7 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 	protected void init() {
 		super.init();
 		{
-			rgbTextField = new TextFieldWidget(textRenderer, x + TFX, y + TFY, TFW, TFH, LiteralText.EMPTY);
+			rgbTextField = new TextFieldWidget(textRenderer, field_2776 + TFX, field_2800 + TFY, TFW, TFH, LiteralText.EMPTY);
 			rgbTextField.setTextPredicate(text -> {
 				String textString = text.toUpperCase();
 				for (int j = 0; j < textString.length(); j++)
@@ -51,8 +51,8 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 			});
 			rgbTextField.setEditableColor(-1);
 			rgbTextField.setUneditableColor(-1);
-			rgbTextField.setHasBorder(false);
-			rgbTextField.setX(x + TFX);
+			rgbTextField.setDrawsBackground(false);
+			rgbTextField.setX(field_2776 + TFX);
 			rgbTextField.setChangedListener(s -> {
 				int rgb = Integer.valueOf(s.length() == 0 ? "0" : s, 16);
 				setHsb(rgb);
@@ -77,9 +77,9 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
 		{
 			//绘制共同背景
-			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			client.getTextureManager().bindTexture(getBackground());
-			int posX = this.x;
+			int posX = this.field_2776;
 			int posY = (this.height - this.backgroundHeight) / 2;
 			drawTexture(matrices, posX, posY, 0, 0, this.backgroundWidth, this.backgroundHeight, TW, TH);
 			//把文本框设为不可见
@@ -103,10 +103,10 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 						for (int k = 0; k < 3; k++)
 							drawTexture(matrices, posX + B1X - A1W / 2 + (int) (hsb[k] * (B1W)), posY + B1Y - 1 - A1Y + B1G * k, A1X, A1Y, A1W, A1H, TW, TH);
 						//显示当前选中的颜色色块
-						DrawableHelper.fill(matrices, x + CBX, y + CBY, x + CBX + CBW, y + CBY + CBH, handler.getRgb() | 0xff000000);
+						DrawableHelper.fill(matrices, field_2776 + CBX, field_2800 + CBY, field_2776 + CBX + CBW, field_2800 + CBY + CBH, handler.getRgb() | 0xff000000);
 						//显示染料名字
 						Item dye = handler.getNeededDye(0);
-						textRenderer.draw(matrices, dye.getName(), x + CBX + CBW + 4, y + CBY, 0);
+						textRenderer.draw(matrices, dye.getName(),field_2776+ CBX + CBW + 4, field_2800 + CBY, 0);
 						break;
 					}
 					case 2: {//热带鱼染色
@@ -198,7 +198,7 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 			case 1: {
 				int i = locateScrollMode1(mouseX, mouseY);
 				if (i != -1) {
-					hsb[i] = (float) ((mouseX - x - B1X) / B1W);
+					hsb[i] = (float) ((mouseX - field_2776 - B1X) / B1W);
 					setRgb(hsb);
 					setRgbTextField(handler.getRgb());
 					clicked = true;
@@ -208,14 +208,14 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 			case 2: {
 				int i = locateScrollMode2(mouseX, mouseY);
 				if (i != -1) {
-					setSelectedColor(i, (int) ((mouseX - x - B2X) / B23SW));
+					setSelectedColor(i, (int) ((mouseX - field_2776 - B2X) / B23SW));
 					clicked = true;
 				}
 				break;
 			}
 			case 3: {
-				double mx = mouseX - x - B3X;
-				double my = mouseY - y - B3Y;
+				double mx = mouseX - field_2776 - B3X;
+				double my = mouseY - field_2800 - B3Y;
 				if (mx >= 0 && mx < B23SW * DyeColor.values().length && my >= 0 && my < B23H) {
 					setSelectedColor(2, (int) (mx / B23SW));
 					clicked = true;
@@ -243,9 +243,9 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 					setRgb(hsb);
 					setRgbTextField(handler.getRgb());
 					scrolled = true;
-				} else if (mouseX >= x + TFX && mouseX < x + TFX + TFW && mouseY >= y + TFY && mouseY < y + TFY + TFH) {
+				} else if (mouseX >= field_2776 + TFX && mouseX < field_2776 + TFX + TFW && mouseY >= field_2800 + TFY && mouseY < field_2800 + TFY + TFH) {
 					int irgb = Integer.valueOf(rgbTextField.getText(), 16);
-					int index = (int) ((TFW - (mouseX - x - TFX)) / TFSW);
+					int index = (int) ((TFW - (mouseX - field_2776 - TFX)) / TFSW);
 					int digit = ((irgb >> (index * 4) & 0xf) + (int) amount) & 0xf;
 					irgb = irgb & ~(-1 >> (index * 4) & 0xf << (index * 4)) | (digit << (index * 4)) & 0xffffff;
 					setRgb(irgb);
@@ -265,7 +265,7 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 	}
 	
 	public int locateScrollMode1(double mouseX, double mouseY) {
-		double mx = mouseX - x - B1X, my = mouseY - y - B1Y + A1H + 1;
+		double mx = mouseX - field_2776 - B1X, my = mouseY - field_2800 - B1Y + A1H + 1;
 		if (mx >= 0 && mx < B1W && my > 0 && my < A1H + 1 + B1H + 1 + B1G * 2 && my % B1G < B1H + 1 + A1H + 1) {
 			return (int) (my / B1G);
 		}
@@ -273,7 +273,7 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 	}
 	
 	public int locateScrollMode2(double mouseX, double mouseY) {
-		double mx = mouseX - x - B2X, my = mouseY - y - B2Y + A23H + 1;
+		double mx = mouseX - field_2776 - B2X, my = mouseY - field_2800 - B2Y + A23H + 1;
 		if (mx >= 0 && mx < B23SW * DyeColor.values().length && my >= 0 && my < A23H + 1 + B23H + 1 + B2G && my % B2G < B23H + 1 + A23H + 1) {
 			return (int) (my / B2G);
 		}
@@ -361,7 +361,7 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 	}
 	
 	public void renderNeededDye(MatrixStack matrices, int i) {
-		int sx = x + handler.getDyeSlot(i).x, sy = y + handler.getDyeSlot(0).y;
+		int sx = field_2776 + handler.getDyeSlot(i).x, sy = field_2800 + handler.getDyeSlot(0).y;
 		if (!handler.getDyeSlot(i).getStack().isOf(handler.getNeededDye(i))) {
 			//绘制需要的染料
 			itemRenderer.renderInGui(handler.getNeededDye(i).getDefaultStack(), sx, sy);

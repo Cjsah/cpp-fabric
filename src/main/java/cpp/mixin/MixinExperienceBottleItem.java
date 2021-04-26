@@ -16,7 +16,7 @@ import net.minecraft.entity.projectile.thrown.ExperienceBottleEntity;
 import net.minecraft.item.ExperienceBottleItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
@@ -80,7 +80,7 @@ public class MixinExperienceBottleItem extends Item implements IDefaultTagItem {
 	}
 	
 	@Override
-	public CompoundTag modifyDefaultTag(CompoundTag tag) {
+	public NbtCompound modifyDefaultTag(NbtCompound tag) {
 		tag.putByte("multiple", (byte) 0);
 		return tag;
 	}
