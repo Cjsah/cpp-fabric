@@ -4,17 +4,12 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import cpp.api.Effect;
 import cpp.api.Utils;
-import cpp.ducktyping.ICppState;
 import cpp.ducktyping.ITemperancable;
 import cpp.init.CppEffects;
-import cpp.init.CppItemTags;
 import cpp.rituals.RitualResult;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.DispenserBlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentLevelEntry;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -27,16 +22,15 @@ import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ArmorItem;
-import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.ToolItem;
 import net.minecraft.item.TridentItem;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.particle.ParticleTypes;
@@ -51,17 +45,13 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
-import java.util.Set;
 import java.util.UUID;
 
 import static cpp.init.CppBlocks.BROKEN_SPAWNER;
@@ -402,12 +392,12 @@ public class Wand extends Item {
 	public static ItemStack attachAttibutes(ItemStack stack, Random random) {
 		Item item = stack.getItem();
 		EquipmentSlot slot = getSlot(item);
-		ListTag attributeModifiers = stack.getOrCreateTag().getList("AttributeModifiers", 10);
+		NbtList attributeModifiers = stack.getOrCreateTag().getList("AttributeModifiers", 10);
 		double attackSpeed = 0, damage = 0, health = 0, resistance = 0, movementSpeed = 0, luck = 0;
-		for (Iterator<Tag> iterator = attributeModifiers.iterator(); iterator.hasNext();) {
-			Tag tag = iterator.next();
-			if (tag instanceof CompoundTag) {
-				CompoundTag compoundTag = (CompoundTag) tag;
+		for (Iterator<NbtElement> iterator = attributeModifiers.iterator(); iterator.hasNext();) {
+			NbtElement tag = iterator.next();
+			if (tag instanceof NbtCompound) {
+				NbtCompound compoundTag = (NbtCompound) tag;
 				UUID uuid = NbtHelper.toUuid(compoundTag.get("UUID"));
 				if (uuid.getMostSignificantBits() == HIGH_UUID && uuid.getLeastSignificantBits() > 0 && uuid.getLeastSignificantBits() <= 36) {
 					iterator.remove();

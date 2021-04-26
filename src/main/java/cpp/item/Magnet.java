@@ -12,7 +12,7 @@ import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -45,7 +45,7 @@ public class Magnet extends Item implements IDefaultTagItem, ITickableInItemFram
 		if (!world.isClient) {
 			boolean enabled;
 			itemStack.getOrCreateTag().putBoolean("enabled", enabled = !itemStack.getOrCreateTag().getBoolean("enabled"));
-			((ServerPlayerEntity) user).networkHandler.sendPacket(new TitleS2CPacket(TitleS2CPacket.Action.ACTIONBAR, new TranslatableText("chat.cpp.change", new TranslatableText(enabled ? "addServer.resourcePack.enabled" : "addServer.resourcePack.disabled").formatted(enabled ? Formatting.GREEN : Formatting.GRAY))));
+			((ServerPlayerEntity) user).networkHandler.sendPacket(new TitleS2CPacket(new TranslatableText("chat.cpp.change", new TranslatableText(enabled ? "addServer.resourcePack.enabled" : "addServer.resourcePack.disabled").formatted(enabled ? Formatting.GREEN : Formatting.GRAY))));
 			user.incrementStat(Stats.USED.getOrCreateStat(this));
 			return TypedActionResult.success(itemStack);
 		}
@@ -53,7 +53,7 @@ public class Magnet extends Item implements IDefaultTagItem, ITickableInItemFram
 	}
 
 	@Override
-	public CompoundTag modifyDefaultTag(CompoundTag tag) {
+	public NbtCompound modifyDefaultTag(NbtCompound tag) {
 		tag.putBoolean("enabled", true);
 		return tag;
 	}

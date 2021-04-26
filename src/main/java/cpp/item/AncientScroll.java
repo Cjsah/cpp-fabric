@@ -8,7 +8,7 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -47,7 +47,7 @@ public class AncientScroll extends Item {
 
     public static ItemStack randomGetOne() {
         ItemStack item = new ItemStack(CppItems.ANCIENT_SCROLL);
-        CompoundTag tag = new CompoundTag();
+        NbtCompound tag = new NbtCompound();
         tag.putString("enchantment", list.get(new Random().nextInt(list.size())));
         item.setTag(tag);
         return item;
@@ -56,7 +56,7 @@ public class AncientScroll extends Item {
     public static ItemStack get(String name) {
         if (list.contains(name)) {
             ItemStack item = new ItemStack(CppItems.ANCIENT_SCROLL);
-            CompoundTag tag = new CompoundTag();
+            NbtCompound tag = new NbtCompound();
             tag.putString("enchantment", name);
             item.setTag(tag);
             return item;

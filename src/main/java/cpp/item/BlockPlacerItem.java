@@ -10,7 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.BlockSoundGroup;
@@ -114,9 +114,9 @@ public class BlockPlacerItem extends Item {
 
 	protected BlockState placeFromTag(BlockPos pos, World world, ItemStack stack, BlockState state) {
 		BlockState blockState = state;
-		CompoundTag compoundTag = stack.getTag();
+		NbtCompound compoundTag = stack.getTag();
 		if (compoundTag != null) {
-			CompoundTag compoundTag2 = compoundTag.getCompound("BlockStateTag");
+			NbtCompound compoundTag2 = compoundTag.getCompound("BlockStateTag");
 			StateManager<Block, BlockState> stateManager = state.getBlock().getStateManager();
 
 			for (String string : compoundTag2.getKeys()) {
@@ -142,7 +142,7 @@ public class BlockPlacerItem extends Item {
 	public static boolean writeTagToBlockEntity(World world, @Nullable PlayerEntity player, BlockPos pos, ItemStack stack) {
 		MinecraftServer minecraftServer = world.getServer();
 		if (minecraftServer != null) {
-			CompoundTag compoundTag = stack.getSubTag("BlockEntityTag");
+			NbtCompound compoundTag = stack.getSubTag("BlockEntityTag");
 			if (compoundTag != null) {
 				BlockEntity blockEntity = world.getBlockEntity(pos);
 				if (blockEntity != null) {
@@ -150,14 +150,14 @@ public class BlockPlacerItem extends Item {
 						return false;
 					}
 
-					CompoundTag compoundTag2 = blockEntity.toTag(new CompoundTag());
-					CompoundTag compoundTag3 = compoundTag2.copy();
+					NbtCompound compoundTag2 = blockEntity.writeNbt(new NbtCompound());
+					NbtCompound compoundTag3 = compoundTag2.copy();
 					compoundTag2.copyFrom(compoundTag);
 					compoundTag2.putInt("x", pos.getX());
 					compoundTag2.putInt("y", pos.getY());
 					compoundTag2.putInt("z", pos.getZ());
 					if (!compoundTag2.equals(compoundTag3)) {
-						blockEntity.fromTag(compoundTag2);
+						blockEntity.readNbt(compoundTag2);
 						blockEntity.markDirty();
 						return true;
 					}

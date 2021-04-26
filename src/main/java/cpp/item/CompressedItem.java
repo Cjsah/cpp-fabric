@@ -9,7 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -31,9 +31,9 @@ public class CompressedItem extends Item {
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-		CompoundTag tag = stack.getOrCreateTag();
+		NbtCompound tag = stack.getOrCreateTag();
 		tooltip.add(new TranslatableText("tooltip.cpp.multiple", tag.getByte("multiple")).formatted(Formatting.DARK_AQUA));
-		List<Text> itemTooltip = ItemStack.fromTag(tag.getCompound("item")).getTooltip(null, context);
+		List<Text> itemTooltip = ItemStack.fromNbt(tag.getCompound("item")).getTooltip(null, context);
 		tooltip.addAll(itemTooltip);
 		if (context.isAdvanced())
 			tooltip.add(LiteralText.EMPTY);
@@ -62,7 +62,7 @@ public class CompressedItem extends Item {
 			if (multiple > 1 || itemStack.isOf(Items.EXPERIENCE_BOTTLE) && multiple > 0) {
 				(result = itemStack.copy()).getOrCreateTag().putByte("multiple", (byte) (multiple - 1));
 			} else if (multiple == 1 && itemStack.isOf(CppItems.COMPRESSED_ITEM)) {
-				result = ItemStack.fromTag(itemStack.getOrCreateTag().getCompound("item"));
+				result = ItemStack.fromNbt(itemStack.getOrCreateTag().getCompound("item"));
 			}
 			result.setCount(result.getMaxCount());
 			count = itemStack.getCount();
@@ -100,7 +100,7 @@ public class CompressedItem extends Item {
 	@Override
 	@Environment(EnvType.CLIENT)
 	public Text getName(ItemStack stack) {
-		ItemStack itemStack = ItemStack.fromTag(stack.getOrCreateTag().getCompound("item"));
+		ItemStack itemStack = ItemStack.fromNbt(stack.getOrCreateTag().getCompound("item"));
 		return new TranslatableText("tooltip.cpp.compressed").formatted(Formatting.DARK_AQUA).append(((MutableText) itemStack.getName()).formatted(itemStack.getRarity().formatting));
 	}
 }

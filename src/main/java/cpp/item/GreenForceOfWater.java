@@ -17,7 +17,7 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -55,7 +55,7 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
     @Override
     @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        CompoundTag tag = stack.getOrCreateTag();
+        NbtCompound tag = stack.getOrCreateTag();
         tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("block.minecraft.water"), new TranslatableText("word.infinite")).formatted(Formatting.GREEN));
         tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("block.minecraft.lava"), tag.getInt("lava")).formatted(Formatting.RED));
     }
@@ -64,7 +64,7 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         if (!world.isClient) {
-            CompoundTag tag = itemStack.getOrCreateTag();
+            NbtCompound tag = itemStack.getOrCreateTag();
             BlockHitResult hitResult = raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
             BlockPos blockPos = hitResult.getBlockPos();
             BlockState blockState = world.getBlockState(blockPos);
@@ -104,7 +104,7 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
             } else if (hitResult.getType() == HitResult.Type.MISS) {
                 boolean waterMode = Objects.equals(tag.getString("mode"), "water");
                 tag.putString("mode", waterMode ? "lava" : "water");
-                ((ServerPlayerEntity)user).networkHandler.sendPacket(new TitleS2CPacket(TitleS2CPacket.Action.ACTIONBAR,
+                ((ServerPlayerEntity)user).networkHandler.sendPacket(new TitleS2CPacket(
                         new TranslatableText("chat.cpp.change", new TranslatableText("block.minecraft." + tag.getString("mode")).formatted(waterMode ? Formatting.RED : Formatting.GREEN)).formatted(Formatting.GOLD)
                 ));
                 user.incrementStat(Stats.USED.getOrCreateStat(this));
@@ -145,7 +145,7 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
         return TypedActionResult.pass(itemStack);
     }
 
-    private TypedActionResult<ItemStack> changeTag(PlayerEntity player, ItemStack item, Fluid fluid, CompoundTag tag) {
+    private TypedActionResult<ItemStack> changeTag(PlayerEntity player, ItemStack item, Fluid fluid, NbtCompound tag) {
         player.incrementStat(Stats.USED.getOrCreateStat(this));
         if (fluid == Fluids.LAVA) {
             tag.putInt("lava", tag.getInt("lava") + 1);
@@ -154,7 +154,7 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
     }
 
 	@Override
-	public CompoundTag modifyDefaultTag(CompoundTag tag) {
+	public NbtCompound modifyDefaultTag(NbtCompound tag) {
 		tag.putString("mode", "water");
         tag.putInt("lava", 0);
         return tag;

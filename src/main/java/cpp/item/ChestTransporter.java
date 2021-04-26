@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.ToolItem;
 import net.minecraft.item.ToolMaterials;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
@@ -29,7 +29,7 @@ public class ChestTransporter extends ToolItem {
 			ServerWorld world = (ServerWorld) context.getWorld();
 			BlockState blockState = world.getBlockState(context.getBlockPos());
 			ItemStack itemStack = blockState.getBlock().asItem().getDefaultStack();
-			CompoundTag tag = blockEntity.toTag(new CompoundTag());
+			NbtCompound tag = blockEntity.writeNbt(new NbtCompound());
 			tag.remove("x");
 			tag.remove("y");
 			tag.remove("z");

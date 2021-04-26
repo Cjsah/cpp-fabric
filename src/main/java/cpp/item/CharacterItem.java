@@ -5,7 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.collection.DefaultedList;
 
@@ -20,7 +20,7 @@ public class CharacterItem extends Item {
     public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
         if (this.isIn(group)) {
             for (int i = 1; i <= 117; i++) {
-                CompoundTag tag = new CompoundTag();
+                NbtCompound tag = new NbtCompound();
                 ItemStack item = new ItemStack(this);
                 tag.putInt("character", i);
                 item.setTag(tag);
@@ -42,7 +42,7 @@ public class CharacterItem extends Item {
 
     public static ItemStack randomGetOne() {
         ItemStack item = new ItemStack(CppItems.CHARACTER);
-        CompoundTag tag = new CompoundTag();
+        NbtCompound tag = new NbtCompound();
         tag.putInt("character", new Random().nextInt(117)+1);
         item.setTag(tag);
         return item;
@@ -51,7 +51,7 @@ public class CharacterItem extends Item {
     public static ItemStack get(int id) {
         if (id >= 1 && id <= 117) {
             ItemStack item = new ItemStack(CppItems.CHARACTER);
-            CompoundTag tag = new CompoundTag();
+            NbtCompound tag = new NbtCompound();
             tag.putInt("character", id);
             item.setTag(tag);
             return item;

@@ -13,7 +13,7 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
@@ -54,7 +54,7 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppCo
     @Override
     @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        CompoundTag tag = stack.getOrCreateTag();
+        NbtCompound tag = stack.getOrCreateTag();
         tooltip.add(new TranslatableText("tooltip.cpp.cfom.direction", new TranslatableText("tooltip.cpp.cfom." + (tag.getBoolean("horizontal") ? "horizontal" : "vertical"))).formatted(Formatting.GREEN));
         tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("tooltip.cpp.cfom.level", tag.getInt("level")), new TranslatableText("tooltip.cpp.cfom.xp", tag.getInt("xp"))).formatted(Formatting.GREEN));
     }
@@ -63,12 +63,12 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppCo
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack item = user.getStackInHand(hand);
         if (!world.isClient) {
-            CompoundTag tag = item.getOrCreateTag();
+            NbtCompound tag = item.getOrCreateTag();
             BlockHitResult hitResult = raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
             BlockPos blockPos = hitResult.getBlockPos();
             if (user.isSneaking() && hitResult.getType() == HitResult.Type.MISS) {
                 tag.putBoolean("horizontal", !tag.getBoolean("horizontal"));
-                ((ServerPlayerEntity)user).networkHandler.sendPacket(new TitleS2CPacket(TitleS2CPacket.Action.ACTIONBAR,
+                ((ServerPlayerEntity)user).networkHandler.sendPacket(new TitleS2CPacket(
                         new TranslatableText("misc.cpp",
                                 new TranslatableText("tooltip.cpp.cfom.direction",
                                         new TranslatableText("tooltip.cpp.cfom." + (tag.getBoolean("horizontal") ? "horizontal" : "vertical"))),
@@ -98,7 +98,7 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppCo
         return TypedActionResult.pass(item);
     }
 
-    private static Boolean fill(World world, PlayerEntity user, BlockPos blockPos, CompoundTag tag) {
+    private static Boolean fill(World world, PlayerEntity user, BlockPos blockPos, NbtCompound tag) {
         int level = tag.getInt("level"), xp = tag.getInt("xp");
         int length = 32, high = level;
         if (!tag.getBoolean("horizontal")) {
@@ -134,7 +134,8 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppCo
         return false;
     }
 
-    public CompoundTag modifyDefaultTag(CompoundTag tag) {
+    @Override
+    public NbtCompound modifyDefaultTag(NbtCompound tag) {
 		tag.putBoolean("horizontal", true);
         tag.putInt("level", config.get("StartLevel").getAsInt());
         tag.putInt("xp", 0);

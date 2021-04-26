@@ -7,8 +7,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.collection.PackedIntegerArray;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class IslandUtils {
 
-    private static final CompoundTag defaultTag = new CompoundTag();
+    private static final NbtCompound defaultTag = new NbtCompound();
     private static final Block chest = Blocks.CHEST;
 
     @SuppressWarnings("ConstantConditions")
@@ -61,11 +61,11 @@ public class IslandUtils {
                 chunk.setBlockState(pos.down(), Blocks.BEDROCK.getDefaultState(), false);
                 chunk.setBlockState(pos, chest.getDefaultState(), false);
                 BlockEntity blockEntity = ((BlockEntityProvider) chest).createBlockEntity(pos, chest.getDefaultState());
-                CompoundTag tag = defaultTag.copy();
+                NbtCompound tag = defaultTag.copy();
                 tag.putInt("x", pos.getX());
                 tag.putInt("y", pos.getY());
                 tag.putInt("z", pos.getZ());
-                blockEntity.fromTag(tag);
+                blockEntity.readNbt(tag);
                 chunk.setBlockEntity(blockEntity);
             }
         }
@@ -82,7 +82,7 @@ public class IslandUtils {
     }
 
     static {
-        ListTag list = new ListTag();
+        NbtList list = new NbtList();
         list.add(newItem(0, Items.OAK_SAPLING, 4));
         list.add(newItem(1, Items.DIRT, 1));
         list.add(newItem(2, Items.BONE_MEAL, 16));
@@ -90,8 +90,8 @@ public class IslandUtils {
     }
 
     @Nonnull
-    private static CompoundTag newItem(int slot, @Nonnull Item item, int count) {
-        CompoundTag tag = new CompoundTag();
+    private static NbtCompound newItem(int slot, @Nonnull Item item, int count) {
+        NbtCompound tag = new NbtCompound();
         tag.putByte("Slot", (byte) slot);
         tag.putString("id", item.toString());
         tag.putByte("Count", (byte) count);
