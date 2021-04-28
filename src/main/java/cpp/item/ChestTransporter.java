@@ -29,12 +29,12 @@ public class ChestTransporter extends ToolItem {
 			ServerWorld world = (ServerWorld) context.getWorld();
 			BlockState blockState = world.getBlockState(context.getBlockPos());
 			ItemStack itemStack = blockState.getBlock().asItem().getDefaultStack();
-			NbtCompound tag = blockEntity.writeNbt(new NbtCompound());
-			tag.remove("x");
-			tag.remove("y");
-			tag.remove("z");
-			tag.remove("id");
-			itemStack.putSubTag("BlockEntityTag", tag);
+			NbtCompound nbt = blockEntity.writeNbt(new NbtCompound());
+			nbt.remove("x");
+			nbt.remove("y");
+			nbt.remove("z");
+			nbt.remove("id");
+			itemStack.putSubTag("BlockEntityTag", nbt);
 			blockEntity.markRemoved();
 			world.setBlockState(context.getBlockPos(), Blocks.AIR.getDefaultState(), 0b0100011);// MJSB
 			Block.dropStack(world, context.getBlockPos(), itemStack);

@@ -272,38 +272,38 @@ public class AllInOneMachineBlockEntity extends AExpMachineBlockEntity {
 	 * 以下是LockableContainerBlockEntity的方法
 	 */
 	@Override
-	public void readNbt(NbtCompound tag) {
-		super.readNbt(tag);
-		Inventories.readNbt(tag, inventory);
-		for (int i = 0, a = tag.getInt("availabeTemperature"); a > 0 && i < Degree.values().length; i++) {
+	public void readNbt(NbtCompound nbt) {
+		super.readNbt(nbt);
+		Inventories.readNbt(nbt, inventory);
+		for (int i = 0, a = nbt.getInt("availabeTemperature"); a > 0 && i < Degree.values().length; i++) {
 			if ((a & 1) == 1)
 				availabeTemperature.add(Degree.values()[i]);
 			a >>= 1;
 		}
-		for (int i = 0, a = tag.getInt("availabePressure"); a > 0 && i < Degree.values().length; i++) {
+		for (int i = 0, a = nbt.getInt("availabePressure"); a > 0 && i < Degree.values().length; i++) {
 			if ((a & 1) == 1)
 				availabePressure.add(Degree.values()[i]);
 			a >>= 1;
 		}
-		propertyDelegate.set(6, tag.getInt("temperaturePressure"));
+		propertyDelegate.set(6, nbt.getInt("temperaturePressure"));
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		super.writeNbt(tag);
-		Inventories.writeNbt(tag, inventory);
-		tag.putInt("temperaturePressure", propertyDelegate.get(6));
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		super.writeNbt(nbt);
+		Inventories.writeNbt(nbt, inventory);
+		nbt.putInt("temperaturePressure", propertyDelegate.get(6));
 		int a = 0;
 		for (Degree degree : availabeTemperature) {
 			a |= 1 << degree.ordinal();
 		}
-		tag.putInt("availabeTemperature", a);
+		nbt.putInt("availabeTemperature", a);
 		a = 0;
 		for (Degree degree : availabePressure) {
 			a |= 1 << degree.ordinal();
 		}
-		tag.putInt("availabePressure", a);
-		return tag;
+		nbt.putInt("availabePressure", a);
+		return nbt;
 	}
 
 	@Override

@@ -47,15 +47,15 @@ public abstract class AGolemEntity extends LivingEntity {
 	}
 
 	@Override
-	public void readNbt(NbtCompound tag) {
-		mainHandStack = ItemStack.fromNbt(tag.getCompound("mainHandStack"));
-		super.readNbt(tag);
+	public void readNbt(NbtCompound nbt) {
+		mainHandStack = ItemStack.fromNbt(nbt.getCompound("mainHandStack"));
+		super.readNbt(nbt);
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		tag.put("mainHandStack", mainHandStack.writeNbt(new NbtCompound()));
-		return super.writeNbt(tag);
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		nbt.put("mainHandStack", mainHandStack.writeNbt(new NbtCompound()));
+		return super.writeNbt(nbt);
 	}
 
 	public abstract void work();

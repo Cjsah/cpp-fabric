@@ -96,21 +96,21 @@ public abstract class AMovingGolemEntity extends AGolemEntity {
 	}
 
 	@Override
-	public void readNbt(NbtCompound tag) {
-		continuousDisplacement = tag.getInt("continuousDisplacement");
-		experience = tag.getInt("experience");
-		Utils.inventoryFromTag(inventory, tag);
+	public void readNbt(NbtCompound nbt) {
+		continuousDisplacement = nbt.getInt("continuousDisplacement");
+		experience = nbt.getInt("experience");
+		Utils.inventoryFromNbt(inventory, nbt);
 		Vec3d rotation = getRotationVector();
 		movingDirection = Direction.getFacing(rotation.x, rotation.y, rotation.z);
-		super.readNbt(tag);
+		super.readNbt(nbt);
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		tag.putInt("continuousDisplacement", continuousDisplacement);
-		tag.putInt("experience", experience);
-		Utils.inventoryToTag(inventory, tag);
-		return super.writeNbt(tag);
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		nbt.putInt("continuousDisplacement", continuousDisplacement);
+		nbt.putInt("experience", experience);
+		Utils.inventoryToNbt(inventory, nbt);
+		return super.writeNbt(nbt);
 	}
 
 	@Override

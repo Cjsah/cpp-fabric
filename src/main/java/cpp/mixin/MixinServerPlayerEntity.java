@@ -60,12 +60,12 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 	}
 
 	@Inject(at = @At("HEAD"), method = "writeCustomDataToNbt")
-	public void writeCustomDataToTag(NbtCompound tag, CallbackInfo info) {
-		tag.putInt("elder_s_word_cooldown", elderSWordCoolDown);
+	public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo info) {
+		nbt.putInt("elder_s_word_cooldown", elderSWordCoolDown);
 	}
 
 	@Inject(at = @At("HEAD"), method = "readCustomDataFromNbt")
-	public void readCustomDataFromTag(NbtCompound tag, CallbackInfo info) {
-		elderSWordCoolDown = tag.getInt("elder_s_word_cooldown");
+	public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo info) {
+		elderSWordCoolDown = nbt.getInt("elder_s_word_cooldown");
 	}
 }

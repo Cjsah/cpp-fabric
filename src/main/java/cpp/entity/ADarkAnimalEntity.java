@@ -42,14 +42,14 @@ public abstract class ADarkAnimalEntity<T extends Entity> extends HostileEntity 
     }
 
     @Override
-    public void writeCustomDataToNbt(NbtCompound tag) {
-        super.writeCustomDataToNbt(tag);
-        tag.putBoolean("TransForm", this.transform);
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putBoolean("TransForm", this.transform);
     }
 
     @Override
-    public void readCustomDataFromNbt(NbtCompound tag) {
-        super.readCustomDataFromNbt(tag);
-        this.transform = tag.getBoolean("TransForm");
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        this.transform = nbt.getBoolean("TransForm");
     }
 }

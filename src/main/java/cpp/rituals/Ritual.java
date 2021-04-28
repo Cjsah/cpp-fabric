@@ -39,7 +39,7 @@ public class Ritual {
 
 //    @SuppressWarnings("ConstantConditions")
 //    public static boolean isComposite(World world, BlockPos pos) {
-//        CompoundTag tag = world.getBlockEntity(pos).toTag(new CompoundTag());
+//        CompoundTag tag = world.getBlockEntity(pos).writeNbt(new CompoundTag());
 //        world.getEntitiesByType()
 //    }
 

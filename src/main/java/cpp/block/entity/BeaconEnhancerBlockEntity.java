@@ -132,11 +132,11 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		tag.putInt("playerEffect", playerEffectCode);
-		tag.putInt("mobEffect", mobEffectCode);
-		tag.putBoolean("onlyAdverse", onlyAdverse);
-		return super.writeNbt(tag);
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		nbt.putInt("playerEffect", playerEffectCode);
+		nbt.putInt("mobEffect", mobEffectCode);
+		nbt.putBoolean("onlyAdverse", onlyAdverse);
+		return super.writeNbt(nbt);
 	}
 	
 	/**
@@ -151,13 +151,13 @@ public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScree
 	}
 	
 	@Override
-	public void readNbt(NbtCompound tag) {
-		playerEffectCode = tag.getInt("playerEffect");
+	public void readNbt(NbtCompound nbt) {
+		playerEffectCode = nbt.getInt("playerEffect");
 		playerEffect = AVAILABLE_PLAYER_EFFECTS.get(playerEffectCode);
-		mobEffectCode = tag.getInt("mobEffect");
+		mobEffectCode = nbt.getInt("mobEffect");
 		mobEffect = AVAILABLE_MOB_EFFECTS.get(mobEffectCode);
-		onlyAdverse = tag.getBoolean("onlyAdverse");
-		super.readNbt(tag);
+		onlyAdverse = nbt.getBoolean("onlyAdverse");
+		super.readNbt(nbt);
 	}
 	
 	public static void tick(World world, BlockPos pos, BlockState state, BeaconEnhancerBlockEntity blockEntity) {

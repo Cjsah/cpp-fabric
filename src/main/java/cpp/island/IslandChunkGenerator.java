@@ -9,7 +9,6 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
-import net.minecraft.world.WorldAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
@@ -51,15 +50,10 @@ public class IslandChunkGenerator extends ChunkGenerator {
     }
 
     @Override
-    public int getSpawnHeight(HeightLimitView world) {
-        return 64;
-    }
-    
-    @Override
     public CompletableFuture<Chunk> populateNoise(Executor executor, StructureAccessor accessor, Chunk chunk) {
         return CompletableFuture.completedFuture(chunk);
     }
-    
+
     @Override
     public int getHeight(int x, int z, @Nonnull Heightmap.Type heightmap, @Nonnull HeightLimitView world) {
         return world.getBottomY();
@@ -74,6 +68,7 @@ public class IslandChunkGenerator extends ChunkGenerator {
     public StructuresConfig getStructuresConfig() {
         return this.config.getStructuresConfig();
     }
+
 
     static {
         Registry.register(Registry.CHUNK_GENERATOR, Craftingpp.MOD_ID3 + "cpp_island", IslandChunkGenerator.CODEC);

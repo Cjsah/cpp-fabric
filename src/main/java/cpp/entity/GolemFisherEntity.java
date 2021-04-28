@@ -51,14 +51,14 @@ public class GolemFisherEntity extends AGolemEntity {
 	}
 
 	@Override
-	public void readNbt(NbtCompound tag) {
-		time = tag.getInt("time");
-		super.readNbt(tag);
+	public void readNbt(NbtCompound nbt) {
+		time = nbt.getInt("time");
+		super.readNbt(nbt);
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		tag.putInt("time", time);
-		return super.writeNbt(tag);
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		nbt.putInt("time", time);
+		return super.writeNbt(nbt);
 	}
 }

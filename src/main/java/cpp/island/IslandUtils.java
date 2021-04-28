@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class IslandUtils {
 
-    private static final NbtCompound defaultTag = new NbtCompound();
+    private static final NbtCompound defaultNbt = new NbtCompound();
     private static final Block chest = Blocks.CHEST;
 
     @SuppressWarnings("ConstantConditions")
@@ -61,11 +61,11 @@ public class IslandUtils {
                 chunk.setBlockState(pos.down(), Blocks.BEDROCK.getDefaultState(), false);
                 chunk.setBlockState(pos, chest.getDefaultState(), false);
                 BlockEntity blockEntity = ((BlockEntityProvider) chest).createBlockEntity(pos, chest.getDefaultState());
-                NbtCompound tag = defaultTag.copy();
-                tag.putInt("x", pos.getX());
-                tag.putInt("y", pos.getY());
-                tag.putInt("z", pos.getZ());
-                blockEntity.readNbt(tag);
+                NbtCompound nbt = defaultNbt.copy();
+                nbt.putInt("x", pos.getX());
+                nbt.putInt("y", pos.getY());
+                nbt.putInt("z", pos.getZ());
+                blockEntity.readNbt(nbt);
                 chunk.setBlockEntity(blockEntity);
             }
         }
@@ -86,16 +86,16 @@ public class IslandUtils {
         list.add(newItem(0, Items.OAK_SAPLING, 4));
         list.add(newItem(1, Items.DIRT, 1));
         list.add(newItem(2, Items.BONE_MEAL, 16));
-        defaultTag.put("Items", list);
+        defaultNbt.put("Items", list);
     }
 
     @Nonnull
     private static NbtCompound newItem(int slot, @Nonnull Item item, int count) {
-        NbtCompound tag = new NbtCompound();
-        tag.putByte("Slot", (byte) slot);
-        tag.putString("id", item.toString());
-        tag.putByte("Count", (byte) count);
-        return tag;
+        NbtCompound nbt = new NbtCompound();
+        nbt.putByte("Slot", (byte) slot);
+        nbt.putString("id", item.toString());
+        nbt.putByte("Count", (byte) count);
+        return nbt;
     }
 
 }

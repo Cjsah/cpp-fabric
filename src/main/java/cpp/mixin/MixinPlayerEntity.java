@@ -59,26 +59,26 @@ public abstract class MixinPlayerEntity extends LivingEntity implements ITempera
 	}
 
 	@Inject(at = @At("HEAD"), method = "writeCustomDataToNbt")
-	public void writeCustomDataToTag(NbtCompound tag, CallbackInfo info) {
-		tag.putInt("weight", weight);
-		tag.putBoolean("effectEnabled", effectEnabled);
-		tag.put("Vaccines", saveToListTag());
+	public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo info) {
+		nbt.putInt("weight", weight);
+		nbt.putBoolean("effectEnabled", effectEnabled);
+		nbt.put("Vaccines", saveToListNbt());
 	}
 
 	@Inject(at = @At("HEAD"), method = "readCustomDataFromNbt")
-	public void readCustomDataFromTag(NbtCompound tag, CallbackInfo info) {
-		weight = tag.getInt("weight");
-		effectEnabled = tag.getBoolean("effectEnabled");
-		for (NbtElement index : tag.getList("Vaccines", 10)) {
-			VaccineInstance vaccine = VaccineInstance.fromTag((NbtCompound) index);
+	public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo info) {
+		weight = nbt.getInt("weight");
+		effectEnabled = nbt.getBoolean("effectEnabled");
+		for (NbtElement index : nbt.getList("Vaccines", 10)) {
+			VaccineInstance vaccine = VaccineInstance.fromNbt((NbtCompound) index);
 			this.vaccines.put(vaccine.getVaccine(), vaccine);
 		}
 	}
 
-	private NbtList saveToListTag() {
+	private NbtList saveToListNbt() {
 		NbtList list = new NbtList();
 		for (Map.Entry<Vaccines, VaccineInstance> index : this.vaccines.entrySet()) {
-			list.add(index.getValue().toTag(new NbtCompound()));
+			list.add(index.getValue().writeNbt(new NbtCompound()));
 		}
 		return list;
 	}

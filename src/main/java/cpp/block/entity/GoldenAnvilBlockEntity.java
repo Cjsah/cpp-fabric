@@ -65,16 +65,16 @@ public class GoldenAnvilBlockEntity extends AExpMachineBlockEntity {
 	}
 
 	@Override
-	public void readNbt(NbtCompound tag) {
-		super.readNbt(tag);
-		Inventories.readNbt(tag, inventory);
+	public void readNbt(NbtCompound nbt) {
+		super.readNbt(nbt);
+		Inventories.readNbt(nbt, inventory);
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		super.writeNbt(tag);
-		Inventories.writeNbt(tag, inventory);
-		return tag;
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		super.writeNbt(nbt);
+		Inventories.writeNbt(nbt, inventory);
+		return nbt;
 	}
 
 	public static void tick(World world, BlockPos pos, BlockState state, GoldenAnvilBlockEntity blockEntity) {
@@ -119,10 +119,10 @@ public class GoldenAnvilBlockEntity extends AExpMachineBlockEntity {
 					boolean hasCursed = false;
 					Iterator<NbtElement> iterator = leftStack.getEnchantments().iterator();
 					while (iterator.hasNext()) {
-						NbtElement tag = iterator.next();
-						if (tag instanceof NbtCompound) {
-							NbtCompound compoundTag = (NbtCompound) tag;
-							String name = compoundTag.getString("id");
+						NbtElement nbtElement = iterator.next();
+						if (nbtElement instanceof NbtCompound) {
+							NbtCompound nbt = (NbtCompound) nbtElement;
+							String name = nbt.getString("id");
 							Enchantment enchantment = Registry.ENCHANTMENT.get(new Identifier(name));
 							if (enchantment.isCursed()) {
 								hasCursed = true;

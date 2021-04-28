@@ -5,7 +5,7 @@ import java.util.List;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
-import cpp.api.IDefaultTagItem;
+import cpp.api.IDefaultNbtItem;
 import cpp.ducktyping.IMultiple;
 import cpp.item.CompressedItem;
 import net.fabricmc.api.EnvType;
@@ -30,7 +30,7 @@ import net.minecraft.world.World;
 
 @Mixin(ExperienceBottleItem.class)
 @SuppressWarnings("unused")
-public class MixinExperienceBottleItem extends Item implements IDefaultTagItem {
+public class MixinExperienceBottleItem extends Item implements IDefaultNbtItem {
 
 	public MixinExperienceBottleItem(Settings settings) {
 		super(settings);
@@ -80,8 +80,8 @@ public class MixinExperienceBottleItem extends Item implements IDefaultTagItem {
 	}
 	
 	@Override
-	public NbtCompound modifyDefaultTag(NbtCompound tag) {
-		tag.putByte("multiple", (byte) 0);
-		return tag;
+	public NbtCompound modifyDefaultNbt(NbtCompound nbt) {
+		nbt.putByte("multiple", (byte) 0);
+		return nbt;
 	}
 }

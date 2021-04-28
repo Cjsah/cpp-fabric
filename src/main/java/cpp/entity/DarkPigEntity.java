@@ -51,20 +51,20 @@ public class DarkPigEntity extends ADarkAnimalEntity<PigEntity> {
 	}
 
 	@Override
-	public void writeCustomDataToNbt(NbtCompound tag) {
-		super.writeCustomDataToNbt(tag);
-		tag.putShort("Fuse", (short) this.fuseTime);
-		tag.putByte("ExplosionRadius", (byte) this.explosionRadius);
+	public void writeCustomDataToNbt(NbtCompound nbt) {
+		super.writeCustomDataToNbt(nbt);
+		nbt.putShort("Fuse", (short) this.fuseTime);
+		nbt.putByte("ExplosionRadius", (byte) this.explosionRadius);
 	}
 
 	@Override
-	public void readCustomDataFromNbt(NbtCompound tag) {
-		super.readCustomDataFromNbt(tag);
-		if (tag.contains("Fuse", 99)) {
-			this.fuseTime = tag.getShort("Fuse");
+	public void readCustomDataFromNbt(NbtCompound nbt) {
+		super.readCustomDataFromNbt(nbt);
+		if (nbt.contains("Fuse", 99)) {
+			this.fuseTime = nbt.getShort("Fuse");
 		}
-		if (tag.contains("ExplosionRadius", 99)) {
-			this.explosionRadius = tag.getByte("ExplosionRadius");
+		if (nbt.contains("ExplosionRadius", 99)) {
+			this.explosionRadius = nbt.getByte("ExplosionRadius");
 		}
 	}
 

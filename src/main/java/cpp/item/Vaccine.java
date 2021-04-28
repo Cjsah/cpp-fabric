@@ -76,9 +76,9 @@ public class Vaccine extends Item {
     public static Collection<StatusEffect> getVaccineEffects(LivingEntity user) {
         Collection<StatusEffect> list = new ArrayList<>();
         if (user instanceof ServerPlayerEntity) {
-            NbtCompound playerTag = new NbtCompound();
-            user.writeCustomDataToNbt(playerTag);
-            for (NbtElement vaccine : playerTag.getList("Vaccines", 10)) {
+            NbtCompound playerNbt = new NbtCompound();
+            user.writeCustomDataToNbt(playerNbt);
+            for (NbtElement vaccine : playerNbt.getList("Vaccines", 10)) {
                 StatusEffect effect = Registry.STATUS_EFFECT.get(new Identifier((Objects.requireNonNull(Vaccines.byRawId(((NbtCompound) vaccine).getByte("Id"))).getName())));
                 if (effect != null) list.add(effect);
             }

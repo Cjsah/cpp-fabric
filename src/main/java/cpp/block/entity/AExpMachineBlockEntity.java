@@ -31,18 +31,18 @@ public abstract class AExpMachineBlockEntity extends AOutputMachineBlockEntity {
 	}
 
 	@Override
-	public void readNbt(NbtCompound tag) {
-		super.readNbt(tag);
-		workTime = tag.getInt("workTime");
-		expStorage = tag.getInt("expStorage");
+	public void readNbt(NbtCompound nbt) {
+		super.readNbt(nbt);
+		workTime = nbt.getInt("workTime");
+		expStorage = nbt.getInt("expStorage");
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		super.writeNbt(tag);
-		tag.putInt("workTime", workTime);
-		tag.putInt("expStorage", expStorage);
-		return tag;
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		super.writeNbt(nbt);
+		nbt.putInt("workTime", workTime);
+		nbt.putInt("expStorage", expStorage);
+		return nbt;
 	}
 
 	@Override

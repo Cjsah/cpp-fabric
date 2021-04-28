@@ -34,14 +34,14 @@ public class VaccineInstance {
         return --this.duration > 0;
     }
 
-    public NbtCompound toTag(@Nonnull NbtCompound tag) {
-        tag.putByte("Id", (byte) this.vaccine.ordinal());
-        tag.putInt("Duration", this.duration);
-        return tag;
+    public NbtCompound writeNbt(@Nonnull NbtCompound nbt) {
+        nbt.putByte("Id", (byte) this.vaccine.ordinal());
+        nbt.putInt("Duration", this.duration);
+        return nbt;
     }
 
     @Nonnull
-    public static VaccineInstance fromTag(@Nonnull NbtCompound tag) {
-        return new VaccineInstance(Vaccines.byRawId(tag.getByte("Id")), tag.getInt("Duration"));
+    public static VaccineInstance fromNbt(@Nonnull NbtCompound nbt) {
+        return new VaccineInstance(Vaccines.byRawId(nbt.getByte("Id")), nbt.getInt("Duration"));
     }
 }

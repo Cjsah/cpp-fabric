@@ -31,9 +31,9 @@ public class CompressedItem extends Item {
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-		NbtCompound tag = stack.getOrCreateTag();
-		tooltip.add(new TranslatableText("tooltip.cpp.multiple", tag.getByte("multiple")).formatted(Formatting.DARK_AQUA));
-		List<Text> itemTooltip = ItemStack.fromNbt(tag.getCompound("item")).getTooltip(null, context);
+		NbtCompound nbt = stack.getOrCreateTag();
+		tooltip.add(new TranslatableText("tooltip.cpp.multiple", nbt.getByte("multiple")).formatted(Formatting.DARK_AQUA));
+		List<Text> itemTooltip = ItemStack.fromNbt(nbt.getCompound("item")).getTooltip(null, context);
 		tooltip.addAll(itemTooltip);
 		if (context.isAdvanced())
 			tooltip.add(LiteralText.EMPTY);

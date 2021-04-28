@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import cpp.api.ICppConfig;
-import cpp.api.IDefaultTagItem;
+import cpp.api.IDefaultNbtItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
@@ -36,7 +36,7 @@ import java.util.List;
 
 import static cpp.api.CppChat.say;
 
-public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppConfig {
+public class CyanForceOfMountain extends Item implements IDefaultNbtItem, ICppConfig {
 
     private static JsonObject config;
 
@@ -54,38 +54,38 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppCo
     @Override
     @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        NbtCompound tag = stack.getOrCreateTag();
-        tooltip.add(new TranslatableText("tooltip.cpp.cfom.direction", new TranslatableText("tooltip.cpp.cfom." + (tag.getBoolean("horizontal") ? "horizontal" : "vertical"))).formatted(Formatting.GREEN));
-        tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("tooltip.cpp.cfom.level", tag.getInt("level")), new TranslatableText("tooltip.cpp.cfom.xp", tag.getInt("xp"))).formatted(Formatting.GREEN));
+        NbtCompound nbt = stack.getOrCreateTag();
+        tooltip.add(new TranslatableText("tooltip.cpp.cfom.direction", new TranslatableText("tooltip.cpp.cfom." + (nbt.getBoolean("horizontal") ? "horizontal" : "vertical"))).formatted(Formatting.GREEN));
+        tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("tooltip.cpp.cfom.level", nbt.getInt("level")), new TranslatableText("tooltip.cpp.cfom.xp", nbt.getInt("xp"))).formatted(Formatting.GREEN));
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack item = user.getStackInHand(hand);
         if (!world.isClient) {
-            NbtCompound tag = item.getOrCreateTag();
+            NbtCompound nbt = item.getOrCreateTag();
             BlockHitResult hitResult = raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
             BlockPos blockPos = hitResult.getBlockPos();
             if (user.isSneaking() && hitResult.getType() == HitResult.Type.MISS) {
-                tag.putBoolean("horizontal", !tag.getBoolean("horizontal"));
+                nbt.putBoolean("horizontal", !nbt.getBoolean("horizontal"));
                 ((ServerPlayerEntity)user).networkHandler.sendPacket(new TitleS2CPacket(//FIXME
                         new TranslatableText("misc.cpp",
                                 new TranslatableText("tooltip.cpp.cfom.direction",
-                                        new TranslatableText("tooltip.cpp.cfom." + (tag.getBoolean("horizontal") ? "horizontal" : "vertical"))),
+                                        new TranslatableText("tooltip.cpp.cfom." + (nbt.getBoolean("horizontal") ? "horizontal" : "vertical"))),
                                 new TranslatableText("misc.cpp",
-                                        new TranslatableText("tooltip.cpp.cfom.level", tag.getInt("level")),
-                                        new TranslatableText("tooltip.cpp.cfom.xp", tag.getInt("xp")))
+                                        new TranslatableText("tooltip.cpp.cfom.level", nbt.getInt("level")),
+                                        new TranslatableText("tooltip.cpp.cfom.xp", nbt.getInt("xp")))
                         ).formatted(Formatting.GREEN)
                 ));
                 user.incrementStat(Stats.USED.getOrCreateStat(this));
                 return TypedActionResult.success(item);
             }else if (!user.isSneaking() && hitResult.getType() == HitResult.Type.BLOCK) {
                 if (user.isCreative()) {
-                    if (fill(world, user, blockPos, tag))
+                    if (fill(world, user, blockPos, nbt))
                         user.incrementStat(Stats.USED.getOrCreateStat(this));
                     return TypedActionResult.success(user.getStackInHand(hand));
                 }else if (user.totalExperience >= 4) {
-                    if (fill(world, user, blockPos, tag)) {
+                    if (fill(world, user, blockPos, nbt)) {
                         user.addExperience(-4);
                         user.incrementStat(Stats.USED.getOrCreateStat(this));
                         return TypedActionResult.success(user.getStackInHand(hand));
@@ -98,10 +98,10 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppCo
         return TypedActionResult.pass(item);
     }
 
-    private static Boolean fill(World world, PlayerEntity user, BlockPos blockPos, NbtCompound tag) {
-        int level = tag.getInt("level"), xp = tag.getInt("xp");
+    private static Boolean fill(World world, PlayerEntity user, BlockPos blockPos, NbtCompound nbt) {
+        int level = nbt.getInt("level"), xp = nbt.getInt("xp");
         int length = 32, high = level;
-        if (!tag.getBoolean("horizontal")) {
+        if (!nbt.getBoolean("horizontal")) {
             length = level;
             high = 32;
         }
@@ -127,18 +127,18 @@ public class CyanForceOfMountain extends Item implements IDefaultTagItem, ICppCo
                 level = ++level > 32 ? 32 : level;
                 xp = 0;
             }
-            tag.putInt("level", level);
-            tag.putInt("xp", xp);
+            nbt.putInt("level", level);
+            nbt.putInt("xp", xp);
             return true;
         }
         return false;
     }
 
-    public NbtCompound modifyDefaultTag(NbtCompound tag) {
-		tag.putBoolean("horizontal", true);
-        tag.putInt("level", config.get("StartLevel").getAsInt());
-        tag.putInt("xp", 0);
-        return tag;
+    public NbtCompound modifyDefaultNbt(NbtCompound nbt) {
+        nbt.putBoolean("horizontal", true);
+        nbt.putInt("level", config.get("StartLevel").getAsInt());
+        nbt.putInt("xp", 0);
+        return nbt;
 	}
 
     @Override
