@@ -30,10 +30,10 @@ public class CppGameHud extends DrawableHelper {
     public void render(MatrixStack matrix) {
         if (client.options.debugEnabled) return;
         ServerPlayerEntity player = client.getServer().getPlayerManager().getPlayer(client.player.getUuid());
-        NbtCompound tag = new NbtCompound();
-        player.writeCustomDataToNbt(tag);
-        int weight = tag.getInt("weight");
-        NbtList vaccines = tag.getList("Vaccines", 10);
+        NbtCompound nbt = new NbtCompound();
+        player.writeCustomDataToNbt(nbt);
+        int weight = nbt.getInt("weight");
+        NbtList vaccines = nbt.getList("Vaccines", 10);
         int width = 51;
         int height = margin + (vaccines.size() + 1) * icon_size + vaccines.size() * interval + margin;
         int firstY = client.getWindow().getScaledHeight() - margin - icon_size;

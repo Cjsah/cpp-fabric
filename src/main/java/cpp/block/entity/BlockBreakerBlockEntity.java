@@ -22,17 +22,17 @@ public class BlockBreakerBlockEntity extends BlockEntity {
 	}
 	
 	@Override
-	public void readNbt(NbtCompound tag) {
-		super.readNbt(tag);
-		time = tag.getInt("time");
-		fluid = tag.getString("fluid");
+	public void readNbt(NbtCompound nbt) {
+		super.readNbt(nbt);
+		time = nbt.getInt("time");
+		fluid = nbt.getString("fluid");
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		tag.putInt("time", time);
-		tag.putString("fluid", fluid);
-		return super.writeNbt(tag);
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		nbt.putInt("time", time);
+		nbt.putString("fluid", fluid);
+		return super.writeNbt(nbt);
 	}
 	
 	public static void tick(World world, BlockPos pos, BlockState state, BlockBreakerBlockEntity blockEntity) {

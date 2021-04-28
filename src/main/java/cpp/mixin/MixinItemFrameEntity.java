@@ -44,17 +44,17 @@ public abstract class MixinItemFrameEntity extends AbstractDecorationEntity impl
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		tag.putInt("ritualTime", ritualTime);
-		tag.putInt("ritualType", ritualType);
-		return super.writeNbt(tag);
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		nbt.putInt("ritualTime", ritualTime);
+		nbt.putInt("ritualType", ritualType);
+		return super.writeNbt(nbt);
 	}
 
 	@Override
-	public void readNbt(NbtCompound tag) {
-		ritualTime = tag.getInt("ritualTime");
-		ritualType = tag.getInt("ritualType");
-		super.readNbt(tag);
+	public void readNbt(NbtCompound nbt) {
+		ritualTime = nbt.getInt("ritualTime");
+		ritualType = nbt.getInt("ritualType");
+		super.readNbt(nbt);
 	}
 
 	public void setRitualType(int type) {

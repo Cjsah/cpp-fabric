@@ -28,10 +28,10 @@ public class CppStateOperate {
         }
     }
 
-    public CppState stateFromNbt(NbtCompound tag) {
+    public CppState stateFromNbt(NbtCompound nbt) {
         CppState state = new CppState(this.data);
         this.addUpdateListener(state::markDirty);
-        state.readNbt(tag);
+        state.readNbt(nbt);
         return state;
     }
 

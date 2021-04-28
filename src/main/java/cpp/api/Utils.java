@@ -31,7 +31,6 @@ import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.NbtIntArray;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
@@ -46,7 +45,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.Tag;
-import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
@@ -166,16 +164,16 @@ public class Utils {
 	 *
 	 * @author Phoupraw
 	 * @see #uuidToIntArray(UUID)
-	 * @param uuidListTag 含有uuid的tag
+	 * @param uuidListNbt 含有uuid的nbt
 	 * @return 转化的UUID
 	 */
 	@Nonnull
 	@SuppressWarnings("unused")
-	public static UUID intArrayToUUID(@Nonnull NbtIntArray uuidListTag) {
-		long mostSigBits = uuidListTag.get(0).longValue() << 32;
-		mostSigBits += uuidListTag.get(1).longValue();
-		long leastSigBits = uuidListTag.get(2).longValue() << 32;
-		leastSigBits += uuidListTag.get(3).longValue();
+	public static UUID intArrayToUUID(@Nonnull NbtIntArray uuidListNbt) {
+		long mostSigBits = uuidListNbt.get(0).longValue() << 32;
+		mostSigBits += uuidListNbt.get(1).longValue();
+		long leastSigBits = uuidListNbt.get(2).longValue() << 32;
+		leastSigBits += uuidListNbt.get(3).longValue();
 		return new UUID(mostSigBits, leastSigBits);
 	}
 
@@ -250,21 +248,21 @@ public class Utils {
 	 * @param lore 要添加的lore
 	 */
 	public static void addLore(ItemStack item, NbtString lore) {
-		NbtCompound tag = item.getOrCreateTag();
-		if (tag.contains("display")) {
-			if (tag.contains("Lore")) {
-				tag.getCompound("display").getList("Lore", 8).add(lore);
+		NbtCompound nbt = item.getOrCreateTag();
+		if (nbt.contains("display")) {
+			if (nbt.contains("Lore")) {
+				nbt.getCompound("display").getList("Lore", 8).add(lore);
 			}else {
 				NbtList list = new NbtList();
 				list.add(lore);
-				tag.getCompound("display").put("Lore", list);
+				nbt.getCompound("display").put("Lore", list);
 			}
 		}else {
 			NbtCompound display = new NbtCompound();
 			NbtList list = new NbtList();
 			list.add(lore);
 			display.put("Lore", list);
-			tag.put("display", display);
+			nbt.put("display", display);
 		}
 	}
 
@@ -537,25 +535,25 @@ public class Utils {
 	 * 把{@link Inventory}储存到{@link NbtCompound}
 	 * 
 	 * @param inventory 物品栏
-	 * @param tag       标签
+	 * @param nbt       标签
 	 */
-	public static void inventoryToTag(@Nonnull Inventory inventory, NbtCompound tag) {
+	public static void inventoryToNbt(@Nonnull Inventory inventory, NbtCompound nbt) {
 		DefaultedList<ItemStack> stacks = DefaultedList.ofSize(inventory.size(), ItemStack.EMPTY);
 		for (int i = 0; i < stacks.size(); i++) {
 			stacks.set(i, inventory.getStack(i));
 		}
-		Inventories.writeNbt(tag, stacks);
+		Inventories.writeNbt(nbt, stacks);
 	}
 
 	/**
 	 * 从{@link NbtCompound}读取{@link Inventory}
 	 * 
 	 * @param inventory 物品栏
-	 * @param tag       标签
+	 * @param nbt       标签
 	 */
-	public static void inventoryFromTag(@Nonnull Inventory inventory, NbtCompound tag) {
+	public static void inventoryFromNbt(@Nonnull Inventory inventory, NbtCompound nbt) {
 		DefaultedList<ItemStack> stacks = DefaultedList.ofSize(inventory.size(), ItemStack.EMPTY);
-		Inventories.readNbt(tag, stacks);
+		Inventories.readNbt(nbt, stacks);
 		for (int i = 0; i < inventory.size(); i++) {
 			inventory.setStack(i, stacks.get(i));
 		}
@@ -625,10 +623,10 @@ public class Utils {
 	public static void removeEffectExceptHidden(@Nonnull LivingEntity living, StatusEffect effect, int amplifier, int duration) {
 		StatusEffectInstance effectInstance = living.getStatusEffect(effect);
 		if (effectInstance != null && effectInstance.getAmplifier() == amplifier && effectInstance.getDuration() <= duration) {
-			NbtCompound tag1 = effectInstance.writeNbt(new NbtCompound());
-			if (tag1.contains("HiddenEffect")) {
-				NbtCompound tag2 = tag1.getCompound("HiddenEffect");
-				living.applyStatusEffect(StatusEffectInstance.fromNbt(tag2));
+			NbtCompound nbt1 = effectInstance.writeNbt(new NbtCompound());
+			if (nbt1.contains("HiddenEffect")) {
+				NbtCompound nbt2 = nbt1.getCompound("HiddenEffect");
+				living.applyStatusEffect(StatusEffectInstance.fromNbt(nbt2));
 			} else {
 				living.removeStatusEffect(effect);
 			}

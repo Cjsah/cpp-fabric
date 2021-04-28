@@ -146,21 +146,21 @@ public class TradeMachineBlockEntity extends AExpMachineBlockEntity {
 	}
 
 	@Override
-	public void readNbt(NbtCompound tag) {
-		cooldown = tag.getInt("cooldown");
-		emeraldCount = tag.getInt("emeraldCount");
-		mode = tag.getInt("mode");
-		tradeValue = tag.getInt("tradeValue");
-		super.readNbt(tag);
+	public void readNbt(NbtCompound nbt) {
+		cooldown = nbt.getInt("cooldown");
+		emeraldCount = nbt.getInt("emeraldCount");
+		mode = nbt.getInt("mode");
+		tradeValue = nbt.getInt("tradeValue");
+		super.readNbt(nbt);
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		tag.putInt("cooldown", cooldown);
-		tag.putInt("emeraldCount", emeraldCount);
-		tag.putInt("mode", mode);
-		tag.putInt("tradeValue", tradeValue);
-		return super.writeNbt(tag);
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		nbt.putInt("cooldown", cooldown);
+		nbt.putInt("emeraldCount", emeraldCount);
+		nbt.putInt("mode", mode);
+		nbt.putInt("tradeValue", tradeValue);
+		return super.writeNbt(nbt);
 	}
 
 	@Override

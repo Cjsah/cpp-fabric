@@ -20,10 +20,10 @@ public class CharacterItem extends Item {
     public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
         if (this.isIn(group)) {
             for (int i = 1; i <= 117; i++) {
-                NbtCompound tag = new NbtCompound();
+                NbtCompound nbt = new NbtCompound();
                 ItemStack item = new ItemStack(this);
-                tag.putInt("character", i);
-                item.setTag(tag);
+                nbt.putInt("character", i);
+                item.setTag(nbt);
                 stacks.add(item);
             }
         }
@@ -42,18 +42,18 @@ public class CharacterItem extends Item {
 
     public static ItemStack randomGetOne() {
         ItemStack item = new ItemStack(CppItems.CHARACTER);
-        NbtCompound tag = new NbtCompound();
-        tag.putInt("character", new Random().nextInt(117)+1);
-        item.setTag(tag);
+        NbtCompound nbt = new NbtCompound();
+        nbt.putInt("character", new Random().nextInt(117)+1);
+        item.setTag(nbt);
         return item;
     }
 
     public static ItemStack get(int id) {
         if (id >= 1 && id <= 117) {
             ItemStack item = new ItemStack(CppItems.CHARACTER);
-            NbtCompound tag = new NbtCompound();
-            tag.putInt("character", id);
-            item.setTag(tag);
+            NbtCompound nbt = new NbtCompound();
+            nbt.putInt("character", id);
+            item.setTag(nbt);
             return item;
         }else return null;
     }

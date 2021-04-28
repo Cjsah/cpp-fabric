@@ -1,6 +1,6 @@
 package cpp.item;
 
-import cpp.api.IDefaultTagItem;
+import cpp.api.IDefaultNbtItem;
 import cpp.api.Utils;
 import cpp.ducktyping.ITickableInItemFrame;
 import cpp.init.CppItems;
@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class Magnet extends Item implements IDefaultTagItem, ITickableInItemFrame {
+public class Magnet extends Item implements IDefaultNbtItem, ITickableInItemFrame {
 	public Magnet(Settings settings) {
 		super(settings);
 	}
@@ -53,9 +53,9 @@ public class Magnet extends Item implements IDefaultTagItem, ITickableInItemFram
 	}
 
 	@Override
-	public NbtCompound modifyDefaultTag(NbtCompound tag) {
-		tag.putBoolean("enabled", true);
-		return tag;
+	public NbtCompound modifyDefaultNbt(NbtCompound nbt) {
+		nbt.putBoolean("enabled", true);
+		return nbt;
 	}
 
 	public static boolean isEnabled(ItemStack stack) {

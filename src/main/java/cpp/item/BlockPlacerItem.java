@@ -62,7 +62,7 @@ public class BlockPlacerItem extends Item {
 					ItemStack itemStack = itemPlacementContext.getStack();
 					BlockState blockState2 = world.getBlockState(blockPos);
 					if (blockState2.isOf(blockState.getBlock())) {
-						blockState2 = this.placeFromTag(blockPos, world, itemStack, blockState2);
+						blockState2 = this.placeFromNbt(blockPos, world, itemStack, blockState2);
 						this.postPlacement(blockPos, world, playerEntity, itemStack, blockState2);
 						blockState2.getBlock().onPlaced(world, blockPos, blockState2, playerEntity, itemStack);
 						if (playerEntity instanceof ServerPlayerEntity) {
@@ -112,17 +112,17 @@ public class BlockPlacerItem extends Item {
 		return true;
 	}
 
-	protected BlockState placeFromTag(BlockPos pos, World world, ItemStack stack, BlockState state) {
+	protected BlockState placeFromNbt(BlockPos pos, World world, ItemStack stack, BlockState state) {
 		BlockState blockState = state;
-		NbtCompound NbtCompound = stack.getTag();
-		if (NbtCompound != null) {
-			NbtCompound NbtCompound2 = NbtCompound.getCompound("BlockStateTag");
+		NbtCompound nbt1 = stack.getTag();
+		if (nbt1 != null) {
+			NbtCompound nbt2 = nbt1.getCompound("BlockStateTag");
 			StateManager<Block, BlockState> stateManager = state.getBlock().getStateManager();
 
-			for (String string : NbtCompound2.getKeys()) {
+			for (String string : nbt2.getKeys()) {
 				Property<?> property = stateManager.getProperty(string);
 				if (property != null) {
-					String string2 = NbtCompound2.get(string).asString();
+					String string2 = nbt2.get(string).asString();
 					blockState = with(blockState, property, string2);
 				}
 			}
@@ -136,28 +136,28 @@ public class BlockPlacerItem extends Item {
 	}
 
 	protected boolean postPlacement(BlockPos pos, World world, @Nullable PlayerEntity player, ItemStack stack, BlockState state) {
-		return writeTagToBlockEntity(world, player, pos, stack);
+		return writeNbtToBlockEntity(world, player, pos, stack);
 	}
 
-	public static boolean writeTagToBlockEntity(World world, @Nullable PlayerEntity player, BlockPos pos, ItemStack stack) {
+	public static boolean writeNbtToBlockEntity(World world, @Nullable PlayerEntity player, BlockPos pos, ItemStack stack) {
 		MinecraftServer minecraftServer = world.getServer();
 		if (minecraftServer != null) {
-			NbtCompound NbtCompound = stack.getSubTag("BlockEntityTag");
-			if (NbtCompound != null) {
+			NbtCompound nbt1 = stack.getSubTag("BlockEntityTag");
+			if (nbt1 != null) {
 				BlockEntity blockEntity = world.getBlockEntity(pos);
 				if (blockEntity != null) {
 					if (!world.isClient && blockEntity.copyItemDataRequiresOperator() && (player == null || !player.isCreativeLevelTwoOp())) {
 						return false;
 					}
 
-					NbtCompound NbtCompound2 = blockEntity.writeNbt(new NbtCompound());
-					NbtCompound NbtCompound3 = NbtCompound2.copy();
-					NbtCompound2.copyFrom(NbtCompound);
-					NbtCompound2.putInt("x", pos.getX());
-					NbtCompound2.putInt("y", pos.getY());
-					NbtCompound2.putInt("z", pos.getZ());
-					if (!NbtCompound2.equals(NbtCompound3)) {
-						blockEntity.readNbt(NbtCompound2);
+					NbtCompound nbt2 = blockEntity.writeNbt(new NbtCompound());
+					NbtCompound nbt3 = nbt2.copy();
+					nbt2.copyFrom(nbt1);
+					nbt2.putInt("x", pos.getX());
+					nbt2.putInt("y", pos.getY());
+					nbt2.putInt("z", pos.getZ());
+					if (!nbt2.equals(nbt3)) {
+						blockEntity.readNbt(nbt2);
 						blockEntity.markDirty();
 						return true;
 					}

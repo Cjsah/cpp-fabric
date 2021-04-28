@@ -393,9 +393,9 @@ public class Wand extends Item {
 		NbtList attributeModifiers = stack.getOrCreateTag().getList("AttributeModifiers", 10);
 		double attackSpeed = 0, damage = 0, health = 0, resistance = 0, movementSpeed = 0, luck = 0;
 		for (Iterator<NbtElement> iterator = attributeModifiers.iterator(); iterator.hasNext();) {
-			NbtElement tag = iterator.next();
-			if (tag instanceof NbtCompound) {
-				NbtCompound NbtCompound = (NbtCompound) tag;
+			NbtElement nbtElement = iterator.next();
+			if (nbtElement instanceof NbtCompound) {
+				NbtCompound NbtCompound = (NbtCompound) nbtElement;
 				UUID uuid = NbtHelper.toUuid(NbtCompound.get("UUID"));
 				if (uuid.getMostSignificantBits() == HIGH_UUID && uuid.getLeastSignificantBits() > 0 && uuid.getLeastSignificantBits() <= 36) {
 					iterator.remove();

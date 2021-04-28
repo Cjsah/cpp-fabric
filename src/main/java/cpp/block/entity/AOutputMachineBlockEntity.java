@@ -53,16 +53,16 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 	 * 以下是LockableContainerBlockEntity的方法
 	 */
 	@Override
-	public void readNbt(NbtCompound tag) {
-		super.readNbt(tag);
-		outputDir = IOutputDiractional.byteToDir(tag.getByte("outputDir"));
+	public void readNbt(NbtCompound nbt) {
+		super.readNbt(nbt);
+		outputDir = IOutputDiractional.byteToDir(nbt.getByte("outputDir"));
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		super.writeNbt(tag);
-		tag.putByte("outputDir", IOutputDiractional.dirToByte(outputDir));
-		return tag;
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		super.writeNbt(nbt);
+		nbt.putByte("outputDir", IOutputDiractional.dirToByte(outputDir));
+		return nbt;
 	}
 
 	@Override
@@ -249,61 +249,61 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 	}
 
 	/**
-	 * 从tag读取Items并储存到inventory
+	 * 从nbt读取Items并储存到inventory
 	 * 
-	 * @param tag
+	 * @param nbt
 	 * @param inventory
 	 */
-	public static void inventoryFromTag(NbtCompound tag, Inventory inventory) {
-		NbtList listTag = tag.getList("Items", 10);
-		for (int i = 0; i < listTag.size(); ++i) {
-			NbtCompound compoundTag = listTag.getCompound(i);
-			int j = compoundTag.getByte("Slot") & 255;
+	public static void inventoryFromNbt(NbtCompound nbt, Inventory inventory) {
+		NbtList listNbt = nbt.getList("Items", 10);
+		for (int i = 0; i < listNbt.size(); ++i) {
+			NbtCompound nbtCompound = listNbt.getCompound(i);
+			int j = nbtCompound.getByte("Slot") & 255;
 			if (j >= 0 && j < inventory.size()) {
-				inventory.setStack(j, ItemStack.fromNbt(compoundTag));
+				inventory.setStack(j, ItemStack.fromNbt(nbtCompound));
 			}
 		}
 	}
 
 	/**
-	 * 将inventory储存到tag的Items，即使inventory为空也储存
+	 * 将inventory储存到nbt的Items，即使inventory为空也储存
 	 * 
-	 * @see #inventoryToTag(NbtCompound, Inventory, boolean)
-	 * @param tag
+	 * @see #inventoryToNbt(NbtCompound, Inventory, boolean)
+	 * @param nbt
 	 * @param inventory
-	 * @return tag
+	 * @return nbt
 	 */
-	public static NbtCompound inventoryToTag(NbtCompound tag, Inventory inventory) {
-		return inventoryToTag(tag, inventory, true);
+	public static NbtCompound inventoryToNbt(NbtCompound nbt, Inventory inventory) {
+		return inventoryToNbt(nbt, inventory, true);
 	}
 
 	/**
-	 * 将inventory储存到tag的Items
+	 * 将inventory储存到nbt的Items
 	 * 
-	 * @see #inventoryToTag(NbtCompound, Inventory)
-	 * @param tag
+	 * @see #inventoryToNbt(NbtCompound, Inventory)
+	 * @param nbt
 	 * @param inventory
 	 * @param setIfEmpty 如果为true，即使inventory为空也储存
-	 * @return tag
+	 * @return nbt
 	 */
-	public static NbtCompound inventoryToTag(NbtCompound tag, Inventory inventory, boolean setIfEmpty) {
-		NbtList listTag = new NbtList();
+	public static NbtCompound inventoryToNbt(NbtCompound nbt, Inventory inventory, boolean setIfEmpty) {
+		NbtList nbtList = new NbtList();
 
 		for (int i = 0; i < inventory.size(); ++i) {
 			ItemStack itemStack = inventory.getStack(i);
 			if (!itemStack.isEmpty()) {
-				NbtCompound compoundTag = new NbtCompound();
-				compoundTag.putByte("Slot", (byte) i);
-				itemStack.writeNbt(compoundTag);
-				listTag.add(compoundTag);
+				NbtCompound nbtCompound = new NbtCompound();
+				nbtCompound.putByte("Slot", (byte) i);
+				itemStack.writeNbt(nbtCompound);
+				nbtList.add(nbtCompound);
 			}
 		}
 
-		if (!listTag.isEmpty() || setIfEmpty) {
-			tag.put("Items", listTag);
+		if (!nbtList.isEmpty() || setIfEmpty) {
+			nbt.put("Items", nbtList);
 		}
 
-		return tag;
+		return nbt;
 	}
 
 	/**
@@ -312,10 +312,10 @@ public abstract class AOutputMachineBlockEntity extends AMachineBlockEntity impl
 	 * @param itemStack
 	 * @return
 	 */
-	public static NbtCompound itemStackToTag(ItemStack itemStack) {
-		NbtCompound compoundTag = new NbtCompound();
-		itemStack.writeNbt(compoundTag);
-		return compoundTag;
+	public static NbtCompound itemStackToNbt(ItemStack itemStack) {
+		NbtCompound nbt = new NbtCompound();
+		itemStack.writeNbt(nbt);
+		return nbt;
 	}
 
 	/**

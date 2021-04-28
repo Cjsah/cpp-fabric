@@ -48,18 +48,18 @@ public class AncientScroll extends Item {
 
     public static ItemStack randomGetOne() {
         ItemStack item = new ItemStack(CppItems.ANCIENT_SCROLL);
-        NbtCompound tag = new NbtCompound();
-        tag.putString("enchantment", list.get(new Random().nextInt(list.size())));
-        item.setTag(tag);
+        NbtCompound nbt = new NbtCompound();
+        nbt.putString("enchantment", list.get(new Random().nextInt(list.size())));
+        item.setTag(nbt);
         return item;
     }
 
     public static ItemStack get(String name) {
         if (list.contains(name)) {
             ItemStack item = new ItemStack(CppItems.ANCIENT_SCROLL);
-            NbtCompound tag = new NbtCompound();
-            tag.putString("enchantment", name);
-            item.setTag(tag);
+            NbtCompound nbt = new NbtCompound();
+            nbt.putString("enchantment", name);
+            item.setTag(nbt);
             return item;
         }else return null;
     }

@@ -136,18 +136,18 @@ public class CraftingMachineBlockEntity extends AOutputMachineBlockEntity implem
 	 * 以下是LockableContainerBlockEntity的方法
 	 */
 	@Override
-	public void readNbt(NbtCompound tag) {
-		super.readNbt(tag);
-		inventoryFromTag(tag, inputInventory);
-		leftover = ItemStack.fromNbt(tag.getCompound("leftover"));
+	public void readNbt(NbtCompound nbt) {
+		super.readNbt(nbt);
+		inventoryFromNbt(nbt, inputInventory);
+		leftover = ItemStack.fromNbt(nbt.getCompound("leftover"));
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		super.writeNbt(tag);
-		inventoryToTag(tag, inputInventory);
-		tag.put("leftover", itemStackToTag(leftover));
-		return tag;
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		super.writeNbt(nbt);
+		inventoryToNbt(nbt, inputInventory);
+		nbt.put("leftover", itemStackToNbt(leftover));
+		return nbt;
 	}
 
 	@Override

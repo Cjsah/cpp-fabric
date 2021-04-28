@@ -64,10 +64,10 @@ public class Compressor extends Item {
 					result.setCount(1);
 				}
 			} else {
-				NbtCompound tag = new NbtCompound();
-				itemStack.writeNbt(tag);
+				NbtCompound nbt = new NbtCompound();
+				itemStack.writeNbt(nbt);
 				result = new ItemStack(CppItems.COMPRESSED_ITEM);
-				result.getOrCreateTag().put("item", tag);
+				result.getOrCreateTag().put("item", nbt);
 				result.getOrCreateTag().putByte("multiple", (byte) 1);
 			}
 		}

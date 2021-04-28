@@ -104,16 +104,16 @@ public class MobProjectorBlockEntity extends AExpMachineBlockEntity {
 	 * 以下是LockableContainerBlockEntity的方法
 	 */
 	@Override
-	public void readNbt(NbtCompound tag) {
-		super.readNbt(tag);
-		Inventories.readNbt(tag, inventory);
+	public void readNbt(NbtCompound nbt) {
+		super.readNbt(nbt);
+		Inventories.readNbt(nbt, inventory);
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		super.writeNbt(tag);
-		Inventories.writeNbt(tag, inventory);
-		return tag;
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		super.writeNbt(nbt);
+		Inventories.writeNbt(nbt, inventory);
+		return nbt;
 	}
 
 	@Override

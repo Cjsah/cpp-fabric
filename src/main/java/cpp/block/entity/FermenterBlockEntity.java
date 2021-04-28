@@ -86,15 +86,15 @@ public class FermenterBlockEntity extends BlockEntity implements SidedInventory 
 	}
 	
 	@Override
-	public void readNbt(NbtCompound tag) {
-		super.readNbt(tag);
-		stack = ItemStack.fromNbt(tag.getCompound("stack"));
+	public void readNbt(NbtCompound nbt) {
+		super.readNbt(nbt);
+		stack = ItemStack.fromNbt(nbt.getCompound("stack"));
 	}
 	
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
-		tag.put("stack", stack.writeNbt(new NbtCompound()));
-		return super.writeNbt(tag);
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		nbt.put("stack", stack.writeNbt(new NbtCompound()));
+		return super.writeNbt(nbt);
 	}
 	
 	@Override

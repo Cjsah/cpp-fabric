@@ -1,6 +1,6 @@
 package cpp.mixin;
 
-import cpp.api.IDefaultTagItem;
+import cpp.api.IDefaultNbtItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -22,12 +22,12 @@ public abstract class MixinItemStack {
 
 	@Inject(at = @At("HEAD"), method = "updateEmptyState()V")
 	private void updateEmptyState(CallbackInfo info) {
-		if (item != null && item instanceof IDefaultTagItem) {
-			NbtCompound tag = this.getOrCreateTag();
-			NbtCompound newTag = ((IDefaultTagItem)item).modifyDefaultTag(new NbtCompound());
-			for (String i : newTag.getKeys()){
-				if (!tag.contains(i)) {
-					tag.put(i, newTag.get(i));
+		if (item != null && item instanceof IDefaultNbtItem) {
+			NbtCompound nbt = this.getOrCreateTag();
+			NbtCompound newNbt = ((IDefaultNbtItem)item).modifyDefaultNbt(new NbtCompound());
+			for (String i : newNbt.getKeys()){
+				if (!nbt.contains(i)) {
+					nbt.put(i, newNbt.get(i));
 				}
 			}
 		}

@@ -20,7 +20,7 @@ public abstract class MixinItemModels {
 	@Inject(at = { @At("HEAD") }, method = { "getModel" }, cancellable = true)
 	private void getModelCpp(ItemStack stack, CallbackInfoReturnable<BakedModel> info) {
 		if (stack.isOf(CppItems.COMPRESSED_ITEM)) {
-			info.setReturnValue(getModel(ItemStack.fromTag(stack.getOrCreateSubTag("item"))));
+			info.setReturnValue(getModel(ItemStack.fromNbt(stack.getOrCreateSubTag("item"))));
 		}
 	}
 }

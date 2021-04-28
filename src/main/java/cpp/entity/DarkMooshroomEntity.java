@@ -55,15 +55,15 @@ public class DarkMooshroomEntity extends ADarkAnimalEntity<MooshroomEntity> {
 	}
 
 	@Override
-	public void readCustomDataFromNbt(NbtCompound tag) {
-		super.readCustomDataFromNbt(tag);
-		this.setType(this.getType(tag.getString("Type")));
+	public void readCustomDataFromNbt(NbtCompound nbt) {
+		super.readCustomDataFromNbt(nbt);
+		this.setType(this.getType(nbt.getString("Type")));
 	}
 
 	@Override
-	public void writeCustomDataToNbt(NbtCompound tag) {
-		super.writeCustomDataToNbt(tag);
-		tag.putString("Type", this.getMooshroomType().name());
+	public void writeCustomDataToNbt(NbtCompound nbt) {
+		super.writeCustomDataToNbt(nbt);
+		nbt.putString("Type", this.getMooshroomType().name());
 	}
 
 	@Override

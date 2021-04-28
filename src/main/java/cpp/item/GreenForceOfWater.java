@@ -1,6 +1,6 @@
 package cpp.item;
 
-import cpp.api.IDefaultTagItem;
+import cpp.api.IDefaultNbtItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.advancement.criterion.Criteria;
@@ -40,7 +40,7 @@ import net.minecraft.world.event.GameEvent;
 import java.util.List;
 import java.util.Objects;
 
-public class GreenForceOfWater extends Item implements IDefaultTagItem {
+public class GreenForceOfWater extends Item implements IDefaultNbtItem {
 
     public GreenForceOfWater(Settings settings) {
         super(settings);
@@ -55,16 +55,16 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
     @Override
     @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        NbtCompound tag = stack.getOrCreateTag();
+        NbtCompound nbt = stack.getOrCreateTag();
         tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("block.minecraft.water"), new TranslatableText("word.infinite")).formatted(Formatting.GREEN));
-        tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("block.minecraft.lava"), tag.getInt("lava")).formatted(Formatting.RED));
+        tooltip.add(new TranslatableText("misc.cpp", new TranslatableText("block.minecraft.lava"), nbt.getInt("lava")).formatted(Formatting.RED));
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         if (!world.isClient) {
-            NbtCompound tag = itemStack.getOrCreateTag();
+            NbtCompound nbt = itemStack.getOrCreateTag();
             BlockHitResult hitResult = raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
             BlockPos blockPos = hitResult.getBlockPos();
             BlockState blockState = world.getBlockState(blockPos);
@@ -78,11 +78,11 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
                         if (blockState.getBlock() == Blocks.WATER_CAULDRON && ((LeveledCauldronBlock)blockState.getBlock()).isFull(blockState)) {
                             world.setBlockState(blockPos, Blocks.CAULDRON.getDefaultState());
                             user.incrementStat(Stats.USED.getOrCreateStat(this));
-                            return this.changeTag(user, itemStack, Fluids.WATER, tag);
+                            return this.changeNbt(user, itemStack, Fluids.WATER, nbt);
                         }else if (blockState.getBlock() == Blocks.LAVA_CAULDRON) {
                             world.setBlockState(blockPos, Blocks.CAULDRON.getDefaultState());
                             user.incrementStat(Stats.USED.getOrCreateStat(this));
-                            return this.changeTag(user, itemStack, Fluids.LAVA, tag);
+                            return this.changeNbt(user, itemStack, Fluids.LAVA, nbt);
                         }else if (blockState.getBlock() instanceof FluidDrainable) {
                             FluidDrainable fluidDrainable = (FluidDrainable) blockState.getBlock();
                             ItemStack itemStack2 = fluidDrainable.tryDrainFluid(world, blockPos, blockState);
@@ -92,7 +92,7 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
                                 Fluid fluid = itemStack2.getItem() == Items.WATER_BUCKET ? Fluids.WATER : Fluids.LAVA;
                                 Criteria.FILLED_BUCKET.trigger((ServerPlayerEntity) user, itemStack2);
                                 user.incrementStat(Stats.USED.getOrCreateStat(this));
-                                return this.changeTag(user, itemStack, fluid, tag);
+                                return this.changeNbt(user, itemStack, fluid, nbt);
 
                             }
                         }
@@ -102,24 +102,24 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
 
             // 切换模式
             } else if (hitResult.getType() == HitResult.Type.MISS) {
-                boolean waterMode = Objects.equals(tag.getString("mode"), "water");
-                tag.putString("mode", waterMode ? "lava" : "water");
+                boolean waterMode = Objects.equals(nbt.getString("mode"), "water");
+                nbt.putString("mode", waterMode ? "lava" : "water");
                 ((ServerPlayerEntity)user).networkHandler.sendPacket(new TitleS2CPacket(//FIXME
-                        new TranslatableText("chat.cpp.change", new TranslatableText("block.minecraft." + tag.getString("mode")).formatted(waterMode ? Formatting.RED : Formatting.GREEN)).formatted(Formatting.GOLD)
+                        new TranslatableText("chat.cpp.change", new TranslatableText("block.minecraft." + nbt.getString("mode")).formatted(waterMode ? Formatting.RED : Formatting.GREEN)).formatted(Formatting.GOLD)
                 ));
                 user.incrementStat(Stats.USED.getOrCreateStat(this));
                 return TypedActionResult.success(itemStack);
 
             // 放水/岩浆
             } else {
-                Fluid fluid = Objects.equals(tag.getString("mode"), "water") ? Fluids.WATER : Fluids.LAVA;
+                Fluid fluid = Objects.equals(nbt.getString("mode"), "water") ? Fluids.WATER : Fluids.LAVA;
                 BlockPos blockPos3 = blockState.getBlock() instanceof FluidFillable && fluid == Fluids.WATER ? blockPos : blockPos.offset(hitResult.getSide());
 
-                if ((fluid == Fluids.LAVA && (user.isCreative() || tag.getInt("lava") > 0)) || fluid == Fluids.WATER) {
+                if ((fluid == Fluids.LAVA && (user.isCreative() || nbt.getInt("lava") > 0)) || fluid == Fluids.WATER) {
                     if (blockState.getBlock() == Blocks.CAULDRON) {
                         world.setBlockState(blockPos, fluid == Fluids.WATER ? Blocks.WATER_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, 3) : Blocks.LAVA_CAULDRON.getDefaultState());
                         if (fluid == Fluids.LAVA && !user.isCreative()) {
-                            tag.putInt("lava", tag.getInt("lava") - 1);
+                            nbt.putInt("lava", nbt.getInt("lava") - 1);
                         }
                         user.incrementStat(Stats.USED.getOrCreateStat(this));
                         return TypedActionResult.success(itemStack);
@@ -134,7 +134,7 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
                         }
                         ((ServerPlayerEntity)user).networkHandler.sendPacket(new PlaySoundS2CPacket(fluid == Fluids.WATER ? SoundEvents.ITEM_BUCKET_EMPTY : SoundEvents.ITEM_BUCKET_EMPTY_LAVA, SoundCategory.PLAYERS, user.getX(), user.getY(), user.getZ(), 1.0F, 1.0F));
                         if (fluid == Fluids.LAVA && !user.isCreative()) {
-                            tag.putInt("lava", tag.getInt("lava") - 1);
+                            nbt.putInt("lava", nbt.getInt("lava") - 1);
                         }
                         user.incrementStat(Stats.USED.getOrCreateStat(this));
                         return TypedActionResult.success(itemStack);
@@ -145,18 +145,18 @@ public class GreenForceOfWater extends Item implements IDefaultTagItem {
         return TypedActionResult.pass(itemStack);
     }
 
-    private TypedActionResult<ItemStack> changeTag(PlayerEntity player, ItemStack item, Fluid fluid, NbtCompound tag) {
+    private TypedActionResult<ItemStack> changeNbt(PlayerEntity player, ItemStack item, Fluid fluid, NbtCompound nbt) {
         player.incrementStat(Stats.USED.getOrCreateStat(this));
         if (fluid == Fluids.LAVA) {
-            tag.putInt("lava", tag.getInt("lava") + 1);
+            nbt.putInt("lava", nbt.getInt("lava") + 1);
         }
         return TypedActionResult.success(item);
     }
 
 	@Override
-	public NbtCompound modifyDefaultTag(NbtCompound tag) {
-		tag.putString("mode", "water");
-        tag.putInt("lava", 0);
-        return tag;
+	public NbtCompound modifyDefaultNbt(NbtCompound nbt) {
+        nbt.putString("mode", "water");
+        nbt.putInt("lava", 0);
+        return nbt;
 	}
 }

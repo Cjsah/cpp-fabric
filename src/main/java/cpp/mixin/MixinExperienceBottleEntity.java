@@ -24,16 +24,16 @@ public abstract class MixinExperienceBottleEntity extends ThrownItemEntity imple
 		super(entityType, d, e, f, world);
 	}
 
-//	@Inject(at = { @At("HEAD") }, method = { "fromTag(Lnet/minecraft/nbt/NbtCompound;)V" })
-	public void readNbt(NbtCompound tag) {
-		multiple = tag.getInt("multiple");
-		super.readNbt(tag);
+//	@Inject(at = { @At("HEAD") }, method = { "fromNbt(Lnet/minecraft/nbt/NbtCompound;)V" })
+	public void readNbt(NbtCompound nbt) {
+		multiple = nbt.getInt("multiple");
+		super.readNbt(nbt);
 	}
 
-//	@Inject(at = { @At("RETURN") }, method = { "toTag(Lnet/minecraft/nbt/NbtCompound;)Lnet/minecraft/nbt/NbtCompound;" })
-	public NbtCompound toTag1(NbtCompound tag) {
-		tag.putInt("multiple", multiple);
-		return super.writeNbt(tag);
+//	@Inject(at = { @At("RETURN") }, method = { "writeNbt(Lnet/minecraft/nbt/NbtCompound;)Lnet/minecraft/nbt/NbtCompound;" })
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		nbt.putInt("multiple", multiple);
+		return super.writeNbt(nbt);
 	}
 
 	/**

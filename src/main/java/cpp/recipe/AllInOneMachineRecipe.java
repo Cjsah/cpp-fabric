@@ -191,7 +191,7 @@ public class AllInOneMachineRecipe implements Recipe<AllInOneMachineBlockEntity>
 	}
 
 	public static Predicate<NbtCompound> test(String potion) {
-		return tag -> tag.getString("Potion").equals(potion);
+		return nbt -> nbt.getString("Potion").equals(potion);
 	}
 
 	public static Function<AllInOneMachineBlockEntity, Pair<ItemStack, ItemStack>> out(Item item1) {
