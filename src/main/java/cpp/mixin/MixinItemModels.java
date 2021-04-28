@@ -17,10 +17,10 @@ public abstract class MixinItemModels {
 	@Shadow
 	public abstract BakedModel getModel(ItemStack stack);
 
-	@Inject(at = { @At("HEAD") }, method = { "getModel" }, cancellable = true)
+	@Inject(at = { @At("HEAD") }, method = { "getModel(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/client/render/model/BakedModel;" }, cancellable = true)
 	private void getModelCpp(ItemStack stack, CallbackInfoReturnable<BakedModel> info) {
 		if (stack.isOf(CppItems.COMPRESSED_ITEM)) {
-			info.setReturnValue(getModel(ItemStack.fromTag(stack.getOrCreateSubTag("item"))));
+			info.setReturnValue(getModel(ItemStack.fromNbt(stack.getOrCreateSubTag("item"))));
 		}
 	}
 }

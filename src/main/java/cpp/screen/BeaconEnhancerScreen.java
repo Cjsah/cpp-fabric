@@ -72,9 +72,9 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		this.client.getTextureManager().bindTexture(BACKGROUND);
-		int i = this.x;
+		int i = this.field_2776;
 		int j = (this.height - this.backgroundHeight) / 2;
 		this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
 	}
@@ -82,11 +82,11 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 	@Override
 	protected void init() {
 		super.init();
-		playerEffectButton.setPos(x + 40, y + 31);
+		playerEffectButton.setPos(field_2776 + 40, field_2776 + 31);
 		addButton(playerEffectButton);
-		mobEffectButton.setPos(x + 112, y + 31);
+		mobEffectButton.setPos(field_2776 + 112, field_2776 + 31);
 		addButton(mobEffectButton);
-		onlyAdverseButton.setPos(x + 150, y + 33);
+		onlyAdverseButton.setPos(field_2776 + 150, field_2776 + 33);
 		addButton(onlyAdverseButton);
 	}
 

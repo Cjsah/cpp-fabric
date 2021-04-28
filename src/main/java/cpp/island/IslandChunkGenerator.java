@@ -17,6 +17,8 @@ import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 
 import javax.annotation.Nonnull;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 public class IslandChunkGenerator extends ChunkGenerator {
     public static final Codec<IslandChunkGenerator> CODEC = IslandChunkGeneratorConfig.CODEC.fieldOf("settings").xmap(IslandChunkGenerator::new, IslandChunkGenerator::getConfig).codec();
@@ -49,14 +51,15 @@ public class IslandChunkGenerator extends ChunkGenerator {
     }
 
     @Override
-    public int getSpawnHeight() {
+    public int getSpawnHeight(HeightLimitView world) {
         return 64;
     }
-
+    
     @Override
-    public void populateNoise(@Nonnull WorldAccess world, StructureAccessor accessor, @Nonnull Chunk chunk) {
+    public CompletableFuture<Chunk> populateNoise(Executor executor, StructureAccessor accessor, Chunk chunk) {
+        return CompletableFuture.completedFuture(chunk);
     }
-
+    
     @Override
     public int getHeight(int x, int z, @Nonnull Heightmap.Type heightmap, @Nonnull HeightLimitView world) {
         return world.getBottomY();

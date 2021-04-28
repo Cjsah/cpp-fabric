@@ -34,7 +34,7 @@ public class Golem extends Item {
 			AGolemEntity entity = type.create(serverWorld, itemStack.getTag(), null, context.getPlayer(), blockPos, SpawnReason.SPAWN_EGG, false, false);
 			if (entity == null)
 				return ActionResult.FAIL;
-			entity.setMainHandStack(ItemStack.fromTag(itemStack.getSubTag("tool")));
+			entity.setMainHandStack(ItemStack.fromNbt(itemStack.getSubTag("tool")));
 			serverWorld.spawnEntityAndPassengers(entity);
 			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_ARMOR_STAND_PLACE, SoundCategory.BLOCKS, 0.75F, 0.8F);
 			world.emitGameEvent(context.getPlayer(), GameEvent.BLOCK_PLACE, entity);

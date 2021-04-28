@@ -66,10 +66,10 @@ public class AllInOneMachineScreen extends AExpMachineScreen<AllInOneMachineScre
 	
 	protected void init() {
 		super.init();
-		oButton.setPos(x + Utils.x(1), y + Utils.y(2));
-		temperatureButton.setPos(x + Utils.x(1), y + Utils.y(0));
+		oButton.setPos(field_2776 + Utils.x(1), field_2800 + Utils.y(2));
+		temperatureButton.setPos(field_2776 + Utils.x(1), field_2800 + Utils.y(0));
 		addButton(temperatureButton);
-		pressureButton.setPos(x + Utils.x(1), y + Utils.y(1));
+		pressureButton.setPos(field_2776 + Utils.x(1), field_2800 + Utils.y(1));
 		addButton(pressureButton);
 	}
 	
@@ -78,7 +78,7 @@ public class AllInOneMachineScreen extends AExpMachineScreen<AllInOneMachineScre
 		
 		client.getTextureManager().bindTexture(getBackground());
 		if (handler.blockEntity.isWorking()) {
-			this.drawTexture(matrices, x + 74, y + 36, 176, 0, 11, handler.blockEntity.getWorkTimeTotal() > 0 ? 1 + 15 * handler.blockEntity.getWorkTime() / handler.blockEntity.getWorkTimeTotal() : 0);
+			this.drawTexture(matrices,field_2776+ 74, field_2800 + 36, 176, 0, 11, handler.blockEntity.getWorkTimeTotal() > 0 ? 1 + 15 * handler.blockEntity.getWorkTime() / handler.blockEntity.getWorkTimeTotal() : 0);
 		}
 	}
 	
@@ -95,6 +95,6 @@ public class AllInOneMachineScreen extends AExpMachineScreen<AllInOneMachineScre
 	}
 	
 	public boolean workTimeIsHovered(int mx, int my) {
-		return mx >= x + 74 && mx <= x + 74 + 11 && my >= y + 36 && my <= y + 36 + 16;
+		return mx >=field_2776+ 74 && mx <=field_2776+ 74 + 11 && my >= field_2800 + 36 && my <= field_2800 + 36 + 16;
 	}
 }

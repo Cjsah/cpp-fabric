@@ -53,7 +53,7 @@ public class CppCraftingResultSlot extends Slot {
 		this.amount = 0;
 	}
 
-	public ItemStack onTakeItem(PlayerEntity player, ItemStack stack) {
+	public void onTakeItem(PlayerEntity player, ItemStack stack) {
 		this.onCrafted(stack);
 		DefaultedList<ItemStack> defaultedList = player.world.getRecipeManager().getRemainingStacks(CppRecipes.CRAFTING_TYPE, this.input, player.world);
 
@@ -76,7 +76,5 @@ public class CppCraftingResultSlot extends Slot {
 				}
 			}
 		}
-
-		return stack;
 	}
 }

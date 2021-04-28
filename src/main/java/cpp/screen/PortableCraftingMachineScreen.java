@@ -20,9 +20,9 @@ public class PortableCraftingMachineScreen extends HandledScreen<PortableCraftin
 	}
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		this.client.getTextureManager().bindTexture(CraftingMachineScreen.BACKGROUND);
-		int i = this.x;
+		int i = this.field_2776;
 		int j = (this.height - this.backgroundHeight) / 2;
 		this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
 	}
