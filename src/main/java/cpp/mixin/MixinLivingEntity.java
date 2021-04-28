@@ -51,7 +51,7 @@ public abstract class MixinLivingEntity extends Entity {
 			if (remove) this.onStatusEffectRemoved(effect.getValue());
 			return remove;
 		});
-		if (!isSpectator() && canFly()) {
+		if (!isSpectator()) {
 			/*
 			 * if ((Object) this instanceof PlayerEntity) { PlayerEntity player = ((PlayerEntity) (Object) this); if (!player.isCreative()) player.getAbilities().flying = getMainHandStack().isOf(CppItems.SHOOTING_STAR); } else
 			 */

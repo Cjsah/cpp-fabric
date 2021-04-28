@@ -11,14 +11,14 @@ import javax.annotation.Nonnull;
 public final class CppChat {
 
     /**
-     * 说出以cpp为标题的话
+     * 对{@link PlayerEntity}发送以cpp为标题的内容
      *
      * @author Cjsah
-     * @param user 说话的玩家
-     * @param text 说话的内容
+     * @param player 玩家
+     * @param text 内容
      */
-    public static void say(@Nonnull PlayerEntity user, Text text) {
-        user.sendSystemMessage(
+    public static void say(@Nonnull PlayerEntity player, Text text) {
+        player.sendSystemMessage(
                 new TranslatableText("misc.cpp",
                         new TranslatableText("chat.cpp.title").formatted(Formatting.GOLD),
                         text),
