@@ -8,5 +8,5 @@ public final class CppWorlds {
 
 	public static final RegistryKey<World> FLOWER_KEY = RegistryKey.of(Registry.WORLD_KEY, CppDimensionTypes.FLOWER_ID);
 	
-
+	public static void init() {}
 }

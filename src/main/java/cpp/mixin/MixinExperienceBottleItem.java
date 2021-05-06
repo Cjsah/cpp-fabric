@@ -57,7 +57,7 @@ public class MixinExperienceBottleItem extends Item implements IDefaultNbtItem {
 			if (!world.isClient) {
 				ExperienceBottleEntity experienceBottleEntity = new ExperienceBottleEntity(world, user);
 				experienceBottleEntity.setItem(itemStack);
-				experienceBottleEntity.setProperties(user, user.pitch, user.yaw, -20.0F, 0.7F, 1.0F);
+				experienceBottleEntity.setProperties(user, user.getPitch(), user.getYaw(), -20.0F, 0.7F, 1.0F);
 				((IMultiple) experienceBottleEntity).setMultiple(multiple);
 				world.spawnEntity(experienceBottleEntity);
 			}

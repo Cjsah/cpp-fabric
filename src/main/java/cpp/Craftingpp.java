@@ -2,25 +2,12 @@ package cpp;
 
 import static cpp.api.CppChat.say;
 
-import cpp.init.CppCommands;
-import cpp.init.CppGeneratorType;
-import cpp.state.CppStateOperate;
-import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
-import net.minecraft.server.MinecraftServer;
+import cpp.init.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import cpp.config.CppConfig;
 import cpp.ducktyping.IPlayerJoinCallback;
-import cpp.init.CppBlockEntities;
-import cpp.init.CppBlocks;
-import cpp.init.CppEntities;
-import cpp.init.CppFeatures;
-import cpp.init.CppItems;
-import cpp.init.CppLootTableFunctions;
-import cpp.init.CppRecipes;
-import cpp.init.CppScreenHandler;
-import cpp.init.CppStats;
 import cpp.misc.AttachAttributesLootFunction;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
@@ -54,27 +41,29 @@ public class Craftingpp implements ModInitializer {
 	public void onInitialize() {
 		
 		logger.info("welcome to use cpp");
-		
-		CppBlocks.loadClass();
-		CppItems.loadClass();
-		CppBlockEntities.loadClass();
-		CppScreenHandler.loadClass();
-		CppRecipes.loadClass();
-		CppStats.loadClass();
-		CppLootTableFunctions.loadClass();
-		CppEntities.loadClass();
-		CppFeatures.loadClass();
-		CppGeneratorType.loadClass();
-		CppCommands.register();
-		AttachAttributesLootFunction.loadClass();
+
+		CppBlockEntities.init();
+		CppBlocks.init();
+		CppBlockTags.init();
+		CppCommands.init();
+		CppEffects.init();
+		CppEntities.init();
+		CppFeatures.init();
+		CppGeneratorType.init();
+		CppItems.init();
+		CppItemTags.init();
+		CppLootTableFunctions.init();
+		CppRecipes.init();
+		CppScreenHandler.init();
+		CppStats.init();
+		CppWorlds.init();
+
+		AttachAttributesLootFunction.init();
+
 		IPlayerJoinCallback.EVENT.register((player, server) -> {
 			if (!player.world.isClient)
 				say(player, new TranslatableText("misc.cpp1", new TranslatableText("chat.cpp.load1"), new TranslatableText("chat.cpp.load2").setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.cjsah.net/ruhuasiyu/"))).formatted(Formatting.GOLD)));
 			return ActionResult.PASS;
-		});
-		
-		LootTableLoadingCallback.EVENT.register((resourceManager, manager, id, supplier, setter) -> {
-		
 		});
 	}
 }

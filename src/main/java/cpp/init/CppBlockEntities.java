@@ -23,7 +23,7 @@ public final class CppBlockEntities {
 	public static final BlockEntityType<FermenterBlockEntity> FERMENTER = registerBlockEntityType(FermenterBlockEntity::new, CppBlocks.FERMENTER);
 	public static final BlockEntityType<BrokenSpawnerBlockEntity> BROKEN_SPAWNER = registerBlockEntityType(BrokenSpawnerBlockEntity::new, CppBlocks.BROKEN_SPAWNER);
 	
-	public static void loadClass() {}
+	public static void init() {}
 
 	private static <T extends BlockEntity> BlockEntityType<T> registerBlockEntityType(FabricBlockEntityTypeBuilder.Factory<T> factory, Block... blocks) {
 		return Registry.register(Registry.BLOCK_ENTITY_TYPE, Registry.BLOCK.getId(blocks[0]).toString(), FabricBlockEntityTypeBuilder.create(factory, blocks).build());

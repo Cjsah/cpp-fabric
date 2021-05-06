@@ -121,12 +121,13 @@ public abstract class AGolemEntity extends LivingEntity {
 			double d = this.getX() + (this.serverX - this.getX()) / (double) this.bodyTrackingIncrements;
 			double e = this.getY() + (this.serverY - this.getY()) / (double) this.bodyTrackingIncrements;
 			double f = this.getZ() + (this.serverZ - this.getZ()) / (double) this.bodyTrackingIncrements;
-			double g = MathHelper.wrapDegrees(this.serverYaw - (double) this.yaw);
-			this.yaw = (float) ((double) this.yaw + g / (double) this.bodyTrackingIncrements);
-			this.pitch = (float) ((double) this.pitch + (this.serverPitch - (double) this.pitch) / (double) this.bodyTrackingIncrements);
+
+			double g = MathHelper.wrapDegrees(this.serverYaw - (double) this.getYaw());
+			this.setYaw((float) ((double) this.getYaw() + g / (double) this.bodyTrackingIncrements));
+			this.setPitch((float) ((double) this.getPitch() + (this.serverPitch - (double) this.getPitch()) / (double) this.bodyTrackingIncrements));
 			--this.bodyTrackingIncrements;
 			this.updatePosition(d, e, f);
-			this.setRotation(this.yaw, this.pitch);
+			this.setRotation(this.getYaw(), this.getPitch());
 		}
 	}
 }

@@ -4,7 +4,7 @@ import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredica
 import net.minecraft.util.Identifier;
 
 public final class CppPredicates {
-    public static void register(){
+    public static void init(){
         FabricModelPredicateProviderRegistry.register(new Identifier("character"), (itemStack, clientWorld, livingEntity, i) -> (float)itemStack.getOrCreateTag().getInt("character"));
         FabricModelPredicateProviderRegistry.register(new Identifier("temperancer"), (itemStack, clientWorld, livingEntity, i) -> (float)itemStack.getOrCreateTag().getInt("open"));
     }

@@ -16,7 +16,7 @@ public final class CppGeneratorType {
         }
     };
 
-    public static void loadClass() {
+    public static void init() {
         AccessorGeneratorType.getValues().add(1, CPP_ISLAND);
     }
 }

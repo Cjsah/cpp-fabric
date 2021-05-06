@@ -20,8 +20,7 @@ public final class CppItemTags {
 	public static final Tag<Item> ARMORS = register("armors");
 	public static final Tag<Item> WEAPONS = register("weapons");
 
-	private CppItemTags() {
-	}
+	public static void init() { }
 
 	private static Tag<Item> register(String id) {
 		return TagRegistry.item(new Identifier(Craftingpp.MOD_ID3, id));

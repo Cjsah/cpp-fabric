@@ -29,7 +29,7 @@ public class FlowerPortalBlock extends Block {
 					world2 = world.getServer().getWorld(CppWorlds.FLOWER_KEY);
 				}
 				if (world2 != null) {
-					FabricDimensionInternals.changeDimension(entity, world2, new TeleportTarget(entity.getPos(), entity.getVelocity(), entity.yaw, entity.pitch));
+					FabricDimensionInternals.changeDimension(entity, world2, new TeleportTarget(entity.getPos(), entity.getVelocity(), entity.getYaw(), entity.getPitch()));
 				}
 			}else {
 				LOGGER.error("无法找到花世界维度");

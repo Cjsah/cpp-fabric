@@ -15,7 +15,7 @@ public final class CppEffects {
 	
 	public static final StatusEffect CHAIN = register("chain", new Effect(StatusEffectType.NEUTRAL, 11250603));
 
-	public static void register() {
+	public static void init() {
 		// 连环药水效果
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
 			if (player.getStatusEffect(CppEffects.CHAIN) != null && ChainProcessor.canChain(player.getMainHandStack().getItem(), state) && player.getMainHandStack().getDamage() + 1 < player.getMainHandStack().getMaxDamage()) {

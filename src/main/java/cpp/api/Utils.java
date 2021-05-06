@@ -283,7 +283,7 @@ public class Utils {
 						.test(new LootContext.Builder(world).random(world.random).build(LootContextTypes.EMPTY))) {
 			T changed = entityType.create(world);
 			assert changed != null;
-			changed.refreshPositionAndAngles(entity.getX(), entity.getY(), entity.getZ(), entity.yaw, entity.pitch);
+			changed.refreshPositionAndAngles(entity.getX(), entity.getY(), entity.getZ(), entity.getYaw(), entity.getPitch());
 			changed.setVelocity(entity.getVelocity());
 			if (entityWith != null) entityWith.accept(changed);
 			if (toDark && changed instanceof ADarkAnimalEntity) {
@@ -309,8 +309,8 @@ public class Utils {
 	public static ItemEntity rayItem(@Nonnull PlayerEntity player) {
 		double length = .05D;
 		Vec3d playerPos = player.getCameraPosVec(1.0F);
-		double yaw = player.yaw;
-		double pitch = player.pitch;
+		double yaw = player.getYaw();
+		double pitch = player.getPitch();
 		double y = -Math.sin(pitch * Math.PI / 180D) * length;
 		double x = -Math.sin(yaw * Math.PI / 180D);
 		double z = Math.cos(yaw * Math.PI / 180D);
@@ -339,7 +339,7 @@ public class Utils {
 	 * @return 位移后的坐标
 	 */
 	public static Vec3d move(@Nonnull PlayerEntity player, @Nonnull Vec3d pos, float length) {
-		double yaw = player.yaw;
+		double yaw = player.getYaw();
 		double x = -Math.sin(yaw * Math.PI / 180D) * length;
 		double z = Math.cos(yaw * Math.PI / 180D) * length;
 		return pos.add(x, 0, z);

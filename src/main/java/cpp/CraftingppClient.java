@@ -36,7 +36,7 @@ public class CraftingppClient implements ClientModInitializer {
 	
 	@Override
 	public void onInitializeClient() {
-		CppPredicates.register();
+		CppPredicates.init();
 		
 		ScreenRegistry.register(CppScreenHandler.CRAFTING_MACHINE, CraftingMachineScreen::new);
 		ScreenRegistry.register(CppScreenHandler.ALL_IN_ONE_MACHINE, AllInOneMachineScreen::new);

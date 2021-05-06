@@ -14,8 +14,7 @@ public final class CppBlockTags {
 	public static final Tag.Identified<Block> ORES = register("ores");
 	public static final Tag.Identified<Block> EMPTY = register("empty");
 
-	private CppBlockTags() {
-	}
+	public static void init() { }
 
 	private static Tag.Identified<Block> register(String id) {
 		return TagRegistry.create(new Identifier(Craftingpp.MOD_ID3, id), BlockTags::getTagGroup);

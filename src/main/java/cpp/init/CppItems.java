@@ -659,6 +659,6 @@ public final class CppItems {
 		return item;
 	}
 
-	public static void loadClass() {}
+	public static void init() {}
 
 }
