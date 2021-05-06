@@ -1,4 +1,4 @@
-package cpp.block;
+package cpp.publicmc;
 
 import net.minecraft.block.SkullBlock;
 

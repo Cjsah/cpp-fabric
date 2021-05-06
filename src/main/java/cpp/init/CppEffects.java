@@ -1,7 +1,7 @@
 package cpp.init;
 
 import cpp.Craftingpp;
-import cpp.api.Effect;
+import cpp.publicmc.PublicStatusEffect;
 import cpp.misc.ChainProcessor;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.entity.effect.StatusEffect;
@@ -13,7 +13,7 @@ import net.minecraft.util.registry.Registry;
 
 public final class CppEffects {
 	
-	public static final StatusEffect CHAIN = register("chain", new Effect(StatusEffectType.NEUTRAL, 11250603));
+	public static final StatusEffect CHAIN = register("chain", new PublicStatusEffect(StatusEffectType.NEUTRAL, 11250603));
 
 	public static void init() {
 		// 连环药水效果

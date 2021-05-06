@@ -19,7 +19,7 @@ import java.util.List;
 import com.mojang.brigadier.StringReader;
 
 import cpp.api.Utils;
-import cpp.api.Effect;
+import cpp.publicmc.PublicStatusEffect;
 import cpp.init.CppBlockEntities;
 import cpp.init.CppBlocks;
 import cpp.init.CppEffects;
@@ -64,7 +64,7 @@ import net.minecraft.world.World;
  * @author Ph-苯
  */
 public class BeaconEnhancerBlockEntity extends BlockEntity implements NamedScreenHandlerFactory {
-	public static final StatusEffect ATTRACTING = new Effect(StatusEffectType.HARMFUL, 0) {
+	public static final StatusEffect ATTRACTING = new PublicStatusEffect(StatusEffectType.HARMFUL, 0) {
 		@Override
 		protected String loadTranslationKey() {
 			return "effect.cpp.attracting";
