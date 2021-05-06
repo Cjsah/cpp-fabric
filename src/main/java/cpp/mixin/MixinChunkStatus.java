@@ -27,7 +27,7 @@ import java.util.function.Function;
 public class MixinChunkStatus {
 //    @Inject(method = "doWork(Lnet/minecraft/world/chunk/ChunkStatus;Ljava/util/concurrent/Executor;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/structure/StructureManager;Lnet/minecraft/server/world/ServerLightingProvider;Ljava/util/function/Function;Ljava/util/List;Lnet/minecraft/world/chunk/Chunk;)V", at = @At("HEAD"))
     @Inject(method = "method_20613", at = @At("HEAD"))
-    private static void onLighting(ChunkStatus chunkStatus, ServerWorld world, ChunkGenerator generator, StructureManager manager, ServerLightingProvider lightingProvider, Function<Chunk, CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> function, List<Chunk> list, Chunk chunk, CallbackInfoReturnable<CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> info) {
+    private static void onLighting(ChunkStatus chunkStatus, Executor executor, ServerWorld world, ChunkGenerator generator, StructureManager manager, ServerLightingProvider lightingProvider, Function<Chunk, CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> function, List<Chunk> list, Chunk chunk, CallbackInfoReturnable<CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> info) {
         if(generator instanceof IslandChunkGenerator && !chunk.getStatus().isAtLeast(chunkStatus)) IslandUtils.generator((ProtoChunk) chunk, world);
     }
 
