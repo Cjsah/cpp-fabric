@@ -21,6 +21,6 @@ public class CraftingMachineScreen extends AOutputMachineScreen<CraftingMachineS
 
 	protected void init() {
 		super.init();
-		oButton.setPos(field_2776 + 94, field_2800 + 57);
+		oButton.setPos(x + 94, y + 57);
 	}
 }

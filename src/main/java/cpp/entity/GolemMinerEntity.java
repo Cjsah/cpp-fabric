@@ -19,7 +19,7 @@ public class GolemMinerEntity extends AMovingGolemEntity {
 
 	@Override
 	public void work() {
-		BlockState blockState = getBlockState();
+		BlockState blockState = getLandingBlockState();
 		if (!world.isClient) {
 			if (!CONTROLS.contains(blockState.getBlock()) && Utils.canHarvest(getMainHandStack(), blockState, world, getBlockPos())) {
 				List<ItemStack> droppeds = new ArrayList<>();

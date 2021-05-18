@@ -51,7 +51,7 @@ public class GolemFarmerEntity extends AMovingGolemEntity {
 	@Override
 	public void work() {
 		if (!world.isClient) {
-			BlockState state = getBlockState();
+			BlockState state = getLandingBlockState();
 			Block block = state.getBlock();
 			BlockPos blockPos = getBlockPos();
 			List<ItemStack> droppeds = new LinkedList<>();

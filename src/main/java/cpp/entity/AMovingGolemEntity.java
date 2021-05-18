@@ -63,7 +63,7 @@ public abstract class AMovingGolemEntity extends AGolemEntity {
 	 * 对{@link #CONTROLS}里面方块的反应
 	 */
 	protected void reactBlock() {
-		Block block = getBlockState().getBlock();
+		Block block = getLandingBlockState().getBlock();
 		if (block == RED_WOOL)
 			setMovingDirection(Direction.EAST);
 		else if (block == YELLOW_WOOL)
