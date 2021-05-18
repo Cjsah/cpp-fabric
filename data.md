@@ -13,11 +13,10 @@
     ],
     
     // 仪式-附魔书
-    EnchantingRituals: [
+    "EnchantingRituals": [
         "minecraft:xxx",
         "minecraft:xxx",
-        "minecraft:xxx",
-        }
+        "minecraft:xxx"
     ]
 }
 ```
