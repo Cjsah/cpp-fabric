@@ -81,7 +81,7 @@ public class Utils {
 		@Override
 		public boolean canStart() {
 			boolean b = false;
-			TargetPredicate targetPredicate = new TargetPredicate();
+			TargetPredicate targetPredicate = TargetPredicate.method_36626();
 			targetPredicate.setPredicate(livingEntity -> livingEntity.getPos().isInRange(entity.getPos(), 16));
 			for (PlayerEntity playerEntity : entity.world.getPlayers(targetPredicate, entity, new Box(entity.getPos(), entity.getPos()).expand(16))) {
 				if (playerEntity.getInventory().contains(CppItems.SACHET.getDefaultStack())) {

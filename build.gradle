@@ -31,12 +31,12 @@ dependencies {
 	// Nullable修复
 	modImplementation "com.google.code.findbugs:jsr305:3.0.2"
 	// modmenu支持
-//	modImplementation "com.terraformersmc:modmenu:2.0.0-beta.4"
+	modImplementation "com.terraformersmc:modmenu:2.0.0-beta.4"
 	// 可惜1.17没有rei
 //	modImplementation "me.shedaniel:RoughlyEnoughItems:5.8.9"
 
 	// 测试用, 发布时注释掉
-//	modImplementation "carpet:fabric-carpet:21w16a-1.4.33+v210421"
+	modImplementation "carpet:fabric-carpet:21w19a-1.4.36+v210512"
 
 }
 
