@@ -21,7 +21,7 @@ public class AllInOneMachineScreenHandler extends AExpMachineScreenHandler {
 	public final AllInOneMachineBlockEntity blockEntity;
 
 	public AllInOneMachineScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, new AllInOneMachineBlockEntity(playerInventory.player.getBlockPos(), playerInventory.player.getBlockState()));
+		this(syncId, playerInventory, new AllInOneMachineBlockEntity(playerInventory.player.getBlockPos(), playerInventory.player.world.getBlockState(playerInventory.player.getBlockPos())));
 	}
 
 	public AllInOneMachineScreenHandler(int syncId, PlayerInventory playerInventory, AllInOneMachineBlockEntity blockEntity) {

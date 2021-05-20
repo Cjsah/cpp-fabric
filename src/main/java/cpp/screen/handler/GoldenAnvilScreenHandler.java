@@ -20,7 +20,7 @@ public class GoldenAnvilScreenHandler extends AExpMachineScreenHandler {
 	public final GoldenAnvilBlockEntity blockEntity;
 
 	public GoldenAnvilScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, new GoldenAnvilBlockEntity(playerInventory.player.getBlockPos(), playerInventory.player.getBlockState()));
+		this(syncId, playerInventory, new GoldenAnvilBlockEntity(playerInventory.player.getBlockPos(), playerInventory.player.world.getBlockState(playerInventory.player.getBlockPos())));
 	}
 
 	public GoldenAnvilScreenHandler(int syncId, PlayerInventory playerInventory, GoldenAnvilBlockEntity blockEntity) {

@@ -48,14 +48,14 @@ public class TradeMachineScreen extends AExpMachineScreen<TradeMachineScreenHand
 	@Override
 	protected void init() {
 		super.init();
-		oButton.setPos(field_2776 + x(3), field_2800 + y(2));
-		modeButton.setPos(field_2776 + x(3), field_2800 + y(0));
+		oButton.setPos(x + x(3), y + y(2));
+		modeButton.setPos(x + x(3), y + y(0));
 		addButton(modeButton);
 	}
 
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
 		super.drawBackground(matrices, delta, mouseX, mouseY);
-		drawTexture(matrices, field_2776 + 57, field_2800 + 35, 32 + handler.blockEntity.getMode() * 27, 166, 27, 17);
+		drawTexture(matrices, x + 57, y + 35, 32 + handler.blockEntity.getMode() * 27, 166, 27, 17);
 	}
 }

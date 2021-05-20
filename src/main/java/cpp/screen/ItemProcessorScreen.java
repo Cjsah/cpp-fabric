@@ -22,6 +22,6 @@ public class ItemProcessorScreen extends AOutputMachineScreen<ItemProcessorScree
 	@Override
 	protected void init() {
 		super.init();
-		oButton.setPos(field_2776 + Utils.x(4), field_2800 + Utils.y(2));
+		oButton.setPos(x + Utils.x(4), y + Utils.y(2));
 	}
 }

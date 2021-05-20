@@ -17,7 +17,7 @@ public class TradeMachineScreenHandler extends AExpMachineScreenHandler {
 	public final TradeMachineBlockEntity blockEntity;
 
 	public TradeMachineScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, new TradeMachineBlockEntity(playerInventory.player.getBlockPos(), playerInventory.player.getBlockState()));
+		this(syncId, playerInventory, new TradeMachineBlockEntity(playerInventory.player.getBlockPos(), playerInventory.player.world.getBlockState(playerInventory.player.getBlockPos())));
 
 	}
 

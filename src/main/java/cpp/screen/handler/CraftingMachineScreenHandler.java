@@ -29,7 +29,7 @@ public class CraftingMachineScreenHandler extends AOutputMachineScreenHandler {
 	public final PropertyDelegate propertyDelegate;
 
 	public CraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, new CraftingMachineBlockEntity(playerInventory.player.getBlockPos(), playerInventory.player.getBlockState()), new ArrayPropertyDelegate(1), ScreenHandlerContext.EMPTY);
+		this(syncId, playerInventory, new CraftingMachineBlockEntity(playerInventory.player.getBlockPos(), playerInventory.player.world.getBlockState(playerInventory.player.getBlockPos())), new ArrayPropertyDelegate(1), ScreenHandlerContext.EMPTY);
 	}
 
 	public CraftingMachineScreenHandler(int syncId, PlayerInventory playerInventory, CraftingMachineBlockEntity blockEntity, PropertyDelegate propertyDelegate, ScreenHandlerContext context) {

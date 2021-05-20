@@ -17,9 +17,9 @@ public class DarkAnimalsLookAtEntityGoal extends LookAtEntityGoal {
     public DarkAnimalsLookAtEntityGoal(MobEntity mob, Class<? extends LivingEntity> targetType, float range) {
         super(mob, targetType, range);
         if (targetType == PlayerEntity.class) {
-            this.targetPredicate = (new DarkAnimalsTargetPredicate()).setBaseMaxDistance(range).includeTeammates().includeInvulnerable().ignoreEntityTargetRules().setPredicate((livingEntity) -> EntityPredicates.rides(mob).test(livingEntity));
+            this.targetPredicate = (new DarkAnimalsTargetPredicate()).setBaseMaxDistance(range).setPredicate((livingEntity) -> EntityPredicates.rides(mob).test(livingEntity));
         } else {
-            this.targetPredicate = (new DarkAnimalsTargetPredicate()).setBaseMaxDistance(range).includeTeammates().includeInvulnerable().ignoreEntityTargetRules();
+            this.targetPredicate = (new DarkAnimalsTargetPredicate()).setBaseMaxDistance(range);
         }
     }
 

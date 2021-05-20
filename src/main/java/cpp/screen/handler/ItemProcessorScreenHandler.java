@@ -12,7 +12,7 @@ public class ItemProcessorScreenHandler extends AOutputMachineScreenHandler {
 	public final ItemProcessorBlockEntity blockEntity;
 
 	public ItemProcessorScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, new ItemProcessorBlockEntity(playerInventory.player.getBlockPos(), playerInventory.player.getBlockState()));
+		this(syncId, playerInventory, new ItemProcessorBlockEntity(playerInventory.player.getBlockPos(), playerInventory.player.world.getBlockState(playerInventory.player.getBlockPos())));
 	}
 
 	public ItemProcessorScreenHandler(int syncId, PlayerInventory playerInventory, ItemProcessorBlockEntity blockEntity) {

@@ -9,6 +9,7 @@ import net.minecraft.item.MiningToolItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.ToolMaterials;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.tag.SetTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
@@ -29,7 +30,7 @@ public class Grafter extends MiningToolItem {
 	}
 
 	protected Grafter(float attackDamage, float attackSpeed, ToolMaterial material, Settings settings) {
-		super(attackDamage, attackSpeed, material, LEAVES_TO_SALPING.keySet(), settings);
+		super(attackDamage, attackSpeed, material, SetTag.of(LEAVES_TO_SALPING.keySet()) , settings);
 	}
 
 	public boolean isSuitableFor(BlockState state) {

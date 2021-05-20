@@ -32,7 +32,7 @@ public class MobProjectorScreen extends AExpMachineScreen<MobProjectorScreenHand
 
 	protected void init() {
 		super.init();
-		oButton.setPos(field_2776 + Utils.x(7), field_2800 + Utils.y(2));
+		oButton.setPos(x + Utils.x(7), y + Utils.y(2));
 	}
 
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
@@ -40,20 +40,20 @@ public class MobProjectorScreen extends AExpMachineScreen<MobProjectorScreenHand
 
 		if (handler.blockEntity.getCurrentRecipeCode() > 0) {
 			client.getTextureManager().bindTexture(PICTURES.get(handler.blockEntity.getCurrentRecipeCode()));
-			drawTexture(matrices, field_2776 + 19, field_2800 + 18, 0, 0, 52, 52, 52, 52);
+			drawTexture(matrices, x + 19, y + 18, 0, 0, 52, 52, 52, 52);
 		}
 
 		client.getTextureManager().bindTexture(FLASH);
 		int t = (int) (System.currentTimeMillis() % (12 * 50) / 50) / 2;
-		drawTexture(matrices, field_2776 + 102, field_2800 + 40, 0, 26 * t, 26, 26, 26, 156);
+		drawTexture(matrices, x + 102, y + 40, 0, 26 * t, 26, 26, 26, 156);
 
 		client.getTextureManager().bindTexture(BACKGROUND);
 		int dy = 52 * handler.blockEntity.getWorkTime() / handler.blockEntity.getWorkTimeTotal();
-		drawTexture(matrices, field_2776 + 19, field_2800 + 18 + dy, 19, 18 + dy, 52, 52 - dy);
+		drawTexture(matrices, x + 19, y + 18 + dy, 19, 18 + dy, 52, 52 - dy);
 	}
 
 	public boolean workTimeIsHovered(int mx, int my) {
-		return mx >= field_2776 + 19 && mx <= field_2776 + 19 + 52 && my >= field_2800 + 18 && my <= field_2800 + 18 + 52;
+		return mx >= x + 19 && mx <= x + 19 + 52 && my >= y + 18 && my <= y + 18 + 52;
 	}
 
 	static {

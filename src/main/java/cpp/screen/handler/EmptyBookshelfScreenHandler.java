@@ -13,7 +13,7 @@ public class EmptyBookshelfScreenHandler extends AMachineScreenHandler {
 	public final EmptyBookshelfBlockEntity blockEntity;
 
 	public EmptyBookshelfScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, new EmptyBookshelfBlockEntity(playerInventory.player.getBlockPos(), playerInventory.player.getBlockState()));
+		this(syncId, playerInventory, new EmptyBookshelfBlockEntity(playerInventory.player.getBlockPos(), playerInventory.player.world.getBlockState(playerInventory.player.getBlockPos())));
 	}
 
 	public EmptyBookshelfScreenHandler(int syncId, PlayerInventory playerInventory, EmptyBookshelfBlockEntity blockEntity) {
