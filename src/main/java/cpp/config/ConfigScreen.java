@@ -9,7 +9,6 @@ import cpp.Craftingpp;
 import cpp.api.TexturedButtonWidget;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.render.GameRenderer;
@@ -57,7 +56,7 @@ public class ConfigScreen extends Screen {
         this.panWidth = Math.min(395, this.width - (this.panX + 80) - 50);
 
         // 重置按钮
-        this.addButton(new TexturedButtonWidget(width - 40, 28, 20, 20, 0, 0, RESET_TEXT, RESET_BUTTON, 32, 64, button -> {
+        this.method_37063(new TexturedButtonWidget(width - 40, 28, 20, 20, 0, 0, RESET_TEXT, RESET_BUTTON, 32, 64, button -> {
             for (Map.Entry<String, JsonElement> kv : defaultValue.entrySet()) {
                 this.value.add(kv.getKey(), kv.getValue());
             }
@@ -94,8 +93,8 @@ public class ConfigScreen extends Screen {
             this.addButtons(kv.getKey(), kv.getValue());
         }
 
-        this.addButton(new ButtonWidget(this.width / 2 - 154, this.height - 28, 150, 20, ScreenTexts.CANCEL, (button) -> this.client.openScreen(this.parent)));
-        this.addButton(new ButtonWidget(this.width / 2 + 4, this.height - 28, 150, 20, ScreenTexts.DONE, (button) -> {
+        this.method_37063(new ButtonWidget(this.width / 2 - 154, this.height - 28, 150, 20, ScreenTexts.CANCEL, (button) -> this.client.openScreen(this.parent)));
+        this.method_37063(new ButtonWidget(this.width / 2 + 4, this.height - 28, 150, 20, ScreenTexts.DONE, (button) -> {
             if (!Objects.equals(value.toString(), Craftingpp.CONFIG.getConfig(key).toString())) {
                 Craftingpp.CONFIG.changeConfig(key, value);
             }
@@ -151,7 +150,7 @@ public class ConfigScreen extends Screen {
     }
 
     private void addButtonWidget(String jk) {
-        this.addButton(new AbstractButtonWidget(this.panX + 80, this.drawY, this.panWidth, 20, value.get(jk).getAsBoolean() ? ScreenTexts.YES : ScreenTexts.NO) {
+        this.method_37063(new ButtonWidget(this.panX + 80, this.drawY, this.panWidth, 20, value.get(jk).getAsBoolean() ? ScreenTexts.YES : ScreenTexts.NO) {
             @Override
             public void onClick(double mouseX, double mouseY) {
                 value.addProperty(jk, !value.get(jk).getAsBoolean());
@@ -167,7 +166,7 @@ public class ConfigScreen extends Screen {
     }
 
     private void addStringWidget(String jk, String jv) {
-        this.addButton(new TextFieldWidget(this.textRenderer, this.panX + 80, this.drawY, this.panWidth, 20, new LiteralText(jk)) {
+        this.method_37063(new TextFieldWidget(this.textRenderer, this.panX + 80, this.drawY, this.panWidth, 20, new LiteralText(jk)) {
 
             @SuppressWarnings("unused")
             private final boolean init = init();
@@ -199,7 +198,7 @@ public class ConfigScreen extends Screen {
     }
 
     private void addListWidget(String jk, JsonArray jv) {
-        this.addButton(new TextFieldWidget(this.textRenderer, this.panX + 80, this.drawY, this.panWidth, 20, new LiteralText(jk)) {
+        this.method_37063(new TextFieldWidget(this.textRenderer, this.panX + 80, this.drawY, this.panWidth, 20, new LiteralText(jk)) {
 
             @SuppressWarnings("unused")
             private final boolean init = init();
@@ -236,7 +235,7 @@ public class ConfigScreen extends Screen {
     }
 
     private void addNumberWidget(String jk, Number jv) {
-        this.addButton(new TextFieldWidget(this.textRenderer, this.panX + 80, this.drawY, this.panWidth, 20, new LiteralText(jk)) {
+        this.method_37063(new TextFieldWidget(this.textRenderer, this.panX + 80, this.drawY, this.panWidth, 20, new LiteralText(jk)) {
 
             @SuppressWarnings("unused")
             private final boolean init = init();

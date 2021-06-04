@@ -70,11 +70,12 @@ public class OptionsScreen extends Screen {
         this.configList.setLeftPos(0);
         this.descriptionListWidget = new DescriptionListWidget(this.client, paneWidth, this.height, this.paneY + 19, this.height - 36, 9 + 1, this);
         this.descriptionListWidget.setLeftPos(this.rightPaneX);
-        this.children.add(this.searchBox);
-        this.children.add(this.configList);
-        this.children.add(this.descriptionListWidget);
+        this.addChild(this.searchBox);
+        this.addChild(this.searchBox);
+        this.addChild(this.configList);
+        this.addChild(this.descriptionListWidget);
         // 设置
-        this.addButton(new TexturedButtonWidget(width - 40, paneY - 20, 20, 20, 0, 0, SETTING_TEXT, SETTING_BUTTON, 32, 64, button -> {
+        this.method_37063(new TexturedButtonWidget(width - 40, paneY - 20, 20, 20, 0, 0, SETTING_TEXT, SETTING_BUTTON, 32, 64, button -> {
             //screen
             if (this.selected != null) {
                 this.client.openScreen(new ConfigScreen(this, this.selected.getKey(), ((ICppConfig)selected.getConfigItem()).getDefaultConfig()));
@@ -102,7 +103,7 @@ public class OptionsScreen extends Screen {
                 super.renderButton(matrices, mouseX, mouseY, delta);
             }
         });
-        this.addButton(new ButtonWidget(this.width / 2 -75, this.height - 28, 150, 20, ScreenTexts.DONE, (button) -> this.client.openScreen(this.screen)));
+        this.method_37063(new ButtonWidget(this.width / 2 -75, this.height - 28, 150, 20, ScreenTexts.DONE, (button) -> this.client.openScreen(this.screen)));
         this.setInitialFocus(this.searchBox);
     }
 
