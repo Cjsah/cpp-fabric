@@ -42,9 +42,9 @@ public abstract class MixinPlayerEntity extends LivingEntity implements ITempera
 		if (!this.world.isClient) {
 			int value = weight / 100;
 			if (value > 0) {
-				this.applyStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 2, value - 1, false, false));
+				this.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 2, value - 1, false, false));
 			} else if (value < 0) {
-				this.applyStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 2, -value - 1, false, false));
+				this.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 2, -value - 1, false, false));
 			}
 		}
 		this.vaccines.entrySet().removeIf(entry -> !entry.getValue().updateDuration());

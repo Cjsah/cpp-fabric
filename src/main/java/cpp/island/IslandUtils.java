@@ -37,7 +37,7 @@ public class IslandUtils {
         ((AccessorProtoChunk) chunk).getLightSources().clear();
         long[] emptyHeightmap = new PackedIntegerArray(9, 256).getStorage();
         for (Map.Entry<Heightmap.Type, Heightmap> heightmapEntry : chunk.getHeightmaps()) {
-            heightmapEntry.getValue().setTo(emptyHeightmap);
+            heightmapEntry.getValue().setTo(chunk, Heightmap.Type.WORLD_SURFACE_WG, emptyHeightmap);
         }
 
         // 基岩箱子

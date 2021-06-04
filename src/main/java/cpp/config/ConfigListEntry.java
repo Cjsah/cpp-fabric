@@ -80,4 +80,8 @@ public class ConfigListEntry extends Entry<ConfigListEntry> {
         return 0;
     }
 
+    @Override
+    public Text method_37006() {
+        return null;
+    }
 }

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import cpp.Craftingpp;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.EntryListWidget;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.GameRenderer;
@@ -112,6 +113,11 @@ public class DescriptionListWidget extends EntryListWidget<DescriptionListWidget
 
         RenderSystem.enableTexture();
         RenderSystem.disableBlend();
+    }
+
+    @Override
+    public void appendNarrations(NarrationMessageBuilder builder) {
+
     }
 
     static class DescriptionEntry extends EntryListWidget.Entry<DescriptionListWidget.DescriptionEntry>{

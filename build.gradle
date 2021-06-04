@@ -15,8 +15,11 @@ repositories {
 	maven {
 		url 'https://maven.terraformersmc.com/releases'
 	}
-	// 测试用, 发布时注释掉
-	// carpet maven 地址
+	// rei maven 地址
+	maven {
+		url 'https://maven.shedaniel.me/'
+	}
+	// carpet maven 地址	// 测试用, 发布时注释掉
 	maven {
 		url 'https://masa.dy.fi/maven'
 	}
@@ -31,12 +34,13 @@ dependencies {
 	// Nullable修复
 	modImplementation "com.google.code.findbugs:jsr305:3.0.2"
 	// modmenu支持
-	modImplementation "com.terraformersmc:modmenu:2.0.0-beta.4"
+	modImplementation "com.terraformersmc:modmenu:2.0.0-beta.7"
 	// 可惜1.17没有rei
-//	modImplementation "me.shedaniel:RoughlyEnoughItems:5.8.9"
+	modImplementation "me.shedaniel:RoughlyEnoughItems-api:6.0.247-alpha"
+
 
 	// 测试用, 发布时注释掉
-	modImplementation "carpet:fabric-carpet:21w19a-1.4.36+v210512"
+	modImplementation "carpet:fabric-carpet:1.17-pre2-1.4.39+v210531"
 
 }
 

@@ -59,7 +59,7 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 				setRgb(rgb);
 			});
 			rgbTextField.setMaxLength(6);
-			addButton(rgbTextField);
+			this.addSelectableChild(rgbTextField);
 		}
 	}
 	

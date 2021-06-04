@@ -27,13 +27,6 @@ bin/
 .classpath
 .project
 
-# fabric-mc
-
-logs/
-mylib/
-/eula.txt
-/server.properties
-
 # ph
 
 /run.bat

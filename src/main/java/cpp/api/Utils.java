@@ -81,7 +81,7 @@ public class Utils {
 		@Override
 		public boolean canStart() {
 			boolean b = false;
-			TargetPredicate targetPredicate = TargetPredicate.method_36626();
+			TargetPredicate targetPredicate = TargetPredicate.createNonAttackable();
 			targetPredicate.setPredicate(livingEntity -> livingEntity.getPos().isInRange(entity.getPos(), 16));
 			for (PlayerEntity playerEntity : entity.world.getPlayers(targetPredicate, entity, new Box(entity.getPos(), entity.getPos()).expand(16))) {
 				if (playerEntity.getInventory().contains(CppItems.SACHET.getDefaultStack())) {
@@ -626,7 +626,7 @@ public class Utils {
 			NbtCompound nbt1 = effectInstance.writeNbt(new NbtCompound());
 			if (nbt1.contains("HiddenEffect")) {
 				NbtCompound nbt2 = nbt1.getCompound("HiddenEffect");
-				living.applyStatusEffect(StatusEffectInstance.fromNbt(nbt2));
+				living.addStatusEffect(StatusEffectInstance.fromNbt(nbt2));
 			} else {
 				living.removeStatusEffect(effect);
 			}
