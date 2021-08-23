@@ -19,10 +19,6 @@ repositories {
 	maven {
 		url 'https://maven.shedaniel.me/'
 	}
-	// carpet maven 地址	// 测试用, 发布时注释掉
-	maven {
-		url 'https://masa.dy.fi/maven'
-	}
 }
 
 dependencies {
@@ -37,11 +33,6 @@ dependencies {
 	modImplementation "com.terraformersmc:modmenu:2.0.0-beta.7"
 	// 可惜1.17没有rei
 	modImplementation "me.shedaniel:RoughlyEnoughItems-api:6.0.247-alpha"
-
-
-	// 测试用, 发布时注释掉
-	modImplementation "carpet:fabric-carpet:1.17-pre2-1.4.39+v210531"
-
 }
 
 minecraft {

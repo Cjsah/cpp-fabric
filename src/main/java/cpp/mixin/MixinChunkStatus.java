@@ -33,7 +33,7 @@ public class MixinChunkStatus {
 
     @Inject(method = "method_16566", at = @At("RETURN"))
 //    @Inject(method = "doWork(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/world/gen/chunk/ChunkGenerator;IILjava/util/List;Lnet/minecraft/world/chunk/Chunk;)V", at = @At("RETURN"))
-    private static void afterPopulation(ServerWorld world, ChunkGenerator generator, List<Chunk> list, Chunk chunk, CallbackInfo info) {
+    private static void afterPopulation(ChunkStatus status, ServerWorld world, ChunkGenerator generator, List<Chunk> list, Chunk chunk, CallbackInfo info) {
         if (generator instanceof IslandChunkGenerator) ((ProtoChunk) chunk).getEntities().clear();
     }
 }

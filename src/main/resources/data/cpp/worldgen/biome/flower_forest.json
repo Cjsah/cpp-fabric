@@ -1,4 +1,5 @@
 {
+	"scale": 0.05,
 	"effects": {
 		"mood_sound": {
 			"sound": "minecraft:ambient.cave",
@@ -26,13 +27,23 @@
 		[],
 		[],
 		[
+			"minecraft:ore_dirt",
+			"minecraft:ore_gravel",
+			"minecraft:ore_granite",
+			"minecraft:ore_diorite",
+			"minecraft:ore_andesite",
+			"minecraft:ore_tuff",
 			"minecraft:disk_sand",
 			"minecraft:disk_clay",
 			"minecraft:disk_gravel"
 		],
-		[],
+		[
+			"minecraft:rare_dripstone_cluster",
+			"minecraft:rare_small_dripstone"
+		],
 		[
 			"minecraft:forest_flower_vegetation_common",
+			"minecraft:glow_lichen",
 			"cpp:forest_flower_trees",
 			"minecraft:flower_forest",
 			"minecraft:patch_grass_badlands",
@@ -40,15 +51,21 @@
 			"minecraft:red_mushroom_normal",
 			"minecraft:patch_sugar_cane",
 			"minecraft:patch_pumpkin",
-			"minecraft:patch_melon"
+			"minecraft:patch_melon",
+			"minecraft:lush_caves_ceiling_vegetation",
+			"minecraft:cave_vines",
+			"minecraft:lush_caves_clay",
+			"minecraft:lush_caves_vegetation",
+			"minecraft:rooted_azalea_trees",
+			"minecraft:spore_blossom",
+			"minecraft:classic_vines_cave_feature"
 		],
 		[
 			"minecraft:freeze_top_layer"
 		]
 	],
 	"starts": [
-		"minecraft:ruined_portal",
-		"cpp:enchanting_room"
+		"cpp:structures"
 	],
 	"spawners": {
 		"monster": [],
@@ -56,6 +73,12 @@
 			{
 				"type": "minecraft:sheep",
 				"weight": 12,
+				"minCount": 4,
+				"maxCount": 4
+			},
+			{
+				"type": "minecraft:goat",
+				"weight": 8,
 				"minCount": 4,
 				"maxCount": 4
 			},
@@ -96,10 +119,10 @@
 		"misc": []
 	},
 	"spawn_costs": {},
+	"player_spawn_friendly": false,
 	"precipitation": "rain",
 	"temperature": 1.3,
 	"downfall": 0.8,
 	"category": "forest",
-	"depth": 0.1,
-	"scale": 0.4
+	"depth": 0.1
 }

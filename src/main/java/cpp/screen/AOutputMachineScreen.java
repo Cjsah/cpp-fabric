@@ -16,7 +16,7 @@ public abstract class AOutputMachineScreen<T extends AOutputMachineScreenHandler
 	@Override
 	protected void init() {
 		super.init();
-		addButton(oButton);
+		addDrawableChild(oButton);
 	}
 
 	@Override

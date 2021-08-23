@@ -260,9 +260,10 @@ public final class CppBlocks {
 		return regBlock;
 	}
 	
-	private static Block registerSapling(String id, BiFunction<SaplingGenerator, Settings, SaplingBlock> constructor, SaplingGenerator saplingGenerator) {
+	private static Block registerSapling(String id, BiFunction<SaplingGenerator, Settings, SaplingBlock> constructor, SimpleSaplingGenerator saplingGenerator) {
 		Identifier identifier = new Identifier(Craftingpp.MOD_ID3, id);
 		Block regBlock = Registry.register(Registry.BLOCK, identifier, constructor.apply(saplingGenerator, FabricBlockSettings.of(Material.PLANT).noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.GRASS)));
+		saplingGenerator.setSapling(regBlock);
 		BlockItem item = Registry.register(Registry.ITEM, identifier, new BlockItem(regBlock, new Item.Settings().group(CPP_GROUP_PLANT)));
 		item.appendBlocks(Item.BLOCK_ITEMS, item);
 		return regBlock;

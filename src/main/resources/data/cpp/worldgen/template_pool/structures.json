@@ -1,24 +1,87 @@
 {
-  "name": "cpp:structures",
-  "fallback": "minecraft:empty",
-  "elements": [
-    {
-      "weight": 1,
-      "element": {
-        "location": "cpp:enchanting_room",
-        "processors": "minecraft:empty",
-        "projection": "rigid",
-        "element_type": "minecraft:legacy_single_pool_element"
-      }
-    },
-	{
-      "weight": 1,
-      "element": {
-        "location": "cpp:crops",
-        "processors": "minecraft:empty",
-        "projection": "rigid",
-        "element_type": "minecraft:legacy_single_pool_element"
-      }
-    }
-  ]
+	"name": "cpp:structures",
+	"fallback": "minecraft:empty",
+	"elements": [
+		{
+			"weight": 60,
+			"element": {
+				"location": "cpp:flower/wild_grass",
+				"processors": "minecraft:empty",
+				"projection": "rigid",
+				"element_type": "minecraft:legacy_single_pool_element"
+			}
+		},
+		{
+			"weight": 8,
+			"element": {
+				"location": "cpp:flower/fruit_crops",
+				"processors": "minecraft:empty",
+				"projection": "rigid",
+				"element_type": "minecraft:legacy_single_pool_element"
+			}
+		},
+		{
+			"weight": 8,
+			"element": {
+				"location": "cpp:flower/crops",
+				"processors": "minecraft:empty",
+				"projection": "rigid",
+				"element_type": "minecraft:legacy_single_pool_element"
+			}
+		},
+		{
+			"weight": 5,
+			"element": {
+				"location": "cpp:flower/fruit_tree",
+				"processors": "minecraft:empty",
+				"projection": "rigid",
+				"element_type": "minecraft:legacy_single_pool_element"
+			}
+		},
+		{
+			"weight": 5,
+			"element": {
+				"location": "cpp:flower/ore_tree",
+				"processors": "minecraft:empty",
+				"projection": "rigid",
+				"element_type": "minecraft:legacy_single_pool_element"
+			}
+		},
+		{
+			"weight": 5,
+			"element": {
+				"location": "cpp:flower/wool_tree",
+				"processors": "minecraft:empty",
+				"projection": "rigid",
+				"element_type": "minecraft:legacy_single_pool_element"
+			}
+		},
+		{
+			"weight": 5,
+			"element": {
+				"location": "cpp:flower/sakura_tree",
+				"processors": "minecraft:empty",
+				"projection": "rigid",
+				"element_type": "minecraft:legacy_single_pool_element"
+			}
+		},
+		{
+			"weight": 12,
+			"element": {
+				"location": "cpp:flower/totem_pillar",
+				"processors": "cpp:totem_pillar",
+				"projection": "rigid",
+				"element_type": "minecraft:legacy_single_pool_element"
+			}
+		},
+		{
+			"weight": 2,
+			"element": {
+				"location": "cpp:flower/enchanting_room",
+				"processors": "minecraft:empty",
+				"projection": "rigid",
+				"element_type": "minecraft:legacy_single_pool_element"
+			}
+		}
+	]
 }

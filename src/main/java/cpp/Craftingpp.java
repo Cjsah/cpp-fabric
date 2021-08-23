@@ -2,11 +2,12 @@ package cpp;
 
 import static cpp.api.CppChat.say;
 
+import cpp.config.CppConfig;
 import cpp.init.*;
+import net.minecraft.client.MinecraftClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import cpp.config.CppConfig;
 import cpp.ducktyping.IPlayerJoinCallback;
 import cpp.misc.AttachAttributesLootFunction;
 import net.fabricmc.api.ModInitializer;
@@ -39,7 +40,7 @@ public class Craftingpp implements ModInitializer {
 	
 	@Override
 	public void onInitialize() {
-		
+
 		logger.info("welcome to use cpp");
 
 		CppBlockEntities.init();

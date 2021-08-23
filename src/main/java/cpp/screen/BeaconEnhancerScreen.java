@@ -83,11 +83,11 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 	protected void init() {
 		super.init();
 		playerEffectButton.setPos(x + 40, x + 31);
-		addButton(playerEffectButton);
+		addDrawableChild(playerEffectButton);
 		mobEffectButton.setPos(x + 112, x + 31);
-		addButton(mobEffectButton);
+		addDrawableChild(mobEffectButton);
 		onlyAdverseButton.setPos(x + 150, x + 33);
-		addButton(onlyAdverseButton);
+		addDrawableChild(onlyAdverseButton);
 	}
 
 	@Override

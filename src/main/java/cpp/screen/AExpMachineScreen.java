@@ -17,7 +17,7 @@ public abstract class AExpMachineScreen<T extends AExpMachineScreenHandler> exte
 	protected void init() {
 		super.init();
 		expTankButton.setPos(x + 151, y + 17);
-		addButton(expTankButton);
+		addDrawableChild(expTankButton);
 	}
 
 	@Override

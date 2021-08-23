@@ -68,9 +68,9 @@ public class AllInOneMachineScreen extends AExpMachineScreen<AllInOneMachineScre
 		super.init();
 		oButton.setPos(x + Utils.x(1), y + Utils.y(2));
 		temperatureButton.setPos(x + Utils.x(1), y + Utils.y(0));
-		addButton(temperatureButton);
+		addDrawableChild(temperatureButton);
 		pressureButton.setPos(x + Utils.x(1), y + Utils.y(1));
-		addButton(pressureButton);
+		addDrawableChild(pressureButton);
 	}
 	
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {

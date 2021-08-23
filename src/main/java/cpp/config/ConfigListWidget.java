@@ -66,12 +66,12 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
     public void setSelected(ConfigListEntry entry) {
         super.setSelected(entry);
         this.selectedConfigId = entry.getKey();
-        this.parent.updateSelectedEntry(this.getSelected());
+        this.parent.updateSelectedEntry(this.getSelectedOrNull());
     }
 
     @Override
     protected boolean isSelectedEntry(int index) {
-        ConfigListEntry selected = this.getSelected();
+        ConfigListEntry selected = this.getSelectedOrNull();
         return selected != null && selected.getKey().equals((this.getEntry(index)).getKey());
     }
 
@@ -117,8 +117,8 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
         List<String> matched = this.search(searchTerm, this.ConfigContainerList);
 
         for (String key1 : matched) {
-            if ((this.parent.getSelectedEntry() == null || this.children().isEmpty()) && (this.getSelected() == null || Objects.equals((this.getSelected()).getKey(), this.parent.getSelectedEntry().getKey()))) {
-                if (this.getSelected() == null && !this.children().isEmpty() && this.getEntry(0) != null) {
+            if ((this.parent.getSelectedEntry() == null || this.children().isEmpty()) && (this.getSelectedOrNull() == null || Objects.equals((this.getSelectedOrNull()).getKey(), this.parent.getSelectedEntry().getKey()))) {
+                if (this.getSelectedOrNull() == null && !this.children().isEmpty() && this.getEntry(0) != null) {
                     this.setSelected(this.getEntry(0));
                 }
             } else {

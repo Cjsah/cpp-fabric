@@ -50,7 +50,7 @@ public class TradeMachineScreen extends AExpMachineScreen<TradeMachineScreenHand
 		super.init();
 		oButton.setPos(x + x(3), y + y(2));
 		modeButton.setPos(x + x(3), y + y(0));
-		addButton(modeButton);
+		addDrawableChild(modeButton);
 	}
 
 	@Override

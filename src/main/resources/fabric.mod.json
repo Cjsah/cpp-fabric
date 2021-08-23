@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "craftingpp",
+  "id": "cpp",
   "version": "${version}",
 
   "name": "Crafting++",
@@ -11,7 +11,7 @@
     "ruhuasiyu"
   ],
   "contact": {
-    "homepage": "http://www.cjsah.net/ruhuasiyu/",
+    "homepage": "https://www.cjsah.net/ruhuasiyu/",
     "sources": "https://github.com/cjsah/cpp-fabric"
   },
 

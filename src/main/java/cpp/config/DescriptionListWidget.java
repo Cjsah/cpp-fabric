@@ -53,11 +53,6 @@ public class DescriptionListWidget extends EntryListWidget<DescriptionListWidget
     }
 
     @Override
-    public DescriptionListWidget.DescriptionEntry getSelected() {
-        return null;
-    }
-
-    @Override
     public int getRowWidth() {
         return this.width - 10;
     }

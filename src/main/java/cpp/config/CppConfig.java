@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 
 import cpp.Craftingpp;
 import org.apache.logging.log4j.LogManager;
@@ -19,13 +22,39 @@ import net.fabricmc.loader.api.FabricLoader;
 
 
 public class CppConfig {
-    private final File JSON_PATH = new File(FabricLoader.getInstance().getConfigDir().toFile(), Craftingpp.MOD_ID2);
+    private static final File CONFIG_PATH = new File(FabricLoader.getInstance().getConfigDir().toFile(), Craftingpp.MOD_ID2);
 
-    private final Logger logger = Craftingpp.logger;
+    private static final Logger logger = Craftingpp.logger;
 
-    private final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
+    private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
+
+    private static final Map<String, JsonObject> CONFIGS = new HashMap<>();
+
+    public static void addDefaultConfig(String name, JsonObject defaults) {
+
+    }
+
+    public static void changeConfig(String name, Consumer<JsonObject> json) {
+
+    }
+
+
+
+
+
+
+
+
+
+
 
     private final JsonObject JSON = new JsonObject();
+
+
+
+
+
+    private final File JSON_PATH = new File(FabricLoader.getInstance().getConfigDir().toFile(), Craftingpp.MOD_ID2);
 
     public CppConfig() {
         if (!JSON_PATH.isDirectory() && !JSON_PATH.mkdirs()) {

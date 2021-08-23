@@ -34,7 +34,7 @@
 		"MixinServerPlayerEntity",
 		"MixinSheepEntity",
 		"MixinSilverfishEntity",
-		"MixinSkullBlockEntityRenderer",
+//		"MixinSkullBlockEntityRenderer",
 		"MixinSpiderEntity",
 		"MixinVillagerEntity",
 		"MixinZombieEntity"

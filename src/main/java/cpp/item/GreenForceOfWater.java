@@ -3,6 +3,7 @@ package cpp.item;
 import cpp.api.IDefaultNbtItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -93,7 +94,6 @@ public class GreenForceOfWater extends Item implements IDefaultNbtItem {
                                 Criteria.FILLED_BUCKET.trigger((ServerPlayerEntity) user, itemStack2);
                                 user.incrementStat(Stats.USED.getOrCreateStat(this));
                                 return this.changeNbt(user, itemStack, fluid, nbt);
-
                             }
                         }
                     }
