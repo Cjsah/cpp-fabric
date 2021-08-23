@@ -4,7 +4,7 @@ import static cpp.api.CppChat.say;
 
 import cpp.config.CppConfig;
 import cpp.init.*;
-import net.minecraft.client.MinecraftClient;
+import net.fabricmc.loader.launch.common.FabricLauncherBase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,7 +22,8 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 public class Craftingpp implements ModInitializer {
-	
+	private static final String BUILD_NUMBER = "undefined";
+
 	public static final String MOD_ID1 = "Crafting++";
 	public static final String MOD_ID2 = "Craftingpp";
 	public static final String MOD_ID3 = "cpp";
@@ -40,8 +41,7 @@ public class Craftingpp implements ModInitializer {
 	
 	@Override
 	public void onInitialize() {
-
-		logger.info("welcome to use cpp");
+		checkUnofficial();
 
 		CppBlockEntities.init();
 		CppBlocks.init();
@@ -66,5 +66,11 @@ public class Craftingpp implements ModInitializer {
 				say(player, new TranslatableText("misc.cpp1", new TranslatableText("chat.cpp.load1"), new TranslatableText("chat.cpp.load2").setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.cjsah.net/ruhuasiyu/"))).formatted(Formatting.GOLD)));
 			return ActionResult.PASS;
 		});
+	}
+
+	@SuppressWarnings("ConstantConditions")
+	private static void checkUnofficial() {
+		if (!FabricLauncherBase.getLauncher().isDevelopment() && BUILD_NUMBER.equals("undefined"))
+			throw new RuntimeException("Unofficial Mod");
 	}
 }
