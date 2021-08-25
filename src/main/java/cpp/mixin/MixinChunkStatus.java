@@ -25,13 +25,13 @@ import java.util.function.Function;
 @Mixin(ChunkStatus.class)
 @SuppressWarnings({"unused", "UnresolvedMixinReference"})
 public class MixinChunkStatus {
-//    @Inject(method = "method_20613", at = @At("HEAD"))
-//    private static void onLighting(ChunkStatus chunkStatus, Executor executor, ServerWorld world, ChunkGenerator generator, StructureManager manager, ServerLightingProvider lightingProvider, Function<Chunk, CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> function, List<Chunk> list, Chunk chunk, CallbackInfoReturnable<CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> info) {
-//        if(generator instanceof IslandChunkGenerator && !chunk.getStatus().isAtLeast(chunkStatus)) IslandUtils.generator((ProtoChunk) chunk, world);
-//    }
-//
-//    @Inject(method = "method_16566", at = @At("RETURN"))
-//    private static void afterPopulation(ChunkStatus status, ServerWorld world, ChunkGenerator generator, List<Chunk> list, Chunk chunk, CallbackInfo info) {
-//        if (generator instanceof IslandChunkGenerator) ((ProtoChunk) chunk).getEntities().clear();
-//    }
+    @Inject(method = "method_20613", at = @At("HEAD"))
+    private static void onLighting(ChunkStatus chunkStatus, Executor executor, ServerWorld world, ChunkGenerator generator, StructureManager manager, ServerLightingProvider lightingProvider, Function<Chunk, CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> function, List<Chunk> list, Chunk chunk, CallbackInfoReturnable<CompletableFuture<Either<Chunk, ChunkHolder.Unloaded>>> info) {
+        if(generator instanceof IslandChunkGenerator && !chunk.getStatus().isAtLeast(chunkStatus)) IslandUtils.generator((ProtoChunk) chunk, world);
+    }
+
+    @Inject(method = "method_16566", at = @At("RETURN"))
+    private static void afterPopulation(ChunkStatus status, ServerWorld world, ChunkGenerator generator, List<Chunk> list, Chunk chunk, CallbackInfo info) {
+        if (generator instanceof IslandChunkGenerator) ((ProtoChunk) chunk).getEntities().clear();
+    }
 }
