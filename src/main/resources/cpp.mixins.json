@@ -1,16 +1,15 @@
 {
-    "required": true,
-    "minVersion": "0.8",
-    "package": "cpp.mixin",
-    "compatibilityLevel": "JAVA_8",
-    "mixins": [
+	"required": true,
+	"minVersion": "0.8",
+	"package": "cpp.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"mixins": [
 		"AccessorGeneratorType",
 		"AccessorProtoChunk",
 		"MixinAbstractSkeletonEntity",
 		"MixinBeeEntity",
 		"MixinBlock",
 		"MixinChickenEntity",
-		"MixinChunkStatus",
 		"MixinCowEntity",
 		"MixinCreeperEntity",
 		"MixinEnderDragonFight",
@@ -34,7 +33,7 @@
 		"MixinServerPlayerEntity",
 		"MixinSheepEntity",
 		"MixinSilverfishEntity",
-//		"MixinSkullBlockEntityRenderer",
+		"MixinSkullBlockEntityRenderer",
 		"MixinSpiderEntity",
 		"MixinVillagerEntity",
 		"MixinZombieEntity"
@@ -42,7 +41,7 @@
 	"client": [
 		"MixinInCppGameHud"
 	],
-    "injectors": {
-        "defaultRequire": 1
-    }
+	"injectors": {
+		"defaultRequire": 1
+	}
 }

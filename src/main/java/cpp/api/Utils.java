@@ -592,26 +592,7 @@ public class Utils {
 		}
 		return exp;
 	}
-
-	/**
-	 * 把经验值转化为附魔之瓶，如果不是9的倍数，则按照概率转化。例如，5点经验有5/9的概率转化1个附魔之瓶
-	 * 
-	 * @param exp 经验值
-	 * @return 附魔之瓶列表，每个物品叠不会超过最大堆叠数量，并且只有最后一个可能没有到达最大堆叠
-	 */
-	@Nonnull
-	public static List<ItemStack> expToBottle(int exp) {
-		List<ItemStack> list = new LinkedList<>();
-		int c1 = exp / 9 + (Math.random() < (exp % 9) / 9. ? 1 : 0);
-		int c2 = Items.EXPERIENCE_BOTTLE.getMaxCount();
-		while (c1 >= c2) {
-			list.add(new ItemStack(Items.EXPERIENCE_BOTTLE, c2));
-			c1 -= c2;
-		}
-		list.add(new ItemStack(Items.EXPERIENCE_BOTTLE, c1));
-		return list;
-	}
-
+	
 	/**
 	 * 如果当前状态效果的倍率等于指定的倍率，时间小于等于指定的时间，如果有隐藏的状态效果，则使用隐藏的状态效果，否则直接移除
 	 * 

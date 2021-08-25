@@ -3,7 +3,9 @@ package cpp.entity;
 import com.mojang.authlib.GameProfile;
 
 import cpp.api.Utils;
+import cpp.init.CppEntities;
 import cpp.item.AngryHand;
+import cpp.misc.ExperienceBottleHooks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
@@ -18,7 +20,10 @@ import net.minecraft.world.World;
 
 public class GolemWarriorEntity extends AGolemEntity {
 	private PlayerEntity player;
-
+public GolemWarriorEntity( World world) {
+	this(CppEntities.GOLEM_WARRIOR,world);//FIXME
+//	throw new UnsupportedOperationException("All entities must have a constructor that takes one net.minecraft.world.World parameter.\nMJSB");
+}
 	public GolemWarriorEntity(EntityType<? extends GolemWarriorEntity> entityType, World world) {
 		super(entityType, world);
 	}
@@ -41,7 +46,7 @@ public class GolemWarriorEntity extends AGolemEntity {
 			int exp = Utils.collectExpOrbs(world, getPos(), 3, false);
 			if (EnchantmentHelper.getLevel(Enchantments.MENDING, mainHandStack) > 0)
 				exp = Utils.mend(mainHandStack, exp);
-			Utils.drop(world, getPos(), Utils.expToBottle(exp));
+			Utils.drop(world, getPos(), ExperienceBottleHooks.expToBottle(exp));
 		}
 
 	}

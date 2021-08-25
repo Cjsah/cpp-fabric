@@ -24,13 +24,11 @@ public abstract class MixinExperienceBottleEntity extends ThrownItemEntity imple
 		super(entityType, d, e, f, world);
 	}
 
-//	@Inject(at = { @At("HEAD") }, method = { "fromNbt(Lnet/minecraft/nbt/NbtCompound;)V" })
 	public void readNbt(NbtCompound nbt) {
 		multiple = nbt.getInt("multiple");
 		super.readNbt(nbt);
 	}
 
-//	@Inject(at = { @At("RETURN") }, method = { "writeNbt(Lnet/minecraft/nbt/NbtCompound;)Lnet/minecraft/nbt/NbtCompound;" })
 	public NbtCompound writeNbt(NbtCompound nbt) {
 		nbt.putInt("multiple", multiple);
 		return super.writeNbt(nbt);
@@ -45,6 +43,9 @@ public abstract class MixinExperienceBottleEntity extends ThrownItemEntity imple
 		super.onCollision(hitResult);
 		if (this.world instanceof ServerWorld) {
 			this.world.syncWorldEvent(2002, this.getBlockPos(), PotionUtil.getColor(Potions.WATER));
+			if (multiple==0){
+			
+			}
 			long amount = 9L << (multiple * 6);
 			while (amount > 0x7fff) {
 				world.spawnEntity(new ExperienceOrbEntity(world, hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z, 0x7fff));

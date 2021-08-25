@@ -83,6 +83,12 @@
 				"maxCount": 4
 			},
 			{
+				"type": "minecraft:goat",
+				"weight": 8,
+				"minCount": 4,
+				"maxCount": 4
+			},
+			{
 				"type": "minecraft:pig",
 				"weight": 10,
 				"minCount": 4,

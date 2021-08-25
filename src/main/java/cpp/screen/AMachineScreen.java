@@ -11,29 +11,31 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public abstract class AMachineScreen<T extends ScreenHandler> extends HandledScreen<T> {
-	public static final String CONTAINER_GUI_PATH = Craftingpp.MOD_ID3 + ":textures/gui/container/";
-	public AMachineScreen(T handler, PlayerInventory inventory, Text title) {
-		super(handler, inventory, title);
-	}
-	
-	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		this.renderBackground(matrices);
-		super.render(matrices, mouseX, mouseY, delta);
-		this.drawMouseoverTooltip(matrices, mouseX, mouseY);
-	}
-	
-	@Override
-	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		this.client.getTextureManager().bindTexture(getBackground());
-		int i = this.x;
-		int j = (this.height - this.backgroundHeight) / 2;
-		this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
-	}
-	
-	protected abstract Identifier getBackground() ;
-	public static Identifier getBackgroundByName(String name){
-		return new Identifier(CONTAINER_GUI_PATH + name + ".png");
-	}
+public static final String CONTAINER_GUI_PATH = Craftingpp.MOD_ID3 + ":textures/gui/container/";
+
+public AMachineScreen(T handler, PlayerInventory inventory, Text title) {
+	super(handler, inventory, title);
+}
+
+@Override
+public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	this.renderBackground(matrices);
+	super.render(matrices, mouseX, mouseY, delta);
+	this.drawMouseoverTooltip(matrices, mouseX, mouseY);
+}
+
+@Override
+protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
+	RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+	this.client.getTextureManager().bindTexture(getBackground());
+	int i = this.x;
+	int j = (this.height - this.backgroundHeight) / 2;
+	this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
+}
+
+protected abstract Identifier getBackground();
+
+public static Identifier getBackgroundByName(String name) {
+	return new Identifier(CONTAINER_GUI_PATH + name + ".png");
+}
 }
