@@ -30,9 +30,9 @@ dependencies {
 	// Nullable修复
 	modImplementation "com.google.code.findbugs:jsr305:3.0.2"
 	// modmenu支持
-	modImplementation "com.terraformersmc:modmenu:2.0.0-beta.7"
+	modImplementation "com.terraformersmc:modmenu:2.0.9"
 	// 可惜1.17没有rei
-	modImplementation "me.shedaniel:RoughlyEnoughItems-api:6.0.247-alpha"
+	modImplementation "me.shedaniel:RoughlyEnoughItems-api:6.0.264-alpha"
 }
 
 minecraft {
@@ -76,6 +76,11 @@ jar {
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
+			groupId project.group
+			artifactId project.archivesBaseName
+			version project.version
+			from components.java
+
 			// add all the jars that should be included when publishing to maven
 			artifact(remapJar) {
 				builtBy remapJar
@@ -87,5 +92,12 @@ publishing {
 	}
 
 	repositories {
+		maven {
+			url ' '
+			credentials {
+				username ' ' // 仓库发布用户名
+				password ' ' // 仓库发布用户密码
+			}
+		}
 	}
 }
