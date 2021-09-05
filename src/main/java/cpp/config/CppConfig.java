@@ -95,4 +95,5 @@ public class CppConfig {
         return CONFIG;
     }
 
+    public static void load() {}
 }

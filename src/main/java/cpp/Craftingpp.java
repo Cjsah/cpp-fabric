@@ -29,9 +29,7 @@ public class Craftingpp implements ModInitializer {
 	public static final String MOD_ID3 = "cpp";
 	
 	public static final Logger logger = LogManager.getLogger(MOD_ID1);
-	
-	public static final CppConfig CONFIG = new CppConfig();
-	
+
 	public static final ItemGroup CPP_GROUP_MACHINE = FabricItemGroupBuilder.create(new Identifier(MOD_ID3, "title.machine")).icon(() -> new ItemStack(CppBlocks.CRAFTING_MACHINE)).build();
 	public static final ItemGroup CPP_GROUP_MISC = FabricItemGroupBuilder.create(new Identifier(MOD_ID3, "title.misc")).icon(() -> new ItemStack(CppItems.ENCHANTED_IRON)).build();
 	public static final ItemGroup CPP_GROUP_TOOL = FabricItemGroupBuilder.create(new Identifier(MOD_ID3, "title.tool")).icon(() -> new ItemStack(CppItems.BROOM)).build();
@@ -43,6 +41,7 @@ public class Craftingpp implements ModInitializer {
 	public void onInitialize() {
 		checkUnofficial();
 
+		CppConfig.load();
 		CppBlockEntities.init();
 		CppBlocks.init();
 		CppBlockTags.init();
