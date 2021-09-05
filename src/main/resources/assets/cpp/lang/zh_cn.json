@@ -541,6 +541,7 @@
   "modmenu.cpp.setting": "设置",
   "modmenu.cpp.reset": "重置",
 
+  "cpp.config.title": "Crafting++配置文件",
   "config.cpp.notSupport": "不支持的配置文件",
   "config.cpp.NeedXp": "需要经验",
   "config.cpp.StartLevel": "初始等级",
