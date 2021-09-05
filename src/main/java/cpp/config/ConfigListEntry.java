@@ -62,8 +62,7 @@ public class ConfigListEntry extends Entry<ConfigListEntry> {
         if (this.iconLocation == null) {
             this.iconLocation = new Identifier(Craftingpp.MOD_ID3, "textures/item/" + this.key + ".png");
         }
-
-        this.client.getTextureManager().bindTexture(this.iconLocation);
+        RenderSystem.setShaderTexture(0, this.iconLocation);
     }
 
     @Override

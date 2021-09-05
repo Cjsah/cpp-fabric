@@ -51,7 +51,7 @@ public class CppGameHud extends DrawableHelper {
     }
 
     private void draw(MatrixStack matrix, int y, int iconIndex, StringVisitable content) {
-        client.getTextureManager().bindTexture(HUD_ICON);
+        RenderSystem.setShaderTexture(0, HUD_ICON);
         DrawableHelper.drawTexture(matrix, margin, y, 0.0F, iconIndex * icon_size, icon_size, icon_size, icon_size, icon_size * 6);
         client.textRenderer.draw(matrix, Language.getInstance().reorder(content), text_left, y + 2, 0xFFFFFF);
     }

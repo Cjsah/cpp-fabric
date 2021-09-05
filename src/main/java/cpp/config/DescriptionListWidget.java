@@ -2,7 +2,6 @@ package cpp.config;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import cpp.Craftingpp;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.EntryListWidget;
@@ -70,7 +69,7 @@ public class DescriptionListWidget extends EntryListWidget<DescriptionListWidget
             this.clearEntries();
             this.setScrollAmount(-1.7976931348623157E308D);
 
-            for (String line : Craftingpp.CONFIG.formatJson(Craftingpp.CONFIG.getConfig(selectedEntry.getKey())).split("\n")) {
+            for (String line : CppConfig.config2String().split("\n")) {
                 this.children().add(new DescriptionListWidget.DescriptionEntry(Text.of(line), this));
             }
         }

@@ -37,7 +37,7 @@ public class ConfigListWidget extends AlwaysSelectedEntryListWidget<ConfigListEn
     protected ConfigListWidget(MinecraftClient client, int width, int height, int y1, int y2, int entryHeight, String searchTerm, OptionsScreen parent) {
         super(client, width, height, y1, y2, entryHeight);
         this.parent = parent;
-        for (Map.Entry<String, JsonElement> i  : Craftingpp.CONFIG.getJson().entrySet()) {
+        for (Map.Entry<String, JsonElement> i  : Craftingpp.CONFIG.getConfig().entrySet()) {
             configKeys.add(i.getKey());
         }
         this.filter(searchTerm, false);

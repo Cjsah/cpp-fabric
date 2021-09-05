@@ -96,7 +96,7 @@ public class ConfigScreen extends Screen {
         this.addSelectableChild(new ButtonWidget(this.width / 2 - 154, this.height - 28, 150, 20, ScreenTexts.CANCEL, (button) -> this.client.openScreen(this.parent)));
         this.addSelectableChild(new ButtonWidget(this.width / 2 + 4, this.height - 28, 150, 20, ScreenTexts.DONE, (button) -> {
             if (!Objects.equals(value.toString(), Craftingpp.CONFIG.getConfig(key).toString())) {
-                Craftingpp.CONFIG.changeConfig(key, value);
+//                Craftingpp.CONFIG.changeConfig(key, value);
             }
             this.client.openScreen(this.parent);
         }));

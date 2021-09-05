@@ -1,7 +1,6 @@
 package cpp.item;
 
-import com.google.gson.JsonObject;
-import cpp.api.ICppConfig;
+import cpp.config.CppConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,9 +17,7 @@ import net.minecraft.world.World;
 
 import static cpp.api.CppChat.say;
 
-public class BlueForceOfSky extends Item implements ICppConfig {
-
-    private final JsonObject config = getConfig();
+public class BlueForceOfSky extends Item {
 
     public BlueForceOfSky(Settings settings) {
         super(settings);
@@ -38,7 +35,7 @@ public class BlueForceOfSky extends Item implements ICppConfig {
             if (user.isCreative()) {
                 changeWeather(world, user, this);
                 return TypedActionResult.success(user.getStackInHand(hand));
-            }else if (!config.get("NeedXp").getAsBoolean() || user.experienceLevel >= 1) {
+            }else if (!CppConfig.getConfig("blue_force_of_sky").get("NeedXp").getAsBoolean() || user.experienceLevel >= 1) {
                 changeWeather(world, user, this);
                 user.addExperience(-9);
                 return TypedActionResult.success(user.getStackInHand(hand));
@@ -63,15 +60,4 @@ public class BlueForceOfSky extends Item implements ICppConfig {
 			say(user, new TranslatableText("commands.weather.set.rain"));
 		}
 	}
-
-    @Override
-    public String getConfigName() {
-        return "blue_force_of_sky";
-    }
-
-    @Override
-    public JsonObject defaultConfig(JsonObject json) {
-        json.addProperty("NeedXp", true);
-        return json;
-    }
 }

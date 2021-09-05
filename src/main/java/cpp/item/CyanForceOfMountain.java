@@ -1,6 +1,5 @@
 package cpp.item;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import cpp.api.ICppConfig;
@@ -144,21 +143,5 @@ public class CyanForceOfMountain extends Item implements IDefaultNbtItem, ICppCo
     @Override
     public String getConfigName() {
         return "cyan_force_of_mountain";
-    }
-
-    @Override
-    public JsonObject defaultConfig(JsonObject json) {
-        String[] defaultNames = new String[]{"minecraft:dirt", "minecraft:dirt_path", "minecraft:diorite",
-                "minecraft:farmland", "minecraft:podzol", "minecraft:grass_block", "minecraft:mycelium",
-                "minecraft:stone", "minecraft:granite", "minecraft:diorite", "minecraft:andesite", "minecraft:gravel",
-                "minecraft:sand", "minecraft:sandstone", "minecraft:netherrack", "minecraft:blackstone"};
-
-        json.addProperty("StartLevel", 2);
-        JsonArray jsonArray = new JsonArray();
-        for (String name : defaultNames) {
-            jsonArray.add(name);
-        }
-        json.add("CanBreak", jsonArray);
-        return json;
     }
 }

@@ -2,7 +2,6 @@ package cpp.config;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.terraformersmc.modmenu.ModMenu;
-import cpp.api.ICppConfig;
 import cpp.api.TexturedButtonWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
@@ -78,7 +77,7 @@ public class OptionsScreen extends Screen {
         this.addSelectableChild(new TexturedButtonWidget(width - 40, paneY - 20, 20, 20, 0, 0, SETTING_TEXT, SETTING_BUTTON, 32, 64, button -> {
             //screen
             if (this.selected != null) {
-                this.client.openScreen(new ConfigScreen(this, this.selected.getKey(), ((ICppConfig)selected.getConfigItem()).getDefaultConfig()));
+//                this.client.openScreen(new ConfigScreen(this, this.selected.getKey(), ((ICppConfig)selected.getConfigItem()).getDefaultConfig()));
             }
         }, (buttonWidget, matrices, mouseX, mouseY) -> {
             TexturedButtonWidget button = (TexturedButtonWidget) buttonWidget;
@@ -178,7 +177,7 @@ public class OptionsScreen extends Screen {
         int x1 = 0, y1 = 0, x2 = this.width, y2 = this.height;
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
-        MinecraftClient.getInstance().getTextureManager().bindTexture(DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
+        RenderSystem.setShaderTexture(0, DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
