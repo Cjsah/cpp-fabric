@@ -8,10 +8,10 @@
 			"item": "cpp:rice_seed"
 		},
 		{
-			"item": "minecraft:cooked_porkchop"
+			"item": "minecraft:honey_bottle"
 		}
 	],
 	"result": {
-		"item": "cpp:zongzi_cooked_porkchop"
+		"item": "cpp:zongzi_with_honey"
 	}
 }

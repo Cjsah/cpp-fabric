@@ -28,10 +28,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-public class Vaccine extends Item {
+public class VaccineItem extends Item {
     private final Vaccines vaccine;
 
-    public Vaccine(Vaccines vaccine, Settings settings) {
+    public VaccineItem(Vaccines vaccine, Settings settings) {
         super(settings);
         this.vaccine = vaccine;
     }
@@ -59,13 +59,8 @@ public class Vaccine extends Item {
     }
 
     @Override
-    public boolean hasGlint(ItemStack stack) {
-        return true;
-    }
-
-    @Override
     public int getMaxUseTime(ItemStack stack) {
-        return 32;
+        return 8;
     }
 
     @Override

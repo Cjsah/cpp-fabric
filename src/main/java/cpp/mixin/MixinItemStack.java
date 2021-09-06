@@ -24,7 +24,7 @@ public abstract class MixinItemStack {
 	private void updateEmptyState(CallbackInfo info) {
 		if (item != null && item instanceof IDefaultNbtItem) {
 			NbtCompound nbt = this.getOrCreateTag();
-			NbtCompound newNbt = ((IDefaultNbtItem)item).modifyDefaultNbt(new NbtCompound());
+			NbtCompound newNbt = ((IDefaultNbtItem)item).getDefaultNbt(new NbtCompound());
 			for (String i : newNbt.getKeys()){
 				if (!nbt.contains(i)) {
 					nbt.put(i, newNbt.get(i));

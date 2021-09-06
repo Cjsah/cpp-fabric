@@ -176,12 +176,12 @@ public final class CppItems {
 	public static final Item QINGTUAN;
 	public static final Item SAKURA_MOCHI;
 	public static final Item ZONGZI;
-	public static final Item ZONGZI_BOILED_EGG;
-	public static final Item ZONGZI_CHINESE_DATE;
-	public static final Item ZONGZI_COOKED_PORKCHOP;
-	public static final Item ZONGZI_SALT;
-	public static final Item ZONGZI_SODA_WATER;
-	public static final Item ZONGZI_HONEY_BOTTLE;
+	public static final Item ZONGZI_WITH_EGG_YOLK;
+	public static final Item ZONGZI_WITH_HONEY_DATES;
+	public static final Item ZONGZI_WITH_PORK;
+	public static final Item ZONGZI_WITH_SALT;
+	public static final Item ZONGZI_WITH_SODA;
+	public static final Item ZONGZI_WITH_HONEY;
 	public static final Item SANDWICH;
 	public static final Item STARGAZY_PIE;
 	public static final Item BAKED_SHROOMLIGHT;
@@ -488,12 +488,12 @@ public final class CppItems {
 		QINGTUAN = registerItem("qingtuan", new CppFoodOrPotion(UseAction.EAT, -5, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
 		SAKURA_MOCHI = registerItem("sakura_mochi", new CppFoodOrPotion(UseAction.EAT, -5, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).build())));
 		ZONGZI = registerItem("zongzi", new CppFoodOrPotion(UseAction.EAT, -5, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
-		ZONGZI_BOILED_EGG = registerItem("zongzi_boiled_egg", new CppFoodOrPotion(UseAction.EAT, -3, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
-		ZONGZI_CHINESE_DATE = registerItem("zongzi_chinese_date", new CppFoodOrPotion(UseAction.EAT, -8, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
-		ZONGZI_COOKED_PORKCHOP = registerItem("zongzi_cooked_porkchop", new CppFoodOrPotion(UseAction.EAT, 3, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
-		ZONGZI_SALT = registerItem("zongzi_salt", new CppFoodOrPotion(UseAction.EAT, -5, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
-		ZONGZI_SODA_WATER = registerItem("zongzi_soda_water", new CppFoodOrPotion(UseAction.EAT, -5, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
-		ZONGZI_HONEY_BOTTLE = registerItem("zongzi_honey_bottle", new CppFoodOrPotion(UseAction.EAT, -2, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
+		ZONGZI_WITH_EGG_YOLK = registerItem("zongzi_with_egg_yolk", new CppFoodOrPotion(UseAction.EAT, -3, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
+		ZONGZI_WITH_HONEY_DATES = registerItem("zongzi_with_honey_dates", new CppFoodOrPotion(UseAction.EAT, -8, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
+		ZONGZI_WITH_PORK = registerItem("zongzi_with_pork", new CppFoodOrPotion(UseAction.EAT, 3, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
+		ZONGZI_WITH_SALT = registerItem("zongzi_with_salt", new CppFoodOrPotion(UseAction.EAT, -5, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
+		ZONGZI_WITH_SODA = registerItem("zongzi_with_soda", new CppFoodOrPotion(UseAction.EAT, -5, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
+		ZONGZI_WITH_HONEY = registerItem("zongzi_with_honey", new CppFoodOrPotion(UseAction.EAT, -2, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(9).saturationModifier(0.3F).build()).maxCount(16)));
 		SANDWICH = registerItem("sandwich", new CppFoodOrPotion(UseAction.EAT, -5, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(10).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, 0), 1.0F).build()).maxCount(16)));
 		STARGAZY_PIE = registerItem("stargazy_pie", new CppFoodOrPotion(UseAction.EAT, 0, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(16).saturationModifier(0.3F).build()).maxCount(8)));
 		BAKED_SHROOMLIGHT = registerItem("baked_shroomlight", new CppFoodOrPotion(UseAction.EAT, -2, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.3F).statusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 600, 0), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 600, 0), 1.0F).build())));
@@ -552,11 +552,11 @@ public final class CppItems {
 		AGENTIA_OF_FIRE = registerItem("agentia_of_fire", new CppFoodOrPotion(UseAction.DRINK, 0, new Item.Settings().group(CPP_GROUP_MISC).food((new FoodComponent.Builder()).hunger(6).saturationModifier(0.3F).alwaysEdible().statusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 14400, 0), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 7200, 1), 1.0F).build()).maxCount(16)));
 		AGENTIA_OF_LIFE = registerItem("agentia_of_life", new CppFoodOrPotion(UseAction.DRINK, 0, new Item.Settings().group(CPP_GROUP_MISC).food((new FoodComponent.Builder()).hunger(6).saturationModifier(0.3F).alwaysEdible().statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 3600, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 1, 3), 1.0F).build()).maxCount(16)));
 
-		VACCINE_OF_POISON = registerItem("vaccine_of_position", new Vaccine(Vaccines.POISON, new Item.Settings().group(CPP_GROUP_MISC).maxCount(16)));
-		VACCINE_OF_BLINDNESS = registerItem("vaccine_of_blindness", new Vaccine(Vaccines.BLINDNESS, new Item.Settings().group(CPP_GROUP_MISC).maxCount(16)));
-		VACCINE_OF_MINING_FATIGUE = registerItem("vaccine_of_mining_fatigue", new Vaccine(Vaccines.MINING_FATIGUE, new Item.Settings().group(CPP_GROUP_MISC).maxCount(16)));
-		VACCINE_OF_WITHER = registerItem("vaccine_of_wither", new Vaccine(Vaccines.WITHER, new Item.Settings().group(CPP_GROUP_MISC).maxCount(16)));
-		VACCINE_OF_DARKNESS = registerItem("vaccine_of_darkness", new Vaccine(Vaccines.DARKNESS, new Item.Settings().group(CPP_GROUP_MISC).maxCount(16)));
+		VACCINE_OF_POISON = registerItem("vaccine_of_poison", new VaccineItem(Vaccines.POISON, new Item.Settings().group(CPP_GROUP_MISC).maxCount(16)));
+		VACCINE_OF_BLINDNESS = registerItem("vaccine_of_blindness", new VaccineItem(Vaccines.BLINDNESS, new Item.Settings().group(CPP_GROUP_MISC).maxCount(16)));
+		VACCINE_OF_MINING_FATIGUE = registerItem("vaccine_of_mining_fatigue", new VaccineItem(Vaccines.MINING_FATIGUE, new Item.Settings().group(CPP_GROUP_MISC).maxCount(16)));
+		VACCINE_OF_WITHER = registerItem("vaccine_of_wither", new VaccineItem(Vaccines.WITHER, new Item.Settings().group(CPP_GROUP_MISC).maxCount(16)));
+		VACCINE_OF_DARKNESS = registerItem("vaccine_of_darkness", new VaccineItem(Vaccines.DARKNESS, new Item.Settings().group(CPP_GROUP_MISC).maxCount(16)));
 
 		LYCORIS_RADIATA_SEEDS = registerSeeds(LYCORIS_RADIATA);
 		TRIFOLIUM_SEEDS = registerSeeds(TRIFOLIUM);

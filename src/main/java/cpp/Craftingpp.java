@@ -22,7 +22,6 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 public class Craftingpp implements ModInitializer {
-	private static final String BUILD_NUMBER = "undefined";
 
 	public static final String MOD_ID1 = "Crafting++";
 	public static final String MOD_ID2 = "Craftingpp";
@@ -39,7 +38,6 @@ public class Craftingpp implements ModInitializer {
 	
 	@Override
 	public void onInitialize() {
-		checkUnofficial();
 
 		CppConfig.load();
 		CppBlockEntities.init();
@@ -65,11 +63,5 @@ public class Craftingpp implements ModInitializer {
 				say(player, new TranslatableText("misc.cpp1", new TranslatableText("chat.cpp.load1"), new TranslatableText("chat.cpp.load2").setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.cjsah.net/ruhuasiyu/"))).formatted(Formatting.GOLD)));
 			return ActionResult.PASS;
 		});
-	}
-
-	@SuppressWarnings("ConstantConditions")
-	private static void checkUnofficial() {
-		if (!FabricLauncherBase.getLauncher().isDevelopment() && BUILD_NUMBER.equals("undefined"))
-			throw new RuntimeException("Unofficial Mod");
 	}
 }

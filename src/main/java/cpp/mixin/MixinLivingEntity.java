@@ -1,9 +1,10 @@
 package cpp.mixin;
 
-import cpp.item.Vaccine;
+import cpp.item.VaccineItem;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,8 +37,9 @@ public abstract class MixinLivingEntity extends Entity {
 	@Shadow
 	public abstract ItemStack getOffHandStack();
 
+	@Final
 	@Shadow
-	public Map<StatusEffect, StatusEffectInstance> activeStatusEffects;
+	private Map<StatusEffect, StatusEffectInstance> activeStatusEffects;
 
 	@Shadow
 	protected abstract void onStatusEffectRemoved(StatusEffectInstance effect);
@@ -47,7 +49,7 @@ public abstract class MixinLivingEntity extends Entity {
 	@Inject(at = @At("RETURN"), method = "tick()V")
 	public void tick(CallbackInfo callbackInfo) {
 		if ((Object)this instanceof PlayerEntity) this.activeStatusEffects.entrySet().removeIf(effect -> {
-			boolean remove = Vaccine.getVaccineEffects((PlayerEntity) (Object)this).contains(effect.getKey());
+			boolean remove = VaccineItem.getVaccineEffects((PlayerEntity) (Object)this).contains(effect.getKey());
 			if (remove) this.onStatusEffectRemoved(effect.getValue());
 			return remove;
 		});
@@ -82,9 +84,9 @@ public abstract class MixinLivingEntity extends Entity {
 		}
 	}
 	@SuppressWarnings("ConstantConditions")
-	@Inject(at = @At("HEAD"), method = "addStatusEffect", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "addStatusEffect(Lnet/minecraft/entity/effect/StatusEffectInstance;)Z", cancellable = true)
 	public void addStatusEffect1(StatusEffectInstance effect, CallbackInfoReturnable<Boolean> info) {
-		if (Vaccine.getVaccineEffects((LivingEntity) (Object)this).contains(effect.getEffectType())) {
+		if (VaccineItem.getVaccineEffects((LivingEntity) (Object)this).contains(effect.getEffectType())) {
 			info.setReturnValue(false);
 		}
 	}

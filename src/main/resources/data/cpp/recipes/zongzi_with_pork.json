@@ -8,10 +8,10 @@
 			"item": "cpp:rice_seed"
 		},
 		{
-			"item": "cpp:soda_water"
+			"item": "minecraft:cooked_porkchop"
 		}
 	],
 	"result": {
-		"item": "cpp:zongzi_soda_water"
+		"item": "cpp:zongzi_with_pork"
 	}
 }

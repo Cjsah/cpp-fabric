@@ -53,7 +53,7 @@ public class Magnet extends Item implements IDefaultNbtItem, ITickableInItemFram
 	}
 
 	@Override
-	public NbtCompound modifyDefaultNbt(NbtCompound nbt) {
+	public NbtCompound getDefaultNbt(NbtCompound nbt) {
 		nbt.putBoolean("enabled", true);
 		return nbt;
 	}

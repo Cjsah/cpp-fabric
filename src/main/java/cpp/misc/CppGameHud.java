@@ -30,24 +30,26 @@ public class CppGameHud extends DrawableHelper {
     public void render(MatrixStack matrix) {
         if (client.options.debugEnabled) return;
         ServerPlayerEntity player = client.getServer().getPlayerManager().getPlayer(client.player.getUuid());
-        NbtCompound nbt = new NbtCompound();
-        player.writeCustomDataToNbt(nbt);
-        int weight = nbt.getInt("weight");
-        NbtList vaccines = nbt.getList("Vaccines", 10);
-        int width = 51;
-        int height = margin + (vaccines.size() + 1) * icon_size + vaccines.size() * interval + margin;
-        int firstY = client.getWindow().getScaledHeight() - margin - icon_size;
-        fill(matrix, 0, client.getWindow().getScaledHeight() - height, width, client.getWindow().getScaledHeight(), client.options.getTextBackgroundColor(0.3F));
-        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.enableBlend();
-        this.draw(matrix, client.getWindow().getScaledHeight() - margin - icon_size, 5, new LiteralText(String.valueOf(weight)).formatted(
-                weight > -50 && weight < 50 ? Formatting.GREEN : weight > -100 && weight < 100 ? Formatting.YELLOW : Formatting.RED));
-        for(int i = 1; i <= vaccines.size(); ++i) {
-            NbtCompound vaccine = (NbtCompound) vaccines.get(i - 1);
-            this.draw(matrix, firstY - i * (icon_size + interval), vaccine.getByte("Id"), Text.of(Utils.ticksToTime(vaccine.getInt("Duration"))));
+        if (player != null) {
+            NbtCompound nbt = new NbtCompound();
+            player.writeCustomDataToNbt(nbt);
+            int weight = nbt.getInt("weight");
+            NbtList vaccines = nbt.getList("Vaccines", 10);
+            int width = 51;
+            int height = margin + (vaccines.size() + 1) * icon_size + vaccines.size() * interval + margin;
+            int firstY = client.getWindow().getScaledHeight() - margin - icon_size;
+            fill(matrix, 0, client.getWindow().getScaledHeight() - height, width, client.getWindow().getScaledHeight(), client.options.getTextBackgroundColor(0.3F));
+            RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.enableBlend();
+            this.draw(matrix, client.getWindow().getScaledHeight() - margin - icon_size, 5, new LiteralText(String.valueOf(weight)).formatted(
+                    weight > -50 && weight < 50 ? Formatting.GREEN : weight > -100 && weight < 100 ? Formatting.YELLOW : Formatting.RED));
+            for(int i = 1; i <= vaccines.size(); ++i) {
+                NbtCompound vaccine = (NbtCompound) vaccines.get(i - 1);
+                this.draw(matrix, firstY - i * (icon_size + interval), vaccine.getByte("Id"), Text.of(Utils.ticksToTime(vaccine.getInt("Duration"))));
+            }
+            RenderSystem.disableBlend();
         }
-        RenderSystem.disableBlend();
     }
 
     private void draw(MatrixStack matrix, int y, int iconIndex, StringVisitable content) {

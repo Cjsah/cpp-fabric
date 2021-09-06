@@ -8,10 +8,10 @@
 			"item": "cpp:rice_seed"
 		},
 		{
-			"item": "minecraft:honey_bottle"
+			"item": "cpp:bottle_of_salt"
 		}
 	],
 	"result": {
-		"item": "cpp:zongzi_honey_bottle"
+		"item": "cpp:zongzi_with_salt"
 	}
 }

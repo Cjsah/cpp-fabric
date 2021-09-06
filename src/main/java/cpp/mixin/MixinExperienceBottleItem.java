@@ -60,7 +60,7 @@ public abstract class MixinExperienceBottleItem extends Item implements IDefault
 	}
 	
 	@Override
-	public NbtCompound modifyDefaultNbt(NbtCompound nbt) {
+	public NbtCompound getDefaultNbt(NbtCompound nbt) {
 		nbt.putByte(ExperienceBottleHooks.MULTIPLE_TAG_NAME, (byte) 0);
 		return nbt;
 	}

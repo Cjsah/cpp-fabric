@@ -133,7 +133,7 @@ public class CyanForceOfMountain extends Item implements IDefaultNbtItem, ICppCo
         return false;
     }
 
-    public NbtCompound modifyDefaultNbt(NbtCompound nbt) {
+    public NbtCompound getDefaultNbt(NbtCompound nbt) {
         nbt.putBoolean("horizontal", true);
         nbt.putInt("level", config.get("StartLevel").getAsInt());
         nbt.putInt("xp", 0);

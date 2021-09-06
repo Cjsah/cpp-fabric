@@ -297,7 +297,7 @@ public final class CppBlocks {
 		Identifier identifier = new Identifier(Craftingpp.MOD_ID3, "head/" + id);
 		SkullBlock block = Registry.register(Registry.BLOCK, identifier, new PublicSkullBlock(type, AbstractBlock.Settings.of(Material.DECORATION).strength(1.0F)));
 		WallSkullBlock wallBlock = Registry.register(Registry.BLOCK, new Identifier(Craftingpp.MOD_ID3, "wall_head/" + id), new PublicWallSkullBlock(type, AbstractBlock.Settings.of(Material.DECORATION).strength(1.0F)));
-		BlockItem item = Registry.register(Registry.ITEM, identifier, new SkullItem(block, wallBlock, new Item.Settings().group(CPP_GROUP_MISC).rarity(Rarity.UNCOMMON)));
+		BlockItem item = Registry.register(Registry.ITEM, identifier, new SkullItem(block, wallBlock, new Item.Settings().group(CPP_GROUP_DECORATE).rarity(Rarity.UNCOMMON)));
 		item.appendBlocks(Item.BLOCK_ITEMS, item);
 		return new Pair<>(block, wallBlock);
 	}

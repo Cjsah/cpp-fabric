@@ -8,10 +8,10 @@
 			"item": "cpp:rice_seed"
 		},
 		{
-			"item": "cpp:chinese_date"
+			"item": "cpp:soda_water"
 		}
 	],
 	"result": {
-		"item": "cpp:zongzi_chinese_date"
+		"item": "cpp:zongzi_with_soda"
 	}
 }

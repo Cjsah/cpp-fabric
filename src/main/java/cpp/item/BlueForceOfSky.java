@@ -35,9 +35,9 @@ public class BlueForceOfSky extends Item {
             if (user.isCreative()) {
                 changeWeather(world, user, this);
                 return TypedActionResult.success(user.getStackInHand(hand));
-            }else if (!CppConfig.getConfig("blue_force_of_sky").get("NeedXp").getAsBoolean() || user.experienceLevel >= 1) {
+            }else if (!CppConfig.getConfig("blue_force_of_sky").get("NeedXp").getAsBoolean() || user.experienceLevel >= 2) {
                 changeWeather(world, user, this);
-                user.addExperience(-9);
+                user.addExperience(-16);
                 return TypedActionResult.success(user.getStackInHand(hand));
             }
             say(user, new TranslatableText("chat.cpp.exp.less"));

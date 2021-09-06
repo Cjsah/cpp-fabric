@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/handheld",
     "textures": {
-        "layer0": "cpp:item/zongzi_cooked_porkchop"
+        "layer0": "cpp:item/zongzi_with_soda"
     }
 }

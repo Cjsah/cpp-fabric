@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/handheld",
     "textures": {
-        "layer0": "cpp:item/zongzi_chinese_date"
+        "layer0": "cpp:item/zongzi_with_egg_yolk"
     }
 }
