@@ -27,7 +27,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
@@ -60,7 +59,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -331,22 +329,6 @@ public class Utils {
 	}
 
 	/**
-	 * 使某坐标向玩家的前方移动一段距离
-	 *
-	 * @author Cjsah
-	 * @param pos    位移前坐标
-	 * @param length 位移长度
-	 * @return 位移后的坐标
-	 */
-	public static Vec3d move(@Nonnull PlayerEntity player, @Nonnull Vec3d pos, float length) {
-		double yaw = player.getYaw();
-		double x = -Math.sin(yaw * Math.PI / 180D) * length;
-		double z = Math.cos(yaw * Math.PI / 180D) * length;
-		return pos.add(x, 0, z);
-	}
-
-
-	/**
 	 * 吸引物品
 	 * 
 	 * @param pos         物品需要被吸引到的地方
@@ -382,31 +364,18 @@ public class Utils {
 			long time = world.getTimeOfDay();
 			int todayTime = (int) (time - time / 24000 * 24000);
 			switch (todayTime) {
-			case 0: {
-				sendMessage(world, "morning", true);
-				break;
-			}
-			case 6000: {
-				sendMessage(world, "noon", false);
-				break;
-			}
-			case 12000: {
-				sendMessage(world, "night", true);
-				break;
-			}
-			case 18000: {
-				sendMessage(world, "midnight", false);
-				break;
-			}
+				case 0 -> sendTimeMessage(world, "morning", true);
+				case 6000 -> sendTimeMessage(world, "noon", false);
+				case 12000 -> sendTimeMessage(world, "night", true);
+				case 18000 -> sendTimeMessage(world, "midnight", false);
 			}
 		}
 	}
 
-	public static void sendMessage(@Nonnull World world, String name, boolean playSound) {
+	public static void sendTimeMessage(@Nonnull World world, String name, boolean playSound) {
 		for (PlayerEntity player : world.getPlayers()) {
 			say(player, new TranslatableText("chat.cpp.time." + name));
-			if (playSound)
-				((ServerPlayerEntity) player).networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, player.getX(), player.getY(), player.getZ(), 20.0F, 1.5F));
+			if (playSound) ((ServerPlayerEntity) player).networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, player.getX(), player.getY(), player.getZ(), 20.0F, 1.5F));
 		}
 	}
 
@@ -425,8 +394,7 @@ public class Utils {
 		ItemStack toolStack = entity.getMainHandStack();
 		if (canHarvest(toolStack, blockState, world, pos)) {
 			boolean b = true;
-			if (entity instanceof ServerPlayerEntity) {
-				ServerPlayerEntity player = (ServerPlayerEntity) entity;
+			if (entity instanceof ServerPlayerEntity player) {
 				if (b = !player.isCreative()) {
 					player.incrementStat(Stats.MINED.getOrCreateStat(block));
 					toolStack.postMine(world, blockState, pos, player);

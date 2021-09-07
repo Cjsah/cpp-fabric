@@ -39,6 +39,7 @@ public final class CppItems {
 	public static final Item HIGH_PRESSURE_PLUGIN;
 	public static final Item COBBLESTONE_PLUGIN;
 	public static final Item STONE_PLUGIN;
+	public static final Item DEEPSLATE_PLUGIN;
 	public static final Item BLACKSTONE_PLUGIN;
 	public static final Item NETHERRACK_PLUGIN;
 	public static final Item END_STONE_PLUGIN;
@@ -345,22 +346,23 @@ public final class CppItems {
 		NOVA_OF_FIRE = registerItem("nova_of_fire", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 		SPIRIT_OF_LIFE = registerItem("spirit_of_life", new Item(new Item.Settings().group(CPP_GROUP_MISC)));
 
-		EMPTY_PLUGIN = registerItem("empty_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		LOW_TEMPERATURE_PLUGIN = registerItem("low_temperature_plugin", new AllInOneMachinePlugin(Degree.LOW, true, new Item.Settings().group(CPP_GROUP_MACHINE)));
-		LOW_PRESSURE_PLUGIN = registerItem("low_pressure_plugin", new AllInOneMachinePlugin(Degree.LOW, false, new Item.Settings().group(CPP_GROUP_MACHINE)));
-		HIGH_TEMPERATURE_PLUGIN = registerItem("high_temperature_plugin", new AllInOneMachinePlugin(Degree.HIGH, true, new Item.Settings().group(CPP_GROUP_MACHINE)));
-		HIGH_PRESSURE_PLUGIN = registerItem("high_pressure_plugin", new AllInOneMachinePlugin(Degree.HIGH, false, new Item.Settings().group(CPP_GROUP_MACHINE)));
-		COBBLESTONE_PLUGIN = registerItem("cobblestone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		STONE_PLUGIN = registerItem("stone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		BLACKSTONE_PLUGIN = registerItem("blackstone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		NETHERRACK_PLUGIN = registerItem("netherrack_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		END_STONE_PLUGIN = registerItem("end_stone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		BASALT_PLUGIN = registerItem("basalt_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		MENDING_PLUGIN = registerItem("mending_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		WIFI_PLUGIN = registerItem("wifi_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE)));
-		EMERALD_TRADE_PLUGIN = registerItem("emerald_trade_plugin", new TradePlugin(new Item.Settings().group(CPP_GROUP_MACHINE).rarity(Rarity.UNCOMMON)));
-		GOLD_TRADE_PLUGIN = registerItem("gold_trade_plugin", new TradePlugin(new Item.Settings().group(CPP_GROUP_MACHINE).rarity(Rarity.UNCOMMON)));
-		MOON_TRADE_PLUGIN = registerItem("moon_trade_plugin", new TradePlugin(new Item.Settings().group(CPP_GROUP_MACHINE).rarity(Rarity.UNCOMMON)));
+		EMPTY_PLUGIN = registerItem("empty_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE).maxCount(16)));
+		LOW_TEMPERATURE_PLUGIN = registerItem("low_temperature_plugin", new AllInOneMachinePlugin(Degree.LOW, true, new Item.Settings().group(CPP_GROUP_MACHINE).maxCount(1)));
+		LOW_PRESSURE_PLUGIN = registerItem("low_pressure_plugin", new AllInOneMachinePlugin(Degree.LOW, false, new Item.Settings().group(CPP_GROUP_MACHINE).maxCount(1)));
+		HIGH_TEMPERATURE_PLUGIN = registerItem("high_temperature_plugin", new AllInOneMachinePlugin(Degree.HIGH, true, new Item.Settings().group(CPP_GROUP_MACHINE).maxCount(1)));
+		HIGH_PRESSURE_PLUGIN = registerItem("high_pressure_plugin", new AllInOneMachinePlugin(Degree.HIGH, false, new Item.Settings().group(CPP_GROUP_MACHINE).maxCount(1)));
+		COBBLESTONE_PLUGIN = registerItem("cobblestone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE).maxCount(1)));
+		STONE_PLUGIN = registerItem("stone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE).maxCount(1)));
+		DEEPSLATE_PLUGIN = registerItem("deepslate_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE).maxCount(1)));
+		BLACKSTONE_PLUGIN = registerItem("blackstone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE).maxCount(1)));
+		NETHERRACK_PLUGIN = registerItem("netherrack_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE).maxCount(1)));
+		END_STONE_PLUGIN = registerItem("end_stone_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE).maxCount(1)));
+		BASALT_PLUGIN = registerItem("basalt_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE).maxCount(1)));
+		MENDING_PLUGIN = registerItem("mending_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE).maxCount(1)));
+		WIFI_PLUGIN = registerItem("wifi_plugin", new Item(new Item.Settings().group(CPP_GROUP_MACHINE).maxCount(1)));
+		EMERALD_TRADE_PLUGIN = registerItem("emerald_trade_plugin", new TradePlugin(new Item.Settings().group(CPP_GROUP_MACHINE).rarity(Rarity.UNCOMMON).maxCount(1)));
+		GOLD_TRADE_PLUGIN = registerItem("gold_trade_plugin", new TradePlugin(new Item.Settings().group(CPP_GROUP_MACHINE).rarity(Rarity.UNCOMMON).maxCount(1)));
+		MOON_TRADE_PLUGIN = registerItem("moon_trade_plugin", new TradePlugin(new Item.Settings().group(CPP_GROUP_MACHINE).rarity(Rarity.UNCOMMON).maxCount(1)));
 
 		ANCIENT_SCROLL = registerItem("ancient_scroll", new AncientScroll(new Item.Settings().group(CPP_GROUP_MISC).rarity(Rarity.UNCOMMON)));
 
@@ -414,14 +416,14 @@ public final class CppItems {
 		TIME_CONDITIONER = registerItem("time_conditioner", new TimeConditioner(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		ORIGIN_OF_THE_WORLD = registerItem("origin_of_the_world", new OriginOfTheWorld(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		COMPRESSOR = registerItem("compressor", new Compressor(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-		ELDER_S_WORDS = registerItem("elder_s_words", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(64)));
+		ELDER_S_WORDS = registerItem("elder_s_words", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		COORDINATE_RECORDER = registerItem("coordinate_recorder", new CoordinateRecorder(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-		MUFFLER = registerItem("muffler", new Muffler(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(64)));
-		SACHET = registerItem("sachet", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(64)));
+		MUFFLER = registerItem("muffler", new Muffler(new Item.Settings().group(CPP_GROUP_TOOL)));
+		SACHET = registerItem("sachet", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		GRAFTER = registerItem("grafter", new Grafter(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1).maxDamage(66)));
 		GLASS_PICKAXE = registerItem("glass_pickaxe", new GlassPickaxe(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		CHEST_TRANSPORTER = registerItem("chest_transporter", new ChestTransporter(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1).maxDamage(26)));
-		FIRECRACKERS = registerItem("firecrackers", new Firecrackers(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(64)));
+		FIRECRACKERS = registerItem("firecrackers", new Firecrackers(new Item.Settings().group(CPP_GROUP_TOOL)));
 		BROOM = registerItem("broom", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		SHOOTING_STAR = registerItem("shooting_star", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		INDUSTRIOUS_HAND = registerItem("industrious_hand", new IndustriousHand(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
@@ -429,14 +431,14 @@ public final class CppItems {
 		SMART_HAND = registerItem("smart_hand", new SmartHand(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		ANGRY_HAND = registerItem("angry_hand", new AngryHand(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 		TOUGHEN_HAND = registerItem("toughen_hand", new ToughenHand(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-		GOLEM = registerItem("golem", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(64)));
+		GOLEM = registerItem("golem", new Item(new Item.Settings().group(CPP_GROUP_TOOL)));
 		GOLEM_FARMER = registerItem("golem_farmer", new Golem(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1), CppEntities.GOLEM_FARMER));
 		GOLEM_MINER = registerItem("golem_miner", new Golem(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1), CppEntities.GOLEM_MINER));
 		GOLEM_FISHER = registerItem("golem_fisher", new Golem(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1), CppEntities.GOLEM_FISHER));
 		GOLEM_WARRIOR = registerItem("golem_warrior", new Golem(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1), CppEntities.GOLEM_WARRIOR));
 		GOLEM_HERDER = registerItem("golem_herder", new Golem(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1), CppEntities.GOLEM_HERDER));
-		SANTA_GIFT = registerItem("santa_gift", new SantaGift(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(64)));
-		COLOR_PALETTE = registerItem("color_palette", new ColorPalette(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(64)));
+		SANTA_GIFT = registerItem("santa_gift", new SantaGift(new Item.Settings().group(CPP_GROUP_TOOL)));
+		COLOR_PALETTE = registerItem("color_palette", new ColorPalette(new Item.Settings().group(CPP_GROUP_TOOL)));
 		DYE_STICK = registerItem("dye_stick", new DyeStick(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 
 		KETCHUP = registerItem("ketchup", new CppFoodOrPotion(UseAction.EAT, 0, new Item.Settings().group(CPP_GROUP_FOOD).food((new FoodComponent.Builder()).hunger(2).saturationModifier(0.3F).build())));

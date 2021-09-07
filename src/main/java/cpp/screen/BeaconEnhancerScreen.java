@@ -31,7 +31,7 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 	public final TexturedButtonWidget playerEffectButton = new TexturedButtonWidget(0, 0, 24, 24, 0, 0, 0, BACKGROUND, buttonWidget -> client.interactionManager.clickButton(handler.syncId, PLAYER_EFFECT_BUTTON_SYNC_ID)) {
 		@Override
 		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-			MinecraftClient.getInstance().getTextureManager().bindTexture(PLAYER_EFFECT_TEXTURES.get(handler.blockEntity.propertyDelegate.get(0)));
+			RenderSystem.setShaderTexture(0, PLAYER_EFFECT_TEXTURES.get(handler.blockEntity.propertyDelegate.get(0)));
 			RenderSystem.enableDepthTest();
 			drawTexture(matrices, x, y, 0, 0, 24, 24, 24, 24);
 		}
@@ -42,7 +42,7 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 	public final TexturedButtonWidget mobEffectButton = new TexturedButtonWidget(0, 0, 24, 24, 0, 0, 0, BACKGROUND, buttonWidget -> client.interactionManager.clickButton(handler.syncId, MOB_EFFECT_BUTTON_SYNC_ID)) {
 		@Override
 		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-			MinecraftClient.getInstance().getTextureManager().bindTexture(MOB_EFFECT_TEXTURES.get(handler.blockEntity.propertyDelegate.get(1)));
+			RenderSystem.setShaderTexture(0, MOB_EFFECT_TEXTURES.get(handler.blockEntity.propertyDelegate.get(1)));
 			RenderSystem.enableDepthTest();
 			drawTexture(matrices, x, y, 0, 0, 24, 24, 24, 24);
 		}
@@ -53,7 +53,7 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 	public final TexturedButtonWidget onlyAdverseButton = new TexturedButtonWidget(0, 0, 20, 20, 0, 0, 0, BACKGROUND, buttonWidget -> client.interactionManager.clickButton(handler.syncId, ONLY_ADVERSE_BUTTON_SYNC_ID)) {
 		@Override
 		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-			MinecraftClient.getInstance().getTextureManager().bindTexture(BACKGROUND);
+			RenderSystem.setShaderTexture(0, BACKGROUND);
 			RenderSystem.enableDepthTest();
 			drawTexture(matrices, x - 24, y, 176, handler.blockEntity.isOnlyAdverse() ? 41 : 0, 44, 41);
 		}
@@ -73,7 +73,7 @@ public class BeaconEnhancerScreen extends HandledScreen<BeaconEnhancerScreenHand
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		this.client.getTextureManager().bindTexture(BACKGROUND);
+		RenderSystem.setShaderTexture(0, BACKGROUND);
 		int i = this.x;
 		int j = (this.height - this.backgroundHeight) / 2;
 		this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);

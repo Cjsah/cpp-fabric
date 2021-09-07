@@ -13,8 +13,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -67,25 +65,16 @@ public class CyanForceOfMountain extends Item implements IDefaultNbtItem, ICppCo
             BlockPos blockPos = hitResult.getBlockPos();
             if (user.isSneaking() && hitResult.getType() == HitResult.Type.MISS) {
                 nbt.putBoolean("horizontal", !nbt.getBoolean("horizontal"));
-                ((ServerPlayerEntity)user).networkHandler.sendPacket(new TitleS2CPacket(//FIXME
-                        new TranslatableText("misc.cpp",
-                                new TranslatableText("tooltip.cpp.cfom.direction",
-                                        new TranslatableText("tooltip.cpp.cfom." + (nbt.getBoolean("horizontal") ? "horizontal" : "vertical"))),
-                                new TranslatableText("misc.cpp",
-                                        new TranslatableText("tooltip.cpp.cfom.level", nbt.getInt("level")),
-                                        new TranslatableText("tooltip.cpp.cfom.xp", nbt.getInt("xp")))
-                        ).formatted(Formatting.GREEN)
-                ));
+                user.sendMessage(new TranslatableText("misc.cpp",
+                        new TranslatableText("tooltip.cpp.cfom.direction", new TranslatableText("tooltip.cpp.cfom." + (nbt.getBoolean("horizontal") ? "horizontal" : "vertical"))),
+                        new TranslatableText("misc.cpp", new TranslatableText("tooltip.cpp.cfom.level", nbt.getInt("level")), new TranslatableText("tooltip.cpp.cfom.xp", nbt.getInt("xp")))
+                ).formatted(Formatting.GREEN), true);
                 user.incrementStat(Stats.USED.getOrCreateStat(this));
                 return TypedActionResult.success(item);
             }else if (!user.isSneaking() && hitResult.getType() == HitResult.Type.BLOCK) {
-                if (user.isCreative()) {
-                    if (fill(world, user, blockPos, nbt))
-                        user.incrementStat(Stats.USED.getOrCreateStat(this));
-                    return TypedActionResult.success(user.getStackInHand(hand));
-                }else if (user.totalExperience >= 4) {
+                if (user.isCreative() || user.totalExperience >= 8) {
                     if (fill(world, user, blockPos, nbt)) {
-                        user.addExperience(-4);
+                        if (!user.isCreative()) user.addExperience(-8);
                         user.incrementStat(Stats.USED.getOrCreateStat(this));
                         return TypedActionResult.success(user.getStackInHand(hand));
                     }

@@ -25,7 +25,7 @@ public class TradeMachineScreen extends AExpMachineScreen<TradeMachineScreenHand
 	public final TexturedButtonWidget modeButton = new TexturedButtonWidget(0, 0, 16, 16, 0, 0, 0, BACKGROUND, buttonWidget -> client.interactionManager.clickButton(this.handler.syncId, MODE_BUTTON_SYNC_ID)) {
 		@Override
 		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-			MinecraftClient.getInstance().getTextureManager().bindTexture(BACKGROUND);
+			RenderSystem.setShaderTexture(0, BACKGROUND);
 			RenderSystem.enableDepthTest();
 			drawTexture(matrices, x, y, handler.blockEntity.getMode() * 16, 166 + (isHovered() ? 16 : 0), 16, 16);
 		}

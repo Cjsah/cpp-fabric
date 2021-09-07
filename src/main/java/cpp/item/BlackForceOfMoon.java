@@ -15,11 +15,9 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import static cpp.api.CppChat.say;
-import static cpp.api.Utils.move;
 
 public class BlackForceOfMoon extends Item {
     public BlackForceOfMoon(Settings settings) {
@@ -55,22 +53,26 @@ public class BlackForceOfMoon extends Item {
     }
 
     private void fill(World world, PlayerEntity user) {
-        Vec3d pos = user.getPos().add(0, -1, 0);
+        float yaw = user.getYaw();
+        int value = (int)(yaw + (yaw >= 0 ? 22.5 : -22.5)) / 45;
+        int x = value % 4;
+        if (x != 0) x = x > 0 ? -1 : 1;
+        int z = Math.abs(value) - 2;
+        if (z != 0) z = z > 0 ? -1 : 1;
+        BlockPos pos = user.getBlockPos().add(0, -1, 0);
         for (int i = 0; i < 30; i++) {
-            pos = move(user, pos, 1.0F);
             for (int j = -1; j <= 1; j++) {
                 for (int k = -1; k <= 1; k++) {
                     BlockPos setPos = new BlockPos(pos).add(j, 0, k);
                     Block block = world.getBlockState(setPos).getBlock();
-                    if (block == Blocks.AIR)
-                        world.setBlockState(setPos, Blocks.DIRT.getDefaultState());
-                    else if (block instanceof FluidDrainable)
-                        if ((((FluidDrainable) block).tryDrainFluid(world, setPos, world.getBlockState(setPos))).isEmpty())
-                            world.setBlockState(setPos, Blocks.DIRT.getDefaultState());
-                        else
-                            world.setBlockState(setPos, block.getDefaultState());
+                    if (block == Blocks.AIR) world.setBlockState(setPos, Blocks.DIRT.getDefaultState());
+                    else if (block instanceof FluidDrainable) {
+                        if ((((FluidDrainable) block).tryDrainFluid(world, setPos, world.getBlockState(setPos))).isEmpty()) world.setBlockState(setPos, Blocks.DIRT.getDefaultState());
+                        else world.setBlockState(setPos, block.getDefaultState());
+                    }
                 }
             }
+            pos = pos.add(x, 0, z);
         }
     }
 }

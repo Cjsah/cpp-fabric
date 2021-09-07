@@ -3,6 +3,7 @@ package cpp.screen;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import cpp.api.Utils;
 import cpp.block.entity.AExpMachineBlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -37,11 +38,11 @@ public class ExpTankButton extends TexturedButtonWidget {
 		MinecraftClient minecraftClient = MinecraftClient.getInstance();
 		int percent = blockEntity.getExpStorage() * 100 / AExpMachineBlockEntity.XP_CAPACITY;
 		if (percent > 0) {
-			minecraftClient.getTextureManager().bindTexture(XP);
+			RenderSystem.setShaderTexture(0, XP);
 			int t = (int) (System.currentTimeMillis() % (16 * 50) / 50);
 			drawTexture(matrices, x + 1, y + 51 - (percent + 1) / 2, 0, t * 50, 16, (percent + 1) / 2, 16, 800);
 		}
-		minecraftClient.getTextureManager().bindTexture(FRAME);
+		RenderSystem.setShaderTexture(0, FRAME);
 		drawTexture(matrices, x, y, 0, 0, 18, 52, 18, 52);
 	}
 	

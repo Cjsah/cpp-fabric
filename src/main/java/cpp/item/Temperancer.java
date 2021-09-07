@@ -23,7 +23,7 @@ public class Temperancer extends Item {
 		if (!world.isClient) {
 			boolean open = !((ITemperancable) user).isEffectEnabled();
 			((ITemperancable) user).setEffectEnabled(open);
-			((ServerPlayerEntity) user).networkHandler.sendPacket(new TitleS2CPacket(new TranslatableText("chat.cpp.effect", new TranslatableText(open ? "addServer.resourcePack.enabled" : "addServer.resourcePack.disabled").formatted(open ? Formatting.GREEN : Formatting.GRAY))));//FIXME
+			user.sendMessage(new TranslatableText("chat.cpp.effect", new TranslatableText(open ? "addServer.resourcePack.enabled" : "addServer.resourcePack.disabled").formatted(open ? Formatting.GREEN : Formatting.GRAY)), true);
 		}
 		return TypedActionResult.success(item);
 	}

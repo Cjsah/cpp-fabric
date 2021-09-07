@@ -1,10 +1,10 @@
 {
     "textures": {
-        "particle": "block/cake_side",
-        "bottom": "block/cake_bottom",
-        "top": "cpp:block/rotten_flesh_cake",
-        "side": "block/cake_side",
-        "inside": "block/cake_inner"
+        "particle": "cpp:block/rotten_flesh_cake_side",
+        "bottom": "cpp:block/rotten_flesh_cake_bottom",
+        "top": "cpp:block/rotten_flesh_cake_top",
+        "side": "cpp:block/rotten_flesh_cake_side",
+        "inside": "cpp:block/rotten_flesh_cake_inner"
     },
     "elements": [
         {   "from": [ 9, 0, 1 ],

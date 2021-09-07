@@ -52,7 +52,6 @@ public class RedForceOfFire extends Item {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack stack = user.getStackInHand(hand);
 		if (!world.isClient) {
-//			boolean success = false;
 			BlockPos pos = raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY).getBlockPos();
 			BlockState blockState = world.getBlockState(pos);
 			ItemStack product = blockState.getBlock().asItem().getDefaultStack();
@@ -66,25 +65,6 @@ public class RedForceOfFire extends Item {
 				((ServerPlayerEntity) user).networkHandler.sendPacket(new ParticleS2CPacket(ParticleTypes.FLAME, false, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, .2f, .2f, .2f, .02f, 3));
 				return TypedActionResult.success(stack);
 			}
-//			List<ItemStack> list = blockState.getDroppedStacks(new LootContext.Builder((ServerWorld) world).parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(pos)).parameter(LootContextParameters.TOOL, SILK_TOUCH_PICKAXE));
-//			for (ItemStack itemStack : list) {
-//				SmeltingRecipe recipe = world.getRecipeManager().getFirstMatch(RecipeType.SMELTING, new SimpleInventory(itemStack), world).orElse(null);
-//				if (recipe != null) {
-//					ItemStack output = recipe.getOutput().copy();
-//					output.setCount(itemStack.getCount());
-//					ItemEntity spawnItem = new ItemEntity(world, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, output);
-//					spawnItem.setToDefaultPickupDelay();
-//					world.setBlockState(pos, Blocks.AIR.getDefaultState());
-//					world.spawnEntity(spawnItem);
-//					user.incrementStat(Stats.USED.getOrCreateStat(this));
-//					success = true;
-//				}
-//			}
-//			if (success) {
-//				((ServerPlayerEntity) user).networkHandler.sendPacket(new PlaySoundS2CPacket(SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.PLAYERS, pos.getX(), pos.getY(), pos.getZ(), .5f, 1));
-//				((ServerPlayerEntity) user).networkHandler.sendPacket(new ParticleS2CPacket(ParticleTypes.FLAME, false, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, .2f, .2f, .2f, .02f, 3));
-//				return TypedActionResult.success(item);
-//			}
 		}
 		return TypedActionResult.pass(stack);
 	}

@@ -11,5 +11,4 @@ public interface ICppConfig {
 
     String getConfigName();
 
-
 }

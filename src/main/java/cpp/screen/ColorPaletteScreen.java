@@ -78,7 +78,7 @@ public class ColorPaletteScreen extends AMachineScreen<ColorPaletteScreenHandler
 		{
 			//绘制共同背景
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			client.getTextureManager().bindTexture(getBackground());
+			RenderSystem.setShaderTexture(0, getBackground());
 			int posX = this.x;
 			int posY = (this.height - this.backgroundHeight) / 2;
 			drawTexture(matrices, posX, posY, 0, 0, this.backgroundWidth, this.backgroundHeight, TW, TH);

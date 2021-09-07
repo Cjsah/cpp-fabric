@@ -30,7 +30,7 @@ public class AllInOneMachineScreen extends AExpMachineScreen<AllInOneMachineScre
 	}) {
 		@Override
 		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-			MinecraftClient.getInstance().getTextureManager().bindTexture(BACKGROUND);
+			RenderSystem.setShaderTexture(0, BACKGROUND);
 			RenderSystem.enableDepthTest();
 			drawTexture(matrices, x, y, handler.blockEntity.getTemperature().ordinal() * 16, isHovered() ? 166 + 16 : 166, 16, 16);
 			if (this.isHovered()) {
@@ -44,7 +44,7 @@ public class AllInOneMachineScreen extends AExpMachineScreen<AllInOneMachineScre
 	}) {
 		@Override
 		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-			MinecraftClient.getInstance().getTextureManager().bindTexture(BACKGROUND);
+			RenderSystem.setShaderTexture(0, BACKGROUND);
 			RenderSystem.enableDepthTest();
 			drawTexture(matrices, x, y, handler.blockEntity.getPressure().ordinal() * 16, isHovered() ? 198 + 16 : 198, 16, 16);
 			if (this.isHovered()) {
@@ -75,8 +75,7 @@ public class AllInOneMachineScreen extends AExpMachineScreen<AllInOneMachineScre
 	
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
 		super.drawBackground(matrices, delta, mouseX, mouseY);
-		
-		client.getTextureManager().bindTexture(getBackground());
+		RenderSystem.setShaderTexture(0, getBackground());
 		if (handler.blockEntity.isWorking()) {
 			this.drawTexture(matrices,x+ 74, y + 36, 176, 0, 11, handler.blockEntity.getWorkTimeTotal() > 0 ? 1 + 15 * handler.blockEntity.getWorkTime() / handler.blockEntity.getWorkTimeTotal() : 0);
 		}

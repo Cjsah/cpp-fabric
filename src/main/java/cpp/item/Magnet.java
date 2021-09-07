@@ -36,7 +36,7 @@ public class Magnet extends Item implements IDefaultNbtItem, ITickableInItemFram
 	@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
 		boolean enabled = stack.getOrCreateTag().getBoolean("enabled");
-		tooltip.add(new TranslatableText(enabled ? "addServer.resourcePack.enabled" : "addServer.resourcePack.disabled").formatted(enabled ? Formatting.GREEN : Formatting.GRAY));
+		tooltip.add(new TranslatableText("tooltip.cpp.status", new TranslatableText(enabled ? "addServer.resourcePack.enabled" : "addServer.resourcePack.disabled").formatted(enabled ? Formatting.GREEN : Formatting.GRAY)));
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class Magnet extends Item implements IDefaultNbtItem, ITickableInItemFram
 		if (!world.isClient) {
 			boolean enabled;
 			itemStack.getOrCreateTag().putBoolean("enabled", enabled = !itemStack.getOrCreateTag().getBoolean("enabled"));
-			((ServerPlayerEntity) user).networkHandler.sendPacket(new TitleS2CPacket( new TranslatableText("chat.cpp.change", new TranslatableText(enabled ? "addServer.resourcePack.enabled" : "addServer.resourcePack.disabled").formatted(enabled ? Formatting.GREEN : Formatting.GRAY))));//FIXME
+			user.sendMessage(new TranslatableText("chat.cpp.change", new TranslatableText(enabled ? "addServer.resourcePack.enabled" : "addServer.resourcePack.disabled").formatted(enabled ? Formatting.GREEN : Formatting.GRAY)), true);
 			user.incrementStat(Stats.USED.getOrCreateStat(this));
 			return TypedActionResult.success(itemStack);
 		}

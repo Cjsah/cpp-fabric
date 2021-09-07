@@ -1,10 +1,10 @@
 {
     "textures": {
-        "particle": "block/cake_side",
-        "bottom": "block/cake_bottom",
-        "top": "cpp:block/chocolate_cake",
-        "side": "block/cake_side",
-        "inside": "block/cake_inner"
+        "particle": "cpp:block/chocolate_cake_side",
+        "bottom": "cpp:block/cake_bottom",
+        "top": "cpp:block/chocolate_cake_top",
+        "side": "cpp:block/chocolate_cake_side",
+        "inside": "cpp:block/chocolate_cake_inner"
     },
     "elements": [
         {   "from": [ 9, 0, 1 ],

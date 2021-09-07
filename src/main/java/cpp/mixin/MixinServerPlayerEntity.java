@@ -1,6 +1,7 @@
 package cpp.mixin;
 
 import java.util.Collections;
+import java.util.Set;
 
 import cpp.misc.ExperienceBottleHooks;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +36,7 @@ public abstract class MixinServerPlayerEntity extends PlayerEntity {
 	private void playerTick(CallbackInfo info) {
 		ServerPlayerEntity this0 = (ServerPlayerEntity) (Object) this;// 自己的引用，便于行事
 		Magnet.tick(this0);
-		if (getInventory().containsAny(Collections.singleton(CppItems.ELDER_S_WORDS))) {// 年长者之教诲
+		if (getInventory().containsAny(Set.of(CppItems.ELDER_S_WORDS)) || getEnderChestInventory().containsAny(Set.of(CppItems.ELDER_S_WORDS))) {// 年长者之教诲
 			if (elderSWordCoolDown-- <= 0) {
 				elderSWordCoolDown = 50;
 				addExperience(1);

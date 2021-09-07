@@ -39,7 +39,7 @@ public class OutputDirectionButton extends TexturedButtonWidget {
 
 	@Override
 	public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		MinecraftClient.getInstance().getTextureManager().bindTexture(TEXTURE);
+		RenderSystem.setShaderTexture(0, TEXTURE);
 		RenderSystem.enableDepthTest();
 		drawTexture(matrices, x, y, IOutputDiractional.dirToByte(blockEntity.getOutputDir()) * 16, isHovered() ? 16 : 0,
 				16, 16, 96, 32);

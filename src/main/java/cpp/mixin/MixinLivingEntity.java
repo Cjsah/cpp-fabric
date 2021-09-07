@@ -44,7 +44,6 @@ public abstract class MixinLivingEntity extends Entity {
 	@Shadow
 	protected abstract void onStatusEffectRemoved(StatusEffectInstance effect);
 
-
 	@SuppressWarnings("ConstantConditions")
 	@Inject(at = @At("RETURN"), method = "tick()V")
 	public void tick(CallbackInfo callbackInfo) {

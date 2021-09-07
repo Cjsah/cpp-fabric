@@ -27,7 +27,7 @@ public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 @Override
 protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
 	RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-	this.client.getTextureManager().bindTexture(getBackground());
+	RenderSystem.setShaderTexture(0, getBackground());
 	int i = this.x;
 	int j = (this.height - this.backgroundHeight) / 2;
 	this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);

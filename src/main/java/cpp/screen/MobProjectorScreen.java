@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import cpp.api.Utils;
 import cpp.init.CppBlocks;
 import cpp.screen.handler.MobProjectorScreenHandler;
@@ -39,15 +40,15 @@ public class MobProjectorScreen extends AExpMachineScreen<MobProjectorScreenHand
 		super.drawBackground(matrices, delta, mouseX, mouseY);
 
 		if (handler.blockEntity.getCurrentRecipeCode() > 0) {
-			client.getTextureManager().bindTexture(PICTURES.get(handler.blockEntity.getCurrentRecipeCode()));
+			RenderSystem.setShaderTexture(0, PICTURES.get(handler.blockEntity.getCurrentRecipeCode()));
 			drawTexture(matrices, x + 19, y + 18, 0, 0, 52, 52, 52, 52);
 		}
 
-		client.getTextureManager().bindTexture(FLASH);
+		RenderSystem.setShaderTexture(0, FLASH);
 		int t = (int) (System.currentTimeMillis() % (12 * 50) / 50) / 2;
 		drawTexture(matrices, x + 102, y + 40, 0, 26 * t, 26, 26, 26, 156);
 
-		client.getTextureManager().bindTexture(BACKGROUND);
+		RenderSystem.setShaderTexture(0, BACKGROUND);
 		int dy = 52 * handler.blockEntity.getWorkTime() / handler.blockEntity.getWorkTimeTotal();
 		drawTexture(matrices, x + 19, y + 18 + dy, 19, 18 + dy, 52, 52 - dy);
 	}

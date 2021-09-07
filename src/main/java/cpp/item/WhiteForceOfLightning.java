@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class WhiteForceOfLightning extends Item {
 
-    private static final Map<Block, Block> exchange = new HashMap<>();
+    private static final Map<Block, Block> EXCHANGE = new HashMap<>();
 
     public WhiteForceOfLightning(Settings settings) {
         super(settings);
@@ -42,7 +42,7 @@ public class WhiteForceOfLightning extends Item {
         if (!world.isClient) {
             BlockPos pos = new BlockPos(user.getPos()).add(0, -1, 0);
             BlockState blockState = world.getBlockState(pos);
-            Block block = exchange.get(blockState.getBlock());
+            Block block = EXCHANGE.get(blockState.getBlock());
             int value = 0;
             if (block != null) {
                 for (int i = -7; i <= 7; i++) {
@@ -73,25 +73,25 @@ public class WhiteForceOfLightning extends Item {
     }
 
     private void register() {
-        exchange.put(Blocks.DIRT, Blocks.GRASS_BLOCK);
-        exchange.put(Blocks.GRASS_BLOCK, Blocks.STONE);
-        exchange.put(Blocks.STONE, Blocks.SAND);
-        exchange.put(Blocks.SAND, Blocks.RED_SAND);
-        exchange.put(Blocks.RED_SAND, Blocks.GRAVEL);
-        exchange.put(Blocks.GRAVEL, Blocks.PODZOL);
-        exchange.put(Blocks.PODZOL, Blocks.MYCELIUM);
-        exchange.put(Blocks.MYCELIUM, Blocks.DIRT);
+        EXCHANGE.put(Blocks.DIRT, Blocks.GRASS_BLOCK);
+        EXCHANGE.put(Blocks.GRASS_BLOCK, Blocks.STONE);
+        EXCHANGE.put(Blocks.STONE, Blocks.SAND);
+        EXCHANGE.put(Blocks.SAND, Blocks.RED_SAND);
+        EXCHANGE.put(Blocks.RED_SAND, Blocks.GRAVEL);
+        EXCHANGE.put(Blocks.GRAVEL, Blocks.PODZOL);
+        EXCHANGE.put(Blocks.PODZOL, Blocks.MYCELIUM);
+        EXCHANGE.put(Blocks.MYCELIUM, Blocks.DIRT);
 
-        exchange.put(Blocks.NETHERRACK, Blocks.CRIMSON_NYLIUM);
-        exchange.put(Blocks.CRIMSON_NYLIUM, Blocks.WARPED_NYLIUM);
-        exchange.put(Blocks.WARPED_NYLIUM, Blocks.BLACKSTONE);
-        exchange.put(Blocks.BLACKSTONE, Blocks.END_STONE);
-        exchange.put(Blocks.END_STONE, Blocks.NETHERRACK);
+        EXCHANGE.put(Blocks.NETHERRACK, Blocks.CRIMSON_NYLIUM);
+        EXCHANGE.put(Blocks.CRIMSON_NYLIUM, Blocks.WARPED_NYLIUM);
+        EXCHANGE.put(Blocks.WARPED_NYLIUM, Blocks.BLACKSTONE);
+        EXCHANGE.put(Blocks.BLACKSTONE, Blocks.END_STONE);
+        EXCHANGE.put(Blocks.END_STONE, Blocks.NETHERRACK);
 
-        exchange.put(Blocks.WATER, Blocks.ICE);
-        exchange.put(Blocks.ICE, Blocks.WATER);
+        EXCHANGE.put(Blocks.WATER, Blocks.ICE);
+        EXCHANGE.put(Blocks.ICE, Blocks.WATER);
 
-        exchange.put(Blocks.LAVA, Blocks.OBSIDIAN);
-        exchange.put(Blocks.OBSIDIAN, Blocks.LAVA);
+        EXCHANGE.put(Blocks.LAVA, Blocks.OBSIDIAN);
+        EXCHANGE.put(Blocks.OBSIDIAN, Blocks.LAVA);
     }
 }
