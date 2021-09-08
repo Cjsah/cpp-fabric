@@ -27,41 +27,41 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(ExperienceBottleItem.class)
 @SuppressWarnings("unused")
 public abstract class MixinExperienceBottleItem extends Item implements IDefaultNbtItem {
-	
-	@Shadow
-	public abstract boolean hasGlint(ItemStack stack);
-	
-	public MixinExperienceBottleItem(Settings settings) {
-		super(settings);
-	}
-	
-	@Environment(EnvType.CLIENT)
-	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-		int multiple = stack.getOrCreateTag().getByte(ExperienceBottleHooks.MULTIPLE_TAG_NAME);
-		if (multiple != 0)
-			tooltip.add(new TranslatableText("tooltip.cpp.multiple", multiple).formatted(Formatting.DARK_AQUA));
-	}
-	
-	/**
-	 * @author Phoupraw
-	 * @reason null
-	 */
-	@Overwrite
-	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		return ExperienceBottleHooks.useItem(world, user, hand);
-	}
-	
-	@Override
-	public Text getName(ItemStack stack) {
-		int multiple = stack.getOrCreateTag().getByte(ExperienceBottleHooks.MULTIPLE_TAG_NAME);
-		return multiple == 0 ? super.getName(stack) : new TranslatableText("tooltip.cpp.compressed").formatted(Formatting.DARK_AQUA)
-		  .append(((MutableText) super.getName(stack))
-			.formatted(stack.getRarity().formatting));
-	}
-	
-	@Override
-	public NbtCompound getDefaultNbt(NbtCompound nbt) {
-		nbt.putByte(ExperienceBottleHooks.MULTIPLE_TAG_NAME, (byte) 0);
-		return nbt;
-	}
+
+@Shadow
+public abstract boolean hasGlint(ItemStack stack);
+
+public MixinExperienceBottleItem(Settings settings) {
+	super(settings);
+}
+
+@Environment(EnvType.CLIENT)
+public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+	int multiple = stack.getOrCreateTag().getByte(ExperienceBottleHooks.KEY);
+	if (multiple != 0)
+		tooltip.add(new TranslatableText("tooltip.cpp.multiple", multiple).formatted(Formatting.DARK_AQUA));
+}
+
+/**
+ * @author Phoupraw
+ * @reason null
+ */
+@Overwrite
+public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+	return ExperienceBottleHooks.use(world, user, hand);
+}
+
+@Override
+public Text getName(ItemStack stack) {
+	int multiple = stack.getOrCreateTag().getByte(ExperienceBottleHooks.KEY);
+	return multiple == 0 ? super.getName(stack) : new TranslatableText("tooltip.cpp.compressed").formatted(Formatting.DARK_AQUA)
+	  .append(((MutableText)super.getName(stack))
+		.formatted(stack.getRarity().formatting));
+}
+
+@Override
+public NbtCompound getDefaultNbt(NbtCompound nbt) {
+	nbt.putByte(ExperienceBottleHooks.KEY, (byte)0);
+	return nbt;
+}
 }
