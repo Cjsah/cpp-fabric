@@ -8,7 +8,11 @@ targetCompatibility = JavaVersion.VERSION_16
 
 archivesBaseName = project.archives_base_name
 version = "mc${project.minecraft_version}-${project.mod_version}"
-if (project.build_number != "undefined") version = version + "+build.${project.build_number}"
+def maven_version = project.mod_version
+if (project.build_number != "undefined") {
+	version += "+build.${project.build_number}"
+	maven_version += "+build.${project.build_number}"
+}
 group = project.maven_group
 
 repositories {
@@ -73,16 +77,14 @@ jar {
 	}
 }
 
-// configure the maven publication
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
 //			groupId project.group
 			artifactId project.archivesBaseName
-//			version project.version
+			version maven_version
 //			from components.java
-//
-			// add all the jars that should be included when publishing to maven
+
 			artifact(remapJar) {
 				builtBy remapJar
 			}
