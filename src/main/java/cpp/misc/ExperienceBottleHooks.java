@@ -3,6 +3,8 @@ package cpp.misc;
 import cpp.api.Utils;
 import cpp.ducktyping.IMultiple;
 import cpp.init.CppItems;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.thrown.ExperienceBottleEntity;
 import net.minecraft.item.ItemStack;
