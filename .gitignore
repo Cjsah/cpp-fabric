@@ -9,7 +9,6 @@ run/
 # eclipse
 
 *.launch
-.github/
 .metadata
 
 # idea
