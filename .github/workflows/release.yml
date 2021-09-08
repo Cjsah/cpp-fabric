@@ -60,5 +60,5 @@ jobs:
           asset_path: build/libs/${{ steps.getjar.outputs.jarname }}
           asset_name: ${{ steps.getjar.outputs.jarname }}
           asset_content_type: application/java-archive
-      - name: publish to maven
+      - name: Publish to maven
         run: ./gradlew publish
