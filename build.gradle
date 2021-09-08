@@ -24,16 +24,16 @@ repositories {
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_version}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.fabric_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	// Nullable修复
-	modImplementation "com.google.code.findbugs:jsr305:3.0.2"
+	modCompileOnly "com.google.code.findbugs:jsr305:3.0.2"
 	// modmenu支持
-	modImplementation "com.terraformersmc:modmenu:2.0.9"
-	// 可惜1.17没有rei
-	modImplementation "me.shedaniel:RoughlyEnoughItems-api:6.0.264-alpha"
+	modCompileOnly "com.terraformersmc:modmenu:2.0.9"
+	// rei支持
+	modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:6.0.264-alpha"
 }
 
 minecraft {
@@ -77,11 +77,11 @@ jar {
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
-			groupId project.group
+//			groupId project.group
 			artifactId project.archivesBaseName
-			version project.version
-			from components.java
-
+//			version project.version
+//			from components.java
+//
 			// add all the jars that should be included when publishing to maven
 			artifact(remapJar) {
 				builtBy remapJar
@@ -94,10 +94,11 @@ publishing {
 
 	repositories {
 		maven {
-			url ' '
+			allowInsecureProtocol = true
+			url 'https://maven.cjsah.net/repository/releases/'
 			credentials {
-				username ' ' // 仓库发布用户名
-				password ' ' // 仓库发布用户密码
+				username project.maven_account // 仓库发布用户名
+				password project.maven_password // 仓库发布用户密码
 			}
 		}
 	}
