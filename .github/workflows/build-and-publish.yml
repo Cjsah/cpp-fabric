@@ -19,7 +19,6 @@ on:
       - "gradle.properties"
       - "src/**"
 
-
 jobs:
   properties:
     runs-on: ubuntu-latest
@@ -51,11 +50,11 @@ jobs:
       with:
         java-version: '16'
         distribution: 'adopt'
-    - name: Set build number in codes
+    - name: Set status in codes
       run: |
         sed -i "s/undefined/$GITHUB_RUN_NUMBER/g" gradle.properties
-        sed -i "s/musername/${{ secrets.MAVEN_USERNAME }}/g" gradle.properties
-        sed -i "s/mpassword/${{ secrets.MAVEN_PASSWORD }}/g" gradle.properties
+        sed -i "s/{username}/${{ secrets.MAVEN_USERNAME }}/g" gradle.properties
+        sed -i "s/{password}/${{ secrets.MAVEN_PASSWORD }}/g" gradle.properties
     - name: Give permission
       run: chmod +x gradlew
     - name: Build with Gradle

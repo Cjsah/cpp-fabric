@@ -94,11 +94,10 @@ publishing {
 
 	repositories {
 		maven {
-			allowInsecureProtocol = true
 			url 'https://maven.cjsah.net/repository/releases/'
 			credentials {
-				username project.maven_account // 仓库发布用户名
-				password project.maven_password // 仓库发布用户密码
+				username project.maven_account
+				password project.maven_password
 			}
 		}
 	}
