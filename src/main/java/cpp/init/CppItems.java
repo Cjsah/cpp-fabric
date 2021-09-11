@@ -276,7 +276,7 @@ public final class CppItems {
 	public static final Item WAND_OF_THE_DARKNESS = registerItem("wand_of_the_darkness", new Wand(16, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 	// 装饰-装备
 	public static final Item RED_LIP = registerItem("red_lip", new WearableItem(EquipmentSlot.HEAD, false, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-	public static final Item PURPLE_EYE = registerItem("purple_eye", new WearableItem(EquipmentSlot.HEAD, false, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+	public static final Item PURPLE_EYE = registerItem("purple_eye", new WearableItem(EquipmentSlot.HEAD, false, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));//TODO 佩戴后，高亮附近的野生花草作物
 	public static final Item LASH = registerItem("lash", new WearableItem(EquipmentSlot.HEAD, false, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 	public static final Item CAT_BREED = registerItem("cat_breed", new WearableItem(EquipmentSlot.HEAD, false, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 	public static final Item GARLAND = registerItem("garland", new WearableItem(EquipmentSlot.HEAD, true, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
@@ -285,17 +285,13 @@ public final class CppItems {
 	public static final Item JOKING_GLASSES = registerItem("joking_glasses", new WearableItem(EquipmentSlot.HEAD, true, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 	public static final Item MINION_GOGGLES = registerItem("minion_goggles", new WearableItem(EquipmentSlot.HEAD, true, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 	public static final Item PANTS = registerItem("pants", new WearableItem(EquipmentSlot.HEAD, true, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-	public static final Item EMPIRE_HAT = registerItem("empire_hat", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-	public static final Item GLASS_HELMET = registerItem("glass_helmet", new WearableItem(EquipmentSlot.HEAD, true, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-	public static final Item GLOW_HAT = registerItem("glow_hat", new WearableItem(EquipmentSlot.HEAD, true, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+	public static final Item EMPIRE_HAT = registerItem("empire_hat", new WearableItem(EquipmentSlot.HEAD, false, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+	public static final Item GLASS_HELMET = registerItem("glass_helmet", new WearableItem(EquipmentSlot.HEAD, true, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));//TODO 当玩家不在水中时，提供5秒的水下呼吸
+	public static final Item GLOW_HAT = registerItem("glow_hat", new WearableItem(EquipmentSlot.HEAD, true, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));//TODO 戴上后可使玩家发光
 	public static final Item GREEN_HAT = registerItem("green_hat", new WearableItem(EquipmentSlot.HEAD, true, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-	public static final Item BLACK_HAT = registerItem("black_hat", new WearableItem(EquipmentSlot.HEAD, true, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-	public static final Item NURSE_HAT = registerItem("nurse_hat", new WearableItem(EquipmentSlot.HEAD, true, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-	public static final Item JACKET = registerItem("jacket", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-	public static final Item RED_COAT = registerItem("red_coat", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-	public static final Item TIGHT_LEATHER_LEGGINGS = registerItem("tight_leather_leggings", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-	public static final Item BLUE_JEANS = registerItem("blue_jeans", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
-	public static final Item SNOW_BOOTS = registerItem("snow_boots", new Item(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
+	public static final Item BLACK_HAT = registerItem("black_hat", new WearableItem(EquipmentSlot.HEAD, true, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));//TODO -1幸运
+	public static final Item NURSE_HAT = registerItem("nurse_hat", new WearableItem(EquipmentSlot.HEAD, true, new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));//TODO +1幸运
+	public static final Item SNOW_BOOTS = registerItem("snow_boots", new SnowBoots(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 	// 装饰-杂
 	public static final Item CLASSICAL_PAINTING = registerItem("classical_painting", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 	public static final Item SPRING_FESTIVAL_DECORATIONS = registerItem("spring_festival_decorations", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));

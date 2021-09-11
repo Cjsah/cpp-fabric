@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Crafting++",
-  "description": "Fabric mod of Crafting++\nRewrite from datapack of Crafting++",
+  "description": "Fabric mod of Crafting++\nRewrite from datapack",
   "authors": [
     "Phoupraw",
     "Cjsah",

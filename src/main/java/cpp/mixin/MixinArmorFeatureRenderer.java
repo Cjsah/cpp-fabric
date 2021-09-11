@@ -1,6 +1,5 @@
 package cpp.mixin;
 
-import com.google.common.collect.Maps;
 import cpp.ducktyping.ICustomArmorsIdentifier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -37,7 +36,7 @@ public abstract class MixinArmorFeatureRenderer<T extends LivingEntity, M extend
 
     @Final
     @Shadow
-    private static final Map<String, Identifier> ARMOR_TEXTURE_CACHE = Maps.newHashMap();
+    private static Map<String, Identifier> ARMOR_TEXTURE_CACHE;
 
     @Shadow
     protected abstract void setVisible(A bipedModel, EquipmentSlot slot);
