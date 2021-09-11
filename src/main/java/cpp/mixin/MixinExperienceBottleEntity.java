@@ -17,7 +17,6 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 
 @Mixin(ExperienceBottleEntity.class)
-@SuppressWarnings("unused")
 public abstract class MixinExperienceBottleEntity extends ThrownItemEntity implements IMultiple {
 @Deprecated
 private int multiple = 0;

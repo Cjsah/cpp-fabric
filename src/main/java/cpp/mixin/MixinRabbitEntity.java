@@ -13,7 +13,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 @Mixin(RabbitEntity.class)
-@SuppressWarnings("unused")
 public abstract class MixinRabbitEntity extends AnimalEntity {
 	protected MixinRabbitEntity(EntityType<? extends AnimalEntity> entityType, World world) {
 		super(entityType, world);

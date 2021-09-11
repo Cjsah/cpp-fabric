@@ -1,6 +1,5 @@
 package cpp.mixin;
 
-import java.util.Collections;
 import java.util.Set;
 
 import cpp.misc.ExperienceBottleHooks;
@@ -22,7 +21,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 @Mixin(ServerPlayerEntity.class)
-@SuppressWarnings("unused")
 public abstract class MixinServerPlayerEntity extends PlayerEntity {
 	
 	public MixinServerPlayerEntity(World world, BlockPos pos, float yaw, GameProfile profile) {

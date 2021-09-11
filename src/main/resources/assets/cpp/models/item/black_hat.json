@@ -1,5 +1,5 @@
 {
-    "parent": "minecraft:item/handheld",
+    "parent": "cpp:item/hat",
     "textures": {
         "layer0": "cpp:item/black_hat"
     }

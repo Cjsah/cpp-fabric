@@ -11,7 +11,6 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.world.World;
 
 @Mixin(VillagerEntity.class)
-@SuppressWarnings("unused")
 public abstract class MixinVillagerEntity extends MerchantEntity {
 	protected MixinVillagerEntity(EntityType<? extends MerchantEntity> entityType, World world) {
 		super(entityType, world);

@@ -13,7 +13,6 @@ import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.world.World;
 
 @Mixin(AbstractSkeletonEntity.class)
-@SuppressWarnings("unused")
 public abstract class MixinAbstractSkeletonEntity extends HostileEntity {
 
 	protected MixinAbstractSkeletonEntity(EntityType<? extends HostileEntity> entityType, World world) {

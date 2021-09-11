@@ -1,5 +1,6 @@
 package cpp.mixin;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,10 +16,10 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.feature.EndPortalFeature;
 
 @Mixin(EnderDragonFight.class)
-@SuppressWarnings("unused")
 public abstract class MixinEnderDragonFight {
 	@Shadow
 	private boolean previouslyKilled;
+	@Final
 	@Shadow
 	private ServerWorld world;
 

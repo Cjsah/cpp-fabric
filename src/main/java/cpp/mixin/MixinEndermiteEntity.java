@@ -14,7 +14,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
 @Mixin(EndermiteEntity.class)
-@SuppressWarnings("unused")
 public class MixinEndermiteEntity extends HostileEntity {
 
 	public MixinEndermiteEntity(EntityType<? extends HostileEntity> entityType, World world) {

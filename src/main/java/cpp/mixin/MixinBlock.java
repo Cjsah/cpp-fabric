@@ -8,7 +8,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 
 @Mixin(Block.class)
-@SuppressWarnings("unused")
 public abstract class MixinBlock extends AbstractBlock implements IMaterialGetter {
 
 	public MixinBlock(Settings settings) {

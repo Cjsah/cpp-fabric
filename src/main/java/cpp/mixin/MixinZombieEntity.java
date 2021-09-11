@@ -12,7 +12,6 @@ import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.world.World;
 
 @Mixin(ZombieEntity.class)
-@SuppressWarnings("unused")
 public abstract class MixinZombieEntity extends HostileEntity {
 
 	protected MixinZombieEntity(EntityType<? extends HostileEntity> entityType, World world) {

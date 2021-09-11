@@ -34,10 +34,14 @@ dependencies {
 
 	// Nullable修复
 	modCompileOnly "com.google.code.findbugs:jsr305:3.0.2"
+
+	// 不作为前置 只在编译和开发环境中支持
 	// modmenu支持
 	modCompileOnly "com.terraformersmc:modmenu:2.0.9"
+	modRuntime "com.terraformersmc:modmenu:2.0.9"
 	// rei支持
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:6.0.264-alpha"
+	modRuntime "me.shedaniel:RoughlyEnoughItems-api:6.0.264-alpha"
 }
 
 minecraft {

@@ -20,7 +20,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Map;
 
 @Mixin(SkullBlockEntityRenderer.class)
-
 public abstract class MixinSkullBlockEntityRenderer {
 	
 	@Shadow

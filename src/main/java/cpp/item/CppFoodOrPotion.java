@@ -1,4 +1,4 @@
-package cpp.api;
+package cpp.item;
 
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
@@ -35,8 +35,8 @@ import java.util.Map;
 import java.util.Objects;
 
 public class CppFoodOrPotion extends Item implements INutrition {
+    private static final MutableText EFFECT_NONE = (new TranslatableText("effect.none")).formatted(Formatting.GRAY);
     public static final Map<Item, Integer> map = new HashMap<>();
-    private static final MutableText field_25817;
     private final UseAction useAction;
     private final int nutrition;
 
@@ -105,7 +105,7 @@ public class CppFoodOrPotion extends Item implements INutrition {
                 }
             }
         }else if (this.useAction == UseAction.DRINK) {
-            tooltip.add(field_25817);
+            tooltip.add(EFFECT_NONE);
         }
 
         if (!list3.isEmpty()) {
@@ -177,7 +177,6 @@ public class CppFoodOrPotion extends Item implements INutrition {
     }
 
     static {
-        field_25817 = (new TranslatableText("effect.none")).formatted(Formatting.GRAY);
 
         map.put(Items.MUSHROOM_STEM, -6);
         map.put(Items.BEETROOT_SOUP, -6);

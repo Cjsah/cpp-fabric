@@ -14,7 +14,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
 @Mixin(LeavesBlock.class)
-@SuppressWarnings("unused")
 public class MixinLeavesBlock extends Block {
 
 	public MixinLeavesBlock(Settings settings) {

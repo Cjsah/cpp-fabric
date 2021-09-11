@@ -25,7 +25,6 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ExperienceBottleItem.class)
-@SuppressWarnings("unused")
 public abstract class MixinExperienceBottleItem extends Item implements IDefaultNbtItem {
 
 @Shadow

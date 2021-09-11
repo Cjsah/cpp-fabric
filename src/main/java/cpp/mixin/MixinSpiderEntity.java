@@ -14,7 +14,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
 @Mixin(SpiderEntity.class)
-@SuppressWarnings("unused")
 public abstract class MixinSpiderEntity extends HostileEntity {
 	protected MixinSpiderEntity(EntityType<? extends HostileEntity> entityType, World world) {
 		super(entityType, world);

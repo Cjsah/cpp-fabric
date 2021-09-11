@@ -17,7 +17,6 @@ import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.resource.ResourceManager;
 
 @Mixin(EntityModelLoader.class)
-@SuppressWarnings("unused")
 public class MixinEntityModelLoader {
 	@Shadow
 	private Map<EntityModelLayer, TexturedModelData> modelParts;

@@ -14,7 +14,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 
 @Mixin(ItemFrameEntity.class)
-@SuppressWarnings("unused")
 public abstract class MixinItemFrameEntity extends AbstractDecorationEntity implements IRitualFrame {
 	private int ritualType, ritualTime;
 

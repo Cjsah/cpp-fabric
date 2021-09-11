@@ -14,7 +14,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
 @Mixin(SilverfishEntity.class)
-@SuppressWarnings("unused")
 public class MixinSilverfishEntity extends HostileEntity {
 	protected MixinSilverfishEntity(EntityType<? extends HostileEntity> entityType, World world) {
 		super(entityType, world);

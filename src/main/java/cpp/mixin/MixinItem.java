@@ -5,10 +5,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 
-import static cpp.api.CppFoodOrPotion.map;
+import static cpp.item.CppFoodOrPotion.map;
 
 @Mixin(Item.class)
-@SuppressWarnings("unused")
 public class MixinItem implements INutrition {
 
     @Override

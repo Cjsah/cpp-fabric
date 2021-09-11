@@ -8,6 +8,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,10 +17,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
 
-@SuppressWarnings("unused")
 @Mixin(MinecraftServer.class)
 public abstract class MixinMinecraftServer implements ICppState {
 
+    @Final
     @Shadow
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private Map<RegistryKey<World>, ServerWorld> worlds;

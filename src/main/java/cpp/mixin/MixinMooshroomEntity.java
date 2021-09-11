@@ -13,7 +13,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 
 @Mixin(MooshroomEntity.class)
-@SuppressWarnings("unused")
 public abstract class MixinMooshroomEntity extends CowEntity {
 	public MixinMooshroomEntity(EntityType<? extends CowEntity> entityType, World world) {
 		super(entityType, world);

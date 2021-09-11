@@ -1,7 +1,12 @@
 {
-    "parent": "minecraft:item/generated",
+    "parent": "minecraft:item/handheld",
     "textures": {
-        "layer0": "cpp:item/red_lip",
-        "layer1": "cpp:empty"
+        "layer0": "cpp:item/red_lip"
+    },
+    "display": {
+        "head": {
+            "translation": [ 0, -4, -7 ],
+            "scale": [ 0.65, 0.65, 0.65 ]
+        }
     }
 }

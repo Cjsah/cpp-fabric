@@ -12,7 +12,6 @@ import net.minecraft.entity.passive.BeeEntity;
 import net.minecraft.world.World;
 
 @Mixin(BeeEntity.class)
-@SuppressWarnings("unused")
 public abstract class MixinBeeEntity extends AnimalEntity {
 
 	protected MixinBeeEntity(EntityType<? extends AnimalEntity> entityType, World world) {
