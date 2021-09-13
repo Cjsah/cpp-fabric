@@ -12,7 +12,8 @@
   ],
   "contact": {
     "homepage": "https://www.cjsah.net/ruhuasiyu/",
-    "sources": "https://github.com/cjsah/cpp-fabric"
+    "sources": "https://github.com/cjsah/cpp-fabric",
+    "issues": "https://github.com/Cjsah/cpp-fabric/issues"
   },
 
   "license": "GPL-3.0",
