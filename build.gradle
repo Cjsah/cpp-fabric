@@ -100,7 +100,7 @@ publishing {
 
 	repositories {
 		maven {
-			url 'https://maven.cjsah.net/repository/releases/'
+			url project.maven_url
 			credentials {
 				username project.maven_account
 				password project.maven_password
