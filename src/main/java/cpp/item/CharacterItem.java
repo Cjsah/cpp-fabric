@@ -12,6 +12,7 @@ import net.minecraft.util.collection.DefaultedList;
 import java.util.Random;
 
 public class CharacterItem extends Item {
+    public static final int MAX = 130;
     public CharacterItem(Settings settings) {
         super(settings);
     }
@@ -19,7 +20,7 @@ public class CharacterItem extends Item {
     @Override
     public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
         if (this.isIn(group)) {
-            for (int i = 1; i <= 117; i++) {
+            for (int i = 1; i <= MAX; i++) {
                 NbtCompound nbt = new NbtCompound();
                 ItemStack item = new ItemStack(this);
                 nbt.putInt("character", i);
@@ -37,19 +38,24 @@ public class CharacterItem extends Item {
 
     @Override
     public String getTranslationKey(ItemStack stack) {
-        return super.getTranslationKey(stack) + (stack.hasTag() ? stack.getOrCreateTag().getInt("character") : "");
+        String value = "";
+        if (stack.hasTag()) {
+            int id = stack.getOrCreateTag().getInt("character");
+            if (id >= 1 && id <= MAX) value += id;
+        }
+        return super.getTranslationKey(stack) + value;
     }
 
     public static ItemStack randomGetOne() {
         ItemStack item = new ItemStack(CppItems.CHARACTER);
         NbtCompound nbt = new NbtCompound();
-        nbt.putInt("character", new Random().nextInt(117)+1);
+        nbt.putInt("character", new Random().nextInt(MAX)+1);
         item.setTag(nbt);
         return item;
     }
 
     public static ItemStack get(int id) {
-        if (id >= 1 && id <= 117) {
+        if (id >= 1 && id <= MAX) {
             ItemStack item = new ItemStack(CppItems.CHARACTER);
             NbtCompound nbt = new NbtCompound();
             nbt.putInt("character", id);

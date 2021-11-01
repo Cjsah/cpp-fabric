@@ -120,21 +120,34 @@
         {"predicate": {"character": 114}, "model": "cpp:item/character/114"},
         {"predicate": {"character": 115}, "model": "cpp:item/character/115"},
         {"predicate": {"character": 116}, "model": "cpp:item/character/116"},
-        {"predicate": {"character": 117}, "model": "cpp:item/character/117"}
+        {"predicate": {"character": 117}, "model": "cpp:item/character/117"},
+        {"predicate": {"character": 118}, "model": "cpp:item/character/118"},
+        {"predicate": {"character": 119}, "model": "cpp:item/character/119"},
+        {"predicate": {"character": 120}, "model": "cpp:item/character/120"},
+        {"predicate": {"character": 121}, "model": "cpp:item/character/121"},
+        {"predicate": {"character": 122}, "model": "cpp:item/character/122"},
+        {"predicate": {"character": 123}, "model": "cpp:item/character/123"},
+        {"predicate": {"character": 124}, "model": "cpp:item/character/124"},
+        {"predicate": {"character": 125}, "model": "cpp:item/character/125"},
+        {"predicate": {"character": 126}, "model": "cpp:item/character/126"},
+        {"predicate": {"character": 127}, "model": "cpp:item/character/127"},
+        {"predicate": {"character": 128}, "model": "cpp:item/character/128"},
+        {"predicate": {"character": 129}, "model": "cpp:item/character/129"},
+        {"predicate": {"character": 130}, "model": "cpp:item/character/130"}
     ],
     "display": {
         "gui": {
-            "scale":[ 0.5, 1, 1]
+            "scale": [ 0.5, 1, 1 ]
         },
         "fixed": {
             "rotation": [ -90, 0, 0 ],
-            "translation": [ 0, 0, -32],
-            "scale":[ 2, 4, 0.1]
+            "translation": [ 0, 2, -32 ],
+            "scale": [ 2.01, 4.01, 0.1 ]
         },
         "ground": {
             "rotation": [ 0, 0, 0 ],
-            "translation": [ 0, 2, 0],
-            "scale":[ 0.5, 1, 0.1 ]
+            "translation": [ 0, 2, 0 ],
+            "scale": [ 0.5, 1, 0.1 ]
         },
         "head": {
             "rotation": [ -90, 0, 0 ],
@@ -144,12 +157,12 @@
         "thirdperson_righthand": {
             "rotation": [ 0, 0, 0 ],
             "translation": [ 0, 3, 1 ],
-            "scale": [ 0.275, 0.55 , 0.1 ]
+            "scale": [ 0.275, 0.55, 0.1 ]
         },
         "firstperson_righthand": {
             "rotation": [ 0, -90, 25 ],
-            "translation": [ 1.13, 3.2, 1.13],
-            "scale": [ 0.34, 0.68 , 0.1 ]
+            "translation": [ 1.13, 3.2, 1.13 ],
+            "scale": [ 0.34, 0.68, 0.1 ]
         }
     }
 
