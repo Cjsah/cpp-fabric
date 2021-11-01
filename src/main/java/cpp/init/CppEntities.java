@@ -3,6 +3,7 @@ package cpp.init;
 import com.google.common.collect.ImmutableList;
 import cpp.Craftingpp;
 import cpp.entity.AGolemEntity;
+import cpp.entity.CharacterEntity;
 import cpp.entity.DarkChickenEntity;
 import cpp.entity.DarkCowEntity;
 import cpp.entity.DarkMooshroomEntity;
@@ -41,6 +42,7 @@ public final class CppEntities {
 	public static final EntityType<DarkSheepEntity> DARK_SHEEP = registerDark("dark_sheep", DarkSheepEntity::new, SheepEntity.createSheepAttributes(), builder -> builder.setDimensions(0.9F, 1.3F));
 	public static final EntityType<DarkPigEntity> DARK_PIG = registerDark("dark_pig", DarkPigEntity::new, PigEntity.createPigAttributes(), builder -> builder.setDimensions(0.9F, 0.9F));
 	public static final EntityType<DarkChickenEntity> DARK_CHICKEN = registerDark("dark_chicken", DarkChickenEntity::new, ChickenEntity.createChickenAttributes(), builder -> builder.setDimensions(0.4F, 0.7F));
+	public static final EntityType<CharacterEntity> CHARACTER = register("character", EntityType.Builder.create(CharacterEntity::new, SpawnGroup.MISC));
 
 	public static void init() {}
 

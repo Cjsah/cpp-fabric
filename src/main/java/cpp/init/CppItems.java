@@ -297,7 +297,7 @@ public final class CppItems {
 	public static final Item CLASSICAL_PAINTING = registerItem("classical_painting", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 	public static final Item SPRING_FESTIVAL_DECORATIONS = registerItem("spring_festival_decorations", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 	// 纸片人
-	public static final Item CHARACTER = registerItem("character", new CharacterItem(new Item.Settings().group(CPP_GROUP_DECORATE)));
+	public static final Item CHARACTER = registerItem("character", new CharacterItem(new Item.Settings().group(CPP_GROUP_DECORATE).maxCount(1)));
 	// 标志和图案
 	public static final Item CHINA_FLAG = registerItem("china_flag", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
 	public static final Item USA_FLAG = registerItem("usa_flag", new Item(new Item.Settings().group(CPP_GROUP_DECORATE)));
