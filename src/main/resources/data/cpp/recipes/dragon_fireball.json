@@ -1,0 +1,19 @@
+{
+	"type": "crafting_shaped",
+	"pattern": [
+		"AAA",
+		"ABA",
+		"AAA"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:stone"
+		},
+		"B": {
+			"item": "minecraft:snowball"
+		}
+	},
+	"result": {
+		"item": "cpp:dragon_fireball"
+	}
+}

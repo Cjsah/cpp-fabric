@@ -125,6 +125,7 @@ public final class CppItems {
 	public static final Item GOLEM_WARRIOR = registerItem("golem_warrior", new Golem(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1), CppEntities.GOLEM_WARRIOR));
 	public static final Item GOLEM_HERDER = registerItem("golem_herder", new Golem(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1), CppEntities.GOLEM_HERDER));
 	public static final Item SANTA_GIFT = registerItem("santa_gift", new SantaGift(new Item.Settings().group(CPP_GROUP_TOOL)));
+	public static final Item DRAGON_FIREBALL = registerItem("dragon_fireball", new DragonFireball(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(16)));
 	public static final Item COLOR_PALETTE = registerItem("color_palette", new ColorPalette(new Item.Settings().group(CPP_GROUP_TOOL)));
 	public static final Item DYE_STICK = registerItem("dye_stick", new DyeStick(new Item.Settings().group(CPP_GROUP_TOOL).maxCount(1)));
 	// 食物

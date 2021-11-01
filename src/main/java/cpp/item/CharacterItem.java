@@ -37,7 +37,7 @@ public class CharacterItem extends Item {
 
     @Override
     public String getTranslationKey(ItemStack stack) {
-        return super.getTranslationKey(stack) + (stack.hasTag() ? stack.getTag().getInt("character") : "");
+        return super.getTranslationKey(stack) + (stack.hasTag() ? stack.getOrCreateTag().getInt("character") : "");
     }
 
     public static ItemStack randomGetOne() {

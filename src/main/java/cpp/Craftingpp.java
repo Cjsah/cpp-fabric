@@ -4,7 +4,6 @@ import static cpp.api.CppChat.say;
 
 import cpp.config.CppConfig;
 import cpp.init.*;
-import net.fabricmc.loader.launch.common.FabricLauncherBase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
