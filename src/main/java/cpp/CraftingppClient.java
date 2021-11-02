@@ -1,5 +1,6 @@
 package cpp;
 
+import cpp.client.render.entity.CharacterEntityRender;
 import cpp.entity.AGolemEntity;
 import cpp.client.render.entity.DarkChickenEntityRenderer;
 import cpp.client.render.entity.DarkCowEntityRenderer;
@@ -58,6 +59,7 @@ public class CraftingppClient implements ClientModInitializer {
 		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_SHEEP, DarkSheepEntityRenderer::new);
 		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_PIG, DarkPigEntityRenderer::new);
 		EntityRendererRegistry.INSTANCE.register(CppEntities.DARK_CHICKEN, DarkChickenEntityRenderer::new);
+		EntityRendererRegistry.INSTANCE.register(CppEntities.CHARACTER, CharacterEntityRender::new);
 		
 		BlockRenderLayerMapImpl.INSTANCE.putBlocks(RenderLayer.getCutout(), FRUIT_SAPLING, ORE_SAPLING, SAKURA_SAPLING, WOOL_SAPLING, BLUE_ROSE, POINSETTIA, CHRISTMAS_TREE, RICE, BROKEN_SPAWNER);
 		BlockRenderLayerMapImpl.INSTANCE.putBlocks(RenderLayer.getTranslucent(), RARE_EARTH_GLASS, REINFORCED_GLASS);
